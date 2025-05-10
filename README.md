@@ -1,20 +1,3 @@
-# Discontinued
-
-This app is discontinued. The last release on Github and F-Droid will happen
-with the December 2024 Syncthing version. Interactions (issues, PRs) are limited
-now, and the entire repo will be archived after the last release. Thus all
-contributions are preserved for any future (re)use. The forum is still open for
-discussions and questions. I would kindly ask you to refrain from trying to
-challenge the decision or asking "why-type" questions - I wont engage with them.
-
-The reason is a combination of Google making Play publishing something between
-hard and impossible and no active maintenance. The app saw no significant
-development for a long time and without Play releases I do no longer see enough
-benefit and/or have enough motivation to keep up the ongoing maintenance an app
-requires even without doing much, if any, changes.
-
-Thanks a lot to everyone who ever contributed to this app!
-
 # syncthing-android
 
 [![License: MPLv2](https://img.shields.io/badge/License-MPLv2-blue.svg)](https://opensource.org/licenses/MPL-2.0)
