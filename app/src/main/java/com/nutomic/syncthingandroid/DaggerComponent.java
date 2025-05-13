@@ -1,19 +1,19 @@
-package com.nutomic.syncthingandroid;
+package dev.benedek.syncthingandroid;
 
-import com.nutomic.syncthingandroid.activities.FirstStartActivity;
-import com.nutomic.syncthingandroid.activities.FolderPickerActivity;
-import com.nutomic.syncthingandroid.activities.MainActivity;
-import com.nutomic.syncthingandroid.activities.SettingsActivity;
-import com.nutomic.syncthingandroid.activities.ShareActivity;
-import com.nutomic.syncthingandroid.activities.ThemedAppCompatActivity;
-import com.nutomic.syncthingandroid.receiver.AppConfigReceiver;
-import com.nutomic.syncthingandroid.service.RunConditionMonitor;
-import com.nutomic.syncthingandroid.service.EventProcessor;
-import com.nutomic.syncthingandroid.service.NotificationHandler;
-import com.nutomic.syncthingandroid.service.RestApi;
-import com.nutomic.syncthingandroid.service.SyncthingRunnable;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.util.Languages;
+import dev.benedek.syncthingandroid.activities.FirstStartActivity;
+import dev.benedek.syncthingandroid.activities.FolderPickerActivity;
+import dev.benedek.syncthingandroid.activities.MainActivity;
+import dev.benedek.syncthingandroid.activities.SettingsActivity;
+import dev.benedek.syncthingandroid.activities.ShareActivity;
+import dev.benedek.syncthingandroid.activities.ThemedAppCompatActivity;
+import dev.benedek.syncthingandroid.receiver.AppConfigReceiver;
+import dev.benedek.syncthingandroid.service.RunConditionMonitor;
+import dev.benedek.syncthingandroid.service.EventProcessor;
+import dev.benedek.syncthingandroid.service.NotificationHandler;
+import dev.benedek.syncthingandroid.service.RestApi;
+import dev.benedek.syncthingandroid.service.SyncthingRunnable;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.util.Languages;
 
 import javax.inject.Singleton;
 

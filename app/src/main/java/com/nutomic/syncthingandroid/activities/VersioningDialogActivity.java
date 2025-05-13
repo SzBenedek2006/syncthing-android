@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.databinding.ActivityVersioningDialogBinding;
-import com.nutomic.syncthingandroid.fragments.dialog.ExternalVersioningFragment;
-import com.nutomic.syncthingandroid.fragments.dialog.NoVersioningFragment;
-import com.nutomic.syncthingandroid.fragments.dialog.SimpleVersioningFragment;
-import com.nutomic.syncthingandroid.fragments.dialog.StaggeredVersioningFragment;
-import com.nutomic.syncthingandroid.fragments.dialog.TrashCanVersioningFragment;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.databinding.ActivityVersioningDialogBinding;
+import dev.benedek.syncthingandroid.fragments.dialog.ExternalVersioningFragment;
+import dev.benedek.syncthingandroid.fragments.dialog.NoVersioningFragment;
+import dev.benedek.syncthingandroid.fragments.dialog.SimpleVersioningFragment;
+import dev.benedek.syncthingandroid.fragments.dialog.StaggeredVersioningFragment;
+import dev.benedek.syncthingandroid.fragments.dialog.TrashCanVersioningFragment;
 
 import java.util.Arrays;
 import java.util.List;

@@ -137,8 +137,8 @@
             tools:ignore="ExportedReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.nutomic.syncthingandroid.action.START" />
-                <action android:name="com.nutomic.syncthingandroid.action.STOP" />
+                <action android:name="dev.benedek.syncthingandroid.action.START" />
+                <action android:name="dev.benedek.syncthingandroid.action.STOP" />
             </intent-filter>
         </receiver>
         <activity android:name=".activities.FolderTypeDialogActivity"
@@ -147,7 +147,7 @@
             android:parentActivityName=".activities.FolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nutomic.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
         </activity>
         <activity android:name=".activities.PullOrderDialogActivity"
             android:label="@string/pull_order"
@@ -155,7 +155,7 @@
             android:parentActivityName=".activities.FolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nutomic.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
         </activity>
         <activity android:name=".activities.VersioningDialogActivity"
             android:label="@string/file_versioning"
@@ -163,14 +163,14 @@
             android:parentActivityName=".activities.FolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nutomic.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
         </activity>
         <activity android:name=".activities.QRScannerActivity"
             android:label="QR Code Scanner"
             android:parentActivityName=".activities.DeviceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nutomic.syncthingandroid.activities.DeviceActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.DeviceActivity" />
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.util;
+package dev.benedek.syncthingandroid.util;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,8 +14,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.service.Constants;
 
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;

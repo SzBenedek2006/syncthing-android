@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.service;
+package dev.benedek.syncthingandroid.service;
 
 import android.app.PendingIntent;
 import android.content.ContentResolver;
@@ -16,15 +16,15 @@ import android.util.Log;
 import androidx.core.util.Consumer;
 
 import com.annimon.stream.Stream;
-import com.nutomic.syncthingandroid.BuildConfig;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.activities.DeviceActivity;
-import com.nutomic.syncthingandroid.activities.FolderActivity;
-import com.nutomic.syncthingandroid.model.CompletionInfo;
-import com.nutomic.syncthingandroid.model.Device;
-import com.nutomic.syncthingandroid.model.Event;
-import com.nutomic.syncthingandroid.model.Folder;
+import dev.benedek.syncthingandroid.BuildConfig;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.activities.DeviceActivity;
+import dev.benedek.syncthingandroid.activities.FolderActivity;
+import dev.benedek.syncthingandroid.model.CompletionInfo;
+import dev.benedek.syncthingandroid.model.Device;
+import dev.benedek.syncthingandroid.model.Event;
+import dev.benedek.syncthingandroid.model.Folder;
 
 import java.io.File;
 import java.util.List;

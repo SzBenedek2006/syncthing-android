@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nutomic.syncthingandroid.activities.FirstStartActivity"
+    tools:context="dev.benedek.syncthingandroid.activities.FirstStartActivity"
     tools:showIn="@layout/activity_first_start">
 
     <androidx.viewpager.widget.ViewPager

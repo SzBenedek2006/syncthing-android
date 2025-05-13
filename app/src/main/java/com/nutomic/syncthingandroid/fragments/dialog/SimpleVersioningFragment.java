@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.fragments.dialog;
+package dev.benedek.syncthingandroid.fragments.dialog;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.fragments.NumberPickerFragment;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.fragments.NumberPickerFragment;
 
 /**
  * Contains the configuration options for simple file versioning.

@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.service;
+package dev.benedek.syncthingandroid.service;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
@@ -19,8 +19,8 @@ import android.os.PowerManager;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.model.RunConditionCheckResult;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.model.RunConditionCheckResult;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,8 +29,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import static com.nutomic.syncthingandroid.model.RunConditionCheckResult.*;
-import static com.nutomic.syncthingandroid.model.RunConditionCheckResult.BlockerReason.*;
+import static dev.benedek.syncthingandroid.model.RunConditionCheckResult.*;
+import static dev.benedek.syncthingandroid.model.RunConditionCheckResult.BlockerReason.*;
 
 /**
  * Holds information about the current wifi and charging state of the device.

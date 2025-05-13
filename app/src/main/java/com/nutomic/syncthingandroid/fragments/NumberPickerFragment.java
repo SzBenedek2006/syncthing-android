@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.fragments;
+package dev.benedek.syncthingandroid.fragments;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
-import com.nutomic.syncthingandroid.R;
+import dev.benedek.syncthingandroid.R;
 
 /**
  * Simply displays a numberpicker and allows easy access to configure it with the public functions.

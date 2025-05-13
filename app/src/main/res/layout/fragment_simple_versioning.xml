@@ -28,7 +28,7 @@
 
         <fragment
             android:id="@+id/fragment"
-            android:name="com.nutomic.syncthingandroid.fragments.NumberPickerFragment"
+            android:name="dev.benedek.syncthingandroid.fragments.NumberPickerFragment"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:tag="numberpicker_simple_versioning"

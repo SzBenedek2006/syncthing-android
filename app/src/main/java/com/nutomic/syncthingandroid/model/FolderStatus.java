@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.model;
+package dev.benedek.syncthingandroid.model;
 
 public class FolderStatus {
     public long globalBytes;

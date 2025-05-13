@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.views;
+package dev.benedek.syncthingandroid.views;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,11 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.android.material.color.MaterialColors;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.model.Connections;
-import com.nutomic.syncthingandroid.model.Device;
-import com.nutomic.syncthingandroid.service.RestApi;
-import com.nutomic.syncthingandroid.util.Util;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.model.Connections;
+import dev.benedek.syncthingandroid.model.Device;
+import dev.benedek.syncthingandroid.service.RestApi;
+import dev.benedek.syncthingandroid.util.Util;
 
 /**
  * Generates item views for device items.

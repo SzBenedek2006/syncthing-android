@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.views;
+package dev.benedek.syncthingandroid.views;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,9 +12,9 @@ import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.util.PermissionUtil;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.util.PermissionUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;

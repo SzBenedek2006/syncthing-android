@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.service;
+package dev.benedek.syncthingandroid.service;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,10 +12,10 @@ import android.util.Log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.util.Util;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.util.Util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

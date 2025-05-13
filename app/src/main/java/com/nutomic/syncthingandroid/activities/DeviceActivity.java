@@ -1,11 +1,11 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import static android.text.TextUtils.isEmpty;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
-import static com.nutomic.syncthingandroid.service.SyncthingService.State.ACTIVE;
-import static com.nutomic.syncthingandroid.util.Compression.METADATA;
+import static dev.benedek.syncthingandroid.service.SyncthingService.State.ACTIVE;
+import static dev.benedek.syncthingandroid.util.Compression.METADATA;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -27,14 +27,14 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.databinding.ActivityDeviceBinding;
-import com.nutomic.syncthingandroid.model.Connections;
-import com.nutomic.syncthingandroid.model.Device;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.util.Compression;
-import com.nutomic.syncthingandroid.util.TextWatcherAdapter;
-import com.nutomic.syncthingandroid.util.Util;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding;
+import dev.benedek.syncthingandroid.model.Connections;
+import dev.benedek.syncthingandroid.model.Device;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.util.Compression;
+import dev.benedek.syncthingandroid.util.TextWatcherAdapter;
+import dev.benedek.syncthingandroid.util.Util;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,13 +46,13 @@ import java.util.List;
 public class DeviceActivity extends SyncthingActivity implements View.OnClickListener {
 
     public static final String EXTRA_NOTIFICATION_ID =
-            "com.nutomic.syncthingandroid.activities.DeviceActivity.NOTIFICATION_ID";
+            "dev.benedek.syncthingandroid.activities.DeviceActivity.NOTIFICATION_ID";
     public static final String EXTRA_DEVICE_ID =
-            "com.nutomic.syncthingandroid.activities.DeviceActivity.DEVICE_ID";
+            "dev.benedek.syncthingandroid.activities.DeviceActivity.DEVICE_ID";
     public static final String EXTRA_DEVICE_NAME =
-            "com.nutomic.syncthingandroid.activities.DeviceActivity.DEVICE_NAME";
+            "dev.benedek.syncthingandroid.activities.DeviceActivity.DEVICE_NAME";
     public static final String EXTRA_IS_CREATE =
-            "com.nutomic.syncthingandroid.activities.DeviceActivity.IS_CREATE";
+            "dev.benedek.syncthingandroid.activities.DeviceActivity.IS_CREATE";
 
     private static final String TAG = "DeviceSettingsFragment";
     private static final String IS_SHOWING_DISCARD_DIALOG = "DISCARD_FOLDER_DIALOG_STATE";

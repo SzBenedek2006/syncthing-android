@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.util;
+package dev.benedek.syncthingandroid.util;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -147,7 +147,7 @@ public class FileUtils {
         try {
             /**
              * Determine the app's private data folder on external storage if present.
-             * e.g. "/storage/abcd-efgh/Android/com.nutomic.syncthinandroid/files"
+             * e.g. "/storage/abcd-efgh/Android/dev.benedek.syncthinandroid/files"
              */
             ArrayList<File> externalFilesDir = new ArrayList<>();
             externalFilesDir.addAll(Arrays.asList(context.getExternalFilesDirs(null)));

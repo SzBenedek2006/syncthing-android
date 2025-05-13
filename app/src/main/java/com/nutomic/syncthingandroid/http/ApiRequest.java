@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.http;
+package dev.benedek.syncthingandroid.http;
 
 
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
-import com.nutomic.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.Constants;
 
 import java.io.File;
 import java.io.IOException;

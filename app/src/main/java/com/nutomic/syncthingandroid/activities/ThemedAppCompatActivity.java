@@ -1,12 +1,12 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.service.Constants;
 
 import javax.inject.Inject;
 

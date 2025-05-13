@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,12 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.collect.Sets;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.service.SyncthingServiceBinder;
-import com.nutomic.syncthingandroid.util.Util;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.service.SyncthingServiceBinder;
+import dev.benedek.syncthingandroid.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,13 +50,13 @@ public class FolderPickerActivity extends SyncthingActivity
         implements AdapterView.OnItemClickListener, SyncthingService.OnServiceStateChangeListener {
 
     private static final String EXTRA_INITIAL_DIRECTORY =
-            "com.nutomic.syncthingandroid.activities.FolderPickerActivity.INITIAL_DIRECTORY";
+            "dev.benedek.syncthingandroid.activities.FolderPickerActivity.INITIAL_DIRECTORY";
 
     private static final String EXTRA_ROOT_DIRECTORY =
-            "com.nutomic.syncthingandroid.activities.FolderPickerActivity.ROOT_DIRECTORY";
+            "dev.benedek.syncthingandroid.activities.FolderPickerActivity.ROOT_DIRECTORY";
 
     public static final String EXTRA_RESULT_DIRECTORY =
-            "com.nutomic.syncthingandroid.activities.FolderPickerActivity.RESULT_DIRECTORY";
+            "dev.benedek.syncthingandroid.activities.FolderPickerActivity.RESULT_DIRECTORY";
 
     public static final int DIRECTORY_REQUEST_CODE = 234;
 

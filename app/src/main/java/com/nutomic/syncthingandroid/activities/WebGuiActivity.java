@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -23,12 +23,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.databinding.ActivityWebGuiBinding;
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.service.SyncthingServiceBinder;
-import com.nutomic.syncthingandroid.util.ConfigXml;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.databinding.ActivityWebGuiBinding;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.service.SyncthingServiceBinder;
+import dev.benedek.syncthingandroid.util.ConfigXml;
 
 import java.io.File;
 import java.io.FileInputStream;

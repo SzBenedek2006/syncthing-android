@@ -1,18 +1,18 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import com.nutomic.syncthingandroid.databinding.ActivityPullorderDialogBinding;
+import dev.benedek.syncthingandroid.databinding.ActivityPullorderDialogBinding;
 import java.util.Arrays;
 import java.util.List;
 
 public class PullOrderDialogActivity extends ThemedAppCompatActivity {
 
-    public static final String EXTRA_PULL_ORDER = "com.nutomic.syncthinandroid.activities.PullOrderDialogActivity.PULL_ORDER";
-    public static final String EXTRA_RESULT_PULL_ORDER = "com.nutomic.syncthinandroid.activities.PullOrderDialogActivity.EXTRA_RESULT_PULL_ORDER";
+    public static final String EXTRA_PULL_ORDER = "dev.benedek.syncthinandroid.activities.PullOrderDialogActivity.PULL_ORDER";
+    public static final String EXTRA_RESULT_PULL_ORDER = "dev.benedek.syncthinandroid.activities.PullOrderDialogActivity.EXTRA_RESULT_PULL_ORDER";
 
     private String selectedType;
 

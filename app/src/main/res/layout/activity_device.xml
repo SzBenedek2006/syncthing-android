@@ -28,7 +28,7 @@
                 android:background="?selectableItemBackground"
                 android:orientation="horizontal">
 
-                <com.nutomic.syncthingandroid.views.EnhancedEditText
+                <dev.benedek.syncthingandroid.views.EnhancedEditText
                     android:id="@+id/id"
                     style="@style/Widget.Syncthing.TextView.Label.Details.Field"
                     android:layout_width="0dp"

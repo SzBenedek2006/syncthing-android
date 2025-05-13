@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.model;
+package dev.benedek.syncthingandroid.model;
 
 /**
  * To avoid name confusion:

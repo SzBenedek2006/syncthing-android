@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.fragments.dialog;
+package dev.benedek.syncthingandroid.fragments.dialog;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nutomic.syncthingandroid.R;
+import dev.benedek.syncthingandroid.R;
 
 public class NoVersioningFragment extends Fragment {
 

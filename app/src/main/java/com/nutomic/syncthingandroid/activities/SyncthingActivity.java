@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,10 +9,10 @@ import android.os.IBinder;
 import androidx.appcompat.widget.Toolbar;
 
 import com.annimon.stream.Stream;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.service.RestApi;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.service.SyncthingServiceBinder;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.service.RestApi;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.service.SyncthingServiceBinder;
 
 import java.util.LinkedList;
 
@@ -21,7 +21,7 @@ import java.util.LinkedList;
  */
 public abstract class SyncthingActivity extends ThemedAppCompatActivity implements ServiceConnection {
 
-    public static final String EXTRA_KEY_GENERATION_IN_PROGRESS = "com.nutomic.syncthing-android.SyncthingActivity.KEY_GENERATION_IN_PROGRESS";
+    public static final String EXTRA_KEY_GENERATION_IN_PROGRESS = "dev.benedek.syncthing-android.SyncthingActivity.KEY_GENERATION_IN_PROGRESS";
 
     private SyncthingService mSyncthingService;
 

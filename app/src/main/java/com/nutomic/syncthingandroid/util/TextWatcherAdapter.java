@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.util;
+package dev.benedek.syncthingandroid.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;

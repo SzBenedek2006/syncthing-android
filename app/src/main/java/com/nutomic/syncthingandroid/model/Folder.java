@@ -1,8 +1,8 @@
-package com.nutomic.syncthingandroid.model;
+package dev.benedek.syncthingandroid.model;
 
 import android.text.TextUtils;
 
-import com.nutomic.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;

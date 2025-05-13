@@ -1,10 +1,10 @@
-package com.nutomic.syncthingandroid;
+package dev.benedek.syncthingandroid;
 
 import android.app.Application;
 import android.os.StrictMode;
 
 import com.google.android.material.color.DynamicColors;
-import com.nutomic.syncthingandroid.util.Languages;
+import dev.benedek.syncthingandroid.util.Languages;
 
 import javax.inject.Inject;
 

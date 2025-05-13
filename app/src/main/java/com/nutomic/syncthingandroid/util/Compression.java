@@ -1,8 +1,8 @@
-package com.nutomic.syncthingandroid.util;
+package dev.benedek.syncthingandroid.util;
 
 import android.content.Context;
 
-import com.nutomic.syncthingandroid.R;
+import dev.benedek.syncthingandroid.R;
 
 /**
  * Device compression attribute helper. This unifies operations between string values as expected by

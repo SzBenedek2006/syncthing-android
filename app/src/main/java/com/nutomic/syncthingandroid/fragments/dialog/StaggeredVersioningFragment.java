@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.fragments.dialog;
+package dev.benedek.syncthingandroid.fragments.dialog;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.activities.FolderPickerActivity;
-import com.nutomic.syncthingandroid.fragments.NumberPickerFragment;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.activities.FolderPickerActivity;
+import dev.benedek.syncthingandroid.fragments.NumberPickerFragment;
 
 import java.util.concurrent.TimeUnit;
 

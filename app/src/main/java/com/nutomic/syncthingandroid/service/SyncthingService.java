@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.service;
+package dev.benedek.syncthingandroid.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,12 +10,12 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.google.common.io.Files;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.http.PollWebGuiAvailableTask;
-import com.nutomic.syncthingandroid.model.RunConditionCheckResult;
-import com.nutomic.syncthingandroid.util.ConfigXml;
-import com.nutomic.syncthingandroid.util.PermissionUtil;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.http.PollWebGuiAvailableTask;
+import dev.benedek.syncthingandroid.model.RunConditionCheckResult;
+import dev.benedek.syncthingandroid.util.ConfigXml;
+import dev.benedek.syncthingandroid.util.PermissionUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,76 +38,76 @@ public class SyncthingService extends Service {
      * Intent action to perform a Syncthing restart.
      */
     public static final String ACTION_RESTART =
-            "com.nutomic.syncthingandroid.service.SyncthingService.RESTART";
+            "dev.benedek.syncthingandroid.service.SyncthingService.RESTART";
 
     /**
      * Intent action to reset Syncthing's database.
      */
     public static final String ACTION_RESET_DATABASE =
-            "com.nutomic.syncthingandroid.service.SyncthingService.RESET_DATABASE";
+            "dev.benedek.syncthingandroid.service.SyncthingService.RESET_DATABASE";
 
     /**
      * Intent action to reset Syncthing's delta indexes.
      */
     public static final String ACTION_RESET_DELTAS =
-            "com.nutomic.syncthingandroid.service.SyncthingService.RESET_DELTAS";
+            "dev.benedek.syncthingandroid.service.SyncthingService.RESET_DELTAS";
 
     public static final String ACTION_REFRESH_NETWORK_INFO =
-            "com.nutomic.syncthingandroid.service.SyncthingService.REFRESH_NETWORK_INFO";
+            "dev.benedek.syncthingandroid.service.SyncthingService.REFRESH_NETWORK_INFO";
 
     /**
      * Intent action to permanently ignore a device connection request.
      */
     public static final String ACTION_IGNORE_DEVICE =
-            "com.nutomic.syncthingandroid.service.SyncthingService.IGNORE_DEVICE";
+            "dev.benedek.syncthingandroid.service.SyncthingService.IGNORE_DEVICE";
 
     /**
      * Intent action to permanently ignore a folder share request.
      */
     public static final String ACTION_IGNORE_FOLDER =
-            "com.nutomic.syncthingandroid.service.SyncthingService.IGNORE_FOLDER";
+            "dev.benedek.syncthingandroid.service.SyncthingService.IGNORE_FOLDER";
 
     /**
      * Intent action to override folder changes.
      */
     public static final String ACTION_OVERRIDE_CHANGES =
-            "com.nutomic.syncthingandroid.service.SyncthingService.OVERRIDE_CHANGES";
+            "dev.benedek.syncthingandroid.service.SyncthingService.OVERRIDE_CHANGES";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE, ACTION_IGNORE_FOLDER.
      */
     public static final String EXTRA_NOTIFICATION_ID =
-            "com.nutomic.syncthingandroid.service.SyncthingService.EXTRA_NOTIFICATION_ID";
+            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_NOTIFICATION_ID";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE
      */
     public static final String EXTRA_DEVICE_ID =
-            "com.nutomic.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_ID";
+            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_ID";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE
      */
     public static final String EXTRA_DEVICE_NAME =
-            "com.nutomic.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_NAME";
+            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_NAME";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE
      */
     public static final String EXTRA_DEVICE_ADDRESS =
-            "com.nutomic.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_ADDRESS";
+            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_ADDRESS";
 
     /**
      * Extra used together with ACTION_IGNORE_FOLDER
      */
     public static final String EXTRA_FOLDER_ID =
-            "com.nutomic.syncthingandroid.service.SyncthingService.EXTRA_FOLDER_ID";
+            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_FOLDER_ID";
 
     /**
      * Extra used together with ACTION_IGNORE_FOLDER
      */
     public static final String EXTRA_FOLDER_LABEL =
-            "com.nutomic.syncthingandroid.service.SyncthingService.EXTRA_FOLDER_LABEL";
+            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_FOLDER_LABEL";
 
     public interface OnServiceStateChangeListener {
         void onServiceStateChange(State currentState);

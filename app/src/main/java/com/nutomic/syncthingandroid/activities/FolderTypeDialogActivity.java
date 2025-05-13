@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,16 +7,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.service.Constants;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class FolderTypeDialogActivity extends ThemedAppCompatActivity {
 
-    public static final String EXTRA_FOLDER_TYPE = "com.nutomic.syncthinandroid.activities.FolderTypeDialogActivity.FOLDER_TYPE";
-    public static final String EXTRA_RESULT_FOLDER_TYPE = "com.nutomic.syncthinandroid.activities.FolderTypeDialogActivity.EXTRA_RESULT_FOLDER_TYPE";
+    public static final String EXTRA_FOLDER_TYPE = "dev.benedek.syncthinandroid.activities.FolderTypeDialogActivity.FOLDER_TYPE";
+    public static final String EXTRA_RESULT_FOLDER_TYPE = "dev.benedek.syncthinandroid.activities.FolderTypeDialogActivity.EXTRA_RESULT_FOLDER_TYPE";
 
     private String selectedType;
 

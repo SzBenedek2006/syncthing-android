@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.receiver;
+package dev.benedek.syncthingandroid.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.SyncthingService;
 
 public class BootReceiver extends BroadcastReceiver {
 

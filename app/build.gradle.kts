@@ -41,12 +41,12 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.nutomic.syncthingandroid"
+        applicationId = "dev.benedek.syncthingandroid"
         minSdk = 21
         targetSdk = 33
         versionCode = 4396
         versionName = "1.29.6"
-        testApplicationId = "com.nutomic.syncthingandroid.test"
+        testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -86,7 +86,7 @@ android {
             useLegacyPackaging = true
         }
     }
-    namespace = "com.nutomic.syncthingandroid"
+    namespace = "dev.benedek.syncthingandroid"
 }
 
 play {

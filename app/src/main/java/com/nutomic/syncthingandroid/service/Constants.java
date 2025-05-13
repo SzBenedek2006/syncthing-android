@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.service;
+package dev.benedek.syncthingandroid.service;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -60,7 +60,7 @@ public class Constants {
 
 
     /**
-     * Interval in ms at which the GUI is updated (eg {@link com.nutomic.syncthingandroid.fragments.DrawerFragment}).
+     * Interval in ms at which the GUI is updated (eg {@link dev.benedek.syncthingandroid.fragments.DrawerFragment}).
      */
     public static final long GUI_UPDATE_INTERVAL = TimeUnit.SECONDS.toMillis(5);
 

@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.util;
+package dev.benedek.syncthingandroid.util;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -11,8 +11,8 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.SyncthingApp;
 
 import java.util.Arrays;
 import java.util.Collections;

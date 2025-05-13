@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.activities;
+package dev.benedek.syncthingandroid.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,18 +24,18 @@ import android.widget.Toast;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.SyncthingApp;
-import com.nutomic.syncthingandroid.model.Config;
-import com.nutomic.syncthingandroid.model.Device;
-import com.nutomic.syncthingandroid.model.Options;
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.service.NotificationHandler;
-import com.nutomic.syncthingandroid.service.RestApi;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.util.Languages;
-import com.nutomic.syncthingandroid.util.Util;
-import com.nutomic.syncthingandroid.views.WifiSsidPreference;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.model.Config;
+import dev.benedek.syncthingandroid.model.Device;
+import dev.benedek.syncthingandroid.model.Options;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.NotificationHandler;
+import dev.benedek.syncthingandroid.service.RestApi;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.util.Languages;
+import dev.benedek.syncthingandroid.util.Util;
+import dev.benedek.syncthingandroid.views.WifiSsidPreference;
 
 import java.lang.ref.WeakReference;
 import java.security.InvalidParameterException;
@@ -49,7 +49,7 @@ import eu.chainfire.libsuperuser.Shell;
 public class SettingsActivity extends SyncthingActivity {
 
     public static final String EXTRA_OPEN_SUB_PREF_SCREEN =
-            "com.nutomic.syncthingandroid.activities.SettingsActivity.OPEN_SUB_PREF_SCREEN";
+            "dev.benedek.syncthingandroid.activities.SettingsActivity.OPEN_SUB_PREF_SCREEN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

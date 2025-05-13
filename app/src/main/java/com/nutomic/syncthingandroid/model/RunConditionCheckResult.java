@@ -1,6 +1,6 @@
-package com.nutomic.syncthingandroid.model;
+package dev.benedek.syncthingandroid.model;
 
-import com.nutomic.syncthingandroid.R;
+import dev.benedek.syncthingandroid.R;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.nutomic.syncthingandroid.views;
+package dev.benedek.syncthingandroid.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,14 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.color.MaterialColors;
-import com.nutomic.syncthingandroid.R;
-import com.nutomic.syncthingandroid.databinding.ItemFolderListBinding;
-import com.nutomic.syncthingandroid.model.Folder;
-import com.nutomic.syncthingandroid.model.FolderStatus;
-import com.nutomic.syncthingandroid.service.Constants;
-import com.nutomic.syncthingandroid.service.RestApi;
-import com.nutomic.syncthingandroid.service.SyncthingService;
-import com.nutomic.syncthingandroid.util.Util;
+import dev.benedek.syncthingandroid.R;
+import dev.benedek.syncthingandroid.databinding.ItemFolderListBinding;
+import dev.benedek.syncthingandroid.model.Folder;
+import dev.benedek.syncthingandroid.model.FolderStatus;
+import dev.benedek.syncthingandroid.service.Constants;
+import dev.benedek.syncthingandroid.service.RestApi;
+import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.util.Util;
 
 import java.io.File;
 import java.util.HashMap;
