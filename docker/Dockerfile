@@ -32,10 +32,10 @@ ARG SDKMANAGER="${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROI
 RUN yes | $SDKMANAGER --licenses > /dev/null
 
 # NDK version
-ENV NDK_VERSION 25.2.9519653
+ENV NDK_VERSION 29.0.13113456
 
 # Install other android packages, including NDK
-RUN $SDKMANAGER tools platform-tools "build-tools;34.0.0" "platforms;android-34" "extras;android;m2repository" "ndk;${NDK_VERSION}"
+RUN $SDKMANAGER tools platform-tools "build-tools;35.0.0" "platforms;android-35" "extras;android;m2repository" "ndk;${NDK_VERSION}"
 
 # Accept licenses of newly installed packages
 RUN yes | $SDKMANAGER --licenses

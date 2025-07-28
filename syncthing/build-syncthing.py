@@ -85,7 +85,12 @@ for target in BUILD_TARGETS:
     print('Building syncthing for', target['arch'])
     environ = os.environ.copy()
     environ.update({'GO111MODULE':'on', 'CGO_ENABLED':'1'})
-    subprocess.check_call(['go','version'], env=environ, cwd=syncthing_dir)
+    try:
+        subprocess.check_call(['go','version'], env=environ, cwd=syncthing_dir)
+    except subprocess.CalledProcessError as e:
+        print(f"Exception:\n{e}")
+        fail("go is not found!")
+
     subprocess.check_call(['go','run','build.go','version'], env=environ, cwd=syncthing_dir)
     cc = os.path.join(
         get_ndk_home(), 'toolchains', 'llvm', 'prebuilt', PLATFORM_DIRS[platform.system()], 'bin', target['cc'].format(min_sdk)
