@@ -88,8 +88,10 @@ for target in BUILD_TARGETS:
     try:
         subprocess.check_call(['go','version'], env=environ, cwd=syncthing_dir)
     except subprocess.CalledProcessError as e:
-        print(f"Exception:\n{e}")
-        fail("go is not found!")
+        #print(f"Exception:\n{e}")
+        fail("Go not found or go error!")
+    except FileNotFoundError as e:
+        fail("\n==============================\n\tGO NOT FOUND!\n==============================\n")
 
     subprocess.check_call(['go','run','build.go','version'], env=environ, cwd=syncthing_dir)
     cc = os.path.join(
