@@ -6,27 +6,14 @@ A wrapper of [Syncthing](https://github.com/syncthing/syncthing) for Android.
 
 <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_1.png" alt="screenshot 1" width="200" /> <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_2.png" alt="screenshot 2" width="200" /> <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_3.png" alt="screenshot 3" width="200" />
 
-# Translations
-
-The project is translated on [Hosted Weblate](https://hosted.weblate.org/projects/syncthing/android/).
-
-## Dev
-
-Language codes are usually mapped correctly by Weblate itself.  The supported
-set is different between [Google Play][1] and Android apps.  The latter can be
-deduced by what the [Android core framework itself supports][2].  New languages
-need to be added in the repository first, then appear automatically in Weblate.
-
-[1]: https://support.google.com/googleplay/android-developer/table/4419860
-[2]: https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/core/res/res/
-
 # Building
 
 These dependencies and instructions are necessary for building from the command
-line. If you build using Docker or Android Studio, you don't need to set up and
-follow them separately.
+line. If you build using Android Studio, you can set up sdk, java and ndk differently.
+I think you still need to install python and go dependencies outside of AS.
+The docker file may be out of date or non-functional (working on it...)
 
-## Dependencies
+## Dependencies (info is out of date, working on it...)
 
 1. Android SDK and NDK
     1. Download SDK command line tools from https://developer.android.com/studio#command-line-tools-only.
