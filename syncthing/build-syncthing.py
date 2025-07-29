@@ -89,7 +89,7 @@ for target in BUILD_TARGETS:
         subprocess.check_call(['go','version'], env=environ, cwd=syncthing_dir)
     except subprocess.CalledProcessError as e:
         #print(f"Exception:\n{e}")
-        fail("Go not found or go error!")
+        fail("ERROR: Something went wrong with go!")
     except FileNotFoundError as e:
         fail("\n==============================\n\tGO NOT FOUND!\n==============================\n")
 
