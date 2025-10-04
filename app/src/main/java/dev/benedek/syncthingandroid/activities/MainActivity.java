@@ -109,13 +109,13 @@ public class MainActivity extends StateDialogActivity
             case STARTING:
                 break;
             case ACTIVE:
-                getIntent().putExtra(this.EXTRA_KEY_GENERATION_IN_PROGRESS, false);
+                getIntent().putExtra(EXTRA_KEY_GENERATION_IN_PROGRESS, false);
                 showBatteryOptimizationDialogIfNecessary();
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 mDrawerFragment.requestGuiUpdate();
 
                 // Check if the usage reporting minimum delay passed by.
-                Boolean usageReportingDelayPassed = (new Date().getTime() > getFirstStartTime() + USAGE_REPORTING_DIALOG_DELAY);
+                boolean usageReportingDelayPassed = (new Date().getTime() > getFirstStartTime() + USAGE_REPORTING_DIALOG_DELAY);
                 RestApi restApi = getApi();
                 if (usageReportingDelayPassed && restApi != null && !restApi.isUsageReportingDecided()) {
                     showUsageReportingDialog(restApi);
@@ -263,6 +263,24 @@ public class MainActivity extends StateDialogActivity
         } else {
             startService(serviceIntent);
         }
+
+        getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    closeDrawer();
+                } else {
+                    moveTaskToBack(true);
+
+                    /*
+                     * Leave MainActivity in its state as the home button was pressed.
+                     * This will avoid waiting for the loading spinner when getting back
+                     * and give changes to do UI updates based on EventProcessor in the future
+                     */
+
+                }
+            }
+        });
 
         onNewIntent(getIntent());
     }
@@ -448,20 +466,6 @@ public class MainActivity extends StateDialogActivity
         return super.onKeyDown(keyCode, e);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            // Close drawer on back button press.
-            closeDrawer();
-        } else {
-            /**
-             * Leave MainActivity in its state as the home button was pressed.
-             * This will avoid waiting for the loading spinner when getting back
-             * and give changes to do UI updates based on EventProcessor in the future.
-             */
-            moveTaskToBack(true);
-        }
-    }
 
     /**
      * Calculating width based on

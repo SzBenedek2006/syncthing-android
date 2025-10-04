@@ -17,7 +17,9 @@ tasks.register<Exec>("buildNative") {
     val mountVolume = "$rootDir:/mnt"
     val scriptPath = "syncthing/build-syncthing.py"
 
-    println("Mounting host:'$rootDir' to container:'/mnt'")
+    inputs.dir("$rootDir/syncthing")
+    outputs.dir("$rootDir/app/src/main/jniLibs")
+
 
 
     commandLine = listOf(
