@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.Packaging
 import org.gradle.configurationcache.extensions.capitalized
 
 plugins {
@@ -38,6 +39,7 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        buildConfig = true
     }
 
     defaultConfig {
@@ -64,7 +66,6 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
             isJniDebuggable = true
-            isRenderscriptDebuggable = true
             isMinifyEnabled = false
         }
         getByName("release") {
@@ -81,7 +82,7 @@ android {
 
     // Otherwise libsyncthing.so doesn't appear where it should in installs
     // based on app bundles, and thus nothing works.
-    packagingOptions {
+    fun Packaging.() {
         jniLibs {
             useLegacyPackaging = true
         }
