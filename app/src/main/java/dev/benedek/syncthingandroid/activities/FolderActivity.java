@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.documentfile.provider.DocumentFile;
 import android.text.Editable;
@@ -17,9 +16,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,15 +55,15 @@ public class FolderActivity extends SyncthingActivity
         implements SyncthingActivity.OnServiceConnectedListener, SyncthingService.OnServiceStateChangeListener {
 
     public static final String EXTRA_NOTIFICATION_ID =
-            "dev.benedek.syncthingandroid.activities.FolderActivity.NOTIFICATION_ID";
+            "activities.syncthingandroid.nutomic.dev.FolderActivity.NOTIFICATION_ID";
     public static final String EXTRA_IS_CREATE =
-            "dev.benedek.syncthingandroid.activities.FolderActivity.IS_CREATE";
+            "activities.syncthingandroid.nutomic.dev.FolderActivity.IS_CREATE";
     public static final String EXTRA_FOLDER_ID =
-            "dev.benedek.syncthingandroid.activities.FolderActivity.FOLDER_ID";
+            "activities.syncthingandroid.nutomic.dev.FolderActivity.FOLDER_ID";
     public static final String EXTRA_FOLDER_LABEL =
-            "dev.benedek.syncthingandroid.activities.FolderActivity.FOLDER_LABEL";
+            "activities.syncthingandroid.nutomic.dev.FolderActivity.FOLDER_LABEL";
     public static final String EXTRA_DEVICE_ID =
-            "dev.benedek.syncthingandroid.activities.FolderActivity.DEVICE_ID";
+            "activities.syncthingandroid.nutomic.dev.FolderActivity.DEVICE_ID";
 
     private static final String TAG = "FolderActivity";
 

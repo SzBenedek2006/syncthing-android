@@ -50,13 +50,13 @@ public class FolderPickerActivity extends SyncthingActivity
         implements AdapterView.OnItemClickListener, SyncthingService.OnServiceStateChangeListener {
 
     private static final String EXTRA_INITIAL_DIRECTORY =
-            "dev.benedek.syncthingandroid.activities.FolderPickerActivity.INITIAL_DIRECTORY";
+            "activities.syncthingandroid.nutomic.dev.FolderPickerActivity.INITIAL_DIRECTORY";
 
     private static final String EXTRA_ROOT_DIRECTORY =
-            "dev.benedek.syncthingandroid.activities.FolderPickerActivity.ROOT_DIRECTORY";
+            "activities.syncthingandroid.nutomic.dev.FolderPickerActivity.ROOT_DIRECTORY";
 
     public static final String EXTRA_RESULT_DIRECTORY =
-            "dev.benedek.syncthingandroid.activities.FolderPickerActivity.RESULT_DIRECTORY";
+            "activities.syncthingandroid.nutomic.dev.FolderPickerActivity.RESULT_DIRECTORY";
 
     public static final int DIRECTORY_REQUEST_CODE = 234;
 

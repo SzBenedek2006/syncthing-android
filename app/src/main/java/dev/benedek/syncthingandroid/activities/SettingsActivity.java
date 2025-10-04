@@ -49,7 +49,7 @@ import eu.chainfire.libsuperuser.Shell;
 public class SettingsActivity extends SyncthingActivity {
 
     public static final String EXTRA_OPEN_SUB_PREF_SCREEN =
-            "dev.benedek.syncthingandroid.activities.SettingsActivity.OPEN_SUB_PREF_SCREEN";
+            "activities.syncthingandroid.nutomic.dev.SettingsActivity.OPEN_SUB_PREF_SCREEN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

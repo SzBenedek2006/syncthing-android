@@ -46,13 +46,13 @@ import java.util.List;
 public class DeviceActivity extends SyncthingActivity implements View.OnClickListener {
 
     public static final String EXTRA_NOTIFICATION_ID =
-            "dev.benedek.syncthingandroid.activities.DeviceActivity.NOTIFICATION_ID";
+            "activities.syncthingandroid.nutomic.dev.DeviceActivity.NOTIFICATION_ID";
     public static final String EXTRA_DEVICE_ID =
-            "dev.benedek.syncthingandroid.activities.DeviceActivity.DEVICE_ID";
+            "activities.syncthingandroid.nutomic.dev.DeviceActivity.DEVICE_ID";
     public static final String EXTRA_DEVICE_NAME =
-            "dev.benedek.syncthingandroid.activities.DeviceActivity.DEVICE_NAME";
+            "activities.syncthingandroid.nutomic.dev.DeviceActivity.DEVICE_NAME";
     public static final String EXTRA_IS_CREATE =
-            "dev.benedek.syncthingandroid.activities.DeviceActivity.IS_CREATE";
+            "activities.syncthingandroid.nutomic.dev.DeviceActivity.IS_CREATE";
 
     private static final String TAG = "DeviceSettingsFragment";
     private static final String IS_SHOWING_DISCARD_DIALOG = "DISCARD_FOLDER_DIALOG_STATE";

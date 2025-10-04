@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.service;
 
-import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
@@ -8,6 +7,8 @@ import android.os.Environment;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
+
+import dev.benedek.syncthingandroid.fragments.DrawerFragment;
 
 public class Constants {
 
@@ -60,7 +61,7 @@ public class Constants {
 
 
     /**
-     * Interval in ms at which the GUI is updated (eg {@link dev.benedek.syncthingandroid.fragments.DrawerFragment}).
+     * Interval in ms at which the GUI is updated (eg {@link DrawerFragment}).
      */
     public static final long GUI_UPDATE_INTERVAL = TimeUnit.SECONDS.toMillis(5);
 

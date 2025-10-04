@@ -1,7 +1,5 @@
 package dev.benedek.syncthingandroid.model;
 
-import java.util.Map;
-
 public class Event {
 
     public int id;

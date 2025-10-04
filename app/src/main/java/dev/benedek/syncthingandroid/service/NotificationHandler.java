@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.service;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,7 +17,6 @@ import dev.benedek.syncthingandroid.SyncthingApp;
 import dev.benedek.syncthingandroid.activities.FirstStartActivity;
 import dev.benedek.syncthingandroid.activities.LogActivity;
 import dev.benedek.syncthingandroid.activities.MainActivity;
-import dev.benedek.syncthingandroid.service.Constants;
 import dev.benedek.syncthingandroid.service.SyncthingService.State;
 
 import javax.inject.Inject;

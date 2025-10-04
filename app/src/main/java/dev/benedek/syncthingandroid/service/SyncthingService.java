@@ -38,76 +38,76 @@ public class SyncthingService extends Service {
      * Intent action to perform a Syncthing restart.
      */
     public static final String ACTION_RESTART =
-            "dev.benedek.syncthingandroid.service.SyncthingService.RESTART";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.RESTART";
 
     /**
      * Intent action to reset Syncthing's database.
      */
     public static final String ACTION_RESET_DATABASE =
-            "dev.benedek.syncthingandroid.service.SyncthingService.RESET_DATABASE";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.RESET_DATABASE";
 
     /**
      * Intent action to reset Syncthing's delta indexes.
      */
     public static final String ACTION_RESET_DELTAS =
-            "dev.benedek.syncthingandroid.service.SyncthingService.RESET_DELTAS";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.RESET_DELTAS";
 
     public static final String ACTION_REFRESH_NETWORK_INFO =
-            "dev.benedek.syncthingandroid.service.SyncthingService.REFRESH_NETWORK_INFO";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.REFRESH_NETWORK_INFO";
 
     /**
      * Intent action to permanently ignore a device connection request.
      */
     public static final String ACTION_IGNORE_DEVICE =
-            "dev.benedek.syncthingandroid.service.SyncthingService.IGNORE_DEVICE";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.IGNORE_DEVICE";
 
     /**
      * Intent action to permanently ignore a folder share request.
      */
     public static final String ACTION_IGNORE_FOLDER =
-            "dev.benedek.syncthingandroid.service.SyncthingService.IGNORE_FOLDER";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.IGNORE_FOLDER";
 
     /**
      * Intent action to override folder changes.
      */
     public static final String ACTION_OVERRIDE_CHANGES =
-            "dev.benedek.syncthingandroid.service.SyncthingService.OVERRIDE_CHANGES";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.OVERRIDE_CHANGES";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE, ACTION_IGNORE_FOLDER.
      */
     public static final String EXTRA_NOTIFICATION_ID =
-            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_NOTIFICATION_ID";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_NOTIFICATION_ID";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE
      */
     public static final String EXTRA_DEVICE_ID =
-            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_ID";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_DEVICE_ID";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE
      */
     public static final String EXTRA_DEVICE_NAME =
-            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_NAME";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_DEVICE_NAME";
 
     /**
      * Extra used together with ACTION_IGNORE_DEVICE
      */
     public static final String EXTRA_DEVICE_ADDRESS =
-            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_DEVICE_ADDRESS";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_DEVICE_ADDRESS";
 
     /**
      * Extra used together with ACTION_IGNORE_FOLDER
      */
     public static final String EXTRA_FOLDER_ID =
-            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_FOLDER_ID";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_FOLDER_ID";
 
     /**
      * Extra used together with ACTION_IGNORE_FOLDER
      */
     public static final String EXTRA_FOLDER_LABEL =
-            "dev.benedek.syncthingandroid.service.SyncthingService.EXTRA_FOLDER_LABEL";
+            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_FOLDER_LABEL";
 
     public interface OnServiceStateChangeListener {
         void onServiceStateChange(State currentState);

@@ -14,7 +14,6 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import dev.benedek.syncthingandroid.R;
 import dev.benedek.syncthingandroid.SyncthingApp;
-import dev.benedek.syncthingandroid.service.Constants;
 import dev.benedek.syncthingandroid.util.Util;
 
 import java.io.BufferedReader;
@@ -80,13 +79,15 @@ public class SyncthingRunnable implements Runnable {
         mLogFile = Constants.getLogFile(mContext);
 
         // Get preferences relevant to starting syncthing core.
+        // 1.x:
+        /*
         mUseRoot = mPreferences.getBoolean(Constants.PREF_USE_ROOT, false) && Shell.SU.available();
         switch (command) {
             case deviceid:
                 mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "--device-id" };
                 break;
             case generate:
-                mCommand = new String[]{ mSyncthingBinary.getPath(), "-generate", mContext.getFilesDir().toString(), "-logflags=0" };
+                mCommand = new String[]{ mSyncthingBinary.getPath(), "generate", mContext.getFilesDir().toString(), "-logflags=0" };
                 break;
             case main:
                 mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "-no-browser", "-logflags=0" };
@@ -96,6 +97,31 @@ public class SyncthingRunnable implements Runnable {
                 break;
             case resetdeltas:
                 mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "-reset-deltas", "-logflags=0" };
+                break;
+            default:
+                throw new InvalidParameterException("Unknown command option");
+        }*/
+        mUseRoot = mPreferences.getBoolean(Constants.PREF_USE_ROOT, false) && Shell.SU.available();
+        switch (command) {
+            case deviceid:
+                // CHANGED: "device-id" is now a subcommand
+                mCommand = new String[]{ mSyncthingBinary.getPath(), "device-id", "--home", mContext.getFilesDir().toString() };
+                break;
+            case generate:
+                // CHANGED: "generate" is now a subcommand, and "-logflags" is removed
+                mCommand = new String[]{ mSyncthingBinary.getPath(), "generate", "--home", mContext.getFilesDir().toString() };
+                break;
+            case main:
+                // CHANGED: "-logflags" is removed. The default logging is fine.
+                mCommand = new String[]{ mSyncthingBinary.getPath(), "--home", mContext.getFilesDir().toString(), "--no-browser" };
+                break;
+            case resetdatabase:
+                // CHANGED: "reset-database" is now a CLI subcommand
+                mCommand = new String[]{ mSyncthingBinary.getPath(), "cli", "database", "reset", "--home", mContext.getFilesDir().toString() };
+                break;
+            case resetdeltas:
+                // CHANGED: "reset-deltas" is now a CLI subcommand
+                mCommand = new String[]{ mSyncthingBinary.getPath(), "cli", "deltas", "reset", "--home", mContext.getFilesDir().toString() };
                 break;
             default:
                 throw new InvalidParameterException("Unknown command option");

@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
-import dev.benedek.syncthingandroid.R;
+
 import dev.benedek.syncthingandroid.databinding.ActivityQrScannerBinding;
 
 import java.util.List;

@@ -39,6 +39,8 @@ def get_ndk_home():
       2. sdk.dir + ndk.dir entries in local.properties
       3. NDK_VERSION + ANDROID_HOME env var
     """
+
+    """
     # 1) check explicit env var
     ndk_home = os.environ.get('ANDROID_NDK_HOME')
     if ndk_home:
@@ -54,6 +56,7 @@ def get_ndk_home():
                     _, val = line.split('=', 1)
                     return val.strip()
 
+    """
     # 3) fallback to NDK_VERSION + ANDROID_HOME
     ndk_ver = os.environ.get('NDK_VERSION')
     android_home = os.environ.get('ANDROID_HOME')
@@ -94,12 +97,25 @@ for target in BUILD_TARGETS:
         fail("\n==============================\n\tGO NOT FOUND!\n==============================\n")
 
     subprocess.check_call(['go','run','build.go','version'], env=environ, cwd=syncthing_dir)
+
+
     cc = os.path.join(
         get_ndk_home(), 'toolchains', 'llvm', 'prebuilt', PLATFORM_DIRS[platform.system()], 'bin', target['cc'].format(min_sdk)
     )
+
+
+
     subprocess.check_call([
-        'go','run','build.go','-goos','android','-goarch',target['goarch'],'-cc',cc,
-        '-pkgdir',os.path.join(go_build_dir,target['goarch']),'-no-upgrade','build'
+        'go',
+        'run',
+        'build.go',
+        '-goos',
+        'android',
+        '-goarch', target['goarch'],
+        '-cc', cc,
+        '-pkgdir',os.path.join(go_build_dir,target['goarch']),
+        '-no-upgrade',
+        'build',
     ], env=environ, cwd=syncthing_dir)
 
     target_dir = os.path.join(project_dir,'app/src/main/jniLibs',target['jni_dir'])

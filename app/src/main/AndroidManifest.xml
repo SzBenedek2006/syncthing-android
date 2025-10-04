@@ -41,9 +41,9 @@
         android:supportsRtl="true"
         android:installLocation="internalOnly"
         android:requestLegacyExternalStorage="true"
-        android:name=".SyncthingApp">
+        android:name="dev.benedek.syncthingandroid.SyncthingApp">
         <activity
-                android:name=".activities.FirstStartActivity"
+                android:name="dev.benedek.syncthingandroid.activities.FirstStartActivity"
                 android:label="@string/app_name"
                 android:launchMode="singleTask"
             android:exported="true">
@@ -57,21 +57,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name="dev.benedek.syncthingandroid.activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask">
         </activity>
         <activity
-            android:name=".activities.WebGuiActivity"
+            android:name="dev.benedek.syncthingandroid.activities.WebGuiActivity"
             android:label="@string/web_gui_title"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.ShareActivity"
+            android:name="dev.benedek.syncthingandroid.activities.ShareActivity"
             android:label="@string/share_activity_title"
             android:excludeFromRecents="true"
             android:taskAffinity=""
@@ -89,8 +89,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LogActivity"
-            android:parentActivityName=".activities.SettingsActivity"
+            android:name="dev.benedek.syncthingandroid.activities.LogActivity"
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.SettingsActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name=".activities.LogActivity" />
@@ -98,42 +98,42 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.SettingsActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.SettingsActivity" />
         </activity>
         <activity
-            android:name=".activities.FolderPickerActivity"
+            android:name="dev.benedek.syncthingandroid.activities.FolderPickerActivity"
             android:label="@string/folder_picker_title">
             <meta-data
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
         </activity>
-        <activity android:name=".activities.DeviceActivity"
-            android:parentActivityName=".activities.MainActivity">
+        <activity android:name="dev.benedek.syncthingandroid.activities.DeviceActivity"
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
-        <activity android:name=".activities.FolderActivity"
-            android:parentActivityName=".activities.MainActivity">
+        <activity android:name="dev.benedek.syncthingandroid.activities.FolderActivity"
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
-        <activity android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.MainActivity">
+        <activity android:name="dev.benedek.syncthingandroid.activities.SettingsActivity"
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
-        <service android:name=".service.SyncthingService" />
-        <receiver android:name=".receiver.BootReceiver"
+        <service android:name="dev.benedek.syncthingandroid.service.SyncthingService" />
+        <receiver android:name="dev.benedek.syncthingandroid.receiver.BootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.AppConfigReceiver"
+        <receiver android:name="dev.benedek.syncthingandroid.receiver.AppConfigReceiver"
             tools:ignore="ExportedReceiver"
             android:exported="true">
             <intent-filter>
@@ -141,36 +141,36 @@
                 <action android:name="dev.benedek.syncthingandroid.action.STOP" />
             </intent-filter>
         </receiver>
-        <activity android:name=".activities.FolderTypeDialogActivity"
+        <activity android:name="dev.benedek.syncthingandroid.activities.FolderTypeDialogActivity"
             android:label="@string/folder_type"
             android:theme="@style/Theme.Syncthing.Dialog"
-            android:parentActivityName=".activities.FolderActivity">
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.FolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
         </activity>
-        <activity android:name=".activities.PullOrderDialogActivity"
+        <activity android:name="dev.benedek.syncthingandroid.activities.PullOrderDialogActivity"
             android:label="@string/pull_order"
             android:theme="@style/Theme.Syncthing.Dialog"
-            android:parentActivityName=".activities.FolderActivity">
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.FolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
         </activity>
-        <activity android:name=".activities.VersioningDialogActivity"
+        <activity android:name="dev.benedek.syncthingandroid.activities.VersioningDialogActivity"
             android:label="@string/file_versioning"
             android:theme="@style/Theme.Syncthing.Dialog"
-            android:parentActivityName=".activities.FolderActivity">
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.FolderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
         </activity>
-        <activity android:name=".activities.QRScannerActivity"
+        <activity android:name="dev.benedek.syncthingandroid.activities.QRScannerActivity"
             android:label="QR Code Scanner"
-            android:parentActivityName=".activities.DeviceActivity">
+            android:parentActivityName="dev.benedek.syncthingandroid.activities.DeviceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.DeviceActivity" />
+                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.DeviceActivity" />
         </activity>
     </application>
 

@@ -1,6 +1,6 @@
-FROM eclipse-temurin:11-jdk-jammy
+FROM docker.io/eclipse-temurin:17-jdk-jammy
 
-ENV GO_VERSION 1.24.5
+ENV GO_VERSION 1.24.0
 
 # Can be found scrolling down on this page:
 # https://developer.android.com/studio/index.html#command-tools
@@ -51,6 +51,6 @@ ENV GOPATH /opt/gopath
 
 # Run prebuild script (will prebuild stuff into the image if env var is set)
 ADD . /opt/syncthing-android
-RUN /opt/syncthing-android/docker/prebuild.sh
+#RUN /opt/syncthing-android/docker/prebuild.sh
 
 WORKDIR /mnt
