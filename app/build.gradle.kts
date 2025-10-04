@@ -4,28 +4,29 @@ import org.gradle.configurationcache.extensions.capitalized
 plugins {
     id("com.android.application")
     id("com.github.ben-manes.versions")
-    id("com.github.triplet.play") version "3.7.0"
+    id("com.github.triplet.play") version "3.12.1"
 }
 
 dependencies {
     implementation("eu.chainfire:libsuperuser:1.1.1")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.google.android.material:material:1.13.0")
+    implementation("com.google.code.gson:gson:2.13.2")
     implementation("org.mindrot:jbcrypt:0.4")
-    implementation("com.google.guava:guava:32.1.3-android")
+    implementation("com.google.guava:guava:33.5.0-android")
     implementation("com.annimon:stream:1.2.2")
     implementation("com.android.volley:volley:1.2.1")
-    implementation("commons-io:commons-io:2.16.1")
+    implementation("commons-io:commons-io:2.20.0")
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
         isTransitive = false
     }
-    implementation("com.google.zxing:core:3.4.1")
+    implementation("com.google.zxing:core:3.5.3")
 
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("com.google.dagger:dagger:2.49")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.49")
-    androidTestImplementation("androidx.test:rules:1.6.1")
+    implementation("com.google.dagger:dagger:2.57.2")
+    implementation("androidx.documentfile:documentfile:1.1.0")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.57.2")
+    androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.annotation:annotation:1.9.1")
 }
 
@@ -46,8 +47,8 @@ android {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 21
         targetSdk = 33
-        versionCode = 4396
-        versionName = "1.29.6"
+        versionCode = 4400
+        versionName = "2.1.10"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
