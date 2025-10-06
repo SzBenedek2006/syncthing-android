@@ -28,14 +28,15 @@ dependencies {
     annotationProcessor("com.google.dagger:dagger-compiler:2.57.2")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.annotation:annotation:1.9.1")
+    implementation("androidx.preference:preference:1.2.1")
 }
 
 android {
-    val ndkVersionShared = rootProject.extra.get("ndkVersionShared")
+    //val ndkVersionShared = rootProject.extra.get("ndkVersionShared") // not needed if built in docker
     // Changes to these values need to be reflected in `../docker/Dockerfile`
     compileSdk = 35
     buildToolsVersion = "35.0.0"
-    ndkVersion = "$ndkVersionShared"
+    //ndkVersion = "$ndkVersionShared" // not needed if built in docker
 
     buildFeatures {
         dataBinding = true
