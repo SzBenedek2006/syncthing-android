@@ -119,12 +119,7 @@ public class FirstStartActivity extends Activity {
             }
         });
 
-        binding.btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBtnNextClick();
-            }
-        });
+        binding.btnNext.setOnClickListener(v -> onBtnNextClick());
 
         if (!isFirstStart()) {
             // Skip intro slide

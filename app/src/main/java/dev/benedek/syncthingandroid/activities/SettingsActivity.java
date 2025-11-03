@@ -6,24 +6,32 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.TaskStackBuilder;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.ListAdapter;
-import android.widget.Toast;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceScreen;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+
+import java.lang.ref.WeakReference;
+import java.security.InvalidParameterException;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import dev.benedek.syncthingandroid.R;
 import dev.benedek.syncthingandroid.SyncthingApp;
 import dev.benedek.syncthingandroid.model.Config;
@@ -36,17 +44,10 @@ import dev.benedek.syncthingandroid.service.SyncthingService;
 import dev.benedek.syncthingandroid.util.Languages;
 import dev.benedek.syncthingandroid.util.Util;
 import dev.benedek.syncthingandroid.views.WifiSsidPreference;
-
-import java.lang.ref.WeakReference;
-import java.security.InvalidParameterException;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.inject.Inject;
-
 import eu.chainfire.libsuperuser.Shell;
 
-public class SettingsActivity extends SyncthingActivity {
+public class SettingsActivity extends SyncthingActivity implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
+
 
     public static final String EXTRA_OPEN_SUB_PREF_SCREEN =
             "activities.syncthingandroid.nutomic.dev.SettingsActivity.OPEN_SUB_PREF_SCREEN";
@@ -61,7 +62,7 @@ public class SettingsActivity extends SyncthingActivity {
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_OPEN_SUB_PREF_SCREEN, getIntent().getStringExtra(EXTRA_OPEN_SUB_PREF_SCREEN));
         settingsFragment.setArguments(bundle);
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.settings_container, settingsFragment)
                 .commit();
     }
@@ -89,10 +90,27 @@ public class SettingsActivity extends SyncthingActivity {
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragment
+    @Override
+    public boolean onPreferenceStartScreen(PreferenceFragmentCompat caller, PreferenceScreen screen) {
+        SettingsFragment fragment = new SettingsFragment();
+        Bundle args = new Bundle();
+        args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, screen.getKey());
+        fragment.setArguments(args);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.settings_container, fragment)
+                .addToBackStack(screen.getKey())
+                .commit();
+
+        return true;
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat
             implements SyncthingActivity.OnServiceConnectedListener,
             SyncthingService.OnServiceStateChangeListener, Preference.OnPreferenceChangeListener,
             Preference.OnPreferenceClickListener {
+
 
         private static final String TAG = "SettingsFragment";
         private static final String KEY_EXPORT_CONFIG = "export_config";
@@ -154,8 +172,8 @@ public class SettingsActivity extends SyncthingActivity {
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
             ((SyncthingApp) getActivity().getApplication()).component().inject(this);
+            super.onCreate(savedInstanceState);
             ((SyncthingActivity) getActivity()).registerOnServiceConnectedListener(this);
         }
 
@@ -164,33 +182,38 @@ public class SettingsActivity extends SyncthingActivity {
          *
          * Manual target API as we manually check if ActionBar is available (for ActionBar back button).
          */
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
 
-            addPreferencesFromResource(R.xml.app_settings);
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
+            setPreferencesFromResource(R.xml.app_settings, rootKey);
             PreferenceScreen screen = getPreferenceScreen();
             mRunConditions =
-                    (CheckBoxPreference) findPreference(Constants.PREF_RUN_CONDITIONS);
+                    findPreference(Constants.PREF_RUN_CONDITIONS);
             mStartServiceOnBoot =
-                    (CheckBoxPreference) findPreference(Constants.PREF_START_SERVICE_ON_BOOT);
+                    findPreference(Constants.PREF_START_SERVICE_ON_BOOT);
             mPowerSource =
-                    (ListPreference) findPreference(Constants.PREF_POWER_SOURCE);
+                    findPreference(Constants.PREF_POWER_SOURCE);
             mRunOnMobileData =
-                    (CheckBoxPreference) findPreference(Constants.PREF_RUN_ON_WIFI);
+                    findPreference(Constants.PREF_RUN_ON_MOBILE_DATA);
             mRunOnWifi =
-                    (CheckBoxPreference) findPreference(Constants.PREF_RUN_ON_WIFI);
+                    findPreference(Constants.PREF_RUN_ON_WIFI);
+            if (mRunOnWifi == null) {
+                Log.d("null", "mRunOnWifi: FUCK!");
+            }
             mRunOnMeteredWifi =
-                    (CheckBoxPreference) findPreference(Constants.PREF_RUN_ON_METERED_WIFI);
+                    findPreference(Constants.PREF_RUN_ON_METERED_WIFI);
             mWifiSsidWhitelist =
-                    (WifiSsidPreference) findPreference(Constants.PREF_WIFI_SSID_WHITELIST);
+                    findPreference(Constants.PREF_WIFI_SSID_WHITELIST);
             mRunInFlightMode =
-                    (CheckBoxPreference) findPreference(Constants.PREF_RUN_IN_FLIGHT_MODE);
+                    findPreference(Constants.PREF_RUN_IN_FLIGHT_MODE);
 
-            ListPreference languagePref = (ListPreference) findPreference(Languages.PREFERENCE_LANGUAGE);
-            PreferenceScreen categoryBehaviour = (PreferenceScreen) findPreference("category_behaviour");
+            ListPreference languagePref = findPreference(Languages.PREFERENCE_LANGUAGE);
+            PreferenceGroup categoryBehaviour = findPreference("category_behaviour");
             if (Build.VERSION.SDK_INT >= 24) {
-                categoryBehaviour.removePreference(languagePref);
+                if (languagePref != null) {
+                    categoryBehaviour.removePreference(languagePref);
+                }
             } else {
                 Languages languages = new Languages(getActivity());
                 languagePref.setDefaultValue(Languages.USE_SYSTEM_DEFAULT);
@@ -202,17 +225,17 @@ public class SettingsActivity extends SyncthingActivity {
                 });
             }
 
-            mDeviceName             = (EditTextPreference) findPreference("deviceName");
-            mListenAddresses        = (EditTextPreference) findPreference("listenAddresses");
-            mMaxRecvKbps            = (EditTextPreference) findPreference("maxRecvKbps");
-            mMaxSendKbps            = (EditTextPreference) findPreference("maxSendKbps");
-            mNatEnabled             = (CheckBoxPreference) findPreference("natEnabled");
-            mLocalAnnounceEnabled   = (CheckBoxPreference) findPreference("localAnnounceEnabled");
-            mGlobalAnnounceEnabled  = (CheckBoxPreference) findPreference("globalAnnounceEnabled");
-            mRelaysEnabled          = (CheckBoxPreference) findPreference("relaysEnabled");
-            mGlobalAnnounceServers  = (EditTextPreference) findPreference("globalAnnounceServers");
-            mAddress                = (EditTextPreference) findPreference("address");
-            mUrAccepted             = (CheckBoxPreference) findPreference("urAccepted");
+            mDeviceName             = findPreference("deviceName");
+            mListenAddresses        = findPreference("listenAddresses");
+            mMaxRecvKbps            = findPreference("maxRecvKbps");
+            mMaxSendKbps            = findPreference("maxSendKbps");
+            mNatEnabled             = findPreference("natEnabled");
+            mLocalAnnounceEnabled   = findPreference("localAnnounceEnabled");
+            mGlobalAnnounceEnabled  = findPreference("globalAnnounceEnabled");
+            mRelaysEnabled          = findPreference("relaysEnabled");
+            mGlobalAnnounceServers  = findPreference("globalAnnounceServers");
+            mAddress                = findPreference("address");
+            mUrAccepted             = findPreference("urAccepted");
 
             mCategoryBackup         = findPreference("category_backup");
             Preference exportConfig = findPreference("export_config");
@@ -224,21 +247,21 @@ public class SettingsActivity extends SyncthingActivity {
             Preference stResetDatabase              = findPreference("st_reset_database");
             Preference stResetDeltas                = findPreference("st_reset_deltas");
 
-            mUseRoot                        = (CheckBoxPreference) findPreference(Constants.PREF_USE_ROOT);
-            mUseWakelock                    = (CheckBoxPreference) findPreference(Constants.PREF_USE_WAKE_LOCK);
-            mUseTor                         = (CheckBoxPreference) findPreference(Constants.PREF_USE_TOR);
-            mSocksProxyAddress              = (EditTextPreference) findPreference(Constants.PREF_SOCKS_PROXY_ADDRESS);
-            mHttpProxyAddress               = (EditTextPreference) findPreference(Constants.PREF_HTTP_PROXY_ADDRESS);
+            mUseRoot                        = findPreference(Constants.PREF_USE_ROOT);
+            mUseWakelock                    = findPreference(Constants.PREF_USE_WAKE_LOCK);
+            mUseTor                         = findPreference(Constants.PREF_USE_TOR);
+            mSocksProxyAddress              = findPreference(Constants.PREF_SOCKS_PROXY_ADDRESS);
+            mHttpProxyAddress               = findPreference(Constants.PREF_HTTP_PROXY_ADDRESS);
 
             mSyncthingVersion       = findPreference("syncthing_version");
-            Preference appVersion   = screen.findPreference("app_version");
+            Preference appVersion   = findPreference("app_version");
 
             mRunOnMeteredWifi.setEnabled(mRunOnWifi.isChecked());
             mWifiSsidWhitelist.setEnabled(mRunOnWifi.isChecked());
 
             mCategorySyncthingOptions = findPreference("category_syncthing_options");
             setPreferenceCategoryChangeListener(mCategorySyncthingOptions, this::onSyncthingPreferenceChange);
-            mCategoryRunConditions = (PreferenceGroup) findPreference("category_run_conditions");
+            mCategoryRunConditions = findPreference("category_run_conditions");
             setPreferenceCategoryChangeListener(mCategoryRunConditions, this::onRunConditionPreferenceChange);
 
             if (!mRunConditions.isChecked()) {
@@ -270,13 +293,13 @@ public class SettingsActivity extends SyncthingActivity {
             screen.findPreference(Constants.PREF_POWER_SOURCE).setSummary(mPowerSource.getEntry());
             String wifiSsidSummary = TextUtils.join(", ", mPreferences.getStringSet(Constants.PREF_WIFI_SSID_WHITELIST, new HashSet<>()));
             screen.findPreference(Constants.PREF_WIFI_SSID_WHITELIST).setSummary(TextUtils.isEmpty(wifiSsidSummary) ?
-                getString(R.string.run_on_all_wifi_networks) :
-                getString(R.string.run_on_whitelisted_wifi_networks, wifiSsidSummary)
+                    getString(R.string.run_on_all_wifi_networks) :
+                    getString(R.string.run_on_whitelisted_wifi_networks, wifiSsidSummary)
             );
             handleSocksProxyPreferenceChange(screen.findPreference(Constants.PREF_SOCKS_PROXY_ADDRESS),  mPreferences.getString(Constants.PREF_SOCKS_PROXY_ADDRESS, ""));
             handleHttpProxyPreferenceChange(screen.findPreference(Constants.PREF_HTTP_PROXY_ADDRESS), mPreferences.getString(Constants.PREF_HTTP_PROXY_ADDRESS, ""));
 
-            ListPreference themePreference = (ListPreference) findPreference(Constants.PREF_APP_THEME);
+            ListPreference themePreference = findPreference(Constants.PREF_APP_THEME);
             themePreference.setOnPreferenceChangeListener(this);
 
             try {
@@ -289,6 +312,7 @@ public class SettingsActivity extends SyncthingActivity {
             openSubPrefScreen(screen);
         }
 
+
         private void openSubPrefScreen(PreferenceScreen prefScreen) {
             Bundle bundle = getArguments();
             if (bundle == null) {
@@ -298,15 +322,10 @@ public class SettingsActivity extends SyncthingActivity {
             // Open sub preferences screen if EXTRA_OPEN_SUB_PREF_SCREEN was passed in bundle.
             if (openSubPrefScreen != null && !TextUtils.isEmpty(openSubPrefScreen)) {
                 Log.v(TAG, "Transitioning to pref screen " + openSubPrefScreen);
-                PreferenceScreen categoryRunConditions = (PreferenceScreen) findPreference(openSubPrefScreen);
-                final ListAdapter listAdapter = prefScreen.getRootAdapter();
-                final int itemsCount = listAdapter.getCount();
-                for (int itemNumber = 0; itemNumber < itemsCount; ++itemNumber) {
-                    if (listAdapter.getItem(itemNumber).equals(categoryRunConditions)) {
-                        // Simulates click on the sub-preference
-                        prefScreen.onItemClick(null, null, itemNumber, 0);
-                        break;
-                    }
+                final Preference targetScreen = findPreference(openSubPrefScreen);
+                if (targetScreen != null) {
+                    // Programmatically "clicks" the preference, letting the fragment handle the navigation.
+                    onPreferenceTreeClick(targetScreen);
                 }
             }
         }
@@ -362,9 +381,9 @@ public class SettingsActivity extends SyncthingActivity {
 
         private void setPreferenceCategoryChangeListener(
                 Preference category, Preference.OnPreferenceChangeListener listener) {
-            PreferenceScreen ps = (PreferenceScreen) category;
-            for (int i = 0; i < ps.getPreferenceCount(); i++) {
-                Preference p = ps.getPreference(i);
+            PreferenceGroup pg = (PreferenceGroup) category;
+            for (int i = 0; i < pg.getPreferenceCount(); i++) {
+                Preference p = pg.getPreference(i);
                 p.setOnPreferenceChangeListener(listener);
             }
         }
@@ -646,7 +665,7 @@ public class SettingsActivity extends SyncthingActivity {
          * Enables or disables {@link #mUseRoot} preference depending whether root is available.
          */
         private static class TestRootTask extends AsyncTask<Void, Void, Boolean> {
-            private WeakReference<SettingsFragment> refSettingsFragment;
+            private final WeakReference<SettingsFragment> refSettingsFragment;
 
             TestRootTask(SettingsFragment context) {
                 refSettingsFragment = new WeakReference<>(context);

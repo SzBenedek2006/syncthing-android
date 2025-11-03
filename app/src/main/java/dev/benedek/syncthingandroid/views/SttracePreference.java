@@ -2,7 +2,7 @@ package dev.benedek.syncthingandroid.views;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.MultiSelectListPreference;
+import androidx.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -44,7 +44,7 @@ public class SttracePreference extends MultiSelectListPreference {
      * Show the dialog.
      */
     @Override
-    protected void showDialog(Bundle state) {
+    protected void onClick() {
         Set<String> selected = getSharedPreferences().getStringSet(getKey(), new HashSet<>());
         // from JavaDoc: Note that you must not modify the set instance returned by this call.
         // therefore required to make a defensive copy of the elements
@@ -54,7 +54,7 @@ public class SttracePreference extends MultiSelectListPreference {
         setEntries(all);        // display without surrounding quotes
         setEntryValues(all);    // the value of the entry is the debug facility "as is"
         setValues(selected);    // the currently selected values
-        super.showDialog(state);
+        super.onClick();
     }
 
     /**

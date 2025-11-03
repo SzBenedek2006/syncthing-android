@@ -48,8 +48,8 @@ android {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 21
         targetSdk = 33
-        versionCode = 4400
-        versionName = "2.1.10"
+        versionCode = 4401
+        versionName = "2.0.10.2" // attemt to correct the wrog version
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

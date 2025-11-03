@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.preference.MultiSelectListPreference;
+import androidx.preference.MultiSelectListPreference;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
@@ -56,8 +56,9 @@ public class WifiSsidPreference extends MultiSelectListPreference {
      * by the user in the WiFi manager. This change will be persisted only if the user changes
      * any other setting
      */
+
     @Override
-    protected void showDialog(Bundle state) {
+    protected void onClick() {
         Context context = getContext();
 
         Set<String> selected = getSharedPreferences().getStringSet(getKey(), new HashSet<>());
@@ -73,7 +74,7 @@ public class WifiSsidPreference extends MultiSelectListPreference {
             if (info != null) {
                 String ssid = info.getSSID();
                 // api lvl 30 will have WifiManager.UNKNOWN_SSID
-                if (ssid != null && ssid != "" && !ssid.contains("unknown ssid")) {
+                if (ssid != null && !ssid.isEmpty() && !ssid.contains("unknown ssid")) {
                     if (!selected.contains(ssid)) {
                         all.add(ssid);
                     }
@@ -95,7 +96,8 @@ public class WifiSsidPreference extends MultiSelectListPreference {
             setEntries(stripQuotes(all)); // display without surrounding quotes
             setEntryValues(all.toArray(new CharSequence[all.size()])); // the value of the entry is the SSID "as is"
             setValues(selected); // the currently selected values (without meanwhile deleted networks)
-            super.showDialog(state);
+
+            super.onClick();
         }
 
         if (!hasPerms && context instanceof Activity) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
         android:key="theme"
@@ -8,7 +9,7 @@
         android:entryValues="@array/theme_values"
         android:defaultValue="-1"/> <!-- -1 is Follow System -->
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/category_run_conditions"
         android:key="category_run_conditions">
 
@@ -67,9 +68,9 @@
             android:summary="@string/run_in_flight_mode_summary"
             android:defaultValue="false" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:key="category_behaviour"
         android:title="@string/category_behaviour">
 
@@ -102,9 +103,9 @@
             android:title="@string/run_as_background_service"
             android:defaultValue="false" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:key="category_syncthing_options"
         android:title="@string/category_syncthing_options">
 
@@ -176,9 +177,9 @@
             android:title="@string/undo_ignored_devices_folders_title"
             android:singleLine="true" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:key="category_backup"
         android:title="@string/category_backup">
 
@@ -190,9 +191,9 @@
             android:key="import_config"
             android:title="@string/import_config" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/category_debug">
 
         <Preference
@@ -227,9 +228,9 @@
             android:title="@string/st_reset_deltas_title"
             android:singleLine="true" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/category_experimental"
         android:key="category_experimental">
 
@@ -267,9 +268,9 @@
             android:title="@string/use_legacy_hashing_title"
             android:summary="@string/use_legacy_hashing_summary" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/category_about">
 
         <Preference
@@ -312,6 +313,6 @@
             android:key="app_version"
             android:title="@string/app_version_title" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
 </PreferenceScreen>
