@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Material 3 switch ? -->
+    <eat-comment/>
+
+    <style name="ThemeOverlay.Syncthing.Preference" parent="PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/Preference.Syncthing.PreferenceMaterialSwitch</item>
+    </style>
+
+    <style name="Preference.Syncthing.PreferenceMaterialSwitch" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="widgetLayout">@layout/preference_switch</item>
+    </style>
+
     <!-- Activity themes -->
     <eat-comment/>
 
@@ -31,6 +42,8 @@
 
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowIsTranslucent">false</item>
+
+        <item name="preferenceTheme">@style/ThemeOverlay.Syncthing.Preference</item>
     </style>
 
     <style name="Theme.Syncthing" parent="Theme.Syncthing.Base">
@@ -76,4 +89,6 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/dialog_corner_radius</item>
     </style>
+
+
 </resources>

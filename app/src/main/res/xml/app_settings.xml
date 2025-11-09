@@ -13,19 +13,19 @@
         android:title="@string/category_run_conditions"
         android:key="category_run_conditions">
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="static_run_conditions"
             android:title="@string/run_conditions_title"
             android:summary="@string/run_conditions_summary"
             android:defaultValue="true" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="run_on_wifi"
             android:title="@string/run_on_wifi_title"
             android:summary="@string/run_on_wifi_summary"
             android:defaultValue="true" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="run_on_metered_wifi"
             android:title="@string/run_on_metered_wifi_title"
             android:summary="@string/run_on_metered_wifi_summary"
@@ -36,7 +36,7 @@
             android:title="@string/run_on_whitelisted_wifi_title"
             android:summary="@null" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="run_on_mobile_data"
             android:title="@string/run_on_mobile_data_title"
             android:summary="@string/run_on_mobile_data_summary"
@@ -50,19 +50,19 @@
             android:summary="@null"
             android:defaultValue="ac_and_battery_power" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="respect_battery_saving"
             android:title="@string/respect_battery_saving_title"
             android:summary="@string/respect_battery_saving_summary"
             android:defaultValue="true" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="respect_master_sync"
             android:title="@string/respect_master_sync_title"
             android:summary="@string/respect_master_sync_summary"
             android:defaultValue="false" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="run_in_flight_mode"
             android:title="@string/run_in_flight_mode_title"
             android:summary="@string/run_in_flight_mode_summary"
@@ -74,7 +74,7 @@
         android:key="category_behaviour"
         android:title="@string/category_behaviour">
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="advanced_folder_picker"
             android:title="@string/advanced_folder_picker"
             android:summary="@string/advanced_folder_picker_summary"
@@ -85,7 +85,7 @@
             android:title="@string/preference_language_title"
             android:summary="@string/preference_language_summary" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="start_into_web_gui"
             android:title="@string/start_into_web_gui_title"
             android:summary="@string/start_into_web_gui_summary"
@@ -98,7 +98,7 @@
             android:title="@string/service_settings_title"
             android:summary="@string/service_settings_summary"/>
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="always_run_in_background"
             android:title="@string/run_as_background_service"
             android:defaultValue="false" />
@@ -135,22 +135,22 @@
             android:persistent="false"
             android:inputType="number" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="natEnabled"
             android:title="@string/enable_nat_traversal"
             android:persistent="false"/>
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="localAnnounceEnabled"
             android:title="@string/local_announce_enabled"
             android:persistent="false" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="globalAnnounceEnabled"
             android:title="@string/global_announce_enabled"
             android:persistent="false" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="relaysEnabled"
             android:title="@string/enable_relaying"
             android:persistent="false" />
@@ -167,7 +167,7 @@
             android:persistent="false"
             android:inputType="textNoSuggestions" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="urAccepted"
             android:title="@string/usage_reporting"
             android:persistent="false" />
@@ -203,7 +203,7 @@
                 android:action=".activities.LogActivity" />
         </Preference>
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="notify_crashes"
             android:title="@string/notify_crashes_title"
             android:summary="@string/notify_crashes_summary"/>
@@ -234,19 +234,19 @@
         android:title="@string/category_experimental"
         android:key="category_experimental">
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="use_root"
             android:title="@string/use_root_title"
             android:summary="@string/use_root_summary"
             android:defaultValue="false" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="wakelock_while_binary_running"
             android:title="@string/keep_wakelock_while_binary_running"
             android:summary="@string/keep_wakelock_while_binary_running_summary"
             android:defaultValue="false" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="use_tor"
             android:title="@string/use_tor_title"
             android:summary="@string/use_tor_summary" />
@@ -263,7 +263,7 @@
             android:summary=""
             android:inputType="textUri|textNoSuggestions" />
 
-        <CheckBoxPreference
+        <SwitchPreferenceCompat
             android:key="use_legacy_hashing"
             android:title="@string/use_legacy_hashing_title"
             android:summary="@string/use_legacy_hashing_summary" />

@@ -13,13 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.TaskStackBuilder;
-import androidx.preference.CheckBoxPreference;
+import androidx.preference.SwitchPreferenceCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -123,34 +124,34 @@ public class SettingsActivity extends SyncthingActivity implements PreferenceFra
         @Inject SharedPreferences mPreferences;
 
         private PreferenceGroup    mCategoryRunConditions;
-        private CheckBoxPreference mRunConditions;
-        private CheckBoxPreference mStartServiceOnBoot;
+        private SwitchPreferenceCompat mRunConditions;
+        private SwitchPreferenceCompat mStartServiceOnBoot;
         private ListPreference     mPowerSource;
-        private CheckBoxPreference mRunOnMobileData;
-        private CheckBoxPreference mRunOnWifi;
-        private CheckBoxPreference mRunOnMeteredWifi;
+        private SwitchPreferenceCompat mRunOnMobileData;
+        private SwitchPreferenceCompat mRunOnWifi;
+        private SwitchPreferenceCompat mRunOnMeteredWifi;
         private WifiSsidPreference mWifiSsidWhitelist;
-        private CheckBoxPreference mRunInFlightMode;
+        private SwitchPreferenceCompat mRunInFlightMode;
 
         private Preference         mCategorySyncthingOptions;
         private EditTextPreference mDeviceName;
         private EditTextPreference mListenAddresses;
         private EditTextPreference mMaxRecvKbps;
         private EditTextPreference mMaxSendKbps;
-        private CheckBoxPreference mNatEnabled;
-        private CheckBoxPreference mLocalAnnounceEnabled;
-        private CheckBoxPreference mGlobalAnnounceEnabled;
-        private CheckBoxPreference mRelaysEnabled;
+        private SwitchPreferenceCompat mNatEnabled;
+        private SwitchPreferenceCompat mLocalAnnounceEnabled;
+        private SwitchPreferenceCompat mGlobalAnnounceEnabled;
+        private SwitchPreferenceCompat mRelaysEnabled;
         private EditTextPreference mGlobalAnnounceServers;
         private EditTextPreference mAddress;
-        private CheckBoxPreference mUrAccepted;
+        private SwitchPreferenceCompat mUrAccepted;
 
         private Preference mCategoryBackup;
 
         /* Experimental options */
-        private CheckBoxPreference mUseRoot;
-        private CheckBoxPreference mUseWakelock;
-        private CheckBoxPreference mUseTor;
+        private SwitchPreferenceCompat mUseRoot;
+        private SwitchPreferenceCompat mUseWakelock;
+        private SwitchPreferenceCompat mUseTor;
         private EditTextPreference mSocksProxyAddress;
         private EditTextPreference mHttpProxyAddress;
 
