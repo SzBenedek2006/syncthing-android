@@ -8,11 +8,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.TaskStackBuilder;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.SwitchPreferenceCompat;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
@@ -46,6 +51,7 @@ import dev.benedek.syncthingandroid.util.Languages;
 import dev.benedek.syncthingandroid.util.Util;
 import dev.benedek.syncthingandroid.views.WifiSsidPreference;
 import eu.chainfire.libsuperuser.Shell;
+import kotlin.OverloadResolutionByLambdaReturnType;
 
 public class SettingsActivity extends SyncthingActivity implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
 
@@ -313,6 +319,31 @@ public class SettingsActivity extends SyncthingActivity implements PreferenceFra
             openSubPrefScreen(screen);
         }
 
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            // Targeting android 15 enables and 16 forces edge-to-edge,
+            ViewCompat.setOnApplyWindowInsetsListener(view.getRootView(), (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                mlp.leftMargin = insets.left;
+                mlp.bottomMargin = insets.bottom;
+                mlp.rightMargin = insets.right;
+                v.setLayoutParams(mlp);
+
+                return WindowInsetsCompat.CONSUMED;
+            });
+
+            ViewCompat.setOnApplyWindowInsetsListener(view.getRootView(), (v, insets) -> {
+                Insets bars = insets.getInsets(
+                        WindowInsetsCompat.Type.systemBars()
+                                | WindowInsetsCompat.Type.displayCutout()
+                );
+                v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
 
         private void openSubPrefScreen(PreferenceScreen prefScreen) {
             Bundle bundle = getArguments();

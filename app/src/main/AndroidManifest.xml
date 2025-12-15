@@ -2,11 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature android:name="android.software.leanback" android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,160 +22,181 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
-    <!-- ACCESS_COARSE_LOCATION is required to get WiFi's SSID on 8.1 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- FOREGROUND_SERVICE is required to create a foreground service on 9 -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <!-- ACCESS_FINE_LOCATION is required to get WiFi's SSID on 10 "Q" -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- ACCESS_BACKGROUND_LOCATION is required to get WiFi's SSID on 10 "Q" -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <!-- CAMERA is required for the QR Code Scanner -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- MANAGE_EXTERNAL_STORAGE is required on Android 11 "R" -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> <!-- ACCESS_COARSE_LOCATION is required to get WiFi's SSID on 8.1 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- FOREGROUND_SERVICE is required to create a foreground service on 9 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- ACCESS_FINE_LOCATION is required to get WiFi's SSID on 10 "Q" -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- ACCESS_BACKGROUND_LOCATION is required to get WiFi's SSID on 10 "Q" -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- CAMERA is required for the QR Code Scanner -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- MANAGE_EXTERNAL_STORAGE is required on Android 11 "R" -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-
-    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
+        android:name=".SyncthingApp"
         android:allowBackup="false"
+        android:banner="@mipmap/ic_banner"
+        android:description="@string/app_description"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
-        android:banner="@mipmap/ic_banner"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Syncthing"
-        android:description="@string/app_description"
-        android:supportsRtl="true"
         android:installLocation="internalOnly"
+        android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:name="dev.benedek.syncthingandroid.SyncthingApp">
+        android:extractNativeLibs="true"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Syncthing">
         <activity
-                android:name="dev.benedek.syncthingandroid.activities.FirstStartActivity"
-                android:label="@string/app_name"
-                android:launchMode="singleTask"
-            android:exported="true">
+            android:name=".Test"
+            android:exported="false"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.Syncthing" />
+        <activity
+            android:name=".activities.FirstStartActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="dev.benedek.syncthingandroid.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask">
-        </activity>
+            android:launchMode="singleTask"></activity>
         <activity
-            android:name="dev.benedek.syncthingandroid.activities.WebGuiActivity"
+            android:name=".activities.WebGuiActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/web_gui_title"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
         <activity
-            android:name="dev.benedek.syncthingandroid.activities.ShareActivity"
-            android:label="@string/share_activity_title"
+            android:name=".activities.ShareActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/share_activity_title"
             android:taskAffinity=""
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="*/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
         <activity
-            android:name="dev.benedek.syncthingandroid.activities.LogActivity"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.SettingsActivity"
-            android:exported="false">
+            android:name=".activities.LogActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.SettingsActivity">
             <intent-filter>
                 <action android:name=".activities.LogActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.activities.SettingsActivity" />
         </activity>
         <activity
-            android:name="dev.benedek.syncthingandroid.activities.FolderPickerActivity"
+            android:name=".activities.FolderPickerActivity"
             android:label="@string/folder_picker_title">
             <meta-data
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
         </activity>
-        <activity android:name="dev.benedek.syncthingandroid.activities.DeviceActivity"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity">
+        <activity
+            android:name=".activities.DeviceActivity"
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
-        <activity android:name="dev.benedek.syncthingandroid.activities.FolderActivity"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity">
+        <activity
+            android:name=".activities.FolderActivity"
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
-        <activity android:name="dev.benedek.syncthingandroid.activities.SettingsActivity"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.MainActivity">
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.activities.MainActivity" />
         </activity>
-        <service android:name="dev.benedek.syncthingandroid.service.SyncthingService" />
-        <receiver android:name="dev.benedek.syncthingandroid.receiver.BootReceiver"
+
+        <service
+            android:name=".service.SyncthingService"
+            android:foregroundServiceType="specialUse"
+            />
+
+        <receiver
+            android:name=".receiver.BootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="dev.benedek.syncthingandroid.receiver.AppConfigReceiver"
-            tools:ignore="ExportedReceiver"
-            android:exported="true">
+        <receiver
+            android:name=".receiver.AppConfigReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="dev.benedek.syncthingandroid.action.START" />
                 <action android:name="dev.benedek.syncthingandroid.action.STOP" />
             </intent-filter>
         </receiver>
-        <activity android:name="dev.benedek.syncthingandroid.activities.FolderTypeDialogActivity"
+
+        <activity
+            android:name=".activities.FolderTypeDialogActivity"
             android:label="@string/folder_type"
-            android:theme="@style/Theme.Syncthing.Dialog"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.FolderActivity">
+            android:parentActivityName=".activities.FolderActivity"
+            android:theme="@style/Theme.Syncthing.Dialog">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
         </activity>
-        <activity android:name="dev.benedek.syncthingandroid.activities.PullOrderDialogActivity"
+        <activity
+            android:name=".activities.PullOrderDialogActivity"
             android:label="@string/pull_order"
-            android:theme="@style/Theme.Syncthing.Dialog"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.FolderActivity">
+            android:parentActivityName=".activities.FolderActivity"
+            android:theme="@style/Theme.Syncthing.Dialog">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
         </activity>
-        <activity android:name="dev.benedek.syncthingandroid.activities.VersioningDialogActivity"
+        <activity
+            android:name=".activities.VersioningDialogActivity"
             android:label="@string/file_versioning"
-            android:theme="@style/Theme.Syncthing.Dialog"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.FolderActivity">
+            android:parentActivityName=".activities.FolderActivity"
+            android:theme="@style/Theme.Syncthing.Dialog">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
         </activity>
-        <activity android:name="dev.benedek.syncthingandroid.activities.QRScannerActivity"
+        <activity
+            android:name=".activities.QRScannerActivity"
             android:label="QR Code Scanner"
-            android:parentActivityName="dev.benedek.syncthingandroid.activities.DeviceActivity">
+            android:parentActivityName=".activities.DeviceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.DeviceActivity" />

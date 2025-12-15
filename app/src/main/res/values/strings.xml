@@ -781,5 +781,8 @@
     <string name="require_notification_permission_desc">Required to show notifications regarding new device connections, folder sharing requests, etc.</string>
     <string name="notification_permission_title">Notification permission</string>
     <string name="enable_notification_permission">Enable Notification Permission</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test">Test</string>
 
 </resources>

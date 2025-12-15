@@ -209,7 +209,7 @@ public class SyncthingService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.v(TAG, "onStartCommand");
+        Log.v(TAG, "onStartCommand; Started by intent: " + intent.getAction());
         if (!mStoragePermissionGranted) {
             Log.e(TAG, "User revoked storage permission. Stopping service.");
             if (mNotificationHandler != null) {

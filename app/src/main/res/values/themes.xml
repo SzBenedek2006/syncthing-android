@@ -2,10 +2,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Material 3 switch ? -->
-    <eat-comment/>
+    <eat-comment />
 
     <style name="ThemeOverlay.Syncthing.Preference" parent="PreferenceThemeOverlay">
-        <item name="switchPreferenceCompatStyle">@style/Preference.Syncthing.PreferenceMaterialSwitch</item>
+        <item name="switchPreferenceCompatStyle">
+            @style/Preference.Syncthing.PreferenceMaterialSwitch
+        </item>
     </style>
 
     <style name="Preference.Syncthing.PreferenceMaterialSwitch" parent="@style/Preference.SwitchPreferenceCompat.Material">
@@ -13,15 +15,19 @@
     </style>
 
     <!-- Activity themes -->
-    <eat-comment/>
+    <eat-comment />
 
     <style name="Theme.Syncthing.Base" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
 
-        <item name="textAppearanceListItemPrimary">@style/TextAppearance.Syncthing.ListItemPrimary</item>
-        <item name="textAppearanceListItemSecondary">@style/TextAppearance.Syncthing.ListItemSecondary</item>
-        <item name="textAppearanceListItemSmall">@style/TextAppearance.Syncthing.ListItemSmall</item>
+        <item name="textAppearanceListItemPrimary">@style/TextAppearance.Syncthing.ListItemPrimary
+        </item>
+        <item name="textAppearanceListItemSecondary">
+            @style/TextAppearance.Syncthing.ListItemSecondary
+        </item>
+        <item name="textAppearanceListItemSmall">@style/TextAppearance.Syncthing.ListItemSmall
+        </item>
 
         <item name="windowActionModeOverlay">true</item>
         <item name="android:listViewStyle">@style/Widget.Syncthing.ListView</item>
@@ -32,9 +38,11 @@
         <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
         <item name="android:spinnerItemStyle">@style/Widget.Syncthing.TextView.SpinnerItem</item>
 
-        <item name="android:alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet</item>
+        <item name="android:alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet
+        </item>
         <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet</item>
-        <item name="android:dialogCornerRadius" tools:targetApi="p">@dimen/dialog_corner_radius</item>
+        <item name="android:dialogCornerRadius" tools:targetApi="p">@dimen/dialog_corner_radius
+        </item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
 
         <item name="android:statusBarColor" tools:targetApi="m">@android:color/transparent</item>
@@ -59,7 +67,7 @@
     </style>
 
     <!-- Dialog themes -->
-    <eat-comment/>
+    <eat-comment />
 
     <style name="Theme.Syncthing.Dialog" parent="Theme.Material3.DayNight.Dialog.Alert">
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
@@ -67,12 +75,12 @@
     </style>
 
     <!-- Button themes -->
-    <eat-comment/>
+    <eat-comment />
 
     <style name="Theme.Syncthing.ButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog" />
 
     <!-- Preference dialog theme -->
-    <eat-comment/>
+    <eat-comment />
 
     <style name="ThemeOverlay.App.MaterialAlertDialog.Monet" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>

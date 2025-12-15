@@ -30,6 +30,9 @@ public class FolderTypeDialogActivity extends ThemedAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_foldertype_dialog);
+
+        /* Don't set window insets handling here */
+
         if (savedInstanceState == null) {
             selectedType = getIntent().getStringExtra(EXTRA_FOLDER_TYPE);
         }

@@ -92,6 +92,9 @@ public class FolderPickerActivity extends SyncthingActivity
         ((SyncthingApp) getApplication()).component().inject(this);
 
         setContentView(R.layout.activity_folder_picker);
+
+        /* Don't set window insets handling here */
+
         mListView = findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
         mListView.setEmptyView(findViewById(android.R.id.empty));

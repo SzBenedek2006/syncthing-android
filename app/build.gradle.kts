@@ -5,9 +5,12 @@ plugins {
     id("com.android.application")
     id("com.github.ben-manes.versions")
     id("com.github.triplet.play") version "3.12.1"
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 dependencies {
+
     implementation("eu.chainfire:libsuperuser:1.1.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation("com.google.code.gson:gson:2.13.2")
@@ -25,31 +28,49 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("com.google.dagger:dagger:2.57.2")
     implementation("androidx.documentfile:documentfile:1.1.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.activity:activity-compose:1.12.0")
+    implementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.material3:material3")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     annotationProcessor("com.google.dagger:dagger-compiler:2.57.2")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.preference:preference:1.2.1")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    val workVersion = "2.11.0"
+    implementation("androidx.work:work-runtime:${workVersion}") // (Java only)
+    implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
+    implementation("androidx.work:work-multiprocess:${workVersion}") // optional - Multiprocess support
 }
 
 android {
     //val ndkVersionShared = rootProject.extra.get("ndkVersionShared") // not needed if built in docker
     // Changes to these values need to be reflected in `../docker/Dockerfile`
-    compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    //noinspection GradleDependency
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
     //ndkVersion = "$ndkVersionShared" // not needed if built in docker
 
     buildFeatures {
         dataBinding = true
         viewBinding = true
         buildConfig = true
+        compose = true
     }
 
     defaultConfig {
         applicationId = "dev.benedek.syncthingandroid"
-        minSdk = 21
-        targetSdk = 33
-        versionCode = 4402
-        versionName = "2.0.10.3" // attemt to correct the wrog version
+        minSdk = 23
+        targetSdk = 36
+        versionCode = 4403
+        versionName = "2.0.10.4"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,8 +99,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     // Otherwise libsyncthing.so doesn't appear where it should in installs
