@@ -200,7 +200,8 @@
             android:title="@string/open_log"
             android:summary="@string/open_log_summary">
             <intent
-                android:action=".activities.LogActivity" />
+                android:targetPackage="@string/app_package_id"
+                android:targetClass="dev.benedek.syncthingandroid.activities.LogActivity" />
         </Preference>
 
         <SwitchPreferenceCompat

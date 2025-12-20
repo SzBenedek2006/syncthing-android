@@ -69,8 +69,8 @@ android {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4403
-        versionName = "2.0.10.4"
+        versionCode = 4405
+        versionName = "2.0.10.5"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -90,11 +90,14 @@ android {
             isDebuggable = true
             isJniDebuggable = true
             isMinifyEnabled = false
+
+            resValue("string", "app_package_id", "${defaultConfig.applicationId}$applicationIdSuffix")
         }
         getByName("release") {
             signingConfig = signingConfigs.runCatching { getByName("release") }
                 .getOrNull()
                 .takeIf { it?.storeFile != null }
+            resValue("string", "app_package_id", "${defaultConfig.applicationId}")
         }
     }
 
@@ -103,13 +106,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    // Otherwise libsyncthing.so doesn't appear where it should in installs
-    // based on app bundles, and thus nothing works.
-    fun Packaging.() {
-        jniLibs {
-            useLegacyPackaging = true
-        }
-    }
     namespace = "dev.benedek.syncthingandroid"
 }
 

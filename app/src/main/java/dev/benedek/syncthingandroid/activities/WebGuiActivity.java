@@ -130,7 +130,7 @@ public class WebGuiActivity extends StateDialogActivity
         setContentView(binding.getRoot());
 
 
-// Targeting android 15 enables and 16 forces edge-to-edge,
+        // Targeting android 15 enables and 16 forces edge-to-edge,
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, windowInsets) -> {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
 
