@@ -94,11 +94,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">上傳</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">狀態</string>
     <string name="syncthing_starting">Syncthing 正在啟動。</string>
-    <string name="syncthing_running">Syncthing 執行中。</string>
-    <string name="syncthing_not_running">Syncthing 未執行。</string>
-    <string name="syncthing_has_crashed">Syncthing 當掉了…</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"下載: "</string>
@@ -208,7 +204,6 @@
     <string name="run_on_whitelisted_wifi_title">連線到特定 WiFi 網路時執行</string>
     <string name="run_on_whitelisted_wifi_networks">連線到特定 WiFi 網路時執行: %1$s</string>
     <string name="run_on_all_wifi_networks">所有 WiFi 連線都執行</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">請開啟Wi-Fi來選擇網路。</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">請先連接Wi-Fi才能加到列表。</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">請先同意 \"位置權限\" 才能使用這個功能。</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">需要授權</string>
@@ -231,11 +226,6 @@
     <string name="advanced_folder_picker_summary">選擇在裝置上的同步資料夾</string>
     <string name="use_root_title">以超級使用者執行 Syncthing</string>
     <string name="use_root_summary">這是不穩定的功能，可能會對 Syncthing 與你的裝置造成問題。如果你遇到問題，你也許需要重新安裝 Syncthing。</string>
-    <string name="notification_type_title">通知</string>
-    <string name="notification_type_summary">選擇通知類型</string>
-    <string name="notification_type_normal">一般</string>
-    <string name="notification_type_low_priority">低優先權</string>
-    <string name="notification_type_none">無</string>
     <string name="preference_language_title">語言</string>
     <string name="preference_language_summary">選擇應用程式語言</string>
     <string name="start_into_web_gui_title">直接開啟網頁介面</string>

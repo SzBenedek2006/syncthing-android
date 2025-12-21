@@ -96,11 +96,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Upload</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Stato</string>
     <string name="syncthing_starting">Syncthing si sta avviando.</string>
-    <string name="syncthing_running">Syncthing è in esecuzione.</string>
-    <string name="syncthing_not_running">Syncthing non è in esecuzione.</string>
-    <string name="syncthing_has_crashed">Syncthing è andato in crash.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Download: "</string>
@@ -210,7 +206,6 @@
     <string name="run_on_whitelisted_wifi_title">Esegui su reti Wi-Fi specifiche</string>
     <string name="run_on_whitelisted_wifi_networks">Esegui solo su reti Wi-Fi selezionate: %1$s</string>
     <string name="run_on_all_wifi_networks">Esegui su tutte le reti Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Attiva il Wi-Fi per selezionare le reti.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Connettiti ad una Wi-Fi per aggiungerla all\'elenco.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">È necessario concedere l\'autorizzazione alla LOCALIZZAZIONE per utilizzare questa funzione.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Autorizzazione richiesta</string>
@@ -233,11 +228,6 @@
     <string name="advanced_folder_picker_summary">Selezionare una cartella sul dispositivo per la sincronizzazione</string>
     <string name="use_root_title">Esegui Syncthing come Superutente</string>
     <string name="use_root_summary">Questa è una caratteristica instabile che può causare problemi con Syncthing e con il dispositivo. In caso di problemi, potrebbe essere necessario reinstallare Syncthing.</string>
-    <string name="notification_type_title">Notifica</string>
-    <string name="notification_type_summary">Selezionare il tipo di notifica</string>
-    <string name="notification_type_normal">Normale</string>
-    <string name="notification_type_low_priority">Bassa priorità</string>
-    <string name="notification_type_none">Nessuno</string>
     <string name="preference_language_title">Lingua</string>
     <string name="preference_language_summary">Cambia la lingua dell\'app</string>
     <string name="start_into_web_gui_title">Avvia direttamente nell\'Interfaccia Web</string>

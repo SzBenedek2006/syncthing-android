@@ -165,11 +165,6 @@
     <string name="advanced_folder_picker_summary">Vel kva mappe som helst for synkronisering</string>
     <string name="use_root_title">Køyr Syncthing som superbrukar</string>
     <string name="use_root_summary">Dette er ein ustabil funksjon som kan forårsake problem med Syncthing og med din eining. Hvis det oppstår problem kan du bli nøydd til å installere Syncthing på nytt.</string>
-    <string name="notification_type_title">Varsling</string>
-    <string name="notification_type_summary">Vel varslingstype</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Låg prioritet</string>
-    <string name="notification_type_none">Ingen</string>
     <string name="device_name">Einingsnamn</string>
     <string name="listen_address">Lytteadresse for synkroniseringsprotokoll</string>
     <string name="max_recv_kbps">Nedlastingsgrense (KiB/s)</string>

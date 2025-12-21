@@ -96,11 +96,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Subida</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Estado</string>
     <string name="syncthing_starting">Syncthing se está iniciando.</string>
-    <string name="syncthing_running">Syncthing se está ejecutando.</string>
-    <string name="syncthing_not_running">Synchthing no se está ejecutando.</string>
-    <string name="syncthing_has_crashed">Se ha producido un error en Syncthing.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Descarga: "</string>
@@ -210,7 +206,6 @@
     <string name="run_on_whitelisted_wifi_title">Ejecutar en las redes Wi-Fi especificadas</string>
     <string name="run_on_whitelisted_wifi_networks">Ejecutar sólo en las redes Wi-Fi seleccionadas: %1$s</string>
     <string name="run_on_all_wifi_networks">Ejecutar en todas las redes Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Por favor, activa el Wi-Fi para seleccionar las redes.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Por favor, conéctese a una Wi-Fi para añadirla a la lista.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Necesitas conceder permiso para acceder a la ubicación para usar esta característica.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Permiso requerido</string>
@@ -233,11 +228,6 @@
     <string name="advanced_folder_picker_summary">Escoja alguna carpeta del dispositivo para sincronizar</string>
     <string name="use_root_title">Ejecutar Syncthing como superusuario</string>
     <string name="use_root_summary">Esta es una característica inestable que podría causar problemas con Syncthing y con tu dispositivo. Si aparecieran problemas podrías tener que reinstalar Syncthing.</string>
-    <string name="notification_type_title">Notificación</string>
-    <string name="notification_type_summary">Elige el tipo de notificación</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Baja prioridad</string>
-    <string name="notification_type_none">Ninguna</string>
     <string name="preference_language_title">Idioma</string>
     <string name="preference_language_summary">Cambiar el idioma de la aplicación</string>
     <string name="start_into_web_gui_title">Iniciar directamente en la interfaz web</string>

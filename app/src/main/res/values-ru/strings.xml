@@ -97,11 +97,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Отдача</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Статус</string>
     <string name="syncthing_starting">Syncthing запускается.</string>
-    <string name="syncthing_running">Syncthing работает.</string>
-    <string name="syncthing_not_running">Syncthing не запущен.</string>
-    <string name="syncthing_has_crashed">Сбой Syncthing.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Загрузка: "</string>
@@ -211,7 +207,6 @@
     <string name="run_on_whitelisted_wifi_title">Работать в указанных Wi-Fi сетях</string>
     <string name="run_on_whitelisted_wifi_networks">Работать только в выбранных сетях Wi-Fi: %1$s</string>
     <string name="run_on_all_wifi_networks">Работать на всех сетях Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Включите Wi-Fi, чтобы выбрать сети.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Подключитесь к сети Wi-Fi, чтобы добавить её в список.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Вы должны разрешить позиционирование для использования данной функции.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Требуется разрешение</string>
@@ -234,11 +229,6 @@
     <string name="advanced_folder_picker_summary">Выберите любую папку на устройстве для синхронизации</string>
     <string name="use_root_title">Запуск Syncthing с root-правами</string>
     <string name="use_root_summary">Это нестабильная опция, которая может вызвать проблемы и с Syncthing, и с вашим устройством. Если вы столкнётесь с проблемами, переустановите Syncthing.</string>
-    <string name="notification_type_title">Уведомление</string>
-    <string name="notification_type_summary">Выбор метода уведомления</string>
-    <string name="notification_type_normal">Нормально</string>
-    <string name="notification_type_low_priority">Низкий</string>
-    <string name="notification_type_none">Никогда</string>
     <string name="preference_language_title">Язык</string>
     <string name="preference_language_summary">Изменить язык приложения</string>
     <string name="start_into_web_gui_title">Использовать веб-интерфейс при старте</string>

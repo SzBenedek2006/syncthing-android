@@ -214,7 +214,6 @@
     <string name="run_conditions_title">चलाने की शर्तें सक्षम करें</string>
     <string name="run_conditions_summary">Syncthing कब चलेगी यह तय करने के लिए निम्नलिखित विकल्पों का उपयोग करें।</string>
     <string name="run_on_wifi_title">Wi-Fi पर चलाएँ</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">कृपया नेटवर्क चुनने के लिए Wi-Fi चालू करें।</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">इस सुविधा का उपयोग करने के लिए आपको स्थान की अनुमति देनी होगी।</string>
     <string name="run_in_flight_mode_summary">यदि आपके डिवाइस को उड़ान मोड के दौरान मैन्युअल Wi-Fi कनेक्शन का पता लगाने में समस्या हो तो सक्षम करें।</string>
     <string name="service_settings_summary">Syncthing को एक सेवा के रूप में चलाएँ। Android द्वारा इसे समाप्त होने से रोकने के लिए एक सतत अधिसूचना जोड़ता है। इस विकल्प की जाँच करने से ऑपरेटिंग सिस्टम स्टार्टअप पर Syncthing शुरू हो जाती है।</string>
@@ -300,11 +299,8 @@
     <string name="device_disconnected">डिस्कनेक्टिड</string>
     <string name="device_paused">रुका हुआ</string>
     <string name="device_state_unknown">अज्ञात</string>
-    <string name="syncthing_running">Syncthing चल रहा है।</string>
-    <string name="syncthing_not_running">Syncthing नहीं चल रहा है।</string>
     <string name="upload_title">अपलोड</string>
     <string name="syncthing_starting">Syncthing प्रारंभ हो रहा है।</string>
-    <string name="syncthing_has_crashed">Syncthing क्रैश हो गया है।</string>
     <string name="download_title_colon">"डाउनलोड: "</string>
     <string name="upload_title_colon">"अपलोड: "</string>
     <string name="ram_usage">RAM उपयोग</string>
@@ -333,8 +329,6 @@
     <string name="service_settings_title">सर्विस सेटिंग</string>
     <string name="run_as_background_service">बूट पर सेवा स्वचालित रूप से प्रारंभ करें</string>
     <string name="use_root_summary">यह एक अस्थिर सुविधा है जो Syncthing और आपके डिवाइस के साथ समस्याएँ पैदा कर सकती है। यदि आपको समस्याएँ आती हैं, तो आपको Syncthing को पुनः स्थापित करना पड़ सकता है।</string>
-    <string name="notification_type_title">अधिसूचना</string>
-    <string name="notification_type_summary">अधिसूचना प्रकार चुनें</string>
     <string name="preference_language_summary">ऐप की भाषा बदलें</string>
     <string name="start_into_web_gui_title">सीधे वेब GUI में प्रारंभ करें</string>
     <string name="start_into_web_gui_summary">ऐप शुरू करते समय मुख्य स्क्रीन के बजाय वेब GUI खोलें</string>
@@ -404,7 +398,6 @@
     <string name="web_gui_title">वेब GUI</string>
     <string name="appconfig_receiver_background_enabled">पृष्ठभूमि में चलने में सक्षम होने पर Syncthing को रोकना समर्थित नहीं है।</string>
     <string name="syncthing_disabled_reason_no_allowed_method">WiFi या मोबाइल डेटा पर सिंक करने के लिए कॉन्फ़िगर नहीं किया गया है</string>
-    <string name="status_fragment_title">स्थिति</string>
     <string name="syncthing_disabled">Syncthing अक्षम है</string>
     <string name="pull_order_type_smallestFirst">सबसे छोटा पहला</string>
     <string name="send_device_id_to">डिवाइस ID भेजें</string>
@@ -522,9 +515,6 @@
     <string name="power_source_ac_and_battery_power">AC और बैटरी पावर।</string>
     <string name="power_source_ac_power">AC पावर।</string>
     <string name="power_source_battery_power">बैटरी पावर।</string>
-    <string name="notification_type_normal">सामान्य</string>
-    <string name="notification_type_low_priority">कम प्राथमिकता</string>
-    <string name="notification_type_none">कोई भी नहीं</string>
     <string name="preference_language_title">भाषा</string>
     <string name="folder_type_send_receive">भेजें और प्राप्त करें</string>
     <string name="folder_type_send_only">केवल भेजें</string>

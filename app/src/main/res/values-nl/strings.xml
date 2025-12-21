@@ -95,11 +95,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Upload</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Status</string>
     <string name="syncthing_starting">Syncthing wordt gestart.</string>
-    <string name="syncthing_running">Syncthing wordt uitgevoerd.</string>
-    <string name="syncthing_not_running">Syncthing wordt niet uitgevoerd.</string>
-    <string name="syncthing_has_crashed">Syncthing is gecrasht.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Download: "</string>
@@ -209,7 +205,6 @@
     <string name="run_on_whitelisted_wifi_title">Uitvoeren via bepaalde wifi-netwerken</string>
     <string name="run_on_whitelisted_wifi_networks">Alleen uitvoeren op geselecteerde Wi-Fi-netwerken: %1$s</string>
     <string name="run_on_all_wifi_networks">Uitvoeren via alle wifi-netwerken.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Schakel wifi in om netwerken te selecteren.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Verbind met een wifi-netwerk om het aan de lijst toe te voegen.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Je moet LOCATIEtoestemming geven om deze functie te gebruiken.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Rechten vereist</string>
@@ -229,11 +224,6 @@
     <string name="advanced_folder_picker_summary">Kies een te synchroniseren map</string>
     <string name="use_root_title">Syncthing uitvoeren als rootgebruiker</string>
     <string name="use_root_summary">Dit is een instabiele functie die problemen kan veroorzaken met Syncthing en jouw apparaat. Als je problemen ervaart, moet je Syncthing opnieuw installeren.</string>
-    <string name="notification_type_title">Melding</string>
-    <string name="notification_type_summary">Soort melding kiezen</string>
-    <string name="notification_type_normal">Normaal</string>
-    <string name="notification_type_low_priority">Lage prioriteit</string>
-    <string name="notification_type_none">Geen</string>
     <string name="preference_language_title">Taal</string>
     <string name="preference_language_summary">Taal van de app wijzigen</string>
     <string name="start_into_web_gui_title">Rechtstreeks opstarten in web-GUI</string>

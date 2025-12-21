@@ -173,11 +173,6 @@
     <string name="advanced_folder_picker_summary">Επιλογή οποιουδήποτε φακέλου στη συσκευή για συγχρονισμό</string>
     <string name="use_root_title">Εκτέλεση του Syncthing ως υπερχρήστης</string>
     <string name="use_root_summary">Πρόκειται για μια πειραματική λειτουργία η οποία ενδέχεται να προκαλέσει προβλήματα στο Syncthing και τη συσκευή σας. Σε αυτή την περίπτωση, ίσως χρειαστεί να επανεγκαταστήσετε το Syncthing.</string>
-    <string name="notification_type_title">Ειδοποίηση</string>
-    <string name="notification_type_summary">Επιλέξτε τον τύπο ειδοποίησης</string>
-    <string name="notification_type_normal">Κανονική</string>
-    <string name="notification_type_low_priority">Χαμηλής προτεραιότητας</string>
-    <string name="notification_type_none">Καμία</string>
     <string name="preference_language_title">Γλώσσα</string>
     <string name="preference_language_summary">Αλλαγή γλώσσας της εφαρμογής</string>
     <string name="start_into_web_gui_title">Άνοιγμα απευθείας στο web GUI</string>

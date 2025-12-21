@@ -104,11 +104,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Wysyłanie</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Stan</string>
     <string name="syncthing_starting">Syncthing się uruchamia.</string>
-    <string name="syncthing_running">Syncthing jest uruchomiony.</string>
-    <string name="syncthing_not_running">Syncthing nie jest uruchomiony.</string>
-    <string name="syncthing_has_crashed">Syncthing uległ awarii.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Pobieranie: "</string>
@@ -219,7 +215,6 @@
     <string name="run_on_whitelisted_wifi_title">Działaj na wybranych sieciach Wi-Fi</string>
     <string name="run_on_whitelisted_wifi_networks">Działaj tylko na wybranych sieciach Wi-Fi: %1$s</string>
     <string name="run_on_all_wifi_networks">Działaj na wszystkich sieciach Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Włącz Wi-Fi dla wybranych sieci.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Podłącz się do sieci Wi-Fi, aby dodać ją do listy.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Musisz przyznać uprawnienia dostępu do lokalizacji, aby używać tej funkcji.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Wymagane uprawnienie</string>
@@ -242,8 +237,6 @@
     <string name="advanced_folder_picker_summary">Wybierz dowolny folder na urządzeniu do synchronizacji</string>
     <string name="use_root_title">Uruchamiaj Syncthing jako superużytkownik</string>
     <string name="use_root_summary">To jest niestabilna funkcja, która może sprawiać problemy z Syncthing i urządzeniami. W przypadku napotkania błędów możliwe, że niezbędne będzie przeinstalowanie programu.</string>
-    <string name="notification_type_title">Powiadomienie</string>
-    <string name="notification_type_summary">Wybierz rodzaj powiadomienia</string>
     <string name="preference_language_title">Język</string>
     <string name="preference_language_summary">Zmień język aplikacji</string>
     <string name="start_into_web_gui_title">Rozpocznij bezpośrednio w interfejsie sieciowym</string>
@@ -554,7 +547,4 @@
     <string name="require_notification_permission_desc">Wymagane do wyświetlania powiadomień dotyczących nowych połączeń urządzeń, żądań udostępnienia folderów itp.</string>
     <string name="notification_permission_title">Zezwolenie na powiadomienia</string>
     <string name="enable_notification_permission">Włącz zezwolenie na powiadomienia</string>
-    <string name="notification_type_normal">Normalne</string>
-    <string name="notification_type_none">Brak</string>
-    <string name="notification_type_low_priority">Niski priorytet</string>
 </resources>

@@ -103,11 +103,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Încarcă</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Stare</string>
     <string name="syncthing_starting">Syncthing pornește.</string>
-    <string name="syncthing_running">Syncthing rulează.</string>
-    <string name="syncthing_not_running">Syncthing nu rulează.</string>
-    <string name="syncthing_has_crashed">Syncthing s-a oprit neașteptat.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Descărcare: "</string>
@@ -218,7 +214,6 @@
     <string name="run_on_whitelisted_wifi_title">Rulează prin anumite rețele Wi-Fi</string>
     <string name="run_on_whitelisted_wifi_networks">Rulează numai prin anumite rețele Wi-Fi: %1$s</string>
     <string name="run_on_all_wifi_networks">Rulează prin toate rețelele Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Vă rugăm să activați Wi-Fi pentru a selecta rețelele.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Vă rugăm să vă conectați la o rețea Wi-Fi pentru a o putea adăuga la listă.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Trebuie să permiteți accesul la LOCAȚIE pentru a putea folosi această caracteristică.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Necesită permisiunea</string>
@@ -241,11 +236,6 @@
     <string name="advanced_folder_picker_summary">Alegeți orice director de pe dispozitiv pentru sincronizare</string>
     <string name="use_root_title">Rulează ca root</string>
     <string name="use_root_summary">Aceasta este o funcție instabilă care ar putea cauza probleme atăt Syncthing cât și dispozitivului dumneavoastră. Dacă vă confruntați cu probleme, v-a trebui să reinstalați Syncthing.</string>
-    <string name="notification_type_title">Notificare</string>
-    <string name="notification_type_summary">Alegeți tipul de notificare</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Prioritate mică</string>
-    <string name="notification_type_none">Nici una</string>
     <string name="preference_language_title">Limbă</string>
     <string name="preference_language_summary">Alegeți limba de afișat în aplicație</string>
     <string name="start_into_web_gui_title">Pornire direct în interfața web</string>

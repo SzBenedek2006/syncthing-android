@@ -95,11 +95,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Pujada</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Estat</string>
     <string name="syncthing_starting">El Syncthing s\'està iniciant</string>
-    <string name="syncthing_running">El Syncthing s\'està executant</string>
-    <string name="syncthing_not_running">El Syncthing no s\'està executant</string>
-    <string name="syncthing_has_crashed">El Syncthing ha tingut un problema.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Descàrrega: "</string>
@@ -209,7 +205,6 @@
     <string name="run_on_whitelisted_wifi_title">Executa amb les xarxes Wi-Fi especificades</string>
     <string name="run_on_whitelisted_wifi_networks">Executa només amb les xarxes Wi-Fi seleccionades: %1$s</string>
     <string name="run_on_all_wifi_networks">Executa amb totes les xarxes Wi-Fi</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Enceneu el Wi-Fi per selecionar les xarxes.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Connecteu-vos a una xarxa Wi-Fi per afegir-la a la llista.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Heu de proporcionar el permís d\'UBICACIÓ per poder fer això.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Calen permisos</string>
@@ -232,11 +227,6 @@
     <string name="advanced_folder_picker_summary">Seleccioneu qualsevol carpeta del dispositiu per sincronitzar-la</string>
     <string name="use_root_title">Executa el Syncthing com a Superusuari</string>
     <string name="use_root_summary">Aquesta característica és inestable i podria causar problemes amb el Syncthing i amb el vostre dispositiu. Si us trobeu amb problemes, potser haureu de reinstal·lar el Syncthing.</string>
-    <string name="notification_type_title">Notificació</string>
-    <string name="notification_type_summary">Seleccioneu el tipus de notificació</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Baixa Prioritat</string>
-    <string name="notification_type_none">Cap</string>
     <string name="preference_language_title">Idioma</string>
     <string name="preference_language_summary">Canvieu l\'idioma de l\'aplicació</string>
     <string name="start_into_web_gui_title">Inicia amb la interfície web directament</string>

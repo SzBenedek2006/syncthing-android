@@ -97,11 +97,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Вивантаження</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Стан</string>
     <string name="syncthing_starting">Syncthing запускається.</string>
-    <string name="syncthing_running">Syncthing працює.</string>
-    <string name="syncthing_not_running">Syncthing не запущено.</string>
-    <string name="syncthing_has_crashed">Syncthing впав.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Завантаження: "</string>
@@ -211,7 +207,6 @@
     <string name="run_on_whitelisted_wifi_title">Синхронізувати через вказані мережі Wi-Fi</string>
     <string name="run_on_whitelisted_wifi_networks">Синхронізувати лише при підключенні до обраних мереж Wi-Fi: %1$s</string>
     <string name="run_on_all_wifi_networks">Синхронізувати через всі мережі Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Увімкніть Wi-Fi, щоб обрати мережі.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Підʼєднайтеся до Wi-Fi, щоб додати його до списку.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Ви маєте надати дозвіл на доступ до місцезнаходження, щоб використовувати цю функцію.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Потрібен дозвіл</string>
@@ -234,11 +229,6 @@
     <string name="advanced_folder_picker_summary">Оберіть будь-яку теку на пристрої для синхронізації</string>
     <string name="use_root_title">Запустити Syncthing від імені Superuser</string>
     <string name="use_root_summary">Це нестабільна функція, яка може призвести до проблем з Syncthing та вашим пристроєм. Якщо ви виявите проблеми, може знадобитися повторне встановлення Syncthing.</string>
-    <string name="notification_type_title">Сповіщення</string>
-    <string name="notification_type_summary">Виберіть тип сповіщення</string>
-    <string name="notification_type_normal">Нормальне</string>
-    <string name="notification_type_low_priority">Низький пріоритет</string>
-    <string name="notification_type_none">Немає</string>
     <string name="preference_language_title">Мова (Language)</string>
     <string name="preference_language_summary">Змінити мову додатку</string>
     <string name="start_into_web_gui_title">Запуск веб-інтерфейсу при вході в додаток</string>

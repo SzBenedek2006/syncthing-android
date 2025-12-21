@@ -102,11 +102,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Igo</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Egoera</string>
     <string name="syncthing_starting">Syncthing hasita dago.</string>
-    <string name="syncthing_running">Syncthing martxan dago.</string>
-    <string name="syncthing_not_running">Syncthing ez dago martxan.</string>
-    <string name="syncthing_has_crashed">Syncthing-ek huts egin du.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Deskarga: "</string>
@@ -217,7 +213,6 @@
     <string name="run_on_whitelisted_wifi_title">Exekutatu zehaztutako Wi-Fi sareetan</string>
     <string name="run_on_whitelisted_wifi_networks">Exekutatu bakarrik aukeratutako WI-FI sareetan: %1$s</string>
     <string name="run_on_all_wifi_networks">Exekutatu Wi-Fi sare guztietan.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Aktibatu Wi-Fia sareak hautatzeko.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Konektatu Wi-Fi batera zerrendan gehitzeko.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Kokapenari baimena eman behar diozu funtzio hori erabiltzeko.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Baimena beharrezkoa da</string>
@@ -240,11 +235,6 @@
     <string name="advanced_folder_picker_summary">Aukeratu gailuaren karpetaren bat sinkronizatzeko</string>
     <string name="use_root_title">ExekutatuSyncthing supererabiltzaile gisa</string>
     <string name="use_root_summary">Syncthingekin eta zure gailuarekin arazoak sor ditzakeen ezaugarri ezegonkor bat da hau. Arazorik balego, Syncthing berrinstalatu beharko zenuke.</string>
-    <string name="notification_type_title">Jakinarazpena</string>
-    <string name="notification_type_summary">Aukeratu jakinarazpen mota</string>
-    <string name="notification_type_normal">Arrunta</string>
-    <string name="notification_type_low_priority">Lehentasun txikia</string>
-    <string name="notification_type_none">Bat ere ez</string>
     <string name="preference_language_title">Hizkuntza</string>
     <string name="preference_language_summary">Aldatu aplikazioaren hizkuntza</string>
     <string name="start_into_web_gui_title">Hasi zuzenean GUI webean</string>

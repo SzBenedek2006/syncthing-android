@@ -165,11 +165,6 @@
     <string name="advanced_folder_picker">Usar el avanzado Seleccionador de Carpetas</string>
     <string name="advanced_folder_picker_summary">Seleccionar cualquier carpeta en el dispositivo para sincronizar</string>
     <string name="use_root_title">Ejecutar Syncthing como Superusuario</string>
-    <string name="notification_type_title">Notificación</string>
-    <string name="notification_type_summary">Escoger el tipo de notificación</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Baja Prioridad</string>
-    <string name="notification_type_none">Ninguna</string>
     <string name="device_name">Nombre del dispositivo</string>
     <string name="listen_address">Direcciones de escucha del Protocolo de Sincronización</string>
     <string name="max_recv_kbps">Límite de Tasa de Entrada (KiB/s)</string>

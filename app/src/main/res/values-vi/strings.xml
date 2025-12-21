@@ -94,11 +94,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Tải lên</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Trạng thái</string>
     <string name="syncthing_starting">Syncthing đang khởi động.</string>
-    <string name="syncthing_running">Syncthing đang chạy.</string>
-    <string name="syncthing_not_running">Syncthing đang không chạy.</string>
-    <string name="syncthing_has_crashed">Syncthing đã dừng đột ngột.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Tải xuống: "</string>
@@ -208,7 +204,6 @@
     <string name="run_on_whitelisted_wifi_title">Chạy khi có mạng Wi-Fi được chỉ định</string>
     <string name="run_on_whitelisted_wifi_networks">Chỉ chạy khi có các mạng Wi-Fi được chọn: %1$s</string>
     <string name="run_on_all_wifi_networks">Chạy khi có tất cả mạng Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Vui lòng bật Wi-Fi để chọn mạng.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Vui lòng kết nối đến một mạng Wi-Fi để thêm nó vào danh sách.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Bạn cần cấp quyền VỊ TRÍ để sử dụng tính năng này.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Yêu cầu quyền</string>
@@ -231,11 +226,6 @@
     <string name="advanced_folder_picker_summary">Chọn bất kỳ th.mục nào trên th.bị để đồng bộ</string>
     <string name="use_root_title">Chạy Syncthing với quyền Superuser</string>
     <string name="use_root_summary">Đây là một tính năng không ổn định có thể gây ra vấn đề với Syncthing và thiết bị. Nếu bạn gặp vấn đề, bạn có thể sẽ phải cài đặt lại Syncthing.</string>
-    <string name="notification_type_title">Thông báo</string>
-    <string name="notification_type_summary">Chọn dạng thông báo</string>
-    <string name="notification_type_normal">Thông thường</string>
-    <string name="notification_type_low_priority">Ưu tiên thấp</string>
-    <string name="notification_type_none">Không thông báo</string>
     <string name="preference_language_title">Ngôn ngữ</string>
     <string name="preference_language_summary">Thay đổi ngôn ngữ ứng dụng</string>
     <string name="start_into_web_gui_title">Khởi động trực tiếp vào giao diện web</string>

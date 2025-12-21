@@ -63,10 +63,7 @@
     <!--Title for current download rate-->
     <!--Title for current upload rate-->
     <!--StatusFragment-->
-    <string name="status_fragment_title">තත්‍වය</string>
     <string name="syncthing_starting">සයින්තින් ඇරඹෙමින්.</string>
-    <string name="syncthing_running">සයින්තින් ක්‍රියාත්මකයි.</string>
-    <string name="syncthing_not_running">සයින්තින් ධාවනය නොවේ.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <!--Same as upload_title with a colon and space appended-->
@@ -136,7 +133,6 @@
     <!--Preference screen - Run conditions-->
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">අවසරය වුවමනාය</string>
     <!--Preferences - Behaviour-->
-    <string name="notification_type_title">දැනුම්දීම</string>
     <string name="preference_language_title">භාෂාව</string>
     <string name="preference_language_summary">යෙදමේ භාෂාව සංශෝධනය</string>
     <string name="preference_theme_title">තේමාව</string>

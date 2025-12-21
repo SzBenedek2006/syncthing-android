@@ -95,11 +95,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Upload</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Status</string>
     <string name="syncthing_starting">Syncthing starter.</string>
-    <string name="syncthing_running">Syncthing kører.</string>
-    <string name="syncthing_not_running">Syncthing kører ikke.</string>
-    <string name="syncthing_has_crashed">Syncthing er crashet.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Download: "</string>
@@ -209,7 +205,6 @@
     <string name="run_on_whitelisted_wifi_title">Kør på bestemte Wi-Fi-netværk</string>
     <string name="run_on_whitelisted_wifi_networks">Kør kun på valgte trådløse netværk: %1$s</string>
     <string name="run_on_all_wifi_networks">Kør på alle Wi-Fi-netværk.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Slå Wi-Fi til for at vælge netværk.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Opret forbindelse til et Wi-Fi for at tilføje det til listen.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Du skal give placeringstilladelse til at bruge denne funktion.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Tilladelse påkrævet</string>
@@ -232,11 +227,6 @@
     <string name="advanced_folder_picker_summary">Vælg en valgfri mappe på enheden for synkronisering</string>
     <string name="use_root_title">Kør Syncthing som Superbruger</string>
     <string name="use_root_summary">Dette er en ustabil feature som kan forudsage problemer med Syncthing og din enhed. Hvis du støder på problemer, kan det være du er nødt til at geninstallere Syncthing.</string>
-    <string name="notification_type_title">Notifikation</string>
-    <string name="notification_type_summary">Vælg notifikationstype</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Lav prioritet</string>
-    <string name="notification_type_none">Ingen</string>
     <string name="preference_language_title">Sprog</string>
     <string name="preference_language_summary">Skift appens sprog</string>
     <string name="start_into_web_gui_title">Start direkte i grafisk brugerflade (GUI) på web</string>

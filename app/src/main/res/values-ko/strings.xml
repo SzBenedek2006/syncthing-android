@@ -90,11 +90,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">업로드</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">상태</string>
     <string name="syncthing_starting">Syncthing이 시작 중입니다.</string>
-    <string name="syncthing_running">Syncthing이 실행중입니다.</string>
-    <string name="syncthing_not_running">Syncthing이 실행중이 아닙니다.</string>
-    <string name="syncthing_has_crashed">Syncthing이 중단되었습니다.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"수신: "</string>
@@ -204,11 +200,6 @@
     <string name="advanced_folder_picker_summary">기기에서 동기화에 사용할 폴더를 골라 주세요</string>
     <string name="use_root_title">Syncthing을 Superuser 권한으로 실행</string>
     <string name="use_root_summary">이 기능은 불안정하며 Syncthing과 기기에 문제를 일으킬 수 있습니다. 문제가 발생한 경우 Syncthing을 재설치 해야 할 수도 있습니다.</string>
-    <string name="notification_type_title">알림</string>
-    <string name="notification_type_summary">알림 유형을 선택하십시오</string>
-    <string name="notification_type_normal">일반</string>
-    <string name="notification_type_low_priority">우선 순위 낮음</string>
-    <string name="notification_type_none">사용 안 함</string>
     <string name="preference_language_title">언어</string>
     <string name="preference_language_summary">앱 언어 변경</string>
     <string name="start_into_web_gui_title">웹 GUI로 바로 시작</string>
@@ -510,7 +501,6 @@
 \n
 \n아래 버튼을 눌러 데이터베이스를 재설정하고 Syncthing을 시작하세요.</string>
     <string name="dialog_exit_while_running_as_service_message">참고하세요: 사용자가 이 응용 프로그램을 부팅 시 자동으로 시작하도록 설정했습니다. 따라서 이 응용 프로그램은 실행 조건을 모니터링하고 조건이 맞으면 언제든지 백그라운드에서 동기화를 수행합니다. 심각한 문제가 발생한 경우에만 수동으로 종료해야 합니다. 그렇지 않으면 설정에서 \'부팅 시 자동 시작\'을 비활성화하세요. 기기를 재부팅하기 전까지 종료하시겠습니까?</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">네트워크를 선택하려면 Wi-Fi를 켜 주세요.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_content">Android 8.1부터는 Wi-Fi 이름을 읽으려면 위치 접근 권한이 필요합니다. 이 권한을 부여해야만 이 기능을 사용할 수 있습니다.</string>
     <string name="power_source_title">기기가 다음으로 구동될 때 실행</string>
     <string name="run_in_flight_mode_summary">기기가 비행 모드 중 수동 Wi-Fi 연결을 감지하는 데 문제가 있는 경우 이 옵션을 활성화하세요.</string>

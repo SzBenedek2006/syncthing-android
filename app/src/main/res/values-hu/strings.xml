@@ -95,11 +95,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Feltöltés</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Állapot</string>
     <string name="syncthing_starting">A Syncthing elindul.</string>
-    <string name="syncthing_running">A Syncthing fut.</string>
-    <string name="syncthing_not_running">A Syncthing nem fut.</string>
-    <string name="syncthing_has_crashed">A Syncthing összeomlott.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Letöltve: "</string>
@@ -209,7 +205,6 @@
     <string name="run_on_whitelisted_wifi_title">Futtatás megadott Wi-Fi hálózatokon</string>
     <string name="run_on_whitelisted_wifi_networks">Csak a kijelölt Wi-Fi hálózatokon fut: %1$s</string>
     <string name="run_on_all_wifi_networks">Futtatás minden W-Fi hálózaton.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">A hálózatok kiválasztásához kapcsold be a Wi-Fi-t.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Kapcsolódjon egy Wifi hálózathoz, hogy hozzá lehessen adni a listához.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">A funkció használatához engedélyezni kell a hozzáférést a földrajzi helyhez</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Hozzáférés szükséges</string>
@@ -232,11 +227,6 @@
     <string name="advanced_folder_picker_summary">Bármely mappa kiválasztható szinkronizáláshoz</string>
     <string name="use_root_title">Syncthing futtatása Superuser-ként</string>
     <string name="use_root_summary">Ez egy kísérleti funkció, amely problémákat okozhat mind a Syncthing, mind az eszközöd számára. Ha ilyenbe ütközöl, előfordulhat, hogy újra kell telepítened az alkalmazást.</string>
-    <string name="notification_type_title">Értesítés</string>
-    <string name="notification_type_summary">Értesítés típusának kiválasztása</string>
-    <string name="notification_type_normal">Normál</string>
-    <string name="notification_type_low_priority">Alacsony prioritású</string>
-    <string name="notification_type_none">Semmilyen</string>
     <string name="preference_language_title">Nyelv</string>
     <string name="preference_language_summary">Alkalmazás nyelvének megváltoztatása</string>
     <string name="start_into_web_gui_title">A webes felület legyen a kezdőképernyő</string>

@@ -96,11 +96,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Emission</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">État</string>
     <string name="syncthing_starting">Syncthing démarre.</string>
-    <string name="syncthing_running">Syncthing fonctionne.</string>
-    <string name="syncthing_not_running">Syncthing ne fonctionne pas.</string>
-    <string name="syncthing_has_crashed">Syncthing s\'est vautré.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Réception : "</string>
@@ -210,7 +206,6 @@
     <string name="run_on_whitelisted_wifi_title">Exécuter sur les réseaux Wi-Fi spécifiés</string>
     <string name="run_on_whitelisted_wifi_networks">Exécuter uniquement sur certains réseaux Wi-Fi : %1$s</string>
     <string name="run_on_all_wifi_networks">Exécuter sur tous les réseaux Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Veuillez activer le Wi-Fi pour sélectionner un réseau.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Veuillez vous connecter à un réseau Wi-Fi pour l\'ajouter à la liste.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Vous devez accorder la permission LOCALISATION pour utiliser cette fonctionnalité.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Permission requise</string>
@@ -233,11 +228,6 @@
     <string name="advanced_folder_picker_summary">Permettre la sélection de n\'importe quel répertoire de cet appareil pour créer les partages</string>
     <string name="use_root_title">Faire fonctionner syncthing en super-utilisateur</string>
     <string name="use_root_summary">Ceci est une fonction instable qui peut causer des problèmes entre Syncthing et votre appareil. Si vous rencontrez des problèmes, vous devrez réinstaller Syncthing.</string>
-    <string name="notification_type_title">Notification</string>
-    <string name="notification_type_summary">Choisissez le mode de notification</string>
-    <string name="notification_type_normal">Permanente</string>
-    <string name="notification_type_low_priority">Discrète</string>
-    <string name="notification_type_none">Aucune</string>
     <string name="preference_language_title">Langue</string>
     <string name="preference_language_summary">Changer la langue de l\'application</string>
     <string name="start_into_web_gui_title">Démarrer directement dans l\'interface WEB</string>

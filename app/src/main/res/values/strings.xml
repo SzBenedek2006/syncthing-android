@@ -152,11 +152,7 @@
 
     <!-- StatusFragment -->
 
-    <string name="status_fragment_title">Status</string>
     <string name="syncthing_starting">Syncthing is starting.</string>
-    <string name="syncthing_running">Syncthing is running.</string>
-    <string name="syncthing_not_running">Syncthing is not running.</string>
-    <string name="syncthing_has_crashed">Syncthing has crashed.</string>
 
     <!-- DrawerFragment -->
 
@@ -321,7 +317,6 @@
     <string name="run_on_whitelisted_wifi_networks">Run only on selected Wi-Fi networks: %1$s</string>
     <string name="run_on_all_wifi_networks">Run on all Wi-Fi networks.</string>
 
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Please turn on Wi-Fi to select networks.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Please connect to a Wi-Fi to add it to the list.</string>
 
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">You need to grant LOCATION permission to use this feature.</string>
@@ -356,13 +351,6 @@
 
     <string name="use_root_title">Run Syncthing as Superuser</string>
     <string name="use_root_summary">This is an unstable feature that may cause problems with Syncthing and with your device. If you encounter problems, you may have to reinstall Syncthing.</string>
-
-    <string name="notification_type_title">Notification</string>
-    <string name="notification_type_summary">Choose the notification type</string>
-
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Low Priority</string>
-    <string name="notification_type_none">None</string>
 
     <string name="preference_language_title">Language</string>
     <string name="preference_language_summary">Change the app language</string>
@@ -782,7 +770,6 @@
     <string name="notification_permission_title">Notification permission</string>
     <string name="enable_notification_permission">Enable Notification Permission</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_test">Test</string>
 
 </resources>

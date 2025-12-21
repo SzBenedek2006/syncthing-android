@@ -94,11 +94,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">上传</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">状态</string>
     <string name="syncthing_starting">Syncthing 正在启动。</string>
-    <string name="syncthing_running">Syncthing 正在运行。</string>
-    <string name="syncthing_not_running">Syncthing 未在运行。</string>
-    <string name="syncthing_has_crashed">Syncthing 已崩溃。</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"下载： "</string>
@@ -208,7 +204,6 @@
     <string name="run_on_whitelisted_wifi_title">用指定 Wi-Fi 网络运行</string>
     <string name="run_on_whitelisted_wifi_networks">仅用选定的 Wi-Fi 网络运行：%1$s</string>
     <string name="run_on_all_wifi_networks">用所有 Wi-Fi 网络运行。</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">请打开 Wi-Fi 以选择网络。</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">请连接到 Wi-Fi 以将其添加到列表中。</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">您需要授予位置权限才能使用此功能。</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">需要权限</string>
@@ -231,11 +226,6 @@
     <string name="advanced_folder_picker_summary">可以选择设备上任何文件夹</string>
     <string name="use_root_title">使用超级用户运行 Syncthing</string>
     <string name="use_root_summary">该项功能不稳定，可能导致您的设备和 Syncthing 出问题。如果遇到了问题，您可能要重新安装 Syncthing。</string>
-    <string name="notification_type_title">通知</string>
-    <string name="notification_type_summary">选择通知类型</string>
-    <string name="notification_type_normal">常规</string>
-    <string name="notification_type_low_priority">低优先级</string>
-    <string name="notification_type_none">没有</string>
     <string name="preference_language_title">语言</string>
     <string name="preference_language_summary">更改应用语言</string>
     <string name="start_into_web_gui_title">启动直接进入 Web GUI</string>

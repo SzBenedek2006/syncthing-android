@@ -97,11 +97,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Rychlost odesílání</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Stav</string>
     <string name="syncthing_starting">Syncthing startuje.</string>
-    <string name="syncthing_running">Syncthing je spuštěn.</string>
-    <string name="syncthing_not_running">Syncthing není spuštěn.</string>
-    <string name="syncthing_has_crashed">Syncthing havaroval.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Rychlost stahování: "</string>
@@ -211,7 +207,6 @@
     <string name="run_on_whitelisted_wifi_title">Spouštět na zadaných Wi-Fi sítích</string>
     <string name="run_on_whitelisted_wifi_networks">Spustit pouze na vybraných Wi-Fi sítích: %1$s</string>
     <string name="run_on_all_wifi_networks">Spouštět na všech Wi-Fi sítích.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Pro výběr sítí zapněte Wi-Fi.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Pro přidání do seznamu se prosím nejdříve připojte k Wi-Fi.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Pro použití této funkce je nutné udělit oprávnění k poloze.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Je vyžadováno oprávnění</string>
@@ -234,11 +229,6 @@
     <string name="advanced_folder_picker_summary">Vyberte jakoukoliv složku v přístroji pro synchronizaci</string>
     <string name="use_root_title">Spustit Syncthing jako superuživatel</string>
     <string name="use_root_summary">Toto je nestabilní funkce, která může způsobit problémy se Syncthing a s Vaším zařízením. Pokud narazíte na problémy, může být potřeba Syncthing přeinstalovat.</string>
-    <string name="notification_type_title">Upozornění</string>
-    <string name="notification_type_summary">Vybrat typ upozornění</string>
-    <string name="notification_type_normal">Normální</string>
-    <string name="notification_type_low_priority">Nízká priorita</string>
-    <string name="notification_type_none">Žádné</string>
     <string name="preference_language_title">Jazyk</string>
     <string name="preference_language_summary">Změnit jazyk aplikace</string>
     <string name="start_into_web_gui_title">Spouštět přímo do Syncthing GUI</string>

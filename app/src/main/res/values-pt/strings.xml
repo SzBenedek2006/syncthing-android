@@ -96,11 +96,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Envio</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Estado</string>
     <string name="syncthing_starting">O Synthing está a iniciar.</string>
-    <string name="syncthing_running">O Syncthing está em execução.</string>
-    <string name="syncthing_not_running">O Syncthing não está a correr.</string>
-    <string name="syncthing_has_crashed">O Syncthing travou.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Recepção: "</string>
@@ -210,7 +206,6 @@
     <string name="run_on_whitelisted_wifi_title">Executar em redes Wi-Fi específicas</string>
     <string name="run_on_whitelisted_wifi_networks">Correr somente sobre redes Wi-Fi seleccionadas: %1$s</string>
     <string name="run_on_all_wifi_networks">Correr sobre todas as redes Wi-Fi.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Por favor ligue o Wi-Fi para seleccionar redes.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Por favor ligue-se a uma rede Wi-Fi para a adicionar à lista.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Precisa dar permissão de localização para usar esse recurso.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Permissão requerida</string>
@@ -233,11 +228,6 @@
     <string name="advanced_folder_picker_summary">Seleccione qualquer pasta no dispositivo para sincronizar</string>
     <string name="use_root_title">Correr o Syncthing como superutilizador</string>
     <string name="use_root_summary">Esta é uma funcionalidade instável que pode causar problemas com o Syncthing e com o seu dispositivo. Se encontrar problemas, pode ter de reinstalar o Syncthing.</string>
-    <string name="notification_type_title">Notificação</string>
-    <string name="notification_type_summary">Escolha o tipo de notificação</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Baixa prioridade</string>
-    <string name="notification_type_none">Nenhuma</string>
     <string name="preference_language_title">Idioma</string>
     <string name="preference_language_summary">Alterar o idioma da app</string>
     <string name="start_into_web_gui_title">Iniciar automaticamente na interface web.</string>

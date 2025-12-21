@@ -95,11 +95,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Hochladen</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Status</string>
     <string name="syncthing_starting">Syncthing startet.</string>
-    <string name="syncthing_running">Syncthing läuft.</string>
-    <string name="syncthing_not_running">Syncthing läuft gerade nicht.</string>
-    <string name="syncthing_has_crashed">Syncthing ist abgestürzt.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"Herunterladen: "</string>
@@ -209,7 +205,6 @@
     <string name="run_on_whitelisted_wifi_title">Bei ausgewählten WLANs starten</string>
     <string name="run_on_whitelisted_wifi_networks">Nur in ausgewählten WLAN-Netzwerken starten: %1$s</string>
     <string name="run_on_all_wifi_networks">In allen WLAN-Netzwerken starten.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Bitte WLAN aktivieren, um Netzwerke auszuwählen.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Bitte verbinde Dich mit einem W-Lan, um dieses der Liste hinzuzufügen.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Bitte die Standortberechtigung gewähren, um diese Funktion nutzen zu können.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">Berechtigung benötigt</string>
@@ -232,11 +227,6 @@
     <string name="advanced_folder_picker_summary">Alle Ordner auf dem Gerät für Synchronisation auswählbar</string>
     <string name="use_root_title">Syncthing als Superuser ausführen</string>
     <string name="use_root_summary">Dies ist eine instabile Funktion, die in Syncthing und auf deinem Gerät Probleme auslösen kann. Wenn du Probleme feststellst, musst du Syncthing möglicherweise neu installieren.</string>
-    <string name="notification_type_title">Permanente Benachrichtigung</string>
-    <string name="notification_type_summary">Wähle die Art der Benachrichtigung</string>
-    <string name="notification_type_normal">Normale Priorität</string>
-    <string name="notification_type_low_priority">Geringe Priorität</string>
-    <string name="notification_type_none">Keine Priorität</string>
     <string name="preference_language_title">Sprache</string>
     <string name="preference_language_summary">App-Sprache ändern</string>
     <string name="start_into_web_gui_title">Direkt die Weboberfläche öffnen</string>

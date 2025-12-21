@@ -174,8 +174,6 @@
     <string name="advanced_folder_picker_summary">Valitse mikä tahansa laitteen kansio synkronointiin.</string>
     <string name="use_root_title">Käynnistä Syncthing pääkäyttäjän oikeuksin.</string>
     <string name="use_root_summary">Tämä on epävakaa ominaisuus joka voi aiheuttaa ongelmia Synthingin ja laitteesi kanssa. Jos sinulle tulee vastaan ongelmia, voit joutua asentamaan Syncthingin uudelleen.</string>
-    <string name="notification_type_title">Ilmoitus</string>
-    <string name="notification_type_summary">Valitse ilmoituksen tyyppi</string>
     <string name="preference_language_title">Kieli</string>
     <string name="preference_language_summary">Muuta sovelluksen kieli</string>
     <string name="preference_theme_title">Teema</string>

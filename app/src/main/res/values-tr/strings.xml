@@ -102,11 +102,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">Gönderme</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">Durum</string>
     <string name="syncthing_starting">Syncthing başlıyor.</string>
-    <string name="syncthing_running">Syncthing çalışıyor.</string>
-    <string name="syncthing_not_running">Syncthing çalışmıyor.</string>
-    <string name="syncthing_has_crashed">Syncthing çöktü.</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"İndirme: "</string>
@@ -217,7 +213,6 @@
     <string name="run_on_whitelisted_wifi_title">Belirtilen kablosuz (Wi-Fi) ağlarda çalıştır</string>
     <string name="run_on_whitelisted_wifi_networks">Yalnızca seçilen kablosuz (Wi-Fi) ağlarda çalıştır: %1$s</string>
     <string name="run_on_all_wifi_networks">Tüm kablosuz (Wi-Fi) ağlarda çalıştır.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Ağları seçmek için lütfen kablosuzu (Wi-Fi) açın.</string>
     <string name="sync_only_wifi_ssids_connect_to_wifi">Listeye eklemek için lütfen bir kablosuza (Wi-Fi) bağlanın.</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">Bu özelliği kullanmak için KONUM izni vermeniz gerekiyor.</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">İzin gerekli</string>
@@ -240,11 +235,6 @@
     <string name="advanced_folder_picker_summary">Eşitleme için cihazda herhangi bir klasör seçin</string>
     <string name="use_root_title">Syncthing\'i Süper Kullanıcı olarak çalıştır</string>
     <string name="use_root_summary">Bu, Syncting ve cihazınız ile sorunlara neden olabilen kararsız bir özelliktir. Eğer sorun yaşarsanız, Syncthing\'i yeniden yüklemeniz gerekebilir.</string>
-    <string name="notification_type_title">Bildirim</string>
-    <string name="notification_type_summary">Bildirim türünü seçin</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Düşük Öncelikli</string>
-    <string name="notification_type_none">Hiçbiri</string>
     <string name="preference_language_title">Dil</string>
     <string name="preference_language_summary">Uygulama dilini değiştirin</string>
     <string name="start_into_web_gui_title">Doğrudan web GKA içinde başlat</string>

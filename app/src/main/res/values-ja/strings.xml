@@ -90,11 +90,7 @@
     <!--Title for current upload rate-->
     <string name="upload_title">アップロード</string>
     <!--StatusFragment-->
-    <string name="status_fragment_title">ステータス</string>
     <string name="syncthing_starting">Syncthing は開始中です。</string>
-    <string name="syncthing_running">Syncthing は実行中です。</string>
-    <string name="syncthing_not_running">Syncthing は実行していません。</string>
-    <string name="syncthing_has_crashed">Syncthing がクラッシュしました。</string>
     <!--DrawerFragment-->
     <!--Same as download_title with a colon and space appended-->
     <string name="download_title_colon">"ダウンロード: "</string>
@@ -204,7 +200,6 @@
     <string name="run_on_whitelisted_wifi_title">特定の Wi-Fi ネットワーク上で実行する</string>
     <string name="run_on_whitelisted_wifi_networks">選択された Wi-Fi ネットワーク上でのみ実行する: %1$s</string>
     <string name="run_on_all_wifi_networks">すべての Wi-Fi ネットワークで実行します。</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">ネットワークを選択するために Wi-Fi をオンにしてください。</string>
     <string name="sync_only_wifi_ssids_need_to_grant_location_permission">この機能を使用するには位置情報のアクセス許可を付与する必要があります。</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_title">アクセス許可が必要です</string>
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_content">Android 8.1 以降は、Wi-Fi 名を読み取るには位置情報のアクセスが必要です。 このアクセス許可を付与した場合にのみ、この機能を使用できます。</string>
@@ -226,11 +221,6 @@
     <string name="advanced_folder_picker_summary">デバイス上の任意のフォルダーを選択できます</string>
     <string name="use_root_title">スーパーユーザーとして実行</string>
     <string name="use_root_summary">これは Syncthing とお使いのデバイスに問題が生じる可能性のある、安定していない機能です。問題が発生した場合は、Syncthing の再インストールが必要な場合があります。</string>
-    <string name="notification_type_title">通知</string>
-    <string name="notification_type_summary">通知のタイプを選択します</string>
-    <string name="notification_type_normal">通常</string>
-    <string name="notification_type_low_priority">優先度低</string>
-    <string name="notification_type_none">なし</string>
     <string name="preference_language_title">言語</string>
     <string name="preference_language_summary">アプリの言語を変更します</string>
     <string name="start_into_web_gui_title">Web GUI に直接起動する</string>

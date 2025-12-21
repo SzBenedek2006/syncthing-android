@@ -146,11 +146,6 @@
     <string name="advanced_folder_picker_summary">Velg en mappe på enheten for synkronisering</string>
     <string name="use_root_title">Kjør Syncthing som superbruker</string>
     <string name="use_root_summary">Dette er en ustabil funksjon som kan forårsake problemer med Syncthing og med din enhet. Hvis det oppstår problemer kan du bli nødt til å reinstallere Syncthing.</string>
-    <string name="notification_type_title">Varsler</string>
-    <string name="notification_type_summary">Velg varslingstype</string>
-    <string name="notification_type_normal">Normal</string>
-    <string name="notification_type_low_priority">Lav prioritet</string>
-    <string name="notification_type_none">Ingen</string>
     <string name="device_name">Enhetsnavn</string>
     <string name="listen_address">Lytteadresser for synkeprotokoll</string>
     <string name="max_recv_kbps">Grense for innkommende trafikk (KiB/s)</string>
@@ -340,11 +335,7 @@
     <string name="open_file_manager">Åpne filbehandler</string>
     <string name="device_paused">Midlertidig stanset</string>
     <string name="toast_no_file_manager">Ingen kompatibel filutforsker funnet</string>
-    <string name="status_fragment_title">Status</string>
     <string name="syncthing_starting">Syncthing har startet.</string>
-    <string name="syncthing_running">Syncthing kjører.</string>
-    <string name="syncthing_not_running">Syncthing kjører ikke.</string>
-    <string name="syncthing_has_crashed">Syncthing har krasjet.</string>
     <string name="folder_fileWatcher">Overvåk for endringer</string>
     <string name="folder_fileWatcherDescription">Ber operativsystemet varsle om endringer i filer. Hvis deaktiveres, går det tilbake til periodiske, timesvis skanninger.</string>
     <string name="ignore_patterns">Ignorer mønstre</string>
@@ -361,7 +352,6 @@
     <string name="run_on_wifi_title">Kjør på wifi</string>
     <string name="run_on_wifi_summary">Kjør nå enhet er koblet til et wifi nettverk.</string>
     <string name="run_on_all_wifi_networks">Kjør på alle wifi nettverk.</string>
-    <string name="sync_only_wifi_ssids_wifi_turn_on_wifi">Vennligst slå på wifi for å velge nettverk.</string>
     <string name="preference_theme_follow_system">Følg system</string>
     <string name="preference_theme_option_light">Lys</string>
     <string name="environment_variables">Miljøvariabler</string>
