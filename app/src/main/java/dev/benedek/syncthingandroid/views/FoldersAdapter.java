@@ -119,7 +119,7 @@ public class FoldersAdapter extends ArrayAdapter<Folder> {
                         break;
                     case "scanning":
                     case "syncing":
-                        binding.state.setTextColor(ContextCompat.getColor(mContext, R.color.text_blue));
+                        binding.state.setTextColor(ContextCompat.getColor(mContext, R.color.md_theme_onPrimaryContainer));
                         break;
                     case "error":
                     default:

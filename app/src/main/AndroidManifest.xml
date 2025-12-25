@@ -44,15 +44,10 @@
         android:extractNativeLibs="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Syncthing">
-        <activity
-            android:name=".Test"
-            android:exported="false"
-            android:label="@string/title_activity_test"
-            android:theme="@style/Theme.Syncthing" />
+
         <activity
             android:name=".activities.FirstStartActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,7 +63,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activities.WebGuiActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -170,28 +165,28 @@
             android:name=".activities.FolderTypeDialogActivity"
             android:label="@string/folder_type"
             android:parentActivityName=".activities.FolderActivity"
-            android:theme="@style/Theme.Syncthing.Dialog">
+            android:theme="@style/Theme.Syncthing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
         </activity>
         <activity
             android:name=".activities.PullOrderDialogActivity"
             android:label="@string/pull_order"
             android:parentActivityName=".activities.FolderActivity"
-            android:theme="@style/Theme.Syncthing.Dialog">
+            android:theme="@style/Theme.Syncthing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
         </activity>
         <activity
             android:name=".activities.VersioningDialogActivity"
             android:label="@string/file_versioning"
             android:parentActivityName=".activities.FolderActivity"
-            android:theme="@style/Theme.Syncthing.Dialog">
+            android:theme="@style/Theme.Syncthing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.FolderActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
         </activity>
         <activity
             android:name=".activities.QRScannerActivity"
@@ -199,7 +194,7 @@
             android:parentActivityName=".activities.DeviceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.dev.nutomic.syncthingandroid.activities.DeviceActivity" />
+                android:value="dev.benedek.syncthingandroid.activities.DeviceActivity" />
         </activity>
     </application>
 

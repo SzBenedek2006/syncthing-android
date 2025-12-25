@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="?dialogPreferredPadding"
-    style="@style/Theme.Syncthing.Dialog">
+    style="@style/Theme.Syncthing">
 
     <Spinner
         android:id="@+id/versioningTypeSpinner"

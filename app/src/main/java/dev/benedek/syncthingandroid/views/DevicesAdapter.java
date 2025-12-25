@@ -78,7 +78,7 @@ public class DevicesAdapter extends ArrayAdapter<Device> {
                 status.setTextColor(ContextCompat.getColor(getContext(), R.color.text_green));
             } else {
                 status.setText(r.getString(R.string.device_syncing, conn.completion));
-                status.setTextColor(ContextCompat.getColor(getContext(), R.color.text_blue));
+                status.setTextColor(ContextCompat.getColor(getContext(), R.color.md_theme_onPrimaryContainer));
             }
             return convertView;
         }

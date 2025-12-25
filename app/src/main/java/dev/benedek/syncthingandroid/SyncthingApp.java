@@ -14,7 +14,7 @@ public class SyncthingApp extends Application {
 
     @Override
     public void onCreate() {
-        DynamicColors.applyToActivitiesIfAvailable(this);
+        //DynamicColors.applyToActivitiesIfAvailable(this);
 
         super.onCreate();
 

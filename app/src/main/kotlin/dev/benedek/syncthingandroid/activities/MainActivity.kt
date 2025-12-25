@@ -223,15 +223,15 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
         val fm = supportFragmentManager
         if (savedInstanceState != null) {
-            mFolderListFragment = fm.getFragment(
+            mFolderListFragment = (fm.getFragment(
                 savedInstanceState, FolderListFragment::class.java.getName()
-            ) as FolderListFragment?
-            mDeviceListFragment = fm.getFragment(
+            ) as? FolderListFragment) ?: FolderListFragment()
+            mDeviceListFragment = (fm.getFragment(
                 savedInstanceState, DeviceListFragment::class.java.getName()
-            ) as DeviceListFragment?
-            mDrawerFragment = fm.getFragment(
+            ) as? DeviceListFragment) ?: DeviceListFragment()
+            mDrawerFragment = (fm.getFragment(
                 savedInstanceState, DrawerFragment::class.java.getName()
-            ) as DrawerFragment?
+            ) as? DrawerFragment) ?: DrawerFragment()
         } else {
             mFolderListFragment = FolderListFragment()
             mDeviceListFragment = DeviceListFragment()
