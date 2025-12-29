@@ -7,7 +7,6 @@ import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -31,12 +30,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-//import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -54,7 +51,6 @@ import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.Util
 import java.util.Date
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  * Shows [dev.benedek.syncthingandroid.fragments.FolderListFragment] and
