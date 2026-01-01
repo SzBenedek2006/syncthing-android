@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.ui.slides
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +27,6 @@ import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
-
-// Reimplementation of activity_firststart_slide_storage.xml
 
 @Composable
 fun StorageSlide(

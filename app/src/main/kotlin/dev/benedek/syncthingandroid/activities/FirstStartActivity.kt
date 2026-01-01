@@ -1,13 +1,11 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.Manifest
-import android.R.attr.text
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -32,7 +30,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -40,7 +37,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -59,19 +55,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
-import dev.benedek.syncthingandroid.ui.IntroSlide
-import dev.benedek.syncthingandroid.ui.StorageSlide
+import dev.benedek.syncthingandroid.ui.slides.IntroSlide
+import dev.benedek.syncthingandroid.ui.slides.StorageSlide
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.Util
@@ -82,10 +76,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.core.content.edit
-import com.google.android.material.color.DynamicColors
-import com.google.android.material.color.utilities.DynamicColor
-import dev.benedek.syncthingandroid.ui.LocationSlide
-import dev.benedek.syncthingandroid.ui.NotificationSlide
+import dev.benedek.syncthingandroid.ui.slides.LocationSlide
+import dev.benedek.syncthingandroid.ui.slides.NotificationSlide
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 class FirstStartActivity : ComponentActivity() {

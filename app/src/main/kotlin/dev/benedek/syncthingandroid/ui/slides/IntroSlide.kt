@@ -1,6 +1,6 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.ui.slides
 
-import android.content.res.Configuration.*
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +25,6 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 // Reimplementation of the activity_firststart_slide_intro.xml
-
 @Composable
 fun IntroSlide() {
     Column(
@@ -44,7 +43,7 @@ fun IntroSlide() {
     }
 }
 
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun IntroSlidePreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {

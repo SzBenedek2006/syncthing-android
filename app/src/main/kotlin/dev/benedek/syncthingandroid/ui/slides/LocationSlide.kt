@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.ui.slides
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -25,13 +25,11 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.reusable.ImageSlide
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
-import dev.benedek.syncthingandroid.ui.reusable.SlideWelcomeTitle
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
-
 @Composable
-fun NotificationSlide(
+fun LocationSlide(
     onButtonClick: () -> Unit,
     isButtonActivated: @Composable (Context) -> Boolean
 ) {
@@ -47,10 +45,10 @@ fun NotificationSlide(
         val context = LocalContext.current
 
         //SlideWelcomeTitle(stringResource(R.string.welcome_title))
-        ImageSlide(painterResource(R.drawable.baseline_notifications_active_24))
+        ImageSlide(painterResource(R.drawable.ic_location))
         Spacer(modifier = Modifier.height(16.dp))
-        SlideTitle(stringResource(R.string.notification_permission_title))
-        SlideDescription(stringResource(R.string.require_notification_permission_desc))
+        SlideTitle(stringResource(R.string.location_permission_title))
+        SlideDescription(stringResource(R.string.location_permission_desc))
         Button(
             onClick = onButtonClick,
             enabled = isButtonActivated(context)
@@ -64,13 +62,12 @@ fun NotificationSlide(
             )
         }
     }
-
 }
 
-@Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_NO)
+@Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
-fun NotificationSlidePreview() {
+fun LocationSlidePreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
-        NotificationSlide({}, {true})
+        LocationSlide({}, { true })
     }
 }
