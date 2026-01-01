@@ -1,6 +1,7 @@
 # generated files
 /build
 /src/main/jniLibs
+/release
 
 # gradle-play-publisher
 keys.json
