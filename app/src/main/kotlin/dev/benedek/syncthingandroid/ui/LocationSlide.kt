@@ -27,6 +27,7 @@ import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.reusable.SlideWelcomeTitle
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
 fun LocationSlide(
@@ -51,7 +52,6 @@ fun LocationSlide(
         SlideDescription(stringResource(R.string.location_permission_desc))
         Button(
             onClick = onButtonClick,
-            // Hacky solution, but seems to work.
             enabled = isButtonActivated(context)
         ) {
             Text(
@@ -68,7 +68,7 @@ fun LocationSlide(
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun LocationSlidePreview() {
-    SyncthingandroidTheme {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
         LocationSlide({}, {true})
     }
 }

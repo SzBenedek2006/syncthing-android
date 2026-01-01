@@ -1,20 +1,19 @@
 package dev.benedek.syncthingandroid.views;
 
+
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Bundle;
 import androidx.preference.MultiSelectListPreference;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.Toast;
 
 import dev.benedek.syncthingandroid.R;
 import dev.benedek.syncthingandroid.service.Constants;
 import dev.benedek.syncthingandroid.util.PermissionUtil;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,15 +24,15 @@ import java.util.TreeSet;
 /**
  * MultiSelectListPreference which allows the user to select on which WiFi networks (based on SSID)
  * syncing should be allowed.
- *
+ * <p>
  * Setting can be "All networks" (none selected), or selecting individual networks.
- *
+ * <p>
  * Due to restrictions in Android, it is possible/likely, that the list of saved WiFi networks
  * cannot be retrieved if the WiFi is turned off. In this case, an explanation is shown.
- *
+ * <p>
  * The preference is stored as Set&lt;String&gt; where an empty set represents
  * "all networks allowed".
- *
+ * <p>
  * SSIDs are formatted according to the naming convention of WifiManager, i.e. they have the
  * surrounding double-quotes (") for UTF-8 names, or they are hex strings (if not quoted).
  */
@@ -51,7 +50,7 @@ public class WifiSsidPreference extends MultiSelectListPreference {
     /**
      * Show the dialog if WiFi is available and configured networks can be loaded.
      * Otherwise will display a Toast requesting to turn on WiFi.
-     *
+     * <p>
      * On opening of the dialog, will also remove any SSIDs from the set that have been removed
      * by the user in the WiFi manager. This change will be persisted only if the user changes
      * any other setting
@@ -83,7 +82,7 @@ public class WifiSsidPreference extends MultiSelectListPreference {
             }
         }
 
-        boolean hasPerms = hasLocationPermissions();
+        boolean hasPerms = PermissionUtil.hasLocationPermissions(context);
         if (!connected) {
             if (!hasPerms) {
                 Toast.makeText(context, R.string.sync_only_wifi_ssids_need_to_grant_location_permission, Toast.LENGTH_LONG).show();
@@ -106,18 +105,7 @@ public class WifiSsidPreference extends MultiSelectListPreference {
         }
     }
 
-    /**
-     * Checks if the required location permissions to obtain WiFi SSID are granted.
-     */
-    private boolean hasLocationPermissions() {
-        String[] perms = PermissionUtil.getLocationPermissions();
-        for (int i = 0; i < perms.length; i++) {
-            if (ContextCompat.checkSelfPermission(getContext(), perms[i]) != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 
     /**
      * Returns a copy of the given WiFi SSIDs with quotes stripped.

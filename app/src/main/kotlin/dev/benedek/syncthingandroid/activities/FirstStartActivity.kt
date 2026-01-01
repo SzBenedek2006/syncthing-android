@@ -1,6 +1,7 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.Manifest
+import android.R.attr.text
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
@@ -18,6 +19,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +37,13 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,8 +59,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -71,7 +82,11 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.core.content.edit
+import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.utilities.DynamicColor
 import dev.benedek.syncthingandroid.ui.LocationSlide
+import dev.benedek.syncthingandroid.ui.NotificationSlide
+import dev.benedek.syncthingandroid.util.ThemeControls
 
 class FirstStartActivity : ComponentActivity() {
     enum class Slide {
@@ -97,10 +112,14 @@ class FirstStartActivity : ComponentActivity() {
         if (!isFirstStart() && PermissionUtil.haveStoragePermission(this) && upgradedToApiLevel30()) {
             startApp()
             return
+        } else {
+            mPreferences.edit().putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true).apply()
         }
 
         setContent {
-            SyncthingandroidTheme {
+            SyncthingandroidTheme(
+                dynamicColor = ThemeControls.getUseDynamicColor()
+            ) {
                 FirstStartScreen(
                     onFinish = {
                         mPreferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
@@ -182,7 +201,6 @@ class FirstStartActivity : ComponentActivity() {
             return true
         }
         if (isFirstStart()) {
-            mPreferences.edit().putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true).apply()
             return true
         }
         return false
@@ -298,7 +316,6 @@ fun FirstStartScreen(
     val currentSlide = slides[pagerState.currentPage]
 
     // Navigation Logic
-
     fun canAdvance(noToast: Boolean = false): Boolean {
         // We read permissionRefreshTrigger to ensure this block re-runs when permissions change
         val tick = permissionRefreshTrigger
@@ -425,25 +442,39 @@ fun BottomControls(
     canAdvance: (noToast: Boolean) -> Boolean
 ) {
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+    // Detect small screen
+    val config = LocalWindowInfo.current.containerDpSize
+    val isSmallScreen = config.width < 360.dp
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(if (isSmallScreen) 4.dp else 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Back Button
-        TextButton(
-            onClick = onBack,
-            enabled = pagerState.currentPage > 0,
-            modifier = Modifier.width(104.dp)
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.CenterStart
         ) {
-            Text(
-                text = stringResource(R.string.back),
-                color = if (pagerState.currentPage == 0) Color.Transparent else MaterialTheme.colorScheme.primary,
-            )
+
+            TextButton(
+                onClick = onBack,
+                enabled = pagerState.currentPage > 0,
+            ) {
+                if (isSmallScreen) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
+                } else {
+                    Text(
+                        text = stringResource(R.string.back),
+                        color = if (pagerState.currentPage == 0) Color.Transparent else MaterialTheme.colorScheme.primary,
+                    )
+                }
+
+            }
         }
+
 
         // Dots
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -461,19 +492,34 @@ fun BottomControls(
             }
         }
 
-
         // Next/Finish Button
-        Button(
-            onClick = onNext,
-            //This is to update the composable state
-            enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true)
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.CenterEnd
         ) {
-            Text(
-                text = stringResource(
-                    if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
-                )
-            )
+            Button(
+                onClick = onNext,
+                //This is to update the composable state
+                enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true),
+            ) {
+                if (isSmallScreen) {
+                    Icon(
+                        imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = stringResource(
+                            if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+                        )
+                    )
+                } else {
+                    Text(
+                        text = stringResource(
+                            if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+                        )
+                    )
+                }
+
+            }
         }
+
     }
 }
 
@@ -528,7 +574,22 @@ fun SlideContent(
         //This is to update the composable state
         val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
 
-        return lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && !PermissionUtil.
+        return lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && !PermissionUtil.hasLocationPermissions(context)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun askForNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // SDK 33
+            notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    @Composable
+    fun isNotificationPermissionNotGranted(context: Context): Boolean {
+        //This is to update the composable state
+        val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+
+        return lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && !PermissionUtil.hasNotificationPermission(context)
     }
 
 
@@ -566,6 +627,12 @@ fun SlideContent(
             }
 
             FirstStartActivity.Slide.NOTIFICATION -> {
+                NotificationSlide(
+                    ::askForNotificationPermission,
+                    ::isNotificationPermissionNotGranted
+                )
+                /*
+                {
                 Text(text = "Enable Notifications")
                 Spacer(Modifier.height(16.dp))
                 Button(onClick = {
@@ -575,6 +642,8 @@ fun SlideContent(
                 }) {
                     Text("Enable Notifications")
                 }
+
+                * */
             }
         }
     }

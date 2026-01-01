@@ -26,6 +26,7 @@ import dev.benedek.syncthingandroid.ui.reusable.ImageSlide
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.ThemeControls
 
 // Reimplementation of activity_firststart_slide_storage.xml
 
@@ -71,7 +72,7 @@ fun StorageSlide(
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun StorageSlidePreview() {
-    SyncthingandroidTheme {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
         StorageSlide({}, { true })
     }
 }

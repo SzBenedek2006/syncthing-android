@@ -35,4 +35,29 @@ public class PermissionUtil {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
+
+    /**
+     * Checks if the required location permissions to obtain WiFi SSID are granted.
+     */
+    public static boolean hasLocationPermissions(@NonNull Context context) {
+        String[] perms = PermissionUtil.getLocationPermissions();
+        for (int i = 0; i < perms.length; i++) {
+            if (ContextCompat.checkSelfPermission(context, perms[i]) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    public static boolean hasNotificationPermission(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
 }
+
+

@@ -71,7 +71,7 @@ android {
         minSdk = 23
         targetSdk = 36
         versionCode = 4406
-        versionName = "2.0.10.6"
+        versionName = "2.0.10.7"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
