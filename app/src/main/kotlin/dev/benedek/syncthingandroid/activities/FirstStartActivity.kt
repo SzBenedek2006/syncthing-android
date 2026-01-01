@@ -1,7 +1,6 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.Manifest
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -23,10 +22,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -48,10 +45,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,7 +53,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 import dev.benedek.syncthingandroid.R
@@ -76,6 +69,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.core.content.edit
+import dev.benedek.syncthingandroid.ui.slides.ApiUpgradeSlide
 import dev.benedek.syncthingandroid.ui.slides.LocationSlide
 import dev.benedek.syncthingandroid.ui.slides.NotificationSlide
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -105,7 +99,7 @@ class FirstStartActivity : ComponentActivity() {
             startApp()
             return
         } else {
-            mPreferences.edit().putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true).apply()
+            mPreferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
         }
 
         setContent {
@@ -246,25 +240,10 @@ class FirstStartActivity : ComponentActivity() {
                 }
             }
         }
-        mPreferences.edit().putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true).apply()
+        mPreferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
     }
 
 
-
-
-
-    private val isNotificationPermissionGranted: Boolean
-        @TargetApi(33)
-        get() {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                return true
-            }
-
-            return ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        }
 }
 
 
@@ -283,25 +262,17 @@ fun FirstStartScreen(
     // Setup Pager
     val pagerState = rememberPagerState(pageCount = { slides.size })
 
-    // -- State Trackers for Permissions/Logic --
-    // We use a refresh trigger to force UI updates when returning from Settings
-    var permissionRefreshTrigger by remember { mutableIntStateOf(0) }
-
-    fun refreshPermissions() {
-        permissionRefreshTrigger++
-    }
 
     // Launchers
-    val storageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        refreshPermissions()
+    val storageLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {
     }
 
     val locationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        refreshPermissions()
     }
 
     val notificationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
-        refreshPermissions()
     }
 
     // Calculate current slide (derived from pager)
@@ -310,7 +281,7 @@ fun FirstStartScreen(
     // Navigation Logic
     fun canAdvance(noToast: Boolean = false): Boolean {
         // We read permissionRefreshTrigger to ensure this block re-runs when permissions change
-        val tick = permissionRefreshTrigger
+        //val tick = permissionRefreshTrigger
 
         return when (currentSlide) {
             FirstStartActivity.Slide.STORAGE -> {
@@ -416,10 +387,8 @@ fun FirstStartScreen(
                 notificationLauncher = notificationLauncher,
                 onUpgradeDatabase = {
                     activity.performApi30Upgrade()
-                    refreshPermissions() // Update state check
-                    onNext()
                 },
-                refreshCallback = { refreshPermissions() }
+                refreshCallback = { }
             )
         }
     }
@@ -611,11 +580,10 @@ fun SlideContent(
             }
 
             FirstStartActivity.Slide.API_LEVEL_30 -> {
-                Text(text = "Database Upgrade Required")
-                Spacer(Modifier.height(16.dp))
-                Button(onClick = onUpgradeDatabase) {
-                    Text("Reset Database")
-                }
+                ApiUpgradeSlide(
+                     onUpgradeDatabase,
+                    {true}
+                )
             }
 
             FirstStartActivity.Slide.NOTIFICATION -> {
