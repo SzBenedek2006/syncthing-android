@@ -49,6 +49,8 @@ dependencies {
     implementation("androidx.work:work-runtime:${workVersion}") // (Java only)
     implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
     implementation("androidx.work:work-multiprocess:${workVersion}") // optional - Multiprocess support
+
+    implementation("me.zhanghai.compose.preference:preference:2.1.0")
 }
 
 android {

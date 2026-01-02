@@ -82,7 +82,7 @@ public abstract class SyncthingActivity extends ThemedAppCompatActivity implemen
     /**
      * Used for Fragments to use the Activity's service connection.
      */
-    void registerOnServiceConnectedListener(OnServiceConnectedListener listener) {
+    public void registerOnServiceConnectedListener(OnServiceConnectedListener listener) {
         if (mSyncthingService != null) {
             listener.onServiceConnected();
         } else {
@@ -93,7 +93,7 @@ public abstract class SyncthingActivity extends ThemedAppCompatActivity implemen
     /**
      * Returns service object (or null if not bound).
      */
-    SyncthingService getService() {
+    public SyncthingService getService() {
         return mSyncthingService;
     }
 
