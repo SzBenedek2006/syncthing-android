@@ -59,67 +59,7 @@ class FirstStartActivity : ComponentActivity() {
                     activity = this
                 )
             }
-
         }
-
-
-
-/*
-        // Old views based pager
-        // Show first start welcome wizard UI.
-        binding = ActivityFirstStartBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
-
-        // Targeting android 15 enables and 16 forces edge-to-edge
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding!!.root,
-            OnApplyWindowInsetsListener { v: View, windowInsets: WindowInsetsCompat ->
-                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-                val mlp = v.layoutParams as MarginLayoutParams
-                mlp.leftMargin = insets.left
-                mlp.bottomMargin = insets.bottom
-                mlp.rightMargin = insets.right
-                v.layoutParams = mlp
-                WindowInsetsCompat.CONSUMED
-            })
-
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding!!.root,
-            OnApplyWindowInsetsListener { v: View, insets: WindowInsetsCompat ->
-                val bars = insets.getInsets(
-                    WindowInsetsCompat.Type.systemBars()
-                            or WindowInsetsCompat.Type.displayCutout()
-                )
-                v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-                WindowInsetsCompat.CONSUMED
-            })
-
-        binding?.viewPager?.setOnTouchListener { v, _ ->
-            // Consume the event to prevent swiping through the slides.
-            v.performClick()
-            true
-        }
-
-        // Add bottom dots
-        addBottomDots()
-        setActiveBottomDot(0)
-
-        mViewPagerAdapter = ViewPagerAdapter()
-        binding?.viewPager?.adapter = mViewPagerAdapter
-        binding?.viewPager?.addOnPageChangeListener(mViewPagerPageChangeListener)
-
-        binding?.btnBack?.setOnClickListener { onBtnBackClick() }
-
-        binding?.btnNext?.setOnClickListener { onBtnNextClick() }
-
-        if (!this.isFirstStart) {
-            // Skip intro slide
-            onBtnNextClick()
-        }
-*/
-
-
-
     }
 
     fun isFirstStart(): Boolean {
@@ -152,23 +92,6 @@ class FirstStartActivity : ComponentActivity() {
         }
         finish()
     }
-
-
-//    private fun upgradeToApiLevel30() {
-//        val dbDir = File(this.filesDir, "index-v0.14.0.db")
-//        if (dbDir.exists()) {
-//            try {
-//                FileUtils.deleteQuietly(dbDir)
-//            } catch (e: Throwable) {
-//                Log.w(TAG, "Deleting database with FileUtils failed", e)
-//                Util.runShellCommand("rm -r " + dbDir.absolutePath, false)
-//                if (dbDir.exists()) {
-//                    throw RuntimeException("Failed to delete existing database")
-//                }
-//            }
-//        }
-//        mPreferences.edit().putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true).apply()
-//    }
 
 
     fun performApi30Upgrade() {
