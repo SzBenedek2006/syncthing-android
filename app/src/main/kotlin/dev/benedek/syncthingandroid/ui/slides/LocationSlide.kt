@@ -31,7 +31,7 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 @Composable
 fun LocationSlide(
     onButtonClick: () -> Unit,
-    isButtonActivated: @Composable (Context) -> Boolean
+    isPermissionGranted: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -51,10 +51,10 @@ fun LocationSlide(
         SlideDescription(stringResource(R.string.location_permission_desc))
         Button(
             onClick = onButtonClick,
-            enabled = isButtonActivated(context)
+            enabled = !isPermissionGranted
         ) {
             Text(
-                if (isButtonActivated(context)) {
+                if (!isPermissionGranted) {
                     stringResource(R.string.grant_permission)
                 } else {
                     stringResource(R.string.permission_granted)
@@ -68,6 +68,6 @@ fun LocationSlide(
 @Composable
 fun LocationSlidePreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
-        LocationSlide({}, { true })
+        LocationSlide({}, false)
     }
 }

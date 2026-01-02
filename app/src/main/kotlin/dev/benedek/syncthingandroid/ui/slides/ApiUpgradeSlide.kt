@@ -33,7 +33,7 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 @Composable
 fun ApiUpgradeSlide(
     onButtonClick: () -> Unit,
-    isButtonActivated: @Composable (Context) -> Boolean
+    isApiUpgraded: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -50,10 +50,10 @@ fun ApiUpgradeSlide(
         SlideDescription(stringResource(R.string.api_level_30_desc))
         Button(
             onClick = onButtonClick,
-            enabled = isButtonActivated(context)
+            enabled = !isApiUpgraded
         ) {
             Text(
-                if (isButtonActivated(context)) {
+                if (!isApiUpgraded) {
                     stringResource(R.string.api_level_30_button)
                 } else {
                     stringResource(R.string.api_level_30_button)
@@ -67,6 +67,6 @@ fun ApiUpgradeSlide(
 @Composable
 fun ApiUpgradeSlidePreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
-        IntroSlide()
+        ApiUpgradeSlide({}, true)
     }
 }

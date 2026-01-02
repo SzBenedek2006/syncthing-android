@@ -31,7 +31,7 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 @Composable
 fun StorageSlide(
     onButtonClick: () -> Unit,
-    isButtonActivated: @Composable (Context) -> Boolean
+    isPermissionGranted: Boolean
 ) {
     val context = LocalContext.current
 
@@ -53,10 +53,10 @@ fun StorageSlide(
         Button(
             onClick = onButtonClick,
             // Hacky solution, but seems to work.
-            enabled = isButtonActivated(context)
+            enabled = !isPermissionGranted
         ) {
             Text(
-                if (isButtonActivated(context)) {
+                if (!isPermissionGranted) {
                     stringResource(R.string.grant_permission)
                 } else {
                     stringResource(R.string.permission_granted)
@@ -71,6 +71,6 @@ fun StorageSlide(
 @Composable
 fun StorageSlidePreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
-        StorageSlide({}, { true })
+        StorageSlide({}, false)
     }
 }

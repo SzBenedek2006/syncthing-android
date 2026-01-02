@@ -31,7 +31,7 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 @Composable
 fun NotificationSlide(
     onButtonClick: () -> Unit,
-    isButtonActivated: @Composable (Context) -> Boolean
+    isPermissionGranted: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -51,10 +51,10 @@ fun NotificationSlide(
         SlideDescription(stringResource(R.string.require_notification_permission_desc))
         Button(
             onClick = onButtonClick,
-            enabled = isButtonActivated(context)
+            enabled = !isPermissionGranted
         ) {
             Text(
-                if (isButtonActivated(context)) {
+                if (!isPermissionGranted) {
                     stringResource(R.string.grant_permission)
                 } else {
                     stringResource(R.string.permission_granted)
@@ -69,6 +69,6 @@ fun NotificationSlide(
 @Composable
 fun NotificationSlidePreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
-        NotificationSlide({}, { true })
+        NotificationSlide({}, false)
     }
 }
