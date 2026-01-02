@@ -84,7 +84,7 @@ fun SlideDescription(
 
 @SuppressLint("ModifierParameter")
 @Composable
-fun ImageSlide(
+fun SlideImage (
     painter: Painter,
     modifier: Modifier = Modifier.size(size = dimensionResource(R.dimen.img_width_height)),
     contentDescription: String? = null,
@@ -92,7 +92,7 @@ fun ImageSlide(
 ) {
     Image(
         painter = painter,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier,
         colorFilter = colorFilter
     )

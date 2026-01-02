@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.ui.reusable.ImageSlide
+import dev.benedek.syncthingandroid.ui.reusable.SlideImage
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -36,7 +36,7 @@ fun IntroSlide() {
         verticalArrangement = Arrangement.Center
     ) {
         //SlideWelcomeTitle(stringResource(R.string.welcome_title)) // Legyen vagy ne?
-        ImageSlide(painterResource(id = R.drawable.ic_monochrome))
+        SlideImage(painterResource(id = R.drawable.ic_monochrome))
         Spacer(modifier = Modifier.height(16.dp))
         SlideTitle(stringResource(R.string.introduction))
         SlideDescription(stringResource(R.string.welcome_text))

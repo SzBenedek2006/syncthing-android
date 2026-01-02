@@ -906,6 +906,6 @@ class SettingsActivity : SyncthingActivity(),
 
     companion object {
         const val EXTRA_OPEN_SUB_PREF_SCREEN: String =
-            "activities.syncthingandroid.nutomic.dev.SettingsActivity.OPEN_SUB_PREF_SCREEN"
+            "activities.syncthingandroid.benedek.dev.SettingsActivity.OPEN_SUB_PREF_SCREEN"
     }
 }

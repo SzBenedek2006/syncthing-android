@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.ui.slides
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +21,7 @@ import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.ui.reusable.ImageSlide
+import dev.benedek.syncthingandroid.ui.reusable.SlideImage
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -44,7 +43,7 @@ fun StorageSlide(
         verticalArrangement = Arrangement.Center
     ) {
         //SlideWelcomeTitle(stringResource(R.string.welcome_title))
-        ImageSlide(painterResource(R.drawable.ic_storage))
+        SlideImage(painterResource(R.drawable.ic_storage))
         Spacer(modifier = Modifier.height(16.dp))
 
         SlideTitle(stringResource(R.string.storage_permission_title))
