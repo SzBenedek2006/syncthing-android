@@ -342,7 +342,7 @@
     <string name="service_settings_title">Service setting</string>
     <string name="service_settings_summary">Run Syncthing as a service. Adds a persistent notification to prevent it from being terminated by Android. Checking this option starts Syncthing on operating system startup.</string>
 
-    <string name="run_as_background_service">Start service automatically on boot</string>
+    <string name="start_service_on_boot">Start service automatically on boot</string>
 
     <!-- Preferences - Behaviour -->
 

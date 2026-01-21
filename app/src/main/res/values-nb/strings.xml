@@ -383,7 +383,7 @@
     <string name="simple_versioning_info">Behold versjonene: %1$s</string>
     <string name="show_device_id">Vis enhet ID</string>
     <string name="could_not_access_deviceid">Kunne ikke aksessere enhet ID.</string>
-    <string name="run_as_background_service">Start tjeneste automatisk ved oppstart</string>
+    <string name="start_service_on_boot">Start tjeneste automatisk ved oppstart</string>
     <string name="run_in_flight_mode_title">Kjør når enhet er i flymodus</string>
     <string name="use_proxy">Koble på via en proxy</string>
     <string name="do_not_use_proxy">Ingen proxy konfigurert.</string>

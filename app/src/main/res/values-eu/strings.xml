@@ -229,7 +229,7 @@
     <string name="run_in_flight_mode_summary">Gaitu zure gailuak hegaldi moduan eskuzko Wi-Fi konexioak detektatzeko arazoak baditu.</string>
     <string name="service_settings_title">Zerbitzuaren ezarpenak</string>
     <string name="service_settings_summary">Syncthing zerbitzu gisa exekutatu. Gehitu jakinarazpen iraunkor bat Androidek bertan behera utz ez dezan. Aukera hori markatzean, sinkronizazioa hasten da sistema eragilea abiaraztean.</string>
-    <string name="run_as_background_service">Hasi zerbitzua automatikoki abiaraztean</string>
+    <string name="start_service_on_boot">Hasi zerbitzua automatikoki abiaraztean</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Erabili karpetaren hautaketa aurreratua</string>
     <string name="advanced_folder_picker_summary">Aukeratu gailuaren karpetaren bat sinkronizatzeko</string>

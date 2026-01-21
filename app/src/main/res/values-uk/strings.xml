@@ -223,7 +223,7 @@
     <string name="run_in_flight_mode_summary">Увімкніть, якщо ваш пристрій має проблеми з виявленням мереж Wi-Fi у режимі польоту.</string>
     <string name="service_settings_title">Налаштування сервісу</string>
     <string name="service_settings_summary">Запустити Syncthing як сервіс. Додає постійне сповіщення, щоб запобігти закриттю сервісу системою. Увімкнення цієї функції запускатиме Syncthing при запуску операційної системи.</string>
-    <string name="run_as_background_service">Автозапуск сервісу при запуску системи</string>
+    <string name="start_service_on_boot">Автозапуск сервісу при запуску системи</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Використовувати розширений діалог вибору теки</string>
     <string name="advanced_folder_picker_summary">Оберіть будь-яку теку на пристрої для синхронізації</string>

@@ -327,7 +327,7 @@
     <string name="respect_master_sync_summary">जब क्विक सेटिंग टाइल \'ऑटो-सिंक डेटा\' बंद हो जाए तो Syncthing अक्षम करें।</string>
     <string name="run_in_flight_mode_title">जब डिवाइस फ्लाइट मोड में हो तो चलाएं</string>
     <string name="service_settings_title">सर्विस सेटिंग</string>
-    <string name="run_as_background_service">बूट पर सेवा स्वचालित रूप से प्रारंभ करें</string>
+    <string name="start_service_on_boot">बूट पर सेवा स्वचालित रूप से प्रारंभ करें</string>
     <string name="use_root_summary">यह एक अस्थिर सुविधा है जो Syncthing और आपके डिवाइस के साथ समस्याएँ पैदा कर सकती है। यदि आपको समस्याएँ आती हैं, तो आपको Syncthing को पुनः स्थापित करना पड़ सकता है।</string>
     <string name="preference_language_summary">ऐप की भाषा बदलें</string>
     <string name="start_into_web_gui_title">सीधे वेब GUI में प्रारंभ करें</string>

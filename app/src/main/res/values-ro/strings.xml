@@ -230,7 +230,7 @@
     <string name="run_in_flight_mode_summary">Activați în cazul în care dispozitivul are probleme în detectarea manuală a conexiunilor Wi-Fi în modul avion.</string>
     <string name="service_settings_title">Setări serviciu</string>
     <string name="service_settings_summary">Rulează Syncthing ca un serviciu. Se adaugă o notificare permanentă pentru a împiedica Android să închidă aplicația. Bifând această opțiune se va porni Syncthing odată cu dispozitivul.</string>
-    <string name="run_as_background_service">Pornește serviciul automat odată cu dispozitivul</string>
+    <string name="start_service_on_boot">Pornește serviciul automat odată cu dispozitivul</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Folosește selectorul avansat de directoare</string>
     <string name="advanced_folder_picker_summary">Alegeți orice director de pe dispozitiv pentru sincronizare</string>

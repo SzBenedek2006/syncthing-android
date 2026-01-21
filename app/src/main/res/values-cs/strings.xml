@@ -223,7 +223,7 @@
     <string name="run_in_flight_mode_summary">Zapněte pokud má Vaše zařízení problémy se zjišťováním ručně provedených Wi-Fi připojení v režimu Letadlo.</string>
     <string name="service_settings_title">Nastavení služby</string>
     <string name="service_settings_summary">Spouštět Synchthing jako službu. Přidá trvalou notifikaci, díky které služba poběží bez přerušení. Se zapnutím této možnosti bude Synching automaticky spouštěn při startu systému.</string>
-    <string name="run_as_background_service">Spouštět službu automaticky při startu systému</string>
+    <string name="start_service_on_boot">Spouštět službu automaticky při startu systému</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Použít rozšířený výběr složky</string>
     <string name="advanced_folder_picker_summary">Vyberte jakoukoliv složku v přístroji pro synchronizaci</string>

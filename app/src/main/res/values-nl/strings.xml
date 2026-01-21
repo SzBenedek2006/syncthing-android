@@ -218,7 +218,7 @@
     <string name="run_in_flight_mode_summary">Schakel dit in als jouw apparaat problemen ondervindt bij het handmatig opvragen van wifi-verbindingen tijdens de vliegtuigmodus.</string>
     <string name="service_settings_title">Service-instelling</string>
     <string name="service_settings_summary">Voer Syncthing uit als een service. Hierdoor wordt een permanente melding toegevoegd zodat Android de service niet beëindigt en wordt Syncthing automatisch opgestart.</string>
-    <string name="run_as_background_service">Service automatisch starten bij opstarten</string>
+    <string name="start_service_on_boot">Service automatisch starten bij opstarten</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Geavanceerde mapkiezer gebruiken</string>
     <string name="advanced_folder_picker_summary">Kies een te synchroniseren map</string>

@@ -60,7 +60,7 @@ fun ApiUpgradeSlide(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ApiUpgradeSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
         ApiUpgradeSlide({}, true)
     }
 }

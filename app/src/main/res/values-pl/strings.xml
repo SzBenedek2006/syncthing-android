@@ -231,7 +231,7 @@
     <string name="run_in_flight_mode_summary">Włącz, gdy Twoje urządzenie ma trudności z ręcznym wykryciem sieci Wi-Fi w trybie samolotowym.</string>
     <string name="service_settings_title">Ustawienia usługi</string>
     <string name="service_settings_summary">Uruchom Syncthing jako usługę. Dodaje to trwałe powiadomienie, aby zapobiec wyłączeniu przez system. Zaznacz tę opcję, aby uruchamiać Syncthing ze startem systemu.</string>
-    <string name="run_as_background_service">Uruchom usługę przy starcie systemu</string>
+    <string name="start_service_on_boot">Uruchom usługę przy starcie systemu</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Używaj zaawansowanego wybierania folderów</string>
     <string name="advanced_folder_picker_summary">Wybierz dowolny folder na urządzeniu do synchronizacji</string>

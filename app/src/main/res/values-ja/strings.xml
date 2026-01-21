@@ -215,7 +215,7 @@
     <string name="run_in_flight_mode_summary">機内モードで手動 Wi-Fi 接続の検出に問題がある場合に有効にします。</string>
     <string name="service_settings_title">サービス設定</string>
     <string name="service_settings_summary">Syncthing をサービスとして実行します。 Android による終了を防止するために永続通知を追加します。 このオプションをオンにすると、オペレーティングシステムの起動時に Syncthing が開始されます。</string>
-    <string name="run_as_background_service">起動時にサービスを自動的に開始する</string>
+    <string name="start_service_on_boot">起動時にサービスを自動的に開始する</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">高度なフォルダー選択を使用</string>
     <string name="advanced_folder_picker_summary">デバイス上の任意のフォルダーを選択できます</string>

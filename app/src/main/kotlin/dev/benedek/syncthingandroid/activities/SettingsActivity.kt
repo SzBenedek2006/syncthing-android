@@ -3,32 +3,75 @@ package dev.benedek.syncthingandroid.activities
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceScreen
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.fragments.SettingsFragment
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
+import dev.benedek.syncthingandroid.ui.Settings
+import dev.benedek.syncthingandroid.ui.SettingsViewModel
+import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
+import me.zhanghai.compose.preference.isDefaultPreferenceFlowLongSupportEnabled
 
-class SettingsActivity : SyncthingActivity(),
-    PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
+class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnectedListener {
+
+    val viewModel: SettingsViewModel by viewModels()
+
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_preferences)
-        setTitle(R.string.settings_title)
+        enableEdgeToEdge()
 
-        val settingsFragment = SettingsFragment()
-        val bundle = Bundle()
-        bundle.putString(
-            EXTRA_OPEN_SUB_PREF_SCREEN, intent.getStringExtra(
-                EXTRA_OPEN_SUB_PREF_SCREEN
-            )
-        )
-        settingsFragment.setArguments(bundle)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.settings_container, settingsFragment)
-            .commit()
+        registerOnServiceConnectedListener(this)
+
+//        setContentView(R.layout.activity_preferences)
+//        setTitle(R.string.settings_title)
+
+        isDefaultPreferenceFlowLongSupportEnabled = true
+
+        setContent {
+            SyncthingandroidTheme(
+                dynamicColor = ThemeControls.useDynamicColor
+            ) {
+                AppScaffold(topAppBarTitle = stringResource(R.string.settings_title)) { innerPadding ->
+                    Settings(viewModel, innerPadding)
+                }
+
+            }
+        }
+
+
+
+
+//        val settingsFragment = SettingsFragment()
+//        val bundle = Bundle()
+//        bundle.putString(
+//            EXTRA_OPEN_SUB_PREF_SCREEN, intent.getStringExtra(
+//                EXTRA_OPEN_SUB_PREF_SCREEN
+//            )
+//        )
+//        settingsFragment.setArguments(bundle)
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.settings_container, settingsFragment)
+//            .commit()
     }
 
     override fun onRequestPermissionsResult(
@@ -59,26 +102,34 @@ class SettingsActivity : SyncthingActivity(),
         }
     }
 
-    override fun onPreferenceStartScreen(
-        caller: PreferenceFragmentCompat,
-        screen: PreferenceScreen
-    ): Boolean {
-        val fragment = SettingsFragment()
-        val args = Bundle()
-        args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, screen.key)
-        fragment.setArguments(args)
+//    override fun onPreferenceStartScreen(
+//        caller: PreferenceFragmentCompat,
+//        screen: PreferenceScreen
+//    ): Boolean {
+//        val fragment = SettingsFragment()
+//        val args = Bundle()
+//        args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, screen.key)
+//        fragment.setArguments(args)
+//
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.settings_container, fragment)
+//            .addToBackStack(screen.key)
+//            .commit()
+//
+//        return true
+//    }
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings_container, fragment)
-            .addToBackStack(screen.key)
-            .commit()
-
-        return true
+    override fun onServiceConnected() {
+        if (service != null) {
+            viewModel.setService(service)
+        }
     }
 
     companion object {
         const val EXTRA_OPEN_SUB_PREF_SCREEN: String =
             "activities.syncthingandroid.benedek.dev.SettingsActivity.OPEN_SUB_PREF_SCREEN"
     }
+
+
 }

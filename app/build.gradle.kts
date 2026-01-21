@@ -4,7 +4,7 @@ import org.gradle.configurationcache.extensions.capitalized
 plugins {
     id("com.android.application")
     id("com.github.ben-manes.versions")
-    id("com.github.triplet.play") version "3.12.1"
+    id("com.github.triplet.play") version "3.13.0"
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -18,27 +18,27 @@ dependencies {
     implementation("com.google.guava:guava:33.5.0-android")
     implementation("com.annimon:stream:1.2.2")
     implementation("com.android.volley:volley:1.2.1")
-    implementation("commons-io:commons-io:2.20.0")
+    implementation("commons-io:commons-io:2.21.0")
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
         isTransitive = false
     }
-    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.google.zxing:core:3.5.4")
 
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("com.google.dagger:dagger:2.57.2")
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
-    implementation("androidx.activity:activity-compose:1.12.0")
-    implementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    implementation("androidx.activity:activity-compose:1.12.2")
+    implementation(platform("androidx.compose:compose-bom:2026.01.00"))
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-graphics:1.10.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.09.00"))
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation("androidx.compose.ui:ui-graphics:1.10.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2026.01.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.57.2")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.59")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.preference:preference:1.2.1")
@@ -50,7 +50,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
     implementation("androidx.work:work-multiprocess:${workVersion}") // optional - Multiprocess support
 
-    implementation("me.zhanghai.compose.preference:preference:2.1.0")
+    implementation("me.zhanghai.compose.preference:preference:2.1.1")
 }
 
 android {
@@ -72,8 +72,8 @@ android {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4408
-        versionName = "2.0.10.8"
+        versionCode = 4409
+        versionName = "2.0.10.9"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

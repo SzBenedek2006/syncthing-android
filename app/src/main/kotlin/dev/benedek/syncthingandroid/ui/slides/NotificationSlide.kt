@@ -67,7 +67,7 @@ fun NotificationSlide(
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun NotificationSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
         NotificationSlide({}, false)
     }
 }

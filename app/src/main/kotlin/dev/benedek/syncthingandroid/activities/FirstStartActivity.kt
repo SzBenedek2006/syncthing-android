@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import androidx.core.content.edit
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
+import dev.benedek.syncthingandroid.ui.Settings
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 class FirstStartActivity : ComponentActivity() {
@@ -48,8 +49,9 @@ class FirstStartActivity : ComponentActivity() {
 
         setContent {
             SyncthingandroidTheme(
-                dynamicColor = ThemeControls.getUseDynamicColor()
+                dynamicColor = ThemeControls.useDynamicColor
             ) {
+                //Settings()
                 FirstStartScreen(
                     onFinish = {
                         mPreferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }

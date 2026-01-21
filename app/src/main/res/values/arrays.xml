@@ -66,7 +66,7 @@
         <item>@string/transfer_rate_unit_TiB_s</item>
     </string-array>
 
-    <string-array name="theme_names">
+    <string-array name="theme_entries">
         <item>@string/preference_theme_follow_system</item>
         <item>@string/preference_theme_option_light</item>
         <item>@string/preference_theme_option_dark</item>

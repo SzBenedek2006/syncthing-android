@@ -66,7 +66,7 @@ fun LocationSlide(
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun LocationSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.getUseDynamicColor()) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
         LocationSlide({}, false)
     }
 }

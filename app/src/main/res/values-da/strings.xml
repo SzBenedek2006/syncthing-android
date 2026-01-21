@@ -221,7 +221,7 @@
     <string name="run_in_flight_mode_summary">Aktivér, hvis din enhed har problemer med at registrere manuelle Wi-Fi-forbindelser i flytilstand.</string>
     <string name="service_settings_title">Tjenesteindstilling</string>
     <string name="service_settings_summary">Kør Syncthing som en tjeneste. Tilføjer en vedvarende notifikation for at forhindre, at den bliver afsluttet af Android. Hvis du markerer denne indstilling, starter Syncthing ved opstart af operativsystemet.</string>
-    <string name="run_as_background_service">Start tjenesten automatisk ved opstart</string>
+    <string name="start_service_on_boot">Start tjenesten automatisk ved opstart</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Brug avanceret mappevælger</string>
     <string name="advanced_folder_picker_summary">Vælg en valgfri mappe på enheden for synkronisering</string>

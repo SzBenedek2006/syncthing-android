@@ -209,7 +209,7 @@
     <string name="power_source_battery_power">Baterka</string>
     <string name="respect_battery_saving_title">Rešpektovať systémové nastavenia úspory batérie</string>
     <string name="respect_battery_saving_summary">Deaktivovať Syncthing keď je aktívne šetrenie baterky.</string>
-    <string name="run_as_background_service">Zapnúť aplikáciu pri štarte zariadenia</string>
+    <string name="start_service_on_boot">Zapnúť aplikáciu pri štarte zariadenia</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Použiť rozšírený dialóg pre volbu adresára</string>
     <string name="advanced_folder_picker_summary">Vyberte ľubovolný adresár pre synchronizáciu</string>

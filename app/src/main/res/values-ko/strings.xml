@@ -504,7 +504,7 @@
     <string name="sync_only_wifi_ssids_location_permission_rejected_dialog_content">Android 8.1부터는 Wi-Fi 이름을 읽으려면 위치 접근 권한이 필요합니다. 이 권한을 부여해야만 이 기능을 사용할 수 있습니다.</string>
     <string name="power_source_title">기기가 다음으로 구동될 때 실행</string>
     <string name="run_in_flight_mode_summary">기기가 비행 모드 중 수동 Wi-Fi 연결을 감지하는 데 문제가 있는 경우 이 옵션을 활성화하세요.</string>
-    <string name="run_as_background_service">부팅 시 서비스 자동 시작</string>
+    <string name="start_service_on_boot">부팅 시 서비스 자동 시작</string>
     <string name="st_reset_deltas_question">이 작업은 당사 지원 팀의 권장에 따라 수행해야 합니다.
 \nSyncthing의 델타 인덱스를 정말로 초기화하시겠습니까?</string>
     <string name="service_settings_summary">Syncthing을 서비스로 실행합니다. Android에서 종료되지 않도록 지속적인 알림을 추가합니다. 이 옵션을 선택하면 운영 체제 시작 시 Syncthing이 시작됩니다.</string>

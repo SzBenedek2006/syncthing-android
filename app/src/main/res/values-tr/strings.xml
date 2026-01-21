@@ -229,7 +229,7 @@
     <string name="run_in_flight_mode_summary">Cihazınız uçuş modu sırasında elle kablosuz (Wi-Fi) bağlantılarını algılamada sorun yaşıyorsa etkinleştirin.</string>
     <string name="service_settings_title">Hizmet ayarı</string>
     <string name="service_settings_summary">Syncthing\'i bir hizmet olarak çalıştırın. Android tarafından sonlandırılmasını önlemek için kalıcı bir bildirim ekler. Bu seçeneğin işaretlenmesi, işletim sistemi başlangıcında Syncthing\'i başlatır.</string>
-    <string name="run_as_background_service">Açılışta hizmeti otomatik olarak başlat</string>
+    <string name="start_service_on_boot">Açılışta hizmeti otomatik olarak başlat</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Gelişmiş Klasör Seçici kullan</string>
     <string name="advanced_folder_picker_summary">Eşitleme için cihazda herhangi bir klasör seçin</string>

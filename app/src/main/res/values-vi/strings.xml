@@ -220,7 +220,7 @@
     <string name="run_in_flight_mode_summary">Bật nếu thiết bị gặp vấn đề khi dò tìm kết nối Wi-Fi thủ công trong chế độ máy bay.</string>
     <string name="service_settings_title">Cài đặt dịch vụ</string>
     <string name="service_settings_summary">Chạy Syncthing dưới dạng một dịch vụ. Thêm một thông báo liên tục để ngăn Android dừng nó. Việc bật tuỳ chọn này sẽ khởi động Syncthing khi khởi động hệ điều hành.</string>
-    <string name="run_as_background_service">Tự động khởi động dịch vụ khi khởi động thiết bị</string>
+    <string name="start_service_on_boot">Tự động khởi động dịch vụ khi khởi động thiết bị</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">S.dụng trình chọn th.mục nâng cao</string>
     <string name="advanced_folder_picker_summary">Chọn bất kỳ th.mục nào trên th.bị để đồng bộ</string>

@@ -17,6 +17,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.benedek.syncthingandroid.BuildConfig;
 import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.activities.FolderActivity;
+import dev.benedek.syncthingandroid.activities.SettingsActivity;
 import dev.benedek.syncthingandroid.activities.ShareActivity;
 import dev.benedek.syncthingandroid.http.GetRequest;
 import dev.benedek.syncthingandroid.http.PostRequest;

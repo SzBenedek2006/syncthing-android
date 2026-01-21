@@ -221,7 +221,7 @@
     <string name="run_in_flight_mode_summary">Включете ако устройството не открива ръчно включената безжична връзка по време на самолетен режим.</string>
     <string name="service_settings_title">Настройки на услугата</string>
     <string name="service_settings_summary">Syncthing работи като услуга. За да се предотврати изключване от Андроид се добавят постоянни известия. Също така стартира Syncthing заедно с операционната система.</string>
-    <string name="run_as_background_service">Услугата стартира при включване на устройството</string>
+    <string name="start_service_on_boot">Услугата стартира при включване на устройството</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Избор на папка, за напреднали</string>
     <string name="advanced_folder_picker_summary">Изберете папка, от устройството, за синхронизиране</string>

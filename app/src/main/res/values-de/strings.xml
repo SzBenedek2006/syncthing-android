@@ -221,7 +221,7 @@
     <string name="run_in_flight_mode_summary">Durch Aktivieren der Option wird Syncthing auch dann laufen, wenn du offline bist. Aktiviere dies, wenn dein Telefon Probleme beim Erkennen von manuell hergestellten WLAN-Verbindungen im Flugmodus hat.</string>
     <string name="service_settings_title">Diensteinstellung</string>
     <string name="service_settings_summary">Führt Syncthing als Dienst aus. Fügt eine permanente Benachrichtigung hinzu, um das Beenden des Diensts durch Android zu verhindern. Wenn du diese Option aktivierst, wird Syncthing beim Hochfahren gestartet.</string>
-    <string name="run_as_background_service">Dienst automatisch beim Hochfahren starten</string>
+    <string name="start_service_on_boot">Dienst automatisch beim Hochfahren starten</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Erweiterte Ordnerauswahl benutzen</string>
     <string name="advanced_folder_picker_summary">Alle Ordner auf dem Gerät für Synchronisation auswählbar</string>

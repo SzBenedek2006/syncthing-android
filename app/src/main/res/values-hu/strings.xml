@@ -221,7 +221,7 @@
     <string name="run_in_flight_mode_summary">Engedélyezze, ha a készüléknek problémái vannak a kézi Wi-Fi-kapcsolatok felismerésével repülési üzemmódban.</string>
     <string name="service_settings_title">Szolgáltatás beállítások</string>
     <string name="service_settings_summary">A Syncthing szolgáltatásként való futtatása. Hozzáad egy állandó értesítést, amivel megakadályozza az Android általi leállítást. Ha be van jelölve ez az opció, a Syncthing az operációs rendszer indításakor elindul.</string>
-    <string name="run_as_background_service">Szolgáltatás automatikus indítása bekapcsoláskor</string>
+    <string name="start_service_on_boot">Szolgáltatás automatikus indítása bekapcsoláskor</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Fejlett mappaválasztó használata</string>
     <string name="advanced_folder_picker_summary">Bármely mappa kiválasztható szinkronizáláshoz</string>

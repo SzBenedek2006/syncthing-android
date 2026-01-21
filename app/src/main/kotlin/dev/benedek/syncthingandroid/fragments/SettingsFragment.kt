@@ -38,7 +38,7 @@ import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Languages
 import dev.benedek.syncthingandroid.util.Util
-import dev.benedek.syncthingandroid.views.WifiSsidPreference
+import dev.benedek.syncthingandroid.views.WifiSsidPreferenceOld
 import eu.chainfire.libsuperuser.Shell
 import java.lang.ref.WeakReference
 import java.security.InvalidParameterException
@@ -63,7 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SyncthingActivity.OnService
     private var mRunOnMobileData: SwitchPreferenceCompat? = null
     private var mRunOnWifi: SwitchPreferenceCompat? = null
     private var mRunOnMeteredWifi: SwitchPreferenceCompat? = null
-    private var mWifiSsidWhitelist: WifiSsidPreference? = null
+    private var mWifiSsidWhitelist: WifiSsidPreferenceOld? = null
     private var mRunInFlightMode: SwitchPreferenceCompat? = null
 
     private var mCategorySyncthingOptions: Preference? = null
@@ -311,7 +311,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SyncthingActivity.OnService
 
     private fun openSubPrefScreen() {
         val bundle = arguments ?: return
-        val openSubPrefScreen = bundle.getString(SettingsActivity.Companion.EXTRA_OPEN_SUB_PREF_SCREEN, "")
+        val openSubPrefScreen = bundle.getString(SettingsActivity.EXTRA_OPEN_SUB_PREF_SCREEN, "")
         // Open sub preferences screen if EXTRA_OPEN_SUB_PREF_SCREEN was passed in bundle.
         if (openSubPrefScreen != null && !TextUtils.isEmpty(openSubPrefScreen)) {
             Log.v(TAG, "Transitioning to pref screen $openSubPrefScreen")

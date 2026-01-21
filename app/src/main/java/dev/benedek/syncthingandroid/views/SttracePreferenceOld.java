@@ -1,7 +1,7 @@
 package dev.benedek.syncthingandroid.views;
 
 import android.content.Context;
-import android.os.Bundle;
+
 import androidx.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -27,18 +27,16 @@ import java.util.TreeSet;
  * Debug facilities are documented in https://docs.syncthing.net/dev/debugging.html
  *
  */
-public class SttracePreference extends MultiSelectListPreference {
+public class SttracePreferenceOld extends MultiSelectListPreference {
 
-    private final String TAG = "SttracePreference";
-
-    public SttracePreference(Context context, AttributeSet attrs) {
+    public SttracePreferenceOld(Context context, AttributeSet attrs) {
         super(context, attrs);
         setDefaultValue(new TreeSet<String>());
     }
 
-    public SttracePreference(Context context) {
-        this(context, null);
-    }
+//    public SttracePreferenceOld(Context context) {
+//        this(context, null);
+//    }
 
     /**
      * Show the dialog.
@@ -80,6 +78,7 @@ public class SttracePreference extends MultiSelectListPreference {
                 retDebugFacilities.add(facilityName);
             }
         } else {
+            String TAG = "SttracePreference";
             Log.w(TAG, "getDebugFacilities: Failed to get facilities from prefs, falling back to hardcoded list.");
 
             // Syncthing v0.14.47 debug facilities.

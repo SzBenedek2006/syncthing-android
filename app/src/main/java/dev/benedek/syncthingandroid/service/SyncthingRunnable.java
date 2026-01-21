@@ -457,6 +457,7 @@ public class SyncthingRunnable implements Runnable {
                 targetEnv.put("http_proxy", httpProxyAddress);
                 targetEnv.put("https_proxy", httpProxyAddress);
             }
+
         }
         if (mPreferences.getBoolean("use_legacy_hashing", false))
             targetEnv.put("STHASHING", "standard");

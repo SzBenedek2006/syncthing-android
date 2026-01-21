@@ -5,7 +5,7 @@
     <ListPreference
         android:key="theme"
         android:title="@string/preference_theme_title"
-        android:entries="@array/theme_names"
+        android:entries="@array/theme_entries"
         android:entryValues="@array/theme_values"
         android:defaultValue="-1"/> <!-- -1 is Follow System -->
 
@@ -31,7 +31,7 @@
             android:summary="@string/run_on_metered_wifi_summary"
             android:defaultValue="false" />
 
-        <dev.benedek.syncthingandroid.views.WifiSsidPreference
+        <dev.benedek.syncthingandroid.views.WifiSsidPreferenceOld
             android:key="wifi_ssid_whitelist"
             android:title="@string/run_on_whitelisted_wifi_title"
             android:summary="@null" />
@@ -99,8 +99,8 @@
             android:summary="@string/service_settings_summary"/>
 
         <SwitchPreferenceCompat
-            android:key="always_run_in_background"
-            android:title="@string/run_as_background_service"
+            android:key="start_service_on_boot"
+            android:title="@string/start_service_on_boot"
             android:defaultValue="false" />
 
     </PreferenceCategory>
@@ -209,7 +209,7 @@
             android:title="@string/notify_crashes_title"
             android:summary="@string/notify_crashes_summary"/>
 
-        <dev.benedek.syncthingandroid.views.SttracePreference
+        <dev.benedek.syncthingandroid.views.SttracePreferenceOld
             android:key="debug_facilities_enabled"
             android:title="@string/sttrace_title" />
 

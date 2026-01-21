@@ -222,7 +222,7 @@
     <string name="run_in_flight_mode_summary">Activer si votre appareil a des problèmes pour détecter les connexions wifi manuelles en mode avion.</string>
     <string name="service_settings_title">Réglage du service</string>
     <string name="service_settings_summary">Exécuter Syncthing en tant que service. Ajoute une notification persistante pour empêcher sa fermeture par Android. L\'activation de cette option lance la synchronisation au démarrage du système d\'exploitation.</string>
-    <string name="run_as_background_service">Lancer le service automatiquement au démarrage</string>
+    <string name="start_service_on_boot">Lancer le service automatiquement au démarrage</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Choix étendu des répertoires</string>
     <string name="advanced_folder_picker_summary">Permettre la sélection de n\'importe quel répertoire de cet appareil pour créer les partages</string>

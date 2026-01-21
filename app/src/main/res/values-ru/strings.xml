@@ -223,7 +223,7 @@
     <string name="run_in_flight_mode_summary">Включите, если ваше устройство испытывает проблемы с поиском сетей Wi-FI в режиме полёта.</string>
     <string name="service_settings_title">Настройка сервиса</string>
     <string name="service_settings_summary">Запускать Syncthing как сервис при включении устройства. Будет показано постоянное уведомление, чтобы Android не останавливал этот сервис.</string>
-    <string name="run_as_background_service">Запускать сервис при включении</string>
+    <string name="start_service_on_boot">Запускать сервис при включении</string>
     <!--Preferences - Behaviour-->
     <string name="advanced_folder_picker">Использовать продвинутый выбор папок</string>
     <string name="advanced_folder_picker_summary">Выберите любую папку на устройстве для синхронизации</string>
