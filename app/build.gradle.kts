@@ -1,6 +1,3 @@
-import com.android.build.api.dsl.Packaging
-import org.gradle.configurationcache.extensions.capitalized
-
 plugins {
     id("com.android.application")
     id("com.github.ben-manes.versions")
@@ -72,8 +69,8 @@ android {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4409
-        versionName = "2.0.10.9"
+        versionCode = 4410
+        versionName = "2.0.10.10"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -110,6 +107,13 @@ android {
     }
 
     namespace = "dev.benedek.syncthingandroid"
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+
 }
 
 play {
@@ -136,10 +140,21 @@ tasks.register<Delete>("deleteUnsupportedPlayTranslations") {
     )
 }
 
-project.afterEvaluate {
-    android.buildTypes.forEach {
-        tasks.named("merge${it.name.capitalized()}JniLibFolders") {
-            dependsOn(":syncthing:buildNative")
+
+androidComponents {
+    onVariants { variant ->
+
+        variant.outputs.forEach { output ->
+            // This abomination is needed for a simple renaming of an output file?
+            (output as? com.android.build.api.variant.impl.VariantOutputImpl)?.outputFileName?.set(output.versionName.map { versionName ->
+                "syncthing-android-${variant.name}_${versionName}.apk"
+            })
+        }
+
+        // Tasks don't exist yet when onVariants runs, so must wait
+        project.afterEvaluate {
+            val taskName = "merge${variant.name.replaceFirstChar { it.titlecase() }}JniLibFolders"
+            project.tasks.findByName(taskName)?.dependsOn(":syncthing:buildNative")
         }
     }
 }

@@ -41,7 +41,6 @@
         android:installLocation="internalOnly"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:extractNativeLibs="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Syncthing">
 
