@@ -192,10 +192,10 @@ public class SyncthingService extends Service {
         ((SyncthingApp) getApplication()).component().inject(this);
         mHandler = new Handler();
 
-        /**
-         * If runtime permissions are revoked, android kills and restarts the service.
-         * see issue: https://github.com/syncthing/syncthing-android/issues/871
-         * We need to recheck if we still have the storage permission.
+        /*
+          If runtime permissions are revoked, android kills and restarts the service.
+          see issue: https://github.com/syncthing/syncthing-android/issues/871
+          We need to recheck if we still have the storage permission.
          */
         mStoragePermissionGranted = PermissionUtil.haveStoragePermission(this);
 
@@ -219,12 +219,12 @@ public class SyncthingService extends Service {
             return START_NOT_STICKY;
         }
 
-        /**
-         * Send current service state to listening endpoints.
-         * This is required that components know about the service State.DISABLED
-         * if RunConditionMonitor does not send a "shouldRun = true" callback
-         * to start the binary according to preferences shortly after its creation.
-         * See {@link mLastDeterminedShouldRun} defaulting to "false".
+        /*
+          Send current service state to listening endpoints.
+          This is required that components know about the service State.DISABLED
+          if RunConditionMonitor does not send a "shouldRun = true" callback
+          to start the binary according to preferences shortly after its creation.
+          See {@link mLastDeterminedShouldRun} defaulting to "false".
          */
         if (mCurrentState == State.DISABLED) {
             synchronized(mStateLock) {
@@ -232,11 +232,11 @@ public class SyncthingService extends Service {
             }
         }
         if (mRunConditionMonitor == null) {
-            /**
-             * Instantiate the run condition monitor on first onStartCommand and
-             * enable callback on run condition change affecting the final decision to
-             * run/terminate syncthing. After initial run conditions are collected
-             * the first decision is sent to {@link onUpdatedShouldRunDecision}.
+            /*
+              Instantiate the run condition monitor on first onStartCommand and
+              enable callback on run condition change affecting the final decision to
+              run/terminate syncthing. After initial run conditions are collected
+              the first decision is sent to {@link onUpdatedShouldRunDecision}.
              */
             mRunConditionMonitor = new RunConditionMonitor(SyncthingService.this, this::onUpdatedShouldRunDecision);
         }
@@ -406,12 +406,12 @@ public class SyncthingService extends Service {
          mSyncthingRunnableThread = new Thread(mSyncthingRunnable);
          mSyncthingRunnableThread.start();
 
-         /**
-          * Wait for the web-gui of the native syncthing binary to come online.
-          *
-          * In case the binary is to be stopped, also be aware that another thread could request
-          * to stop the binary in the time while waiting for the GUI to become active. See the comment
-          * for {@link SyncthingService#onDestroy} for details.
+         /*
+           Wait for the web-gui of the native syncthing binary to come online.
+
+           In case the binary is to be stopped, also be aware that another thread could request
+           to stop the binary in the time while waiting for the GUI to become active. See the comment
+           for {@link SyncthingService#onDestroy} for details.
           */
          if (mPollWebGuiAvailableTask == null) {
              mPollWebGuiAvailableTask = new PollWebGuiAvailableTask(
@@ -431,7 +431,7 @@ public class SyncthingService extends Service {
      * UI stressing results in mApi getting null on simultaneous shutdown, so
      * we check it for safety.
      */
-    private void onApiAvailable() {
+    void onApiAvailable() {
         if (mApi == null) {
             Log.e(TAG, "onApiAvailable: Did we stop the binary during startup? mApi == null");
             return;
@@ -444,10 +444,10 @@ public class SyncthingService extends Service {
             onServiceStateChange(State.ACTIVE);
         }
 
-        /**
-         * If the service instance got an onDestroy() event while being in
-         * State.STARTING we'll trigger the service onDestroy() now. this
-         * allows the syncthing binary to get gracefully stopped.
+        /*
+          If the service instance got an onDestroy() event while being in
+          State.STARTING we'll trigger the service onDestroy() now. this
+          allows the syncthing binary to get gracefully stopped.
          */
         if (mDestroyScheduled) {
             mDestroyScheduled = false;
@@ -474,9 +474,9 @@ public class SyncthingService extends Service {
     public void onDestroy() {
         Log.v(TAG, "onDestroy");
         if (mRunConditionMonitor != null) {
-            /**
-             * Shut down the OnDeviceStateChangedListener so we won't get interrupted by run
-             * condition events that occur during shutdown.
+            /*
+              Shut down the OnDeviceStateChangedListener so we won't get interrupted by run
+              condition events that occur during shutdown.
              */
             mRunConditionMonitor.shutdown();
         }

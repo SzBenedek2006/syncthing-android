@@ -140,17 +140,13 @@ public class Constants {
      * to syncthing core v0.14.53+.
      */
     public static Boolean osSupportsTLS12() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N) {
-            /**
-             * SSLProtocolException: SSL handshake failed on Android N/7.0,
-             * missing support for elliptic curves.
-             * See https://issuetracker.google.com/issues/37122132
-             */
-            return false;
-        }
-
-        return true;
+        /**
+         * SSLProtocolException: SSL handshake failed on Android N/7.0,
+         * missing support for elliptic curves.
+         * See https://issuetracker.google.com/issues/37122132
+         */
+        return Build.VERSION.SDK_INT > Build.VERSION_CODES.N; // fixed comparison operator
     }
 
-    public static int FLAG_IMMUTABLE = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ? PendingIntent.FLAG_IMMUTABLE : 0;
+    public static int FLAG_IMMUTABLE = PendingIntent.FLAG_IMMUTABLE; // deleted check as now android 6 is the min
 }

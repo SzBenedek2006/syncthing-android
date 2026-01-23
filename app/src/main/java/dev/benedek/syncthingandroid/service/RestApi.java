@@ -2,11 +2,10 @@ package dev.benedek.syncthingandroid.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -15,6 +14,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.jspecify.annotations.NonNull;
+
 import dev.benedek.syncthingandroid.BuildConfig;
 import dev.benedek.syncthingandroid.SyncthingApp;
 import dev.benedek.syncthingandroid.activities.FolderActivity;
@@ -47,6 +49,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,9 +65,9 @@ public class RestApi {
     private static final SimpleDateFormat dateFormat;
     static {
         if (android.os.Build.VERSION.SDK_INT < 24) {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         } else {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
         }
     }
 
@@ -107,7 +110,7 @@ public class RestApi {
      * Stores the result of the last successful request to {@link GetRequest#URI_CONNECTIONS},
      * or an empty Map.
      */
-    private Optional<Connections> mPreviousConnections = Optional.absent();
+    private Connections mPreviousConnections = null;
 
     /**
      * Stores the timestamp of the last successful request to {@link GetRequest#URI_CONNECTIONS}.
@@ -115,7 +118,7 @@ public class RestApi {
     private long mPreviousConnectionTime = 0;
 
     /**
-     * In the last-finishing {@link readConfigFromRestApi} callback, we have to call
+     * In the last-finishing {@link #readConfigFromRestApi} callback, we have to call
      * {@link SyncthingService#onApiAvailable} to indicate that the RestApi class is fully initialized.
      * We do this to avoid getting stuck with our main thread due to synchronous REST queries.
      * The correct indication of full initialisation is crucial to stability as other listeners of
@@ -140,12 +143,12 @@ public class RestApi {
     /**
      * Stores the latest result of {@link #getFolderStatus} for each folder
      */
-    private HashMap<String, FolderStatus> mCachedFolderStatuses = new HashMap<>();
+    private final HashMap<String, FolderStatus> mCachedFolderStatuses = new HashMap<>(); // For some reason it's not used
 
     /**
      * Stores the latest result of device and folder completion events.
      */
-    private Completion mCompletion = new Completion();
+    private final Completion mCompletion = new Completion();
 
     @Inject NotificationHandler mNotificationHandler;
 
@@ -178,10 +181,10 @@ public class RestApi {
             asyncQuerySystemInfoComplete = false;
         }
         new GetRequest(mContext, mUrl, GetRequest.URI_VERSION, mApiKey, null, result -> {
-            JsonObject json = new JsonParser().parse(result).getAsJsonObject();
+            JsonObject json = JsonParser.parseString(result).getAsJsonObject();
             mVersion = json.get("version").getAsString();
             Log.i(TAG, "Syncthing version is " + mVersion);
-            updateDebugFacilitiesCache();
+            //updateDebugFacilitiesCache();
             synchronized (mAsyncQueryCompleteLock) {
                 asyncQueryVersionComplete = true;
                 checkReadConfigFromRestApiCompleted();
@@ -204,7 +207,7 @@ public class RestApi {
         });
     }
 
-    private void checkReadConfigFromRestApiCompleted() {
+    void checkReadConfigFromRestApiCompleted() {
         if (asyncQueryVersionComplete && asyncQueryConfigComplete && asyncQuerySystemInfoComplete) {
             Log.v(TAG, "Reading config from REST completed.");
             mOnApiAvailableListener.onApiAvailable();
@@ -216,7 +219,7 @@ public class RestApi {
     }
 
     private void onReloadConfigComplete(String result) {
-        Boolean configParseSuccess;
+        boolean configParseSuccess;
         synchronized(mConfigLock) {
             mConfig = new Gson().fromJson(result, Config.class);
             configParseSuccess = mConfig != null;
@@ -238,34 +241,34 @@ public class RestApi {
      * if the syncthing binary version changed. First launch of the binary is also
      * considered as a version change.
      * Precondition: {@link #mVersion} read from REST
+     * <p>
+     * It's not possible as of 2.0, so always falling back to the hardcoded list.
      */
-    private void updateDebugFacilitiesCache() {
-        final String PREF_LAST_BINARY_VERSION = "lastBinaryVersion";
-        if (!mVersion.equals(PreferenceManager.getDefaultSharedPreferences(mContext).getString(PREF_LAST_BINARY_VERSION, ""))) {
-            // First binary launch or binary upgraded case.
-            new GetRequest(mContext, mUrl, GetRequest.URI_DEBUG, mApiKey, null, result -> {
-                try {
-                    Set<String> facilitiesToStore = new HashSet<String>();
-                    JsonObject json = new JsonParser().parse(result).getAsJsonObject();
-                    JsonObject jsonFacilities = json.getAsJsonObject("facilities");
-                    for (String facilityName : jsonFacilities.keySet()) {
-                        facilitiesToStore.add(facilityName);
-                    }
-                    PreferenceManager.getDefaultSharedPreferences(mContext).edit()
-                        .putStringSet(Constants.PREF_DEBUG_FACILITIES_AVAILABLE, facilitiesToStore)
-                        .apply();
-
-                    // Store current binary version so we will only store this information again
-                    // after a binary update.
-                    PreferenceManager.getDefaultSharedPreferences(mContext).edit()
-                        .putString(PREF_LAST_BINARY_VERSION, mVersion)
-                        .apply();
-                } catch (Exception e) {
-                    Log.w(TAG, "updateDebugFacilitiesCache: Failed to get debug facilities. result=" + result);
-                }
-            });
-        }
-    }
+//    private void updateDebugFacilitiesCache() {
+//        final String PREF_LAST_BINARY_VERSION = "lastBinaryVersion";
+//        if (!mVersion.equals(PreferenceManager.getDefaultSharedPreferences(mContext).getString(PREF_LAST_BINARY_VERSION, ""))) {
+//            // First binary launch or binary upgraded case.
+//            new GetRequest(mContext, mUrl, GetRequest.URI_DEBUG, mApiKey, null, result -> {
+//                try {
+//                    JsonObject json = JsonParser.parseString(result).getAsJsonObject();
+//                    JsonObject jsonFacilities = json.getAsJsonObject("facilities");
+//                    Set<String> facilitiesToStore = new HashSet<>(jsonFacilities.keySet());
+//
+//                    PreferenceManager.getDefaultSharedPreferences(mContext).edit()
+//                        .putStringSet(Constants.PREF_DEBUG_FACILITIES_AVAILABLE, facilitiesToStore)
+//                        .apply();
+//
+//                    // Store current binary version so we will only store this information again
+//                    // after a binary update.
+//                    PreferenceManager.getDefaultSharedPreferences(mContext).edit()
+//                        .putString(PREF_LAST_BINARY_VERSION, mVersion)
+//                        .apply();
+//                } catch (Exception e) {
+//                    Log.w(TAG, "updateDebugFacilitiesCache: Failed to get debug facilities. result=" + result);
+//                }
+//            });
+//        }
+//    }
 
     /**
      * Permanently ignore a device when it tries to connect.
@@ -303,8 +306,8 @@ public class RestApi {
         synchronized (mConfigLock) {
             for (Device device : mConfig.devices) {
                 if (deviceId.equals(device.deviceID)) {
-                    /**
-                     * Check if the folder has already been ignored.
+                    /*
+                      Check if the folder has already been ignored.
                      */
                     for (IgnoredFolder ignoredFolder : device.ignoredFolders) {
                         if (folderId.equals(ignoredFolder.id)) {
@@ -314,9 +317,9 @@ public class RestApi {
                         }
                     }
 
-                    /**
-                     * Ignore folder by moving its corresponding "pendingFolder" entry to
-                     * a newly created "ignoredFolder" entry.
+                    /*
+                      Ignore folder by moving its corresponding "pendingFolder" entry to
+                      a newly created "ignoredFolder" entry.
                      */
                     IgnoredFolder ignoredFolder = new IgnoredFolder();
                     ignoredFolder.id = folderId;
@@ -403,7 +406,7 @@ public class RestApi {
     public List<Folder> getFolders() {
         List<Folder> folders;
         synchronized (mConfigLock) {
-            folders = deepCopy(mConfig.folders, new TypeToken<List<Folder>>(){}.getType());
+            folders = deepCopy(mConfig.folders, new TypeToken<@NonNull List<Folder>>(){}.getType());
         }
         Collections.sort(folders, FOLDERS_COMPARATOR);
         return folders;
@@ -462,7 +465,7 @@ public class RestApi {
     public List<Device> getDevices(boolean includeLocal) {
         List<Device> devices;
         synchronized (mConfigLock) {
-            devices = deepCopy(mConfig.devices, new TypeToken<List<Device>>(){}.getType());
+            devices = deepCopy(mConfig.devices, new TypeToken<@NonNull List<Device>>(){}.getType());
         }
 
         Iterator<Device> it = devices.iterator();
@@ -550,7 +553,7 @@ public class RestApi {
 
     /**
      * Returns a deep copy of object.
-     *
+     * <p>
      * This method uses Gson and only works with objects that can be converted with Gson.
      */
     private <T> T deepCopy(T object, Type type) {
@@ -587,10 +590,10 @@ public class RestApi {
      */
     public void getConnections(final OnResultListener1<Connections> listener) {
         new GetRequest(mContext, mUrl, GetRequest.URI_CONNECTIONS, mApiKey, null, result -> {
-            Long now = System.currentTimeMillis();
-            Long msElapsed = now - mPreviousConnectionTime;
-            if (msElapsed < Constants.GUI_UPDATE_INTERVAL) {
-                listener.onResult(deepCopy(mPreviousConnections.get(), Connections.class));
+            long now = System.currentTimeMillis();
+            long msElapsed = now - mPreviousConnectionTime;
+            if (msElapsed < Constants.GUI_UPDATE_INTERVAL && mPreviousConnections != null) {
+                listener.onResult(deepCopy(mPreviousConnections, Connections.class));
                 return;
             }
 
@@ -600,15 +603,22 @@ public class RestApi {
                 e.getValue().completion = mCompletion.getDeviceCompletion(e.getKey());
 
                 Connections.Connection prev =
-                        (mPreviousConnections.isPresent() && mPreviousConnections.get().connections.containsKey(e.getKey()))
-                                ? mPreviousConnections.get().connections.get(e.getKey())
+                        (mPreviousConnections != null && mPreviousConnections.connections.containsKey(e.getKey()))
+                                ? mPreviousConnections.connections.get(e.getKey())
                                 : new Connections.Connection();
-                e.getValue().setTransferRate(prev, msElapsed);
+
+                if (prev != null) {
+                    e.getValue().setTransferRate(prev, msElapsed);
+                }
             }
-            Connections.Connection prev =
-                    mPreviousConnections.transform(c -> c.total).or(new Connections.Connection());
-            connections.total.setTransferRate(prev, msElapsed);
-            mPreviousConnections = Optional.of(connections);
+
+            Connections.Connection prevTotal = (mPreviousConnections != null)
+                    ? mPreviousConnections.total
+                    : new Connections.Connection();
+
+            connections.total.setTransferRate(prevTotal, msElapsed);
+
+            mPreviousConnections = connections;
             listener.onResult(deepCopy(connections, Connections.class));
         });
     }
@@ -644,14 +654,14 @@ public class RestApi {
 
     /**
      * Retrieves the events that have accumulated since the given event id.
-     *
+     * <p>
      * The OnReceiveEventListeners onEvent method is called for each event.
      */
     public final void getEvents(final long sinceId, final long limit, final OnReceiveEventListener listener) {
         Map<String, String> params =
                 ImmutableMap.of("since", String.valueOf(sinceId), "limit", String.valueOf(limit));
         new GetRequest(mContext, mUrl, GetRequest.URI_EVENTS, mApiKey, params, result -> {
-            JsonArray jsonEvents = new JsonParser().parse(result).getAsJsonArray();
+            JsonArray jsonEvents = JsonParser.parseString(result).getAsJsonArray();
             long lastId = 0;
 
             for (int i = 0; i < jsonEvents.size(); i++) {
@@ -675,7 +685,7 @@ public class RestApi {
                                    OnResultListener1<String> errorListener) {
         new GetRequest(mContext, mUrl, GetRequest.URI_DEVICEID, mApiKey,
                 ImmutableMap.of("id", id), result -> {
-            JsonObject json = new JsonParser().parse(result).getAsJsonObject();
+            JsonObject json = JsonParser.parseString(result).getAsJsonObject();
             JsonElement normalizedId = json.get("id");
             JsonElement error = json.get("error");
             if (normalizedId != null)
@@ -698,7 +708,7 @@ public class RestApi {
      */
     public void getUsageReport(final OnResultListener1<String> listener) {
         new GetRequest(mContext, mUrl, GetRequest.URI_REPORT, mApiKey, null, result -> {
-            JsonElement json = new JsonParser().parse(result);
+            JsonElement json = JsonParser.parseString(result);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             listener.onResult(gson.toJson(json));
         });
