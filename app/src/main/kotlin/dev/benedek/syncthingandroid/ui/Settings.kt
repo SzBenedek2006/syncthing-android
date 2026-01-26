@@ -188,21 +188,20 @@ fun Settings(
             key = Constants.PREF_RUN_CONDITIONS,
             defaultValue = true
         )
-        val useTor by rememberPreferenceState(
-            key = Constants.PREF_USE_TOR,
-            defaultValue = false
-        )
 
-        val useRoot by rememberPreferenceState(
-            key = Constants.PREF_USE_ROOT,
-            defaultValue = false
-        )
-        LaunchedEffect(useRoot) {
-            viewModel.onRootChanged(context, useRoot)
+
+
+        LaunchedEffect(Unit) {
+            snapshotFlow { viewModel.useRoot.value } // Need the .value here
+                .drop(1)
+                .collect {
+                    viewModel.onRootChanged(context, viewModel.useRoot.value)
+                }
+
         }
         // TODO: use snapshotFlow for values where change should be ignored on launch
         LaunchedEffect(Unit) {
-            snapshotFlow { useTor }
+            snapshotFlow { viewModel.useTor.value }
                 .drop(1)
                 .collect {
                     viewModel.restartSyncthing()
@@ -588,11 +587,13 @@ fun Settings(
                 key = "category_experimental",
                 title = { Text(stringResource(R.string.category_experimental)) }
             )
+
             switchPreference(
                 key = Constants.PREF_USE_ROOT,
                 title = { Text(stringResource(R.string.use_root_title)) },
                 summary = { Text(stringResource(R.string.use_root_summary)) },
-                defaultValue = false
+                defaultValue = false,
+                rememberState = { viewModel.useRoot },
             )
             switchPreference(
                 key = Constants.PREF_USE_WAKE_LOCK,
@@ -642,7 +643,7 @@ fun Settings(
                         singleLine = true
                     )
                 },
-                enabled = { !useTor }
+                enabled = { !viewModel.useTor.value }
             )
             textFieldPreference(
                 key = Constants.PREF_HTTP_PROXY_ADDRESS,
@@ -679,7 +680,7 @@ fun Settings(
                         singleLine = true
                     )
                 },
-                enabled = { !useTor }
+                enabled = { !viewModel.useTor.value }
             )
             switchPreference(
                 key = "use_legacy_hashing",

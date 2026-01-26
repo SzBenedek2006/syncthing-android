@@ -3,8 +3,8 @@ package dev.benedek.syncthingandroid.service;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.google.common.io.Files;
 import dev.benedek.syncthingandroid.R;
 import dev.benedek.syncthingandroid.SyncthingApp;
+import dev.benedek.syncthingandroid.activities.SettingsActivity;
 import dev.benedek.syncthingandroid.http.PollWebGuiAvailableTask;
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult;
 import dev.benedek.syncthingandroid.util.ConfigXml;
@@ -19,10 +20,12 @@ import dev.benedek.syncthingandroid.util.PermissionUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
@@ -139,10 +142,10 @@ public class SyncthingService extends Service {
     /**
      * Initialize the service with State.DISABLED as {@link RunConditionMonitor} will
      * send an update if we should run the binary after it got instantiated in
-     * {@link onStartCommand}.
+     * {@link #onStartCommand}.
      */
     private State mCurrentState = State.DISABLED;
-    private AtomicReference<RunConditionCheckResult> mCurrentCheckResult = new AtomicReference<>(RunConditionCheckResult.SHOULD_RUN);
+    private final AtomicReference<RunConditionCheckResult> mCurrentCheckResult = new AtomicReference<>(RunConditionCheckResult.SHOULD_RUN);
 
     private ConfigXml mConfig;
     private @Nullable PollWebGuiAvailableTask mPollWebGuiAvailableTask = null;
@@ -150,7 +153,8 @@ public class SyncthingService extends Service {
     private @Nullable EventProcessor mEventProcessor = null;
     private @Nullable RunConditionMonitor mRunConditionMonitor = null;
     private @Nullable SyncthingRunnable mSyncthingRunnable = null;
-    private StartupTask mStartupTask = null;
+    private final ExecutorService mStartupExecutor = Executors.newSingleThreadExecutor();
+    private Future<?> mStartupFuture = null;
     private Thread mSyncthingRunnableThread = null;
     private Handler mHandler;
 
@@ -172,8 +176,8 @@ public class SyncthingService extends Service {
     private boolean mLastDeterminedShouldRun = false;
 
     /**
-     * True if a service {@link onDestroy} was requested while syncthing is starting,
-     * in that case, perform stop in {@link onApiAvailable}.
+     * True if a service {@link #onDestroy} was requested while syncthing is starting,
+     * in that case, perform stop in {@link #onApiAvailable}.
      */
     private boolean mDestroyScheduled = false;
 
@@ -190,7 +194,7 @@ public class SyncthingService extends Service {
         Log.v(TAG, "onCreate");
         super.onCreate();
         ((SyncthingApp) getApplication()).component().inject(this);
-        mHandler = new Handler();
+        mHandler = new Handler(Looper.getMainLooper());
 
         /*
           If runtime permissions are revoked, android kills and restarts the service.
@@ -242,11 +246,8 @@ public class SyncthingService extends Service {
         }
         mNotificationHandler.updatePersistentNotification(this);
 
-        if (intent == null)
-            return START_STICKY;
-
         if (ACTION_RESTART.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
-            shutdown(State.INIT, () -> launchStartupTask());
+            shutdown(State.INIT, this::launchStartupTask);
         } else if (ACTION_RESET_DATABASE.equals(intent.getAction())) {
             shutdown(State.INIT, () -> {
                 new SyncthingRunnable(this, SyncthingRunnable.Command.resetdatabase).run();
@@ -261,13 +262,16 @@ public class SyncthingService extends Service {
             mRunConditionMonitor.updateShouldRunDecision();
         } else if (ACTION_IGNORE_DEVICE.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
             // mApi is not null due to State.ACTIVE
+            assert mApi != null;
             mApi.ignoreDevice(intent.getStringExtra(EXTRA_DEVICE_ID), intent.getStringExtra(EXTRA_DEVICE_NAME), intent.getStringExtra(EXTRA_DEVICE_ADDRESS));
             mNotificationHandler.cancelConsentNotification(intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0));
         } else if (ACTION_IGNORE_FOLDER.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
             // mApi is not null due to State.ACTIVE
+            assert mApi != null;
             mApi.ignoreFolder(intent.getStringExtra(EXTRA_DEVICE_ID), intent.getStringExtra(EXTRA_FOLDER_ID), intent.getStringExtra(EXTRA_FOLDER_LABEL));
             mNotificationHandler.cancelConsentNotification(intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0));
         } else if (ACTION_OVERRIDE_CHANGES.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
+            assert mApi != null;
             mApi.overrideChanges(intent.getStringExtra(EXTRA_FOLDER_ID));
         }
         return START_STICKY;
@@ -298,9 +302,7 @@ public class SyncthingService extends Service {
                     case INIT:
                         // HACK: Make sure there is no syncthing binary left running from an improper
                         // shutdown (eg Play Store update).
-                        shutdown(State.INIT, () -> {
-                            launchStartupTask();
-                        });
+                        shutdown(State.INIT, this::launchStartupTask);
                         break;
                     case STARTING:
                     case ACTIVE:
@@ -332,64 +334,33 @@ public class SyncthingService extends Service {
             }
         }
 
-        // Safety check: Log warning if a previously launched startup task did not finish properly.
-        if (startupTaskIsRunning()) {
-            Log.w(TAG, "launchStartupTask: StartupTask is still running. Skipped starting it twice.");
-            return;
-        }
         onServiceStateChange(State.STARTING);
-        mStartupTask = new StartupTask(this);
-        mStartupTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        mStartupFuture = mStartupExecutor.submit(() -> {
+            try {
+                mConfig = new ConfigXml(SyncthingService.this);
+                mConfig.updateIfNeeded();
+
+                // Success: Move to main thread
+                mHandler.post(() -> {
+                    mStartupFuture = null; // Mark as done
+                    onStartupTaskCompleteListener();
+                });
+            } catch (ConfigXml.OpenConfigException e) {
+                mHandler.post(() -> {
+                    mNotificationHandler.showCrashedNotification(R.string.config_create_failed, true);
+                    synchronized (mStateLock) {
+                        onServiceStateChange(State.ERROR);
+                    }
+                });
+            }
+        });
+
     }
 
-    private boolean startupTaskIsRunning() {
-        return mStartupTask != null && mStartupTask.getStatus() == AsyncTask.Status.RUNNING;
-    }
 
-    /**
-     * Sets up the initial configuration, and updates the config when coming from an old
-     * version.
-     */
-     private static class StartupTask extends AsyncTask<Void, Void, Void> {
-         private WeakReference<SyncthingService> refSyncthingService;
 
-         StartupTask(SyncthingService context) {
-             refSyncthingService = new WeakReference<>(context);
-         }
 
-         @Override
-         protected Void doInBackground(Void... voids) {
-             SyncthingService syncthingService = refSyncthingService.get();
-             if (syncthingService == null) {
-                 cancel(true);
-                 return null;
-             }
-             try {
-                 syncthingService.mConfig = new ConfigXml(syncthingService);
-                 syncthingService.mConfig.updateIfNeeded();
-             } catch (ConfigXml.OpenConfigException e) {
-                 syncthingService.mNotificationHandler.showCrashedNotification(R.string.config_create_failed, true);
-                 synchronized (syncthingService.mStateLock) {
-                     syncthingService.onServiceStateChange(State.ERROR);
-                 }
-                 cancel(true);
-             }
-             return null;
-         }
-
-         @Override
-         protected void onPostExecute(Void aVoid) {
-             // Get a reference to the service if it is still there.
-             SyncthingService syncthingService = refSyncthingService.get();
-             if (syncthingService != null) {
-                 syncthingService.onStartupTaskCompleteListener();
-             }
-         }
-     }
-
-     /**
-      * Callback on {@link StartupTask#onPostExecute}.
-      */
      private void onStartupTaskCompleteListener() {
          if (mApi == null) {
              mApi = new RestApi(this, mConfig.getWebGuiUrl(), mConfig.getApiKey(),
@@ -483,6 +454,8 @@ public class SyncthingService extends Service {
         if (mNotificationHandler != null) {
             mNotificationHandler.setAppShutdownInProgress(true);
         }
+
+        mStartupExecutor.shutdownNow();
         if (mStoragePermissionGranted) {
             synchronized (mStateLock) {
                 if (mCurrentState == State.STARTING) {
@@ -504,7 +477,7 @@ public class SyncthingService extends Service {
 
     /**
      * Stop Syncthing and all helpers like event processor and api handler.
-     *
+     * <p>
      * Sets {@link #mCurrentState} to newState, and calls onKilledListener once Syncthing is killed.
      */
     private void shutdown(State newState, SyncthingRunnable.OnSyncthingKilled onKilledListener) {
@@ -542,13 +515,9 @@ public class SyncthingService extends Service {
             }
             mSyncthingRunnable = null;
         }
-        if (startupTaskIsRunning()) {
-            mStartupTask.cancel(true);
-            Log.v(TAG, "Waiting for mStartupTask to finish after cancelling ...");
-            try {
-                mStartupTask.get();
-            } catch (Exception e) { }
-            mStartupTask = null;
+        if (mStartupFuture != null && !mStartupFuture.isDone()) {
+            mStartupFuture.cancel(true);
+            mStartupFuture = null;
         }
         onKilledListener.onKilled();
     }
@@ -571,7 +540,7 @@ public class SyncthingService extends Service {
 
     /**
      * Register a listener for the syncthing API state changing.
-     *
+     * <p>
      * The listener is called immediately with the current state, and again whenever the state
      * changes. The call is always from the GUI thread.
      *
@@ -657,7 +626,10 @@ public class SyncthingService extends Service {
      * Exports the local config and keys to {@link Constants#EXPORT_PATH}.
      */
     public void exportConfig() {
-        Constants.EXPORT_PATH.mkdirs();
+
+        if (!Constants.EXPORT_PATH.mkdirs()) {
+            Log.w(this.toString(), "Couldn't create export directory!");
+        }
         try {
             Files.copy(Constants.getConfigFile(this),
                     new File(Constants.EXPORT_PATH, Constants.CONFIG_FILE));

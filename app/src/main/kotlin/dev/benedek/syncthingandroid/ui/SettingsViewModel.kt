@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
@@ -45,7 +46,9 @@ class SettingsViewModel : ViewModel() {
     var syncthingVersion = mutableStateOf("Couldn't get version. Is syncthing running?")
     var syncthingAppVersion = mutableStateOf("")
     var useTor = mutableStateOf(false)
+    var useRoot = mutableStateOf(false)
     var shouldAskLocationPermission = mutableStateOf(false)
+
 
     fun loadInitialValues(context: Context) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
@@ -58,6 +61,7 @@ class SettingsViewModel : ViewModel() {
         }
         syncthingAppVersion.value = context.packageManager.getPackageInfo(context.packageName, 0).versionName!!
         useTor.value = prefs.getBoolean(Constants.PREF_USE_TOR, false)
+        useRoot.value = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
     }
 
     fun setService(boundService: SyncthingService) {
@@ -293,9 +297,11 @@ class SettingsViewModel : ViewModel() {
                 if (!hasRoot) {
                     // Failed: Turn switch back OFF and show Toast
                     withContext(Dispatchers.Main) {
+
                         Toast.makeText(context, R.string.toast_root_denied, Toast.LENGTH_SHORT).show()
                         PreferenceManager.getDefaultSharedPreferences(context)
                             .edit { putBoolean(Constants.PREF_USE_ROOT, false) }
+                        useRoot.value = false
                     }
                 } else {
                     // Success: Restart to apply
