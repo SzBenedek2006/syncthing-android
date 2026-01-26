@@ -80,7 +80,11 @@ fun Settings(
     val donateUrl = stringResource(R.string.donate_url)
     val privacyUrl = stringResource(R.string.privacy_policy_url)
 
+    LaunchedEffect(Unit) {
+        viewModel.loadInitialValues(context)
+    }
 
+    val isApiAvailable by remember { viewModel.isApiAvailable }
 
     val currentDeviceName by remember { viewModel.deviceName }
     LaunchedEffect(currentDeviceName) {
@@ -95,7 +99,6 @@ fun Settings(
     val currentMaxRecv by remember { viewModel.maxRecvKbps }
     LaunchedEffect(currentMaxRecv) {
         viewModel.updateSettings(newMaxRecv = currentMaxRecv)
-
     }
 
     val currentMaxSend by remember { viewModel.maxSendKbps }
@@ -113,23 +116,44 @@ fun Settings(
         viewModel.updateSettings(newGuiAddress = currentGuiAddress)
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.loadInitialValues(context)
-    }
-
     val currentEnvironmentVariables by remember { viewModel.environmentVariables }
     LaunchedEffect(currentEnvironmentVariables) {
         viewModel.updateEnvironmentVariables(context)
     }
 
-
     val currentHttpProxyAddress by remember { viewModel.httpProxyAddress }
     LaunchedEffect(currentHttpProxyAddress) {
         viewModel.updateHttpProxy(context)
     }
+
     val currentSocksProxyAddress by remember { viewModel.socksProxyAddress }
     LaunchedEffect(currentSocksProxyAddress) {
         viewModel.updateSocksProxy(context)
+    }
+
+    val currentNatEnabled by remember { viewModel.natEnabled }
+    LaunchedEffect(currentNatEnabled) {
+        viewModel.updateSettings(newNatEnabled = currentNatEnabled)
+    }
+
+    val currentLocalAnnounce by remember { viewModel.localAnnounceEnabled }
+    LaunchedEffect(currentLocalAnnounce) {
+        viewModel.updateSettings(newLocalAnnounceEnabled = currentLocalAnnounce)
+    }
+
+    val currentGlobalAnnounce by remember { viewModel.globalAnnounceEnabled }
+    LaunchedEffect(currentGlobalAnnounce) {
+        viewModel.updateSettings(newGlobalAnnounceEnabled = currentGlobalAnnounce)
+    }
+
+    val currentRelays by remember { viewModel.relaysEnabled }
+    LaunchedEffect(currentRelays) {
+        viewModel.updateSettings(newRelaysEnabled = currentRelays)
+    }
+
+    val currentUrAccepted by remember { viewModel.urAccepted }
+    LaunchedEffect(currentUrAccepted) {
+        viewModel.updateSettings(newUrAccepted = currentUrAccepted)
     }
 
 
@@ -188,6 +212,10 @@ fun Settings(
             key = Constants.PREF_RUN_CONDITIONS,
             defaultValue = true
         )
+        val runOnWifiEnabled by rememberPreferenceState(
+            key = Constants.PREF_RUN_ON_WIFI,
+            defaultValue = true
+        )
 
 
 
@@ -243,11 +271,11 @@ fun Settings(
                 title = { Text(stringResource(R.string.run_on_metered_wifi_title)) },
                 summary = { Text(stringResource(R.string.run_on_metered_wifi_summary)) },
                 defaultValue = false,
-                enabled = { runConditionsEnabled }
+                enabled = { runConditionsEnabled && runOnWifiEnabled }
             )
             wifiSsidPreference(
                 wifiState.value,
-                enabled = { runConditionsEnabled }
+                enabled = { runConditionsEnabled && runOnWifiEnabled }
             )
             switchPreference(
                 key = Constants.PREF_RUN_ON_MOBILE_DATA,
@@ -352,7 +380,8 @@ fun Settings(
                         }),
                         singleLine = true
                     )
-                }
+                },
+                enabled = { isApiAvailable }
             )
             textFieldPreference(
                 key = "listenAddresses",
@@ -375,7 +404,8 @@ fun Settings(
                         }),
                         singleLine = true
                     )
-                }
+                },
+                enabled = { isApiAvailable }
             )
             textFieldPreference(
                 key = "maxRecvKbps",
@@ -398,7 +428,8 @@ fun Settings(
                         }),
                         singleLine = true
                     )
-                }
+                },
+                enabled = { isApiAvailable }
             )
             textFieldPreference(
                 key = "maxSendKbps",
@@ -421,28 +452,36 @@ fun Settings(
                         }),
                         singleLine = true
                     )
-                }
+                },
+                enabled = { isApiAvailable }
             )
             switchPreference(
                 key = "natEnabled",
                 title = { Text(stringResource(R.string.enable_nat_traversal)) },
-                defaultValue = false
+                defaultValue = false,
+                rememberState = { viewModel.natEnabled },
+                enabled = { isApiAvailable }
             )
             switchPreference(
                 key = "localAnnounceEnabled",
                 title = { Text(stringResource(R.string.local_announce_enabled)) },
-                defaultValue = false
+                defaultValue = false,
+                rememberState = { viewModel.localAnnounceEnabled },
+                enabled = { isApiAvailable }
             )
-
             switchPreference(
                 key = "globalAnnounceEnabled",
                 title = { Text(stringResource(R.string.global_announce_enabled)) },
-                defaultValue = false
+                defaultValue = false,
+                rememberState = { viewModel.globalAnnounceEnabled },
+                enabled = { isApiAvailable }
             )
             switchPreference(
                 key = "relaysEnabled",
                 title = { Text(stringResource(R.string.enable_relaying)) },
-                defaultValue = false
+                defaultValue = false,
+                rememberState = { viewModel.relaysEnabled },
+                enabled = { isApiAvailable }
             )
             textFieldPreference(
                 key = "globalAnnounceServers",
@@ -465,7 +504,8 @@ fun Settings(
                         }),
                         singleLine = true
                     )
-                }
+                },
+                enabled = { isApiAvailable }
             )
             textFieldPreference(
                 key = "address",
@@ -489,18 +529,22 @@ fun Settings(
                         singleLine = true
                     )
                 },
+                enabled = { isApiAvailable }
             )
             switchPreference(
                 key = "urAccepted",
                 title = { Text(stringResource(R.string.usage_reporting)) },
-                defaultValue = false
+                defaultValue = false,
+                rememberState = { viewModel.urAccepted },
+                enabled = { isApiAvailable }
             )
             preference(
                 key = "undo_ignored_devices_folders",
                 title = {
                     Text(stringResource(R.string.undo_ignored_devices_folders_title))
                 },
-                onClick = { showUndoDialog.value = true }
+                onClick = { showUndoDialog.value = true },
+                enabled = isApiAvailable
             )
 
             preferenceCategory(
@@ -512,14 +556,16 @@ fun Settings(
                 title = {
                     Text(stringResource(R.string.export_config))
                 },
-                onClick = { showExportDialog.value = true }
+                onClick = { showExportDialog.value = true },
+                enabled = isApiAvailable
             )
             preference(
                 key = "import_config",
                 title = {
                     Text(stringResource(R.string.import_config))
                 },
-                onClick = { showImportDialog.value = true }
+                onClick = { showImportDialog.value = true },
+                enabled = isApiAvailable
             )
 
             preferenceCategory(

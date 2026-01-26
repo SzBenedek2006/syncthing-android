@@ -1,4 +1,3 @@
-// FIXME: Cleanup before commit
 package dev.benedek.syncthingandroid.ui
 
 import android.content.Context
@@ -6,48 +5,61 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import androidx.core.content.edit
 import dev.benedek.syncthingandroid.util.Util
 import eu.chainfire.libsuperuser.Shell
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 
 class SettingsViewModel : ViewModel() {
-    //private var service: SyncthingService? = null
-    private var serviceReference: WeakReference<SyncthingService>? = null
 
+    private var serviceReference: WeakReference<SyncthingService>? = null
     private var api: RestApi? = null
 
+    private var cachedUrVersionMax = 0
 
-    var deviceName = mutableStateOf("..")
-        private set
     var isServiceConnected = mutableStateOf(false)
         private set
+    var isApiAvailable = mutableStateOf(false)
+        private set
 
+
+    // Syncthing Options (Strings)
+    var deviceName = mutableStateOf("")
     var listenAddresses = mutableStateOf("")
-    var maxRecvKbps = mutableStateOf("0")
-    var maxSendKbps = mutableStateOf("0")
     var globalAnnounceServers = mutableStateOf("")
     var guiAddress = mutableStateOf("")
+    var maxRecvKbps = mutableStateOf("0")
+    var maxSendKbps = mutableStateOf("0")
+
+    // Syncthing Options (Booleans)
+    var natEnabled = mutableStateOf(false)
+    var localAnnounceEnabled = mutableStateOf(false)
+    var globalAnnounceEnabled = mutableStateOf(false)
+    var relaysEnabled = mutableStateOf(false)
+    var urAccepted = mutableStateOf(false)
+
+    // Android/App Settings
     var environmentVariables = mutableStateOf("")
     var httpProxyAddress = mutableStateOf("")
     var socksProxyAddress = mutableStateOf("")
-    var syncthingVersion = mutableStateOf("Couldn't get version. Is syncthing running?")
-    var syncthingAppVersion = mutableStateOf("")
     var useTor = mutableStateOf(false)
     var useRoot = mutableStateOf(false)
-    var shouldAskLocationPermission = mutableStateOf(false)
+
+    // Info
+    var syncthingVersion = mutableStateOf("Couldn't get version. Is syncthing running?")
+    var syncthingAppVersion = mutableStateOf("")
 
 
     fun loadInitialValues(context: Context) {
@@ -55,58 +67,64 @@ class SettingsViewModel : ViewModel() {
         environmentVariables.value = prefs.getString(Constants.PREF_ENVIRONMENT_VARIABLES, "")!!
         httpProxyAddress.value = prefs.getString(Constants.PREF_HTTP_PROXY_ADDRESS, "")!!
         socksProxyAddress.value = prefs.getString(Constants.PREF_SOCKS_PROXY_ADDRESS, "")!!
+        useTor.value = prefs.getBoolean(Constants.PREF_USE_TOR, false)
+        useRoot.value = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
+
         val currentApi = api
         if (currentApi != null) {
             syncthingVersion.value = currentApi.version
         }
-        syncthingAppVersion.value = context.packageManager.getPackageInfo(context.packageName, 0).versionName!!
-        useTor.value = prefs.getBoolean(Constants.PREF_USE_TOR, false)
-        useRoot.value = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
+        syncthingAppVersion.value = context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: ""
     }
 
     fun setService(boundService: SyncthingService) {
         this.serviceReference = WeakReference(boundService)
         this.api = boundService.api
         this.isServiceConnected.value = true
-
-        // Load initial values from the API
         refreshValues()
     }
 
-    fun restartSyncthing() {
-        val currentApi = api
-        currentApi?.saveConfigAndRestart()
-    }
-
-
     private fun refreshValues() {
-        api?.let {
-            // Safe call in case api is null
-            val localDevice = it.localDevice
-            deviceName.value = localDevice?.name ?: ""
+        val currentApi = api
 
-            val options = it.options
+        isApiAvailable.value = currentApi != null
+        if (currentApi == null) return
+
+        currentApi.getSystemInfo { info ->
+            cachedUrVersionMax = info.urVersionMax
+
+            val options = currentApi.options
             if (options != null) {
-
-                listenAddresses.value = options.listenAddresses.joinToString(", ")
-                maxRecvKbps.value = options.maxRecvKbps.toString()
-                maxSendKbps.value = options.maxSendKbps.toString()
-                globalAnnounceServers.value = options.globalAnnounceServers.joinToString(", ")
-
-            }
-            val gui = it.gui
-            if (gui != null) {
-                guiAddress.value = gui.address ?: ""
+                urAccepted.value = options.isUsageReportingAccepted(cachedUrVersionMax)
             }
         }
+
+        val localDevice = currentApi.localDevice
+        deviceName.value = localDevice?.name ?: ""
+
+        val options = currentApi.options
+        if (options != null) {
+            listenAddresses.value = options.listenAddresses.joinToString(", ")
+            globalAnnounceServers.value = options.globalAnnounceServers.joinToString(", ")
+            maxRecvKbps.value = options.maxRecvKbps.toString()
+            maxSendKbps.value = options.maxSendKbps.toString()
+
+            natEnabled.value = options.natEnabled
+            localAnnounceEnabled.value = options.localAnnounceEnabled
+            globalAnnounceEnabled.value = options.globalAnnounceEnabled
+            relaysEnabled.value = options.relaysEnabled
+        }
+
+        val gui = currentApi.gui
+        if (gui != null) {
+            guiAddress.value = gui.address ?: ""
+        }
     }
+
     fun updateDeviceName(newName: String) {
         val currentApi = api ?: return
-
-        // Run on background thread
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Get the current config object
                 val device = currentApi.localDevice
                 if (device != null && device.name != newName) {
                     device.name = newName
@@ -115,32 +133,33 @@ class SettingsViewModel : ViewModel() {
                     currentApi.saveConfigAndRestart()
                 }
             } catch (e: Exception) {
-                Log.d("Exception", e.toString())
+                Log.d("SettingsViewModel", e.toString())
             }
         }
     }
 
-    // Generic updater for Options/GUI
     fun updateSettings(
         newListenAddresses: String? = null,
         newMaxRecv: String? = null,
         newMaxSend: String? = null,
         newAnnounceServers: String? = null,
-        newGuiAddress: String? = null
+        newGuiAddress: String? = null,
+        newNatEnabled: Boolean? = null,
+        newLocalAnnounceEnabled: Boolean? = null,
+        newGlobalAnnounceEnabled: Boolean? = null,
+        newRelaysEnabled: Boolean? = null,
+        newUrAccepted: Boolean? = null
     ) {
         val currentApi = api ?: return
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Get current config
                 val options = currentApi.options
                 val gui = currentApi.gui
-
                 var changed = false
 
                 if (options != null) {
                     if (newListenAddresses != null) {
-                        // Split string back into list
                         options.listenAddresses = newListenAddresses.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toTypedArray()
                         changed = true
                     }
@@ -156,6 +175,26 @@ class SettingsViewModel : ViewModel() {
                         options.globalAnnounceServers = newAnnounceServers.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toTypedArray()
                         changed = true
                     }
+                    if (newNatEnabled != null) {
+                        options.natEnabled = newNatEnabled
+                        changed = true
+                    }
+                    if (newLocalAnnounceEnabled != null) {
+                        options.localAnnounceEnabled = newLocalAnnounceEnabled
+                        changed = true
+                    }
+                    if (newGlobalAnnounceEnabled != null) {
+                        options.globalAnnounceEnabled = newGlobalAnnounceEnabled
+                        changed = true
+                    }
+                    if (newRelaysEnabled != null) {
+                        options.relaysEnabled = newRelaysEnabled
+                        changed = true
+                    }
+                    if (newUrAccepted != null) {
+                        options.urAccepted = if (newUrAccepted) cachedUrVersionMax else Options.USAGE_REPORTING_DENIED
+                        changed = true
+                    }
                 }
 
                 if (gui != null && newGuiAddress != null) {
@@ -164,152 +203,55 @@ class SettingsViewModel : ViewModel() {
                 }
 
                 if (changed) {
-                    // Save both objects
                     currentApi.editSettings(gui, options)
                     delay(1000)
                     currentApi.saveConfigAndRestart()
                 }
-            } catch (e: Exception) { Log.d("SettingsViewModel", e.toString()) }
-        }
-    }
-
-    fun resetIgnored(context: Context) {
-
-        val currentApi: RestApi? = api
-        if (currentApi == null) { // Todo: Make this null check instead of return in other functions too.
-            Toast.makeText(
-                context,
-                context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            viewModelScope.launch {
-                try {
-                    currentApi.undoIgnoredDevicesAndFolders()
-                    currentApi.saveConfigAndRestart()
-
-                    // TODO: Learn about vms.launch then delete this comment
-                    //  Toast is safe here because viewModelScope.launch defaults to Main thread for updates
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.undo_ignored_devices_folders_done),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } catch (e: Exception) {
-                    Log.e("SettingsViewModel", "Reset ignored failed", e)
-                }
+            } catch (e: Exception) {
+                Log.d("SettingsViewModel", e.toString())
             }
         }
     }
 
-    fun importConfig(context: Context) {
-        val currentService = serviceReference?.get()
-        if (currentService == null) { // Fail
-            Toast.makeText(
-                context,
-                context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else if (currentService.importConfig()) { // Success
-            Toast.makeText(
-                context,
-                context.getString(R.string.config_imported_successful),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else  { // Fail
-            Toast.makeText(
-                context,
-                context.getString(R.string.config_import_failed),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
+    fun refreshRunConditionsAndNotifications() {
+        val service = serviceReference?.get() ?: return
+        service.evaluateRunConditions()
+        service.notificationHandler.updatePersistentNotification(service)
     }
 
-    fun exportConfig(context: Context) {
-        val currentService = serviceReference?.get()
-        if (currentService == null) { // Todo: Make this null check instead of return in other functions too.
-            Toast.makeText(
-                context,
-                context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            currentService.exportConfig()
-
-            Toast.makeText(
-                context,
-                context.getString(R.string.config_export_successful, Constants.EXPORT_PATH),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
-    fun updateEnvironmentVariables(context: Context) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-
-        if (environmentVariables.value.matches("^(\\w+=[\\w:/.]+)?( \\w+=[\\w:/.]+)*$".toRegex())) {
-            prefs.edit { putString(Constants.PREF_ENVIRONMENT_VARIABLES, environmentVariables.value) }
-
-            viewModelScope.launch {
-                try {
-                    api?.saveConfigAndRestart()
-                } catch (e: Exception) {
-                    Log.e("SettingsViewModel", "EnvVars restart failed", e)
-                }
+    fun restartSyncthing() {
+        val currentApi = api ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                currentApi.saveConfigAndRestart()
+            } catch (e: Exception) {
+                Log.e("SettingsViewModel", "Restart failed", e)
             }
-        } else {
-            Toast.makeText(
-                context,
-                R.string.toast_invalid_environment_variables,
-                Toast.LENGTH_SHORT
-            ).show()
-            environmentVariables.value = prefs.getString(Constants.PREF_ENVIRONMENT_VARIABLES, "")!!
         }
     }
-
-    fun resetDatabase(context: Context) {
-        val intent = Intent(context, SyncthingService::class.java).setAction(SyncthingService.ACTION_RESET_DATABASE)
-        context.startService(intent)
-        Toast.makeText(
-            context,
-            R.string.st_reset_database_done,
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
-    fun resetDeltas(context: Context) {
-        val intent = Intent(context, SyncthingService::class.java).setAction(SyncthingService.ACTION_RESET_DELTAS)
-        context.startService(intent)
-        Toast.makeText(
-            context,
-            R.string.st_reset_deltas_done,
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
 
     fun onRootChanged(context: Context, enabled: Boolean) {
-        if (enabled) {
-            // Check if Root is actually available
-            viewModelScope.launch(Dispatchers.IO) {
-                val hasRoot = Shell.SU.available()
-                if (!hasRoot) {
-                    // Failed: Turn switch back OFF and show Toast
-                    withContext(Dispatchers.Main) {
+        useRoot.value = enabled
 
-                        Toast.makeText(context, R.string.toast_root_denied, Toast.LENGTH_SHORT).show()
-                        PreferenceManager.getDefaultSharedPreferences(context)
-                            .edit { putBoolean(Constants.PREF_USE_ROOT, false) }
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+        if (enabled) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val hasRoot = Shell.SU::available
+                if (!hasRoot()) {
+                    withContext(Dispatchers.Main) {
+                        delay(150)
                         useRoot.value = false
+                        Toast.makeText(context, R.string.toast_root_denied, Toast.LENGTH_SHORT).show()
+                        prefs.edit { putBoolean(Constants.PREF_USE_ROOT, false) }
                     }
                 } else {
-                    // Success: Restart to apply
+                    prefs.edit { putBoolean(Constants.PREF_USE_ROOT, true) }
                     api?.saveConfigAndRestart()
                 }
             }
         } else {
-            // Root disabled: Fix permissions and restart
+            prefs.edit { putBoolean(Constants.PREF_USE_ROOT, false) }
             viewModelScope.launch(Dispatchers.IO) {
                 Util.fixAppDataPermissions(context)
                 api?.saveConfigAndRestart()
@@ -317,77 +259,105 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
+    fun updateEnvironmentVariables(context: Context) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val input = environmentVariables.value
 
-
+        if (input.matches("^(\\w+=[\\w:/.]+)?( \\w+=[\\w:/.]+)*$".toRegex())) {
+            prefs.edit { putString(Constants.PREF_ENVIRONMENT_VARIABLES, input) }
+            restartSyncthing()
+        } else {
+            Toast.makeText(context, R.string.toast_invalid_environment_variables, Toast.LENGTH_SHORT).show()
+            environmentVariables.value = prefs.getString(Constants.PREF_ENVIRONMENT_VARIABLES, "") ?: ""
+        }
+    }
 
     fun updateSocksProxy(context: Context) {
         val input = socksProxyAddress.value.trim()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val currentApi = api
-        if (currentApi != null) {
-            if (input.isEmpty() || input.matches("^socks5://.*:\\d{1,5}$".toRegex())) {
 
-                prefs.edit { putString(Constants.PREF_SOCKS_PROXY_ADDRESS, input) }
-
-                viewModelScope.launch {
-                    try {
-                        currentApi.saveConfigAndRestart()
-                    } catch (e: Exception) {
-                        Log.e("SettingsViewModel", "Failed to restart: $e")
-                    }
-                }
-            }
-            else {
-                // If value is incorrect, reset the viewmodel's variable
-                socksProxyAddress.value = prefs.getString(Constants.PREF_SOCKS_PROXY_ADDRESS, "")!!
-                Toast.makeText(
-                    context,
-                    R.string.toast_invalid_socks_proxy_address,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else  {
-            Toast.makeText(
-                context,
-                context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-                Toast.LENGTH_SHORT
-            ).show()
+        if (input.isEmpty() || input.matches("^socks5://.*:\\d{1,5}$".toRegex())) {
+            prefs.edit { putString(Constants.PREF_SOCKS_PROXY_ADDRESS, input) }
+            restartSyncthing()
+        } else {
+            socksProxyAddress.value = prefs.getString(Constants.PREF_SOCKS_PROXY_ADDRESS, "") ?: ""
+            Toast.makeText(context, R.string.toast_invalid_socks_proxy_address, Toast.LENGTH_SHORT).show()
         }
     }
 
     fun updateHttpProxy(context: Context) {
         val input = httpProxyAddress.value.trim()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val currentApi = api
-        if (currentApi != null) {
-            if (input.isEmpty() || input.matches("^http://.*:\\d{1,5}$".toRegex())) {
 
-                prefs.edit { putString(Constants.PREF_HTTP_PROXY_ADDRESS, input) }
-
-                viewModelScope.launch {
-                    try {
-                        currentApi.saveConfigAndRestart()
-                    } catch (e: Exception) {
-                        Log.e("SettingsViewModel", "Failed to restart: $e")
-                    }
-                }
-            }
-            else {
-                httpProxyAddress.value = prefs.getString(Constants.PREF_HTTP_PROXY_ADDRESS, "")!!
-                Toast.makeText(
-                    context,
-                    R.string.toast_invalid_http_proxy_address,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else  {
-            Toast.makeText(
-                context,
-                context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-                Toast.LENGTH_SHORT
-            ).show()
+        if (input.isEmpty() || input.matches("^http://.*:\\d{1,5}$".toRegex())) {
+            prefs.edit { putString(Constants.PREF_HTTP_PROXY_ADDRESS, input) }
+            restartSyncthing()
+        } else {
+            httpProxyAddress.value = prefs.getString(Constants.PREF_HTTP_PROXY_ADDRESS, "") ?: ""
+            Toast.makeText(context, R.string.toast_invalid_http_proxy_address, Toast.LENGTH_SHORT).show()
         }
     }
 
+    fun resetIgnored(context: Context) {
+        val currentApi = api
+        if (currentApi == null) {
+            Toast.makeText(context, context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title), Toast.LENGTH_SHORT).show()
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    currentApi.undoIgnoredDevicesAndFolders()
+                    currentApi.saveConfigAndRestart()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, context.getString(R.string.undo_ignored_devices_folders_done), Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("SettingsViewModel", "Reset ignored failed", e)
+                }
+            }
+        }
+    }
 
+    fun resetDatabase(context: Context) {
+        val intent = Intent(context, SyncthingService::class.java).setAction(SyncthingService.ACTION_RESET_DATABASE)
+        context.startService(intent)
+        Toast.makeText(context, R.string.st_reset_database_done, Toast.LENGTH_LONG).show()
+    }
+
+    fun resetDeltas(context: Context) {
+        val intent = Intent(context, SyncthingService::class.java).setAction(SyncthingService.ACTION_RESET_DELTAS)
+        context.startService(intent)
+        Toast.makeText(context, R.string.st_reset_deltas_done, Toast.LENGTH_LONG).show()
+    }
+
+    fun importConfig(context: Context) {
+        val currentService = serviceReference?.get()
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = currentService?.importConfig() == true
+            withContext(Dispatchers.Main) {
+                if (currentService == null) {
+                    Toast.makeText(context, context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title), Toast.LENGTH_SHORT).show()
+                } else if (result) {
+                    Toast.makeText(context, context.getString(R.string.config_imported_successful), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, context.getString(R.string.config_import_failed), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    fun exportConfig(context: Context) {
+        val currentService = serviceReference?.get()
+        viewModelScope.launch(Dispatchers.IO) {
+            if (currentService == null) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title), Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                currentService.exportConfig()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, context.getString(R.string.config_export_successful, Constants.EXPORT_PATH), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 }
