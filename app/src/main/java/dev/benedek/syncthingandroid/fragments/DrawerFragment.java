@@ -234,42 +234,38 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.drawerActionWebGui:
-                startActivity(new Intent(mActivity, WebGuiActivity.class));
-                mActivity.closeDrawer();
-                break;
-            case R.id.drawerActionSettings:
-                startActivity(new Intent(mActivity, SettingsActivity.class));
-                mActivity.closeDrawer();
-                break;
-            case R.id.drawerActionRestart:
-                mActivity.showRestartDialog();
-                mActivity.closeDrawer();
-                break;
-            case R.id.drawerActionExit:
-                if (sharedPreferences != null && sharedPreferences.getBoolean(Constants.PREF_START_SERVICE_ON_BOOT, false)) {
-                    /**
-                     * App is running as a service. Show an explanation why exiting syncthing is an
-                     * extraordinary request, then ask the user to confirm.
-                     */
-                    AlertDialog mExitConfirmationDialog = Util.getAlertDialogBuilder(mActivity)
-                            .setTitle(R.string.dialog_exit_while_running_as_service_title)
-                            .setMessage(R.string.dialog_exit_while_running_as_service_message)
-                            .setPositiveButton(R.string.yes, (d, i) -> {
-                                doExit();
-                            })
-                            .setNegativeButton(R.string.no, (d, i) -> {})
-                            .show();
-                } else {
-                    // App is not running as a service.
-                    doExit();
-                }
-                mActivity.closeDrawer();
-                break;
-            case R.id.drawerActionShowQrCode:
-                showQrCode();
-                break;
+        int id = v.getId();
+        if (id == R.id.drawerActionWebGui) {
+            startActivity(new Intent(mActivity, WebGuiActivity.class));
+            mActivity.closeDrawer();
+        } else if (id == R.id.drawerActionSettings) {
+            startActivity(new Intent(mActivity, SettingsActivity.class));
+            mActivity.closeDrawer();
+        } else if (id == R.id.drawerActionRestart) {
+            mActivity.showRestartDialog();
+            mActivity.closeDrawer();
+        } else if (id == R.id.drawerActionExit) {
+            if (sharedPreferences != null && sharedPreferences.getBoolean(Constants.PREF_START_SERVICE_ON_BOOT, false)) {
+                /*
+                 * App is running as a service. Show an explanation why exiting syncthing is an
+                 * extraordinary request, then ask the user to confirm.
+                 */
+                AlertDialog mExitConfirmationDialog = Util.getAlertDialogBuilder(mActivity)
+                        .setTitle(R.string.dialog_exit_while_running_as_service_title)
+                        .setMessage(R.string.dialog_exit_while_running_as_service_message)
+                        .setPositiveButton(R.string.yes, (d, i) -> {
+                            doExit();
+                        })
+                        .setNegativeButton(R.string.no, (d, i) -> {
+                        })
+                        .show();
+            } else {
+                // App is not running as a service.
+                doExit();
+            }
+            mActivity.closeDrawer();
+        } else if (id == R.id.drawerActionShowQrCode) {
+            showQrCode();
         }
     }
 

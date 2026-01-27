@@ -1,7 +1,9 @@
+import com.android.build.api.dsl.ApplicationExtension
+
 plugins {
     id("com.android.application")
     id("com.github.ben-manes.versions")
-    id("com.github.triplet.play") version "3.13.0"
+    id("com.github.triplet.play") version "4.0.0"
 //    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -50,7 +52,7 @@ dependencies {
     implementation("me.zhanghai.compose.preference:preference:2.1.1")
 }
 
-android {
+configure<ApplicationExtension> {
     //val ndkVersionShared = rootProject.extra.get("ndkVersionShared") // not needed if built in docker
     // Changes to these values need to be reflected in `../docker/Dockerfile`
     //noinspection GradleDependency
@@ -69,8 +71,8 @@ android {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4411
-        versionName = "2.0.10.11"
+        versionCode = 4412
+        versionName = "2.0.10.12"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -94,6 +96,8 @@ android {
             resValue("string", "app_package_id", "${defaultConfig.applicationId}$applicationIdSuffix")
         }
         getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
             signingConfig = signingConfigs.runCatching { getByName("release") }
                 .getOrNull()
                 .takeIf { it?.storeFile != null }

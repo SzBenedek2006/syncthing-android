@@ -626,7 +626,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height)
         val dividerInset = getResources().getDimensionPixelOffset(R.dimen.material_divider_inset)
         val contentInset =
-            getResources().getDimensionPixelOffset(R.dimen.abc_action_bar_content_inset_material)
+            getResources().getDimensionPixelOffset(androidx.appcompat.R.dimen.abc_action_bar_content_inset_material)
         MarginLayoutParamsCompat.setMarginStart(params, dividerInset)
         MarginLayoutParamsCompat.setMarginEnd(params, contentInset)
         val emptyView = TextView(binding!!.devicesContainer.getContext())

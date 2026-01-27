@@ -4,7 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * It stores 2 fields: useDynamicColor and useDarkMode,
+ * {@link ThemeControls} stores the global state of theming controls.
+ * It stores 2 fields: {@link #useDynamicColor} and {@link #useDarkMode},
  * both of them are Boolean type.
  */
 public class ThemeControls {

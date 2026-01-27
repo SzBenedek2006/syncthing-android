@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import dev.benedek.syncthingandroid.util.Languages;
+import dev.benedek.syncthingandroid.util.ThemeControls;
 
 import javax.inject.Inject;
 
@@ -23,7 +24,7 @@ public class SyncthingApp extends Application {
 
     @Override
     public void onCreate() {
-        //DynamicColors.applyToActivitiesIfAvailable(this);
+        if (ThemeControls.useDynamicColor) DynamicColors.applyToActivitiesIfAvailable(this);
 
         super.onCreate();
         setupLegacySsl(this);

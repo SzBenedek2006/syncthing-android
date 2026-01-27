@@ -69,7 +69,7 @@ public class FolderListFragment extends ListFragment implements SyncthingService
 
     /**
      * Refreshes ListView by updating folders and info.
-     *
+     * <p>
      * Also creates adapter if it doesn't exist yet.
      */
     private void updateList() {
@@ -114,15 +114,16 @@ public class FolderListFragment extends ListFragment implements SyncthingService
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_folder:
-                Intent intent = new Intent(getActivity(), FolderActivity.class)
-                        .putExtra(FolderActivity.EXTRA_IS_CREATE, true);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        if (id == R.id.add_folder) {
+            Intent intent = new Intent(getActivity(), FolderActivity.class)
+                    .putExtra(FolderActivity.EXTRA_IS_CREATE, true);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
-
 }
+
+
