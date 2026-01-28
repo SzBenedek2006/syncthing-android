@@ -10,7 +10,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.common.base.Charsets;
+import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 import dev.benedek.syncthingandroid.R;
 import dev.benedek.syncthingandroid.SyncthingApp;
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class SyncthingRunnable implements Runnable {
     private static final AtomicReference<Process> mSyncthing = new AtomicReference<>();
     private final Context mContext;
     private final File mSyncthingBinary;
-    private String[] mCommand;
+    private final String[] mCommand;
     private final File mLogFile;
     @Inject SharedPreferences mPreferences;
     private final boolean mUseRoot;
@@ -79,28 +80,7 @@ public class SyncthingRunnable implements Runnable {
         mLogFile = Constants.getLogFile(mContext);
 
         // Get preferences relevant to starting syncthing core.
-        // 1.x:
-        /*
-        mUseRoot = mPreferences.getBoolean(Constants.PREF_USE_ROOT, false) && Shell.SU.available();
-        switch (command) {
-            case deviceid:
-                mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "--device-id" };
-                break;
-            case generate:
-                mCommand = new String[]{ mSyncthingBinary.getPath(), "generate", mContext.getFilesDir().toString(), "-logflags=0" };
-                break;
-            case main:
-                mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "-no-browser", "-logflags=0" };
-                break;
-            case resetdatabase:
-                mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "-reset-database", "-logflags=0" };
-                break;
-            case resetdeltas:
-                mCommand = new String[]{ mSyncthingBinary.getPath(), "-home", mContext.getFilesDir().toString(), "-reset-deltas", "-logflags=0" };
-                break;
-            default:
-                throw new InvalidParameterException("Unknown command option");
-        }*/
+
         mUseRoot = mPreferences.getBoolean(Constants.PREF_USE_ROOT, false) && Shell.SU.available();
         switch (command) {
             case deviceid:
@@ -137,7 +117,7 @@ public class SyncthingRunnable implements Runnable {
     public String run(boolean returnStdOut) {
         trimLogFile();
         int ret;
-        String capturedStdOut = "";
+        StringBuilder capturedStdOut = new StringBuilder();
         // Make sure Syncthing is executable
         try {
             ProcessBuilder pb = new ProcessBuilder("chmod", "500", mSyncthingBinary.getPath());
@@ -166,19 +146,14 @@ public class SyncthingRunnable implements Runnable {
             Thread lInfo = null;
             Thread lWarn = null;
             if (returnStdOut) {
-                BufferedReader br = null;
-                try {
-                    br = new BufferedReader(new InputStreamReader(process.getInputStream(), Charsets.UTF_8));
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
                     String line;
                     while ((line = br.readLine()) != null) {
                         Log.println(Log.INFO, TAG_NATIVE, line);
-                        capturedStdOut = capturedStdOut + line + "\n";
+                        capturedStdOut.append(line).append("\n");
                     }
                 } catch (IOException e) {
                     Log.w(TAG, "Failed to read Syncthing's command line output", e);
-                } finally {
-                    if (br != null)
-                        br.close();
                 }
             } else {
                 lInfo = log(process.getInputStream(), Log.INFO, true);
@@ -221,7 +196,7 @@ public class SyncthingRunnable implements Runnable {
             if (process != null)
                 process.destroy();
         }
-        return capturedStdOut;
+        return capturedStdOut.toString();
     }
 
     private void putCustomEnvironmentVariables(Map<String, String> environment, SharedPreferences sp) {
@@ -247,7 +222,7 @@ public class SyncthingRunnable implements Runnable {
      * containing the PIDs of found instances.
      */
     private List<String> getSyncthingPIDs() {
-        List<String> syncthingPIDs = new ArrayList<String>();
+        List<String> syncthingPIDs = new ArrayList<>();
         Process ps = null;
         DataOutputStream psOut = null;
         BufferedReader br = null;
@@ -258,7 +233,7 @@ public class SyncthingRunnable implements Runnable {
             psOut.writeBytes("exit\n");
             psOut.flush();
             ps.waitFor();
-            br = new BufferedReader(new InputStreamReader(ps.getInputStream(), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(ps.getInputStream(), StandardCharsets.UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.contains(Constants.FILENAME_SYNCTHING_BINARY)) {
@@ -298,7 +273,7 @@ public class SyncthingRunnable implements Runnable {
             return;
         }
         int exitCode = Util.runShellCommand("sysctl -n -w fs.inotify.max_user_watches=131072\n", true);
-        Log.i(TAG, "increaseInotifyWatches: sysctl returned " + Integer.toString(exitCode));
+        Log.i(TAG, "increaseInotifyWatches: sysctl returned " + exitCode);
     }
 
     /**
@@ -320,7 +295,7 @@ public class SyncthingRunnable implements Runnable {
         for (String syncthingPID : syncthingPIDs) {
             // Set best-effort, low priority using ionice.
             int exitCode = Util.runShellCommand("/system/bin/ionice " + syncthingPID + " be 7\n", true);
-            Log.i(TAG_NICE, "ionice returned " + Integer.toString(exitCode) +
+            Log.i(TAG_NICE, "ionice returned " + exitCode +
                 " on " + Constants.FILENAME_SYNCTHING_BINARY);
         }
     }
@@ -354,7 +329,7 @@ public class SyncthingRunnable implements Runnable {
                     Log.d(TAG, "Killed Syncthing process " + syncthingPID);
                 } else {
                     Log.w(TAG, "Failed to kill Syncthing process " + syncthingPID +
-                        " exit code " + Integer.toString(exitCode));
+                        " exit code " + exitCode);
                 }
             }
         }
@@ -367,28 +342,26 @@ public class SyncthingRunnable implements Runnable {
      * @param priority The priority level.
      * @param saveLog True if the log should be stored to {@link #mLogFile}.
      */
-    private Thread log(final InputStream is, final int priority, final boolean saveLog) {
+    private Thread log(final InputStream is, final int priority, @SuppressWarnings("SameParameterValue") final boolean saveLog) {
         Thread t = new Thread(() -> {
             BufferedReader br = null;
             try {
-                br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
+                br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
                 String line;
                 while ((line = br.readLine()) != null) {
                     Log.println(priority, TAG_NATIVE, line);
 
                     if (saveLog) {
-                        Files.append(line + "\n", mLogFile, Charsets.UTF_8);
+                        Files.asCharSink(mLogFile, StandardCharsets.UTF_8, FileWriteMode.APPEND).write(line);
                     }
                 }
             } catch (IOException e) {
                 Log.w(TAG, "Failed to read Syncthing's command line output", e);
             }
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    Log.w(TAG, "log: Failed to close bufferedReader", e);
-                }
+            try {
+                br.close();
+            } catch (IOException e) {
+                Log.w(TAG, "log: Failed to close bufferedReader", e);
             }
         });
         t.start();
@@ -404,6 +377,7 @@ public class SyncthingRunnable implements Runnable {
 
         try {
             LineNumberReader lnr = new LineNumberReader(new FileReader(mLogFile));
+            //noinspection ResultOfMethodCallIgnored
             lnr.skip(Long.MAX_VALUE);
 
             int lineCount = lnr.getLineNumber();
@@ -423,7 +397,9 @@ public class SyncthingRunnable implements Runnable {
             }
             writer.close();
             reader.close();
-            tempFile.renameTo(mLogFile);
+            if (!tempFile.renameTo(mLogFile)) {
+                Log.w(TAG, "Failed to rename " + tempFile + " to " + mLogFile + ".");
+            }
         } catch (IOException e) {
             Log.w(TAG, "Failed to trim log file", e);
         }
@@ -436,9 +412,9 @@ public class SyncthingRunnable implements Runnable {
         targetEnv.put("STTRACE", TextUtils.join(" ",
                         mPreferences.getStringSet(Constants.PREF_DEBUG_FACILITIES_ENABLED, new HashSet<>())));
         File externalFilesDir = mContext.getExternalFilesDir(null);
+        assert externalFilesDir != null;
         Log.d("externalFilesDir", externalFilesDir.toString());
-        if (externalFilesDir != null)
-            targetEnv.put("STGUIASSETS", externalFilesDir.getAbsolutePath() + "/gui");
+        targetEnv.put("STGUIASSETS", externalFilesDir.getAbsolutePath() + "/gui");
         targetEnv.put("STMONITORED", "1");
         targetEnv.put("STNOUPGRADE", "1");
         // Disable hash benchmark for faster startup.
@@ -449,12 +425,12 @@ public class SyncthingRunnable implements Runnable {
             targetEnv.put("ALL_PROXY_NO_FALLBACK", "1");
         } else {
             String socksProxyAddress = mPreferences.getString(Constants.PREF_SOCKS_PROXY_ADDRESS, "");
-            if (!socksProxyAddress.equals("")) {
+            if (!socksProxyAddress.isEmpty()) {
                 targetEnv.put("all_proxy", socksProxyAddress);
             }
 
             String httpProxyAddress = mPreferences.getString(Constants.PREF_HTTP_PROXY_ADDRESS, "");
-            if (!httpProxyAddress.equals("")) {
+            if (!httpProxyAddress.isEmpty()) {
                 targetEnv.put("http_proxy", httpProxyAddress);
                 targetEnv.put("https_proxy", httpProxyAddress);
             }
