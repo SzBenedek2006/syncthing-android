@@ -14,7 +14,7 @@ import android.util.ArrayMap
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
+import android.view.ViewGroup
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -27,7 +27,6 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.databinding.ActivityWebGuiBinding
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
-import dev.benedek.syncthingandroid.service.SyncthingService.OnServiceStateChangeListener
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
 import dev.benedek.syncthingandroid.util.ConfigXml
 import java.io.FileInputStream
@@ -43,7 +42,7 @@ import java.security.cert.X509Certificate
 /**
  * Holds a WebView that shows the web ui of the local syncthing instance.
  */
-class WebGuiActivity : StateDialogActivity(), OnServiceStateChangeListener {
+class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateChangeListener {
     private var mCaCert: X509Certificate? = null
 
     private var mConfig: ConfigXml? = null
@@ -99,7 +98,7 @@ class WebGuiActivity : StateDialogActivity(), OnServiceStateChangeListener {
             binding!!.getRoot()
         ) { v: View?, windowInsets: WindowInsetsCompat? ->
             val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
-            val mlp = v!!.layoutParams as MarginLayoutParams
+            val mlp = v!!.layoutParams as ViewGroup.MarginLayoutParams
             mlp.leftMargin = insets.left
             mlp.bottomMargin = insets.bottom
             mlp.rightMargin = insets.right
