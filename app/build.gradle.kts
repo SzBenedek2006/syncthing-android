@@ -71,8 +71,8 @@ configure<ApplicationExtension> {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4412
-        versionName = "2.0.10.12"
+        versionCode = 4413
+        versionName = "2.0.10.13"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -98,6 +98,10 @@ configure<ApplicationExtension> {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.runCatching { getByName("release") }
                 .getOrNull()
                 .takeIf { it?.storeFile != null }

@@ -213,7 +213,9 @@ public class SyncthingService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.v(TAG, "onStartCommand; Started by intent: " + intent.getAction());
+        String action = (intent != null) ? intent.getAction() : null;
+        Log.v(TAG, "onStartCommand; Started by intent: " + action);
+
         if (!mStoragePermissionGranted) {
             Log.e(TAG, "User revoked storage permission. Stopping service.");
             if (mNotificationHandler != null) {
@@ -246,31 +248,31 @@ public class SyncthingService extends Service {
         }
         mNotificationHandler.updatePersistentNotification(this);
 
-        if (ACTION_RESTART.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
+        if (ACTION_RESTART.equals(action) && mCurrentState == State.ACTIVE) {
             shutdown(State.INIT, this::launchStartupTask);
-        } else if (ACTION_RESET_DATABASE.equals(intent.getAction())) {
+        } else if (ACTION_RESET_DATABASE.equals(action)) {
             shutdown(State.INIT, () -> {
                 new SyncthingRunnable(this, SyncthingRunnable.Command.resetdatabase).run();
                 launchStartupTask();
             });
-        } else if (ACTION_RESET_DELTAS.equals(intent.getAction())) {
+        } else if (ACTION_RESET_DELTAS.equals(action)) {
             shutdown(State.INIT, () -> {
                 new SyncthingRunnable(this, SyncthingRunnable.Command.resetdeltas).run();
                 launchStartupTask();
             });
-        } else if (ACTION_REFRESH_NETWORK_INFO.equals(intent.getAction())) {
+        } else if (ACTION_REFRESH_NETWORK_INFO.equals(action)) {
             mRunConditionMonitor.updateShouldRunDecision();
-        } else if (ACTION_IGNORE_DEVICE.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
+        } else if (ACTION_IGNORE_DEVICE.equals(action) && mCurrentState == State.ACTIVE) {
             // mApi is not null due to State.ACTIVE
             assert mApi != null;
             mApi.ignoreDevice(intent.getStringExtra(EXTRA_DEVICE_ID), intent.getStringExtra(EXTRA_DEVICE_NAME), intent.getStringExtra(EXTRA_DEVICE_ADDRESS));
             mNotificationHandler.cancelConsentNotification(intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0));
-        } else if (ACTION_IGNORE_FOLDER.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
+        } else if (ACTION_IGNORE_FOLDER.equals(action) && mCurrentState == State.ACTIVE) {
             // mApi is not null due to State.ACTIVE
             assert mApi != null;
             mApi.ignoreFolder(intent.getStringExtra(EXTRA_DEVICE_ID), intent.getStringExtra(EXTRA_FOLDER_ID), intent.getStringExtra(EXTRA_FOLDER_LABEL));
             mNotificationHandler.cancelConsentNotification(intent.getIntExtra(EXTRA_NOTIFICATION_ID, 0));
-        } else if (ACTION_OVERRIDE_CHANGES.equals(intent.getAction()) && mCurrentState == State.ACTIVE) {
+        } else if (ACTION_OVERRIDE_CHANGES.equals(action) && mCurrentState == State.ACTIVE) {
             assert mApi != null;
             mApi.overrideChanges(intent.getStringExtra(EXTRA_FOLDER_ID));
         }

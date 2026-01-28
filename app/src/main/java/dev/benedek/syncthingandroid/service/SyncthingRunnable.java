@@ -436,6 +436,7 @@ public class SyncthingRunnable implements Runnable {
         targetEnv.put("STTRACE", TextUtils.join(" ",
                         mPreferences.getStringSet(Constants.PREF_DEBUG_FACILITIES_ENABLED, new HashSet<>())));
         File externalFilesDir = mContext.getExternalFilesDir(null);
+        Log.d("externalFilesDir", externalFilesDir.toString());
         if (externalFilesDir != null)
             targetEnv.put("STGUIASSETS", externalFilesDir.getAbsolutePath() + "/gui");
         targetEnv.put("STMONITORED", "1");
