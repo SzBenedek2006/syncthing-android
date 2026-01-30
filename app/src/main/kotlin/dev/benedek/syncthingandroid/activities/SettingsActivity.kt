@@ -35,15 +35,12 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 
     val viewModel: SettingsViewModel by viewModels()
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         registerOnServiceConnectedListener(this)
 
-//        setContentView(R.layout.activity_preferences)
-//        setTitle(R.string.settings_title)
 
         isDefaultPreferenceFlowLongSupportEnabled = true
 
@@ -58,20 +55,6 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
             }
         }
 
-
-
-
-//        val settingsFragment = SettingsFragment()
-//        val bundle = Bundle()
-//        bundle.putString(
-//            EXTRA_OPEN_SUB_PREF_SCREEN, intent.getStringExtra(
-//                EXTRA_OPEN_SUB_PREF_SCREEN
-//            )
-//        )
-//        settingsFragment.setArguments(bundle)
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.settings_container, settingsFragment)
-//            .commit()
     }
 
     override fun onRequestPermissionsResult(
@@ -102,23 +85,6 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
         }
     }
 
-//    override fun onPreferenceStartScreen(
-//        caller: PreferenceFragmentCompat,
-//        screen: PreferenceScreen
-//    ): Boolean {
-//        val fragment = SettingsFragment()
-//        val args = Bundle()
-//        args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, screen.key)
-//        fragment.setArguments(args)
-//
-//        supportFragmentManager
-//            .beginTransaction()
-//            .replace(R.id.settings_container, fragment)
-//            .addToBackStack(screen.key)
-//            .commit()
-//
-//        return true
-//    }
 
     override fun onServiceConnected() {
         if (service != null) {

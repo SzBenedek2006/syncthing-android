@@ -5,7 +5,6 @@ import dev.benedek.syncthingandroid.activities.FolderPickerActivity;
 import dev.benedek.syncthingandroid.activities.MainActivity;
 import dev.benedek.syncthingandroid.activities.ShareActivity;
 import dev.benedek.syncthingandroid.activities.ThemedAppCompatActivity;
-import dev.benedek.syncthingandroid.fragments.SettingsFragment;
 import dev.benedek.syncthingandroid.receiver.AppConfigReceiver;
 import dev.benedek.syncthingandroid.service.RunConditionMonitor;
 import dev.benedek.syncthingandroid.service.EventProcessor;
@@ -35,7 +34,6 @@ public interface DaggerComponent {
     void inject(NotificationHandler notificationHandler);
     void inject(AppConfigReceiver appConfigReceiver);
     void inject(RestApi restApi);
-    void inject(SettingsFragment fragment);
     void inject(ShareActivity activity);
     void inject(ThemedAppCompatActivity activity);
 }
