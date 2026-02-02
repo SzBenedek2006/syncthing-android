@@ -68,6 +68,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
             }
         }
         onBackPressedDispatcher.addCallback(this, backCallback)
+
         binding?.webview?.webViewClient = object : WebViewClient() {
             @SuppressLint("WebViewClientOnReceivedSslError")
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, error: SslError) {

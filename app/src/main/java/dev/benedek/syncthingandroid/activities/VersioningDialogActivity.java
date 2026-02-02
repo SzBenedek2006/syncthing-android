@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import dev.benedek.syncthingandroid.R;
@@ -33,6 +37,16 @@ public class VersioningDialogActivity extends ThemedAppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityVersioningDialogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        OnBackPressedCallback backCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                saveConfiguration();
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, backCallback);
 
         if (savedInstanceState != null) {
             mArguments = savedInstanceState.getBundle("arguments");
@@ -120,14 +134,8 @@ public class VersioningDialogActivity extends ThemedAppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle("arguments", mCurrentFragment.getArguments());
-    }
-
-    @Override
-    public void onBackPressed() {
-        saveConfiguration();
-        super.onBackPressed();
     }
 }

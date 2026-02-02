@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+
+import androidx.activity.OnBackPressedCallback;
+
 import dev.benedek.syncthingandroid.databinding.ActivityPullorderDialogBinding;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +35,17 @@ public class PullOrderDialogActivity extends ThemedAppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPullorderDialogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        
+        OnBackPressedCallback backCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                saveConfiguration();
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, backCallback);
+
         if (savedInstanceState == null) {
             selectedType = getIntent().getStringExtra(EXTRA_PULL_ORDER);
         }
@@ -69,9 +83,4 @@ public class PullOrderDialogActivity extends ThemedAppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        saveConfiguration();
-        super.onBackPressed();
-    }
 }

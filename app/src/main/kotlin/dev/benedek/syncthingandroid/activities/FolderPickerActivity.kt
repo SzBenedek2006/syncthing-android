@@ -5,7 +5,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Environment
 import android.os.IBinder
@@ -30,9 +29,7 @@ import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
-import java.util.Arrays
 import java.util.Collections
-import javax.inject.Inject
 
 /**
  * Activity that allows selecting a directory in the local file system.
@@ -48,13 +45,10 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
      */
     private var mLocation: File? = null
 
-    @JvmField
-    @Inject
-    var mPreferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (getApplication() as SyncthingApp).component().inject(this)
+        (application as SyncthingApp).component().inject(this)
 
         setContentView(R.layout.activity_folder_picker)
 
@@ -62,9 +56,9 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
 
         /* Don't set window insets handling here */
-        mListView = findViewById<ListView>(android.R.id.list)
-        mListView!!.setOnItemClickListener(this)
-        mListView!!.setEmptyView(findViewById<View?>(android.R.id.empty))
+        mListView = findViewById(android.R.id.list)
+        mListView!!.onItemClickListener = this
+        mListView!!.setEmptyView(findViewById(android.R.id.empty))
         mFilesAdapter = FileAdapter(this)
         mRootsAdapter = RootsAdapter(this)
         mListView!!.setAdapter(mFilesAdapter)
@@ -79,20 +73,20 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (!mRootsAdapter!!.contains(mLocation) && mLocation != null) {
-                    displayFolder(mLocation!!.getParentFile());
+                    displayFolder(mLocation!!.getParentFile())
                 } else if (mRootsAdapter!!.contains(mLocation) && mRootsAdapter!!.count > 1) {
-                    displayRoot();
+                    displayRoot()
                 } else {
-                    setResult(RESULT_CANCELED);
-                    finish();
+                    setResult(RESULT_CANCELED)
+                    finish()
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, backCallback)
         populateRoots()
 
-        if (getIntent().hasExtra(EXTRA_INITIAL_DIRECTORY)) {
-            displayFolder(File(getIntent().getStringExtra(EXTRA_INITIAL_DIRECTORY)))
+        if (intent.hasExtra(EXTRA_INITIAL_DIRECTORY)) {
+            displayFolder(File(intent.getStringExtra(EXTRA_INITIAL_DIRECTORY)!!))
         } else {
             displayRoot()
         }
@@ -112,12 +106,12 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     @SuppressLint("NewApi")
     private fun populateRoots() {
         val roots = ArrayList<File?>()
-        roots.addAll(Arrays.asList<File?>(*getExternalFilesDirs(null)))
+        roots.addAll(listOf<File?>(*getExternalFilesDirs(null)))
         roots.remove(getExternalFilesDir(null))
 
-        val rootDir = getIntent().getStringExtra(EXTRA_ROOT_DIRECTORY)
-        if (getIntent().hasExtra(EXTRA_ROOT_DIRECTORY) && !TextUtils.isEmpty(rootDir)) {
-            roots.add(File(rootDir))
+        val rootDir = intent.getStringExtra(EXTRA_ROOT_DIRECTORY)
+        if (intent.hasExtra(EXTRA_ROOT_DIRECTORY) && !TextUtils.isEmpty(rootDir)) {
+            roots.add(File(rootDir!!))
         } else {
             roots.add(Environment.getExternalStorageDirectory())
             roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC))
@@ -128,7 +122,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
             // Add paths that might not be accessible to Syncthing.
             if (mPreferences!!.getBoolean("advanced_folder_picker", false)) {
-                Collections.addAll<File?>(roots, *File("/storage/").listFiles())
+                Collections.addAll(roots, *File("/storage/").listFiles())
                 roots.add(File("/"))
             }
         }
@@ -147,61 +141,62 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         super.onServiceConnected(componentName, iBinder)
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
-        syncthingServiceBinder.getService().registerOnServiceStateChangeListener(this)
+        syncthingServiceBinder.service.registerOnServiceStateChangeListener(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        val syncthingService = getService()
-        if (syncthingService != null) {
-            syncthingService.unregisterOnServiceStateChangeListener(this)
-        }
+        val syncthingService = service
+        syncthingService?.unregisterOnServiceStateChangeListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (mListView!!.getAdapter() === mRootsAdapter) return true
+        if (mListView!!.adapter === mRootsAdapter) return true
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.folder_picker, menu)
+        menuInflater.inflate(R.menu.folder_picker, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.getItemId()
-        if (id == R.id.create_folder) {
-            val et = EditText(this)
-            val dialog = Util.getAlertDialogBuilder(this)
-                .setTitle(R.string.create_folder)
-                .setView(et)
-                .setPositiveButton(
-                    android.R.string.ok,
-                    DialogInterface.OnClickListener { dialogInterface: DialogInterface?, i: Int ->
+        when (item.itemId) {
+            R.id.create_folder -> {
+                val et = EditText(this)
+                val dialog = Util.getAlertDialogBuilder(this)
+                    .setTitle(R.string.create_folder)
+                    .setView(et)
+                    .setPositiveButton(
+                        android.R.string.ok
+                    ) { _: DialogInterface?, _: Int ->
                         createFolder(
                             et.getText().toString()
                         )
                     }
-                )
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-            dialog.setOnShowListener(DialogInterface.OnShowListener { dialogInterface: DialogInterface? ->
-                (getSystemService(
-                    INPUT_METHOD_SERVICE
-                ) as InputMethodManager)
-                    .showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
-            })
-            dialog.show()
-            return true
-        } else if (id == R.id.select) {
-            val intent = Intent()
-                .putExtra(EXTRA_RESULT_DIRECTORY, Util.formatPath(mLocation!!.getAbsolutePath()))
-            setResult(RESULT_OK, intent)
-            finish()
-            return true
-        } else if (id == android.R.id.home) {
-            finish()
-            return true
-        } else {
-            return super.onOptionsItemSelected(item)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create()
+                dialog.setOnShowListener {
+                    (getSystemService(
+                        INPUT_METHOD_SERVICE
+                    ) as InputMethodManager)
+                        .showSoftInput(et, InputMethodManager.SHOW_IMPLICIT)
+                }
+                dialog.show()
+                return true
+            }
+            R.id.select -> {
+                val intent = Intent()
+                    .putExtra(EXTRA_RESULT_DIRECTORY, Util.formatPath(mLocation!!.absolutePath))
+                setResult(RESULT_OK, intent)
+                finish()
+                return true
+            }
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
 
@@ -240,11 +235,13 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     }
 
     override fun onItemClick(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
-        val adapter = mListView!!.getAdapter() as ArrayAdapter<File?>
-        val f = adapter.getItem(i)
-        if (f!!.isDirectory()) {
-            displayFolder(f)
-            invalidateOptions()
+        val item = adapterView?.getItemAtPosition(i)
+
+        if (item is File) {
+            if (item.isDirectory) {
+                displayFolder(item)
+                invalidateOptions()
+            }
         }
     }
 
@@ -252,36 +249,36 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
         invalidateOptionsMenu()
     }
 
-    private inner class FileAdapter(context: Context) :
+    private class FileAdapter(context: Context) :
         ArrayAdapter<File?>(context, R.layout.item_folder_picker) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var convertView = convertView
             convertView = super.getView(position, convertView, parent)
             val title = convertView.findViewById<TextView>(android.R.id.text1)
             val f = getItem(position)
-            title.setText(f!!.getName())
+            title.text = f!!.getName()
             val textColor = if (f.isDirectory())
-                android.R.color.primary_text_light
+                R.color.md_theme_onPrimary
             else
-                android.R.color.tertiary_text_light
-            title.setTextColor(ContextCompat.getColor(getContext(), textColor))
+                R.color.md_theme_onTertiary
+            title.setTextColor(ContextCompat.getColor(context, textColor))
 
             return convertView
         }
     }
 
-    private inner class RootsAdapter(context: Context) :
+    private class RootsAdapter(context: Context) :
         ArrayAdapter<File?>(context, android.R.layout.simple_list_item_1) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var convertView = convertView
             convertView = super.getView(position, convertView, parent)
             val title = convertView.findViewById<TextView>(android.R.id.text1)
-            title.setText(getItem(position)!!.getAbsolutePath())
+            title.text = getItem(position)!!.absolutePath
             return convertView
         }
 
         fun contains(file: File?): Boolean {
-            for (i in 0..<getCount()) {
+            for (i in 0..<count) {
                 if (getItem(i) == file) return true
             }
             return false
@@ -292,7 +289,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
 
     override fun onServiceStateChange(currentState: SyncthingService.State?) {
-        if (!isFinishing() && currentState != SyncthingService.State.ACTIVE) {
+        if (!isFinishing && currentState != SyncthingService.State.ACTIVE) {
             setResult(RESULT_CANCELED)
             finish()
         }
@@ -304,7 +301,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
      */
     private fun displayRoot() {
         mFilesAdapter!!.clear()
-        if (mRootsAdapter!!.getCount() == 1) {
+        if (mRootsAdapter!!.count == 1) {
             displayFolder(mRootsAdapter!!.getItem(0))
         } else {
             mListView!!.setAdapter(mRootsAdapter)
