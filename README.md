@@ -1,19 +1,27 @@
-# syncthing-android
+# Syncthing for Android
 
 [![License: MPLv2](https://img.shields.io/badge/License-MPLv2-blue.svg)](https://opensource.org/licenses/MPL-2.0)
 
-A wrapper of [Syncthing](https://github.com/syncthing/syncthing) for Android.
+A wrapper of [Syncthing](https://github.com/syncthing/syncthing) for Android, currently in the middle of a rewrite. </br>
+Forked from the public archive [syncthing/syncthing-android](https://github.com/syncthing/syncthing-android).
 
+I want to thank all contributors of the original project for their awesome work!
+
+<!--
 <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_1.png" alt="screenshot 1" width="200" /> <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_2.png" alt="screenshot 2" width="200" /> <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_3.png" alt="screenshot 3" width="200" />
+-->
+<img width="200" alt="Welcome screen of the app (white mode)" src="https://github.com/user-attachments/assets/2c77bda2-ac8f-4243-9622-d4c848e62dad" /> 
+<img width="200" alt="Welcome screen of the app" src="https://github.com/user-attachments/assets/ab63d0ea-9948-4bb1-9f66-56872e8cdd8b" />
 
-# Building
+
+# Building (info is out of date, working on it...)
 
 These dependencies and instructions are necessary for building from the command
 line. If you build using Android Studio, you can set up sdk, java and ndk differently.
 I think you still need to install python and go dependencies outside of AS.
 The docker file may be out of date or non-functional (working on it...)
 
-## Dependencies (info is out of date, working on it...)
+## Dependencies
 
 1. Android SDK and NDK
     1. Download SDK command line tools from https://developer.android.com/studio#command-line-tools-only.
