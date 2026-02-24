@@ -16,6 +16,7 @@ import dev.benedek.syncthingandroid.model.Folder;
 import dev.benedek.syncthingandroid.service.Constants;
 import dev.benedek.syncthingandroid.service.RestApi;
 import dev.benedek.syncthingandroid.service.SyncthingService;
+import dev.benedek.syncthingandroid.ui.FolderViewModel;
 import dev.benedek.syncthingandroid.views.FoldersAdapter;
 
 import java.util.List;
@@ -102,8 +103,8 @@ public class FolderListFragment extends ListFragment implements SyncthingService
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getActivity(), FolderActivity.class)
-                .putExtra(FolderActivity.EXTRA_IS_CREATE, false)
-                .putExtra(FolderActivity.EXTRA_FOLDER_ID, mAdapter.getItem(i).id);
+                .putExtra(FolderViewModel.EXTRA_IS_CREATE, false)
+                .putExtra(FolderViewModel.EXTRA_FOLDER_ID, mAdapter.getItem(i).getId());
         startActivity(intent);
     }
 
@@ -117,7 +118,7 @@ public class FolderListFragment extends ListFragment implements SyncthingService
         int id = item.getItemId();
         if (id == R.id.add_folder) {
             Intent intent = new Intent(getActivity(), FolderActivity.class)
-                    .putExtra(FolderActivity.EXTRA_IS_CREATE, true);
+                    .putExtra(FolderViewModel.EXTRA_IS_CREATE, true);
             startActivity(intent);
             return true;
         } else {

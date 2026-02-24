@@ -517,4 +517,5 @@
     <string name="browse">閲覧</string>
     <string name="no_sub_folder_is_selected">サブフォルダーが選択されていません</string>
     <string name="share_device_id_chooser">次とデバイス ID を共有</string>
+    <string name="default_indicator">デフォルト</string>
 </resources>

@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
@@ -190,6 +192,54 @@ public class FileUtils {
     }
 
     @Nullable
+    public static Uri getPickerInitialUri(Context context, String path) {
+        if (path == null || path.isEmpty()) return null;
+
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        try {
+            StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+            Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+            Method getVolumeList = storageManager.getClass().getMethod("getVolumeList");
+            Method getUuid = storageVolumeClazz.getMethod("getUuid");
+            Method isPrimary = storageVolumeClazz.getMethod("isPrimary");
+            Object result = getVolumeList.invoke(storageManager);
+
+            final int length = Array.getLength(result);
+            for (int i = 0; i < length; i++) {
+                Object volume = Array.get(result, i);
+                String volumePath = volumeToPath(volume, storageVolumeClazz);
+
+                if (path.startsWith(volumePath)) {
+                    String uuid = (String) getUuid.invoke(volume);
+                    boolean primary = (Boolean) isPrimary.invoke(volume);
+                    String volumeId = primary ? PRIMARY_VOLUME_NAME : uuid;
+
+                    String relativePath = path.substring(volumePath.length());
+                    if (relativePath.startsWith(File.separator)) {
+                        relativePath = relativePath.substring(1);
+                    }
+
+                    String documentId = volumeId + ":" + relativePath;
+
+                    Uri treeUri = DocumentsContract.buildTreeDocumentUri(
+                            "com.android.externalstorage.documents",
+                            volumeId + ":"
+                    );
+
+                    return DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "getPickerInitialUri error", e);
+        }
+        return null;
+    }
+
+    @NonNull
     public static String cutTrailingSlash(final String path) {
         if (path.endsWith(File.separator)) {
             return path.substring(0, path.length() - 1);

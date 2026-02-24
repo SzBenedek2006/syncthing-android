@@ -528,4 +528,8 @@
     <string name="browse">Tallóz</string>
     <string name="no_sub_folder_is_selected">Nincs kiválasztott almappa</string>
     <string name="share_device_id_chooser">Eszközazonosító megosztása ezzel</string>
+    <string name="select">Kiválaszt</string>
+    <string name="open_stignore_description">A .stignore fájl megnyitása a szerkesztődben.</string>
+    <string name="default_indicator">alapértelmezett</string>
+    <string name="unset_indicator">nincs beállítva</string>
 </resources>

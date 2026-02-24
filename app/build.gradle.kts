@@ -25,26 +25,28 @@ dependencies {
     implementation("com.google.zxing:core:3.5.4")
 
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("com.google.dagger:dagger:2.57.2")
+    implementation("com.google.dagger:dagger:2.59.1")
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
-    implementation("androidx.activity:activity-compose:1.12.2")
-    implementation(platform("androidx.compose:compose-bom:2026.01.00"))
+    implementation("androidx.activity:activity-compose:1.12.4")
+    implementation(platform("androidx.compose:compose-bom:2026.02.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("androidx.compose.ui:ui-graphics:1.10.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2026.01.00"))
+    implementation("androidx.compose.ui:ui-graphics:1.10.3")
+    implementation("androidx.compose.ui:ui-graphics:1.10.3")
+    implementation("androidx.compose.animation:animation-core:1.10.3")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2026.02.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.59")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.59.1")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.preference:preference:1.2.1")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    val workVersion = "2.11.0"
+    val workVersion = "2.11.1"
     implementation("androidx.work:work-runtime:${workVersion}") // (Java only)
     implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
     implementation("androidx.work:work-multiprocess:${workVersion}") // optional - Multiprocess support
@@ -71,8 +73,8 @@ configure<ApplicationExtension> {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4413
-        versionName = "2.0.10.13"
+        versionCode = 4414
+        versionName = "2.0.10.14"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

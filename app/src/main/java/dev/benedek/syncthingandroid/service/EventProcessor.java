@@ -25,6 +25,7 @@ import dev.benedek.syncthingandroid.model.CompletionInfo;
 import dev.benedek.syncthingandroid.model.Device;
 import dev.benedek.syncthingandroid.model.Event;
 import dev.benedek.syncthingandroid.model.Folder;
+import dev.benedek.syncthingandroid.ui.FolderViewModel;
 
 import java.io.File;
 import java.util.List;
@@ -129,8 +130,8 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
                 String folder = (String) mapData.get("folder");
                 String folderPath = null;
                 for (Folder f : mApi.getFolders()) {
-                    if (f.id.equals(folder)) {
-                        folderPath = f.path;
+                    if (f.getId().equals(folder)) {
+                        folderPath = f.getPath();
                     }
                 }
                 File updatedFile = new File(folderPath, (String) mapData.get("item"));
@@ -283,13 +284,13 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
 
         // Prepare "accept" action.
         boolean isNewFolder = Stream.of(mApi.getFolders())
-                .noneMatch(f -> f.id.equals(folderId));
+                .noneMatch(f -> f.getId().equals(folderId));
         Intent intentAccept = new Intent(mContext, FolderActivity.class)
-                .putExtra(FolderActivity.EXTRA_NOTIFICATION_ID, notificationId)
-                .putExtra(FolderActivity.EXTRA_IS_CREATE, isNewFolder)
-                .putExtra(FolderActivity.EXTRA_DEVICE_ID, deviceId)
-                .putExtra(FolderActivity.EXTRA_FOLDER_ID, folderId)
-                .putExtra(FolderActivity.EXTRA_FOLDER_LABEL, folderLabel);
+                .putExtra(FolderViewModel.EXTRA_NOTIFICATION_ID, notificationId)
+                .putExtra(FolderViewModel.EXTRA_IS_CREATE, isNewFolder)
+                .putExtra(FolderViewModel.EXTRA_DEVICE_ID, deviceId)
+                .putExtra(FolderViewModel.EXTRA_FOLDER_ID, folderId)
+                .putExtra(FolderViewModel.EXTRA_FOLDER_LABEL, folderLabel);
         PendingIntent piAccept = PendingIntent.getActivity(mContext, notificationId,
             intentAccept, Constants.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 

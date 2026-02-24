@@ -771,5 +771,11 @@
     <string name="enable_notification_permission">Enable Notification Permission</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_test">Test</string>
+    <string name="select">Select</string>
+    <string name="open_stignore_description">Open .stignore in your editor.</string>
+    <string name="default_indicator">default</string>
+    <string name="unset_indicator">unset</string>
+    <string name="folder_id_not_valid">Invalid folder ID</string>
+    <string name="delete_folder_description">Removes this folder from Syncthing. No files on disk will be deleted.</string>
 
 </resources>

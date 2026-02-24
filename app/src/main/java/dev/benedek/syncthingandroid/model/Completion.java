@@ -74,7 +74,7 @@ public class Completion {
             for (String folderId : device.getValue().keySet()) {
                 folderFound = false;
                 for (Folder folder : newFolders) {
-                    if (folder.id.equals(folderId)) {
+                    if (folder.getId().equals(folderId)) {
                         folderFound = true;
                         break;
                     }
@@ -95,10 +95,10 @@ public class Completion {
                 if (folder.getDevice(device.deviceID) != null) {
                     // folder is shared with device.
                     folderMap = deviceFolderMap.get(device.deviceID);
-                    if (!folderMap.containsKey(folder.id)) {
-                        Log.v(TAG, "updateFromConfig: Add folder '" + folder.id +
-                                    "' shared with device '" + device.deviceID + "' to cache model.");
-                        folderMap.put(folder.id, new CompletionInfo());
+                    if (!folderMap.containsKey(folder.getId())) {
+                        Log.v(TAG, "updateFromConfig: Add folder '" + folder.getId() +
+                                "' shared with device '" + device.deviceID + "' to cache model.");
+                        folderMap.put(folder.getId(), new CompletionInfo());
                     }
                 }
             }

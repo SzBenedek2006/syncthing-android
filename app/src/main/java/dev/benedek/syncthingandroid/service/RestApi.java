@@ -46,12 +46,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -75,9 +73,11 @@ public class RestApi {
      * Compares folders by labels, uses the folder ID as fallback if the label is empty
      */
     private final static Comparator<Folder> FOLDERS_COMPARATOR = (lhs, rhs) -> {
-        String lhsLabel = lhs.label != null && !lhs.label.isEmpty() ? lhs.label : lhs.id;
-        String rhsLabel = rhs.label != null && !rhs.label.isEmpty() ? rhs.label : rhs.id;
+        String lhsLabel = lhs.getLabel() != null && !lhs.getLabel().isEmpty() ? lhs.getLabel() : lhs.getId();
+        String rhsLabel = rhs.getLabel() != null && !rhs.getLabel().isEmpty() ? rhs.getLabel() : rhs.getId();
 
+        assert lhsLabel != null;
+        assert rhsLabel != null;
         return lhsLabel.compareTo(rhsLabel);
     };
 
@@ -426,7 +426,7 @@ public class RestApi {
 
     public void updateFolder(Folder newFolder) {
         synchronized (mConfigLock) {
-            removeFolderInternal(newFolder.id);
+            removeFolderInternal(newFolder.getId());
             mConfig.folders.add(newFolder);
             sendConfig();
         }
@@ -449,7 +449,7 @@ public class RestApi {
             Iterator<Folder> it = mConfig.folders.iterator();
             while (it.hasNext()) {
                 Folder f = it.next();
-                if (f.id.equals(id)) {
+                if (f.getId().equals(id)) {
                     it.remove();
                     break;
                 }
