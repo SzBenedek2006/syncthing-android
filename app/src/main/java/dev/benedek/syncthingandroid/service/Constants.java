@@ -66,7 +66,7 @@ public class Constants {
     /**
      * Folder versioning types
      */
-    public static final String FVER_TYPE_NONE                   = "none"; // Empty string is also valid?
+    public static final String FVER_TYPE_NONE                   = "none"; // The value syncthing accepts is empty string or null here
     public static final String FVER_TYPE_SIMPLE                 = "simple";
     public static final String FVER_TYPE_TRASHCAN               = "trashcan";
     public static final String FVER_TYPE_STAGGERED              = "staggered";

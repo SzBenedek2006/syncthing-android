@@ -223,7 +223,11 @@ class FolderViewModel : ViewModel() {
     }
 
     fun onVersioningSave() {
-        folder.versioning = editedVersioning!!.deepCopy()
+        if (editedVersioning!!.type.isNullOrEmpty() || editedVersioning!!.type == Constants.FVER_TYPE_NONE) {
+            folder.versioning = Folder.Versioning()
+        } else {
+            folder.versioning = editedVersioning!!.deepCopy()
+        }
         folder = folder
         folderNeedsToUpdate = true
         Log.d(
