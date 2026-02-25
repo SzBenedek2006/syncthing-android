@@ -48,7 +48,11 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
             SyncthingandroidTheme(
                 dynamicColor = ThemeControls.useDynamicColor
             ) {
-                AppScaffold(topAppBarTitle = stringResource(R.string.settings_title)) { innerPadding ->
+                AppScaffold(
+                    topAppBarTitle = stringResource(R.string.settings_title),
+                    topNavigationActive = true,
+                    topNavigationOnClick = { onBackPressedDispatcher.onBackPressed() }
+                ) { innerPadding ->
                     Settings(viewModel, innerPadding)
                 }
 

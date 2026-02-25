@@ -25,7 +25,7 @@ dependencies {
     implementation("com.google.zxing:core:3.5.4")
 
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("com.google.dagger:dagger:2.59.1")
+    implementation("com.google.dagger:dagger:2.59.2")
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("androidx.activity:activity-compose:1.12.4")
@@ -39,7 +39,7 @@ dependencies {
     implementation("androidx.compose.animation:animation-core:1.10.3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2026.02.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.59.1")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.59.2")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.preference:preference:1.2.1")
@@ -73,8 +73,8 @@ configure<ApplicationExtension> {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4415
-        versionName = "2.0.10.15"
+        versionCode = 4417
+        versionName = "2.0.10.17"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

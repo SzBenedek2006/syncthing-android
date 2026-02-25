@@ -44,6 +44,7 @@ import dev.benedek.syncthingandroid.ui.reusable.wifiSsidPreference
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Languages
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
 import me.zhanghai.compose.preference.listPreference
 import me.zhanghai.compose.preference.preference
@@ -86,74 +87,95 @@ fun Settings(
 
     val isApiAvailable by remember { viewModel.isApiAvailable }
 
-    val currentDeviceName by remember { viewModel.deviceName }
-    LaunchedEffect(currentDeviceName) {
-        viewModel.updateDeviceName(currentDeviceName)
-    }
+    LaunchedEffect(viewModel) {
 
-    val currentListenAddresses by remember { viewModel.listenAddresses }
-    LaunchedEffect(currentListenAddresses) {
-        viewModel.updateSettings(newListenAddresses = currentListenAddresses)
-    }
+        // --- TEXT FIELDS ---
 
-    val currentMaxRecv by remember { viewModel.maxRecvKbps }
-    LaunchedEffect(currentMaxRecv) {
-        viewModel.updateSettings(newMaxRecv = currentMaxRecv)
-    }
+        launch {
+            snapshotFlow { viewModel.deviceName.value }
+                .drop(1)
+                .collect { viewModel.updateDeviceName(it) }
+        }
 
-    val currentMaxSend by remember { viewModel.maxSendKbps }
-    LaunchedEffect(currentMaxSend) {
-        viewModel.updateSettings(newMaxSend = currentMaxSend)
-    }
+        launch {
+            snapshotFlow { viewModel.listenAddresses.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newListenAddresses = it) }
+        }
 
-    val currentAnnounceServers by remember { viewModel.globalAnnounceServers }
-    LaunchedEffect(currentAnnounceServers) {
-        viewModel.updateSettings(newAnnounceServers = currentAnnounceServers)
-    }
+        launch {
+            snapshotFlow { viewModel.maxRecvKbps.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newMaxRecv = it) }
+        }
 
-    val currentGuiAddress by remember { viewModel.guiAddress }
-    LaunchedEffect(currentGuiAddress) {
-        viewModel.updateSettings(newGuiAddress = currentGuiAddress)
-    }
+        launch {
+            snapshotFlow { viewModel.maxSendKbps.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newMaxSend = it) }
+        }
 
-    val currentEnvironmentVariables by remember { viewModel.environmentVariables }
-    LaunchedEffect(currentEnvironmentVariables) {
-        viewModel.updateEnvironmentVariables(context)
-    }
+        launch {
+            snapshotFlow { viewModel.globalAnnounceServers.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newAnnounceServers = it) }
+        }
 
-    val currentHttpProxyAddress by remember { viewModel.httpProxyAddress }
-    LaunchedEffect(currentHttpProxyAddress) {
-        viewModel.updateHttpProxy(context)
-    }
+        launch {
+            snapshotFlow { viewModel.guiAddress.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newGuiAddress = it) }
+        }
 
-    val currentSocksProxyAddress by remember { viewModel.socksProxyAddress }
-    LaunchedEffect(currentSocksProxyAddress) {
-        viewModel.updateSocksProxy(context)
-    }
+        launch {
+            snapshotFlow { viewModel.environmentVariables.value }
+                .drop(1)
+                .collect { viewModel.updateEnvironmentVariables(context) }
+        }
 
-    val currentNatEnabled by remember { viewModel.natEnabled }
-    LaunchedEffect(currentNatEnabled) {
-        viewModel.updateSettings(newNatEnabled = currentNatEnabled)
-    }
+        launch {
+            snapshotFlow { viewModel.httpProxyAddress.value }
+                .drop(1)
+                .collect { viewModel.updateHttpProxy(context) }
+        }
 
-    val currentLocalAnnounce by remember { viewModel.localAnnounceEnabled }
-    LaunchedEffect(currentLocalAnnounce) {
-        viewModel.updateSettings(newLocalAnnounceEnabled = currentLocalAnnounce)
-    }
+        launch {
+            snapshotFlow { viewModel.socksProxyAddress.value }
+                .drop(1)
+                .collect { viewModel.updateSocksProxy(context) }
+        }
 
-    val currentGlobalAnnounce by remember { viewModel.globalAnnounceEnabled }
-    LaunchedEffect(currentGlobalAnnounce) {
-        viewModel.updateSettings(newGlobalAnnounceEnabled = currentGlobalAnnounce)
-    }
+        // --- BOOLEANS (SWITCHES) ---
 
-    val currentRelays by remember { viewModel.relaysEnabled }
-    LaunchedEffect(currentRelays) {
-        viewModel.updateSettings(newRelaysEnabled = currentRelays)
-    }
+        launch {
+            snapshotFlow { viewModel.natEnabled.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newNatEnabled = it) }
+        }
 
-    val currentUrAccepted by remember { viewModel.urAccepted }
-    LaunchedEffect(currentUrAccepted) {
-        viewModel.updateSettings(newUrAccepted = currentUrAccepted)
+        launch {
+            snapshotFlow { viewModel.localAnnounceEnabled.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newLocalAnnounceEnabled = it) }
+        }
+
+        launch {
+            snapshotFlow { viewModel.globalAnnounceEnabled.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newGlobalAnnounceEnabled = it) }
+        }
+
+        launch {
+            snapshotFlow { viewModel.relaysEnabled.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newRelaysEnabled = it) }
+        }
+
+        launch {
+            snapshotFlow { viewModel.urAccepted.value }
+                .drop(1)
+                .collect { viewModel.updateSettings(newUrAccepted = it) }
+        }
     }
 
 
