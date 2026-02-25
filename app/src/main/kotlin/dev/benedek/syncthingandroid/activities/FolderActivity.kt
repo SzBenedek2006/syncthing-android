@@ -7,6 +7,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.ui.Folder
 import dev.benedek.syncthingandroid.ui.FolderViewModel
+import dev.benedek.syncthingandroid.ui.FolderViewModel.Companion.EXTRA_DEVICE_ID
 import dev.benedek.syncthingandroid.ui.FolderViewModel.Companion.EXTRA_FOLDER_ID
 import dev.benedek.syncthingandroid.ui.FolderViewModel.Companion.EXTRA_FOLDER_LABEL
 import dev.benedek.syncthingandroid.ui.FolderViewModel.Companion.EXTRA_IS_CREATE
@@ -45,7 +46,8 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
             context = this,
             isCreate = intent.getBooleanExtra(EXTRA_IS_CREATE, false),
             folderId = intent.getStringExtra(EXTRA_FOLDER_ID),
-            folderLabel = intent.getStringExtra(EXTRA_FOLDER_LABEL)
+            deviceId = intent.getStringExtra(EXTRA_DEVICE_ID),
+            folderLabel = intent.getStringExtra(EXTRA_FOLDER_LABEL),
         )
     }
 

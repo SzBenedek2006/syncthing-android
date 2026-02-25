@@ -133,7 +133,13 @@ class FolderViewModel : ViewModel() {
         api = boundService.api
     }
 
-    fun setInitialState(context: Context, isCreate: Boolean, folderId: String?, folderLabel: String?) {
+    fun setInitialState(
+        context: Context,
+        isCreate: Boolean,
+        folderId: String?,
+        deviceId: String?,
+        folderLabel: String?
+    ) {
         // Prevent resetting state on configuration changes
         if (isInitialized) return
         isInitialized = true
@@ -142,7 +148,11 @@ class FolderViewModel : ViewModel() {
 
         if (api != null) {
             if (isCreate) {
-                initNewFolder()
+                initNewFolder(
+                    folderId,
+                    deviceId,
+                    folderLabel
+                )
             } else {
                 if (folderId == null)
                     Toast.makeText(context, "folderId == null", Toast.LENGTH_LONG).show()
@@ -374,10 +384,19 @@ class FolderViewModel : ViewModel() {
         }
     }
 
-    private fun initNewFolder(fsWatcherEnabled: Boolean? = null, fsWatcherDelayS: Int? = null, type: String? = null, paused: Boolean? = null) {
-        folder.label = null
-        folder.id = generateRandomFolderId()
+    private fun initNewFolder(
+        folderId: String?,
+        deviceId: String?,
+        folderLabel: String?,
+        fsWatcherEnabled: Boolean? = null,
+        fsWatcherDelayS: Int? = null,
+        type: String? = null,
+        paused: Boolean? = null
+    ) {
+        folder.label = folderLabel
+        folder.id = folderId ?: generateRandomFolderId()
         folder.path = null
+        folder.addDevice(deviceId)
         if (type != null) folder.type = type
         folder.fsWatcherEnabled = true
         folder.fsWatcherDelayS = 10
