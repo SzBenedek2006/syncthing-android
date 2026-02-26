@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.ui.settings
 
 import android.content.Context
 import android.content.Intent
@@ -244,7 +244,8 @@ class SettingsViewModel : ViewModel() {
                     withContext(Dispatchers.Main) {
                         delay(150)
                         useRoot.value = false
-                        Toast.makeText(context, R.string.toast_root_denied, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.toast_root_denied, Toast.LENGTH_SHORT)
+                            .show()
                         prefs.edit { putBoolean(Constants.PREF_USE_ROOT, false) }
                     }
                 } else {
@@ -310,7 +311,11 @@ class SettingsViewModel : ViewModel() {
                     currentApi.undoIgnoredDevicesAndFolders()
                     currentApi.saveConfigAndRestart()
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, context.getString(R.string.undo_ignored_devices_folders_done), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.undo_ignored_devices_folders_done),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } catch (e: Exception) {
                     Log.e("SettingsViewModel", "Reset ignored failed", e)
@@ -337,11 +342,23 @@ class SettingsViewModel : ViewModel() {
             val result = currentService?.importConfig() == true
             withContext(Dispatchers.Main) {
                 if (currentService == null) {
-                    Toast.makeText(context, context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else if (result) {
-                    Toast.makeText(context, context.getString(R.string.config_imported_successful), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.config_imported_successful),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    Toast.makeText(context, context.getString(R.string.config_import_failed), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.config_import_failed),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -352,12 +369,20 @@ class SettingsViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             if (currentService == null) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else {
                 currentService.exportConfig()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, context.getString(R.string.config_export_successful, Constants.EXPORT_PATH), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.config_export_successful, Constants.EXPORT_PATH),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

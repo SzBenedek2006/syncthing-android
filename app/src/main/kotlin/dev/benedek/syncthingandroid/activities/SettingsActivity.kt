@@ -13,8 +13,8 @@ import androidx.navigation.compose.rememberNavController
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
-import dev.benedek.syncthingandroid.ui.Settings
-import dev.benedek.syncthingandroid.ui.SettingsViewModel
+import dev.benedek.syncthingandroid.ui.settings.Settings
+import dev.benedek.syncthingandroid.ui.settings.SettingsViewModel
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls

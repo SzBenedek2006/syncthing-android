@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -231,7 +229,7 @@ fun OptionTile(
     rightIconPainter: Painter? = null,
     rightIconContentDescription: String? = null,
     rightIconRotationAmount: Float? = null,
-    noPadding: Boolean = false,
+    noIconPadding: Boolean = false,
     onClick: (() -> Unit)? = null,
     onCheckedChange: ((Boolean) -> Unit)? = null,
     checked: Boolean? = null,
@@ -306,12 +304,14 @@ fun OptionTile(
                         .padding(14.dp)
                         .size(24.dp)
                 )
-            } else if (!noPadding) {
+            } else if (!noIconPadding) {
                 Box(
                     modifier = Modifier
                         .padding(14.dp)
                         .size(24.dp)
                 )
+            } else {
+                Box(Modifier.padding(start = 14.dp))
             }
             Column(modifier = Modifier.weight(1f)) {
                 if (title != null) {
