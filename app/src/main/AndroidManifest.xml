@@ -160,33 +160,8 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.FolderTypeDialogActivity"
-            android:label="@string/folder_type"
-            android:parentActivityName=".activities.FolderActivity"
-            android:theme="@style/Theme.Syncthing">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
-        </activity>
-        <activity
-            android:name=".activities.PullOrderDialogActivity"
-            android:label="@string/pull_order"
-            android:parentActivityName=".activities.FolderActivity"
-            android:theme="@style/Theme.Syncthing">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
-        </activity>
-        <activity
-            android:name=".activities.VersioningDialogActivity"
-            android:label="@string/file_versioning"
-            android:parentActivityName=".activities.FolderActivity"
-            android:theme="@style/Theme.Syncthing">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="dev.benedek.syncthingandroid.activities.FolderActivity" />
-        </activity>
+
+
         <activity
             android:name=".activities.QRScannerActivity"
             android:label="QR Code Scanner"
