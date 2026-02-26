@@ -6,20 +6,10 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
@@ -48,12 +38,26 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
             SyncthingandroidTheme(
                 dynamicColor = ThemeControls.useDynamicColor
             ) {
+                val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
                 AppScaffold(
-                    topAppBarTitle = stringResource(R.string.settings_title),
+                    topAppBarTitle = when(currentRoute) {
+                        "theme" ->              stringResource(R.string.preference_theme_title)
+                        "run_conditions" ->     stringResource(R.string.category_run_conditions)
+                        "behaviour" ->          stringResource(R.string.category_behaviour)
+                        "syncthing_options" ->  stringResource(R.string.category_syncthing_options)
+                        "backup" ->             stringResource(R.string.category_backup)
+                        "debug" ->              stringResource(R.string.category_debug)
+                        "experimental" ->       stringResource(R.string.category_experimental)
+                        "about" ->              stringResource(R.string.category_about)
+                        else ->                 stringResource(R.string.settings_title)
+                    },
                     topNavigationActive = true,
                     topNavigationOnClick = { onBackPressedDispatcher.onBackPressed() }
                 ) { innerPadding ->
-                    Settings(viewModel, innerPadding)
+                    Settings(viewModel, innerPadding, navController)
                 }
 
             }

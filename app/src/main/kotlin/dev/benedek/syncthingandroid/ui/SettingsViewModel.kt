@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,7 +33,7 @@ class SettingsViewModel : ViewModel() {
 
     var isServiceConnected = mutableStateOf(false)
         private set
-    var isApiAvailable = mutableStateOf(false)
+    var isApiAvailable by mutableStateOf(false)
         private set
 
 
@@ -87,7 +89,7 @@ class SettingsViewModel : ViewModel() {
     private fun refreshValues() {
         val currentApi = api
 
-        isApiAvailable.value = currentApi != null
+        isApiAvailable = currentApi != null
         if (currentApi == null) return
 
         currentApi.getSystemInfo { info ->
