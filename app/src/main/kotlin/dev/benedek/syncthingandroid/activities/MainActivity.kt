@@ -11,7 +11,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -51,6 +50,8 @@ import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.Util
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import androidx.core.content.edit
+import androidx.core.net.toUri
 
 /**
  * Shows [dev.benedek.syncthingandroid.fragments.FolderListFragment] and
@@ -102,7 +103,6 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     }
 
     private fun showBatteryOptimizationDialogIfNecessary() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         val pm = getSystemService(POWER_SERVICE) as PowerManager
         val dontShowAgain = mPreferences.getBoolean("battery_optimization_dont_show_again", false)
         if (dontShowAgain || mBatteryOptimizationsDialog != null ||
@@ -119,11 +119,11 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                 R.string.dialog_disable_battery_optimization_turn_off
             ) { _: DialogInterface?, _: Int ->
                 val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                intent.setData(Uri.parse("package:" + packageName))
+                intent.setData(("package:$packageName").toUri())
                 try {
                     startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
-                    // Some devices dont seem to support this request (according to Google Play
+                    // Some devices don't seem to support this request (according to Google Play
                     // crash reports).
                     Log.w(TAG, "Request ignore battery optimizations not supported", e)
                     Toast.makeText(
@@ -131,8 +131,9 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                         R.string.dialog_disable_battery_optimizations_not_supported,
                         Toast.LENGTH_LONG
                     ).show()
-                    mPreferences.edit()
-                        .putBoolean("battery_optimization_dont_show_again", true).apply()
+                    mPreferences.edit {
+                        putBoolean("battery_optimization_dont_show_again", true)
+                    }
                 }
             }
             .setNeutralButton(
@@ -143,8 +144,9 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             .setNegativeButton(
                 R.string.dialog_disable_battery_optimization_dont_show_again
             ) { _: DialogInterface?, _: Int ->
-                mPreferences.edit().putBoolean("battery_optimization_dont_show_again", true)
-                    .apply()
+                mPreferences.edit {
+                    putBoolean("battery_optimization_dont_show_again", true)
+                }
             }
             .setOnCancelListener { _: DialogInterface? ->
                 mBatteryOptimizationDialogDismissed = true
@@ -312,7 +314,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             this.finish()
         }
 
-        // Evaluate run conditions to detect changes made to the metered wifi flags.
+        // Evaluate run conditions to detect changes made to the metered Wi-Fi flags.
         val mSyncthingService = service
         if (mSyncthingService != null) {
             mSyncthingService.evaluateRunConditions()
@@ -383,9 +385,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         mDrawerToggle!!.syncState()
 
         val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true)
-        }
+        actionBar?.setHomeButtonEnabled(true)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -540,7 +540,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                     }
 
                     DialogInterface.BUTTON_NEUTRAL -> {
-                        val uri = Uri.parse("https://data.syncthing.net")
+                        val uri = "https://data.syncthing.net".toUri()
                         startActivity(Intent(Intent.ACTION_VIEW, uri))
                     }
                 }
