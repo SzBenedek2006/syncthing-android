@@ -70,6 +70,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -379,6 +380,7 @@ fun AppScaffold(
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     topNavigationOnClick: (() -> Unit)? = null,
     topNavigationActive: Boolean = true,
+    topNavigationIcon: ImageVector? = null,
     topActionOnClick: (() -> Unit)? = null,
     topActionActive: Boolean = true,
 
@@ -402,7 +404,8 @@ fun AppScaffold(
                                 onClick = topNavigationOnClick,
                                 enabled = topNavigationActive
                             ) {
-                                Icon(Icons.AutoMirrored.Outlined.ArrowBack, null)
+
+                                Icon(topNavigationIcon ?: Icons.AutoMirrored.Outlined.ArrowBack, null)
                             }
                         }
                     },

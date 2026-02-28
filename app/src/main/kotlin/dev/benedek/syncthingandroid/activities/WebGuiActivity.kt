@@ -29,6 +29,7 @@ import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
 import dev.benedek.syncthingandroid.util.ConfigXml
+import java.io.ByteArrayInputStream
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -72,11 +73,25 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
         binding?.webview?.webViewClient = object : WebViewClient() {
             @SuppressLint("WebViewClientOnReceivedSslError")
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, error: SslError) {
-                if (error.url.startsWith("https://127.0.0.1") || error.url.startsWith("https://localhost")) {
-                    handler.proceed()
-                } else {
-                    handler.cancel()
+                val cert = error.certificate
+
+                if (mCaCert != null && cert != null) {
+                    val x509Cert = getX509Certificate(cert)
+
+                    if (x509Cert != null) {
+                        try {
+                            // Verify the server's certificate against our loaded CA certificate
+                            // and hopefully stop the play console alert
+                            x509Cert.verify(mCaCert!!.publicKey)
+                            handler.proceed()
+                            return
+                        } catch (e: Exception) {
+                            Log.e(TAG, "SSL Certificate validation failed", e)
+                        }
+                    }
+
                 }
+                handler.cancel()
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
@@ -209,6 +224,25 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
                 Log.w(TAG, e)
             }
         }
+    }
+
+    private fun getX509Certificate(sslCertificate: android.net.http.SslCertificate): X509Certificate? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return sslCertificate.x509Certificate
+        } else {
+            // Pre-API 29 workaround to extract the certificate
+            val bundle = android.net.http.SslCertificate.saveState(sslCertificate)
+            val bytes = bundle.getByteArray("x509-certificate")
+            if (bytes != null) {
+                try {
+                    val certFactory = CertificateFactory.getInstance("X.509")
+                    return certFactory.generateCertificate(ByteArrayInputStream(bytes)) as X509Certificate
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to parse certificate from bundle", e)
+                }
+            }
+        }
+        return null
     }
 
     companion object {
