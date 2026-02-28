@@ -274,7 +274,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
         }
 
         if (!mIsCreateMode) {
-            val devices = api.getDevices(false)
+            val devices = api.getDevices(false) ?: emptyList<Device>()
             mDevice = null
             for (device in devices) {
                 if (device.deviceID == intent.getStringExtra(EXTRA_DEVICE_ID)) {

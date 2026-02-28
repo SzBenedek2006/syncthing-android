@@ -44,6 +44,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
         )
         viewModel.setInitialState(
             context = this,
+            onFinish = this::finish,
             isCreate = intent.getBooleanExtra(EXTRA_IS_CREATE, false),
             folderId = intent.getStringExtra(EXTRA_FOLDER_ID),
             deviceId = intent.getStringExtra(EXTRA_DEVICE_ID),

@@ -135,6 +135,7 @@ class FolderViewModel : ViewModel() {
 
     fun setInitialState(
         context: Context,
+        onFinish: () -> Unit,
         isCreate: Boolean,
         folderId: String?,
         deviceId: String?,
@@ -154,9 +155,12 @@ class FolderViewModel : ViewModel() {
                     folderLabel
                 )
             } else {
-                if (folderId == null)
+                if (folderId == null) {
                     Toast.makeText(context, "folderId == null", Toast.LENGTH_LONG).show()
-                loadExistingFolder(folderId!!)
+                    onFinish()
+                    return
+                }
+                loadExistingFolder(folderId, onFinish, context)
             }
         }
 
@@ -363,8 +367,7 @@ class FolderViewModel : ViewModel() {
 
     private fun loadDeviceList() {
         val currentApi = api ?: return
-        val allDevices = currentApi.getDevices(false)
-
+        val allDevices = currentApi.getDevices(false) ?: emptyList<Device>()
         deviceList.clear()
 
         allDevices.forEach { device ->
@@ -413,12 +416,16 @@ class FolderViewModel : ViewModel() {
         editedVersioning = folder.versioning!!.deepCopy()
     }
 
-    private fun loadExistingFolder(folderId: String) {
+    private fun loadExistingFolder(folderId: String, onFinish: () -> Unit, context: Context) {
         val currentApi = api ?: return
-        val folders = currentApi.folders
+        val folders = currentApi.folders ?: emptyList<Folder>()
 
         val found = folders.find { it.id == folderId }
-        folder = found!!
+        if (found == null) {
+            onDone(context, onFinish)
+            return
+        }
+        folder = found
         checkWritePermissions(serviceReference?.get(), found.path)
 
 

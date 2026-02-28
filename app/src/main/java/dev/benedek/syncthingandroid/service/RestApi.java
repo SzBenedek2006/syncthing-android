@@ -2,6 +2,8 @@ package dev.benedek.syncthingandroid.service;
 
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 
@@ -403,13 +405,16 @@ public class RestApi {
         return mVersion;
     }
 
-    public List<Folder> getFolders() {
-        List<Folder> folders;
+    public @Nullable List<Folder> getFolders() {
         synchronized (mConfigLock) {
-            folders = deepCopy(mConfig.folders, new TypeToken<@NonNull List<Folder>>(){}.getType());
+
+            if (mConfig == null || mConfig.folders == null) { return null; }
+            List<Folder> folders = deepCopy(mConfig.folders, new TypeToken<@NonNull List<Folder>>(){}.getType());
+            if (folders != null) {
+                Collections.sort(folders, FOLDERS_COMPARATOR);
+            }
+            return folders;
         }
-        Collections.sort(folders, FOLDERS_COMPARATOR);
-        return folders;
     }
 
     /**
@@ -462,18 +467,21 @@ public class RestApi {
      *
      * @param includeLocal True if the local device should be included in the result.
      */
-    public List<Device> getDevices(boolean includeLocal) {
+    public @Nullable List<Device> getDevices(boolean includeLocal) {
         List<Device> devices;
         synchronized (mConfigLock) {
+            if (mConfig == null || mConfig.devices == null) { return null; }
             devices = deepCopy(mConfig.devices, new TypeToken<@NonNull List<Device>>(){}.getType());
         }
-
-        Iterator<Device> it = devices.iterator();
-        while (it.hasNext()) {
-            Device device = it.next();
+        if (devices == null) {
+            return null;
+        }
+        Iterator<Device> iterator = devices.iterator();
+        while (iterator.hasNext()) {
+            Device device = iterator.next();
             boolean isLocalDevice = Objects.equal(mLocalDeviceId, device.deviceID);
             if (!includeLocal && isLocalDevice) {
-                it.remove();
+                iterator.remove();
                 break;
             }
         }
