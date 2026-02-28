@@ -17,7 +17,6 @@ import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.gson.Gson
@@ -25,12 +24,10 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding
 import dev.benedek.syncthingandroid.model.Connections
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Compression
 import dev.benedek.syncthingandroid.util.TextWatcherAdapter
 import dev.benedek.syncthingandroid.util.Util
-import java.util.Arrays
 
 /**
  * Shows device details and allows changing them.
@@ -383,12 +380,12 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
         return Util.getAlertDialogBuilder(this)
             .setMessage(R.string.remove_device_confirm)
             .setPositiveButton(
-                android.R.string.yes
-            ) { dialogInterface: DialogInterface?, i: Int ->
+                android.R.string.ok
+            ) { _: DialogInterface?, _: Int ->
                 api.removeDevice(mDevice!!.deviceID)
                 finish()
             }
-            .setNegativeButton(android.R.string.no, null)
+            .setNegativeButton(android.R.string.cancel, null)
             .create()
     }
 
@@ -457,13 +454,17 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        if (v == binding!!.compressionContainer) {
-            showCompressionDialog()
-        } else if (v == binding!!.qrButton) {
-            val qrIntent = QRScannerActivity.intent(this)
-            startActivityForResult(qrIntent, QR_SCAN_REQUEST_CODE)
-        } else if (v == binding!!.idContainer) {
-            Util.copyDeviceId(this, mDevice!!.deviceID)
+        when (v) {
+            binding!!.compressionContainer -> {
+                showCompressionDialog()
+            }
+            binding!!.qrButton -> {
+                val qrIntent = QRScannerActivity.intent(this)
+                startActivityForResult(qrIntent, QR_SCAN_REQUEST_CODE)
+            }
+            binding!!.idContainer -> {
+                Util.copyDeviceId(this, mDevice!!.deviceID)
+            }
         }
     }
 
@@ -516,7 +517,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             .setMessage(R.string.dialog_discard_changes)
             .setPositiveButton(
                 android.R.string.ok
-            ) { dialog: DialogInterface?, which: Int -> finish() }
+            ) { _: DialogInterface, _: Int -> finish() }
             .setNegativeButton(android.R.string.cancel, null)
             .create()
     }
