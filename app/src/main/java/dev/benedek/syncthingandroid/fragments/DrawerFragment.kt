@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +51,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
 
     private var timer: Timer? = null
 
-    private var mainActivity: MainActivity? = null
+    private lateinit var mainActivity: MainActivity
     private var sharedPreferences: SharedPreferences? = null
 
     fun onDrawerOpened() {
@@ -92,8 +92,11 @@ class DrawerFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         mainActivity = requireActivity() as MainActivity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
+
 
         ramUsage = view.findViewById(R.id.ram_usage)
         download = view.findViewById(R.id.download)
@@ -112,22 +115,16 @@ class DrawerFragment : Fragment(), View.OnClickListener {
             .setOnClickListener(this)
         exitButton!!.setOnClickListener(this)
 
+        if (savedInstanceState != null && savedInstanceState.getBoolean("active")) {
+            onDrawerOpened()
+        }
+
         updateExitButtonVisibility()
     }
 
     private fun updateExitButtonVisibility() {
         val alwaysInBackground = alwaysRunInBackground()
-        exitButton!!.visibility = if (alwaysInBackground) View.GONE else View.VISIBLE
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mainActivity = requireActivity() as MainActivity
-
-        if (savedInstanceState != null && savedInstanceState.getBoolean("active")) {
-            onDrawerOpened()
-        }
+        exitButton!!.visibility = View.VISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -218,7 +215,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
      * Gets QRCode and displays it in a Dialog.
      */
     private fun showQrCode() {
-        val restApi = mainActivity!!.api
+        val restApi = mainActivity.api
         if (restApi == null) {
             Toast.makeText(mainActivity, R.string.syncthing_terminated, Toast.LENGTH_SHORT).show()
             return
@@ -235,8 +232,8 @@ class DrawerFragment : Fragment(), View.OnClickListener {
                 apiKey,
                 ImmutableMap.of("text", deviceId),
                 { qrCodeBitmap: Bitmap? ->
-                    mainActivity!!.showQrCodeDialog(deviceId, qrCodeBitmap)
-                    mainActivity!!.closeDrawer()
+                    mainActivity.showQrCodeDialog(deviceId, qrCodeBitmap)
+                    mainActivity.closeDrawer()
                 },
                 { _: VolleyError? ->
                     Toast.makeText(
@@ -254,15 +251,15 @@ class DrawerFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.drawerActionWebGui -> {
                 startActivity(Intent(mainActivity, WebGuiActivity::class.java))
-                mainActivity!!.closeDrawer()
+                mainActivity.closeDrawer()
             }
             R.id.drawerActionSettings -> {
                 startActivity(Intent(mainActivity, SettingsActivity::class.java))
-                mainActivity!!.closeDrawer()
+                mainActivity.closeDrawer()
             }
             R.id.drawerActionRestart -> {
-                mainActivity!!.showRestartDialog()
-                mainActivity!!.closeDrawer()
+                mainActivity.showRestartDialog()
+                mainActivity.closeDrawer()
             }
             R.id.drawerActionExit -> {
                 if (sharedPreferences != null && sharedPreferences!!.getBoolean(
@@ -290,7 +287,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
                     // App is not running as a service.
                     doExit()
                 }
-                mainActivity!!.closeDrawer()
+                mainActivity.closeDrawer()
             }
             R.id.drawerActionShowQrCode -> {
                 showQrCode()
@@ -304,12 +301,12 @@ class DrawerFragment : Fragment(), View.OnClickListener {
     }
 
     private fun doExit() {
-        if (mainActivity == null || mainActivity!!.isFinishing) {
+        if (mainActivity.isFinishing) {
             return
         }
         Log.i(TAG, "Exiting app on user request")
-        mainActivity!!.stopService(Intent(mainActivity, SyncthingService::class.java))
-        mainActivity!!.finishAndRemoveTask()
+        mainActivity.stopService(Intent(mainActivity, SyncthingService::class.java))
+        mainActivity.finishAndRemoveTask()
     }
 
     companion object {
