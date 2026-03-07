@@ -236,7 +236,10 @@ fun OptionTile(
     checked: Boolean? = null,
     tonalElevation: Dp = 0.dp,
     color: Color = Color.Transparent,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    titleColor: Color = contentColor,
+    descriptionColor: Color = contentColor,
+    iconColor: Color = contentColor
 ) {
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
     val isSwitch = checked != null && onCheckedChange != null
@@ -246,6 +249,8 @@ fun OptionTile(
 
     val color = if (illegalState) MaterialTheme.colorScheme.errorContainer else color
     val contentColor = if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else contentColor
+    val titleColor = if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else titleColor
+    val descriptionColor = if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else descriptionColor
 
 
     val rightIconRotationModifier = if (rightIconRotationAmount != null) {
@@ -300,7 +305,7 @@ fun OptionTile(
                 Icon(
                     painter = leftIconPainter,
                     contentDescription = leftIconContentDescription,
-                    tint = contentColor,
+                    tint = iconColor,
                     modifier = Modifier
                         .padding(14.dp)
                         .size(24.dp)
@@ -320,6 +325,7 @@ fun OptionTile(
                         title,
                         textAlign = TextAlign.Left,
                         style = MaterialTheme.typography.bodyLarge,
+                        color = titleColor
                     )
                 }
                 if (description != null || illegalState) {
@@ -332,7 +338,8 @@ fun OptionTile(
                         Text(
                             description!!,
                             textAlign = TextAlign.Left,
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
+                            color = descriptionColor
                         )
                     }
                 }
@@ -451,7 +458,7 @@ fun AppScaffold(
 @Composable
 fun HorizontalDivider(
     modifier: Modifier = Modifier,
-    thickness: Dp = ThemeControls.DividerThickness.dp,
+    thickness: Dp = ThemeControls.dividerThickness.dp,
     color: Color = DividerDefaults.color,
 ) {
     if (ThemeControls.showDividers) {
