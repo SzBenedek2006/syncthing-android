@@ -3,8 +3,6 @@ package dev.benedek.syncthingandroid.activities
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.ui.Folder
 import dev.benedek.syncthingandroid.ui.FolderViewModel
 import dev.benedek.syncthingandroid.ui.FolderViewModel.Companion.EXTRA_DEVICE_ID
@@ -40,7 +38,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
         val service = service ?: return
 
         viewModel.setService(
-            boundService = service,
+            service = service,
         )
         viewModel.setInitialState(
             context = this,
