@@ -2,6 +2,7 @@
 
 package dev.benedek.syncthingandroid.fragments
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -173,20 +174,16 @@ class DrawerFragment : Fragment(), View.OnClickListener {
     /**
      * Populates views with status received via [RestApi.getSystemInfo].
      */
+    @SuppressLint("SetTextI18n")
     private fun onReceiveSystemInfo(info: SystemInfo) {
         requireActivity()
         val percentFormat = NumberFormat.getPercentInstance()
         percentFormat.setMaximumFractionDigits(2)
         ramUsage!!.text = Util.readableFileSize(mainActivity, info.sys)
         val announceTotal = info.discoveryMethods
-        val announceConnected =
-            announceTotal - Optional.fromNullable<MutableMap<String, String>>(info.discoveryErrors)
-                .transform(
-                    Function { obj: MutableMap<String, String> -> obj.size }).or(0)
-        announceServer!!.text = String.format(
-            Locale.getDefault(), $$"%1$d/%2$d",
-            announceConnected, announceTotal
-        )
+        val announceConnected = announceTotal - (info.discoveryErrors?.size ?: 0)
+
+        announceServer!!.text = "$announceConnected/$announceTotal"
         val color = if (announceConnected > 0)
             R.color.text_green
         else
@@ -247,6 +244,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    // View only, delete when migration is finished
     override fun onClick(v: View) {
         when (v.id) {
             R.id.drawerActionWebGui -> {
