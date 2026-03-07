@@ -38,6 +38,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics:1.10.4")
     implementation("androidx.compose.animation:animation-core:1.10.4")
     implementation("androidx.navigation:navigation-compose:2.9.7")
+    implementation("androidx.compose.material3:material3:1.4.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2026.02.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     annotationProcessor("com.google.dagger:dagger-compiler:2.59.2")
