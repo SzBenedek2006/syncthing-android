@@ -26,6 +26,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -52,6 +53,7 @@ import java.util.Date
 import java.util.concurrent.TimeUnit
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import dev.benedek.syncthingandroid.ui.MainViewModel
 
 /**
  * Shows [dev.benedek.syncthingandroid.fragments.FolderListFragment] and
@@ -60,6 +62,8 @@ import androidx.core.net.toUri
  */
 
 class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChangeListener {
+    private val viewModel: MainViewModel by viewModels()
+
     private var batteryOptimizationsDialog: AlertDialog? = null
     private var qrCodeDialog: AlertDialog? = null
     private var restartDialog: Dialog? = null
@@ -334,6 +338,9 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         super.onServiceConnected(componentName, iBinder)
+
+        viewModel.setService(service)
+
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
         val syncthingService = syncthingServiceBinder.service
         syncthingService.registerOnServiceStateChangeListener(this)
