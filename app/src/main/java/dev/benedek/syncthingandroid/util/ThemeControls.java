@@ -17,5 +17,8 @@ public class ThemeControls {
     @NonNull
     public static final Boolean showDividers = false;
 
-    public static final int DividerThickness = 1;
+    public static final int dividerThickness = 1;
+
+    public static final boolean blurEnabled = true;
+    public static final int blurRadius = 12;
 }
