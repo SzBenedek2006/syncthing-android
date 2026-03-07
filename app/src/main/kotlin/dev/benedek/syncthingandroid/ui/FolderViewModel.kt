@@ -128,9 +128,9 @@ class FolderViewModel : ViewModel() {
     var isValidFolder by mutableStateOf(false)
 
 
-    fun setService(boundService: SyncthingService) {
-        serviceReference = WeakReference(boundService)
-        api = boundService.api
+    fun setService(service: SyncthingService) {
+        serviceReference = WeakReference(service)
+        api = service.api
     }
 
     fun setInitialState(
