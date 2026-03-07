@@ -200,8 +200,8 @@ public class RestApi {
             }
         });
         getSystemInfo(info -> {
-            mLocalDeviceId = info.myID;
-            mUrVersionMax = info.urVersionMax;
+            mLocalDeviceId = info.getMyID();
+            mUrVersionMax = info.getUrVersionMax();
             synchronized (mAsyncQueryCompleteLock) {
                 asyncQuerySystemInfoComplete = true;
                 checkReadConfigFromRestApiCompleted();
