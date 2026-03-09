@@ -1,8 +1,8 @@
-import ru.vyarus.gradle.plugin.python.task.PythonTask
+//import ru.vyarus.gradle.plugin.python.task.PythonTask
 
-plugins {
-    id("ru.vyarus.use-python") version "3.0.0"
-}
+//plugins {
+//    id("ru.vyarus.use-python") version "4.1.0"
+//}
 /*
 tasks.register<PythonTask>("buildNative") {
     val ndkVersionShared = rootProject.extra.get("ndkVersionShared")
