@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import dev.benedek.syncthingandroid.fragments.DrawerFragment;
@@ -51,6 +52,40 @@ public class Constants {
     public static final String FOLDER_TYPE_SEND_ONLY            = "sendonly";
     public static final String FOLDER_TYPE_SEND_RECEIVE         = "sendreceive";
     public static final String FOLDER_TYPE_RECEIVE_ONLY         = "receiveonly";
+
+    /**
+     * Folder pull order types
+     */
+    public static final String FOLDER_PULL_ORDER_RANDOM         = "random";
+    public static final String FOLDER_PULL_ORDER_ALPHABETIC     = "alphabetic";
+    public static final String FOLDER_PULL_ORDER_SMALLEST_FIRST = "smallestFirst";
+    public static final String FOLDER_PULL_ORDER_LARGEST_FIRST  = "largestFirst";
+    public static final String FOLDER_PULL_ORDER_OLDEST_FIRST   = "oldestFirst";
+    public static final String FOLDER_PULL_ORDER_NEWEST_FIRST   = "newestFirst";
+
+    /**
+     * Folder versioning types
+     */
+    public static final String FVER_TYPE_NONE                   = "none"; // The value syncthing accepts is empty string or null here
+    public static final String FVER_TYPE_SIMPLE                 = "simple";
+    public static final String FVER_TYPE_TRASHCAN               = "trashcan";
+    public static final String FVER_TYPE_STAGGERED              = "staggered";
+    public static final String FVER_TYPE_EXTERNAL               = "external";
+    public static final String FVER_PARAM_SIMPLE_KEEP           = "keep";
+    public static final String FVER_PARAM_TRASHCAN_CLEANDAYS    = "cleanoutDays";
+    public static final String FVER_PARAM_STAGGERED_MAXAGE      = "maxAge";
+    public static final String FVER_PARAM_STAGGERED_PATH        = "versionsPath";
+    public static final String FVER_PARAM_EXTERNAL_COMMAND      = "command";
+
+
+    public static final List<String> FVER_TYPES = List.of(
+            FVER_TYPE_NONE,
+            FVER_TYPE_SIMPLE,
+            FVER_TYPE_TRASHCAN,
+            FVER_TYPE_STAGGERED,
+            FVER_TYPE_EXTERNAL
+    );
+
 
     /**
      * These are the request codes used when requesting the permissions.

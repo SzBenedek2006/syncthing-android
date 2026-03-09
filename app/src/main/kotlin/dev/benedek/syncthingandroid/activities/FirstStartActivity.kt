@@ -16,7 +16,6 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import androidx.core.content.edit
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
-import dev.benedek.syncthingandroid.ui.Settings
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 class FirstStartActivity : ComponentActivity() {

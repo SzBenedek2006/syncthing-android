@@ -2,6 +2,8 @@ package dev.benedek.syncthingandroid.service;
 
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 
@@ -46,12 +48,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -75,9 +75,11 @@ public class RestApi {
      * Compares folders by labels, uses the folder ID as fallback if the label is empty
      */
     private final static Comparator<Folder> FOLDERS_COMPARATOR = (lhs, rhs) -> {
-        String lhsLabel = lhs.label != null && !lhs.label.isEmpty() ? lhs.label : lhs.id;
-        String rhsLabel = rhs.label != null && !rhs.label.isEmpty() ? rhs.label : rhs.id;
+        String lhsLabel = lhs.getLabel() != null && !lhs.getLabel().isEmpty() ? lhs.getLabel() : lhs.getId();
+        String rhsLabel = rhs.getLabel() != null && !rhs.getLabel().isEmpty() ? rhs.getLabel() : rhs.getId();
 
+        assert lhsLabel != null;
+        assert rhsLabel != null;
         return lhsLabel.compareTo(rhsLabel);
     };
 
@@ -198,8 +200,8 @@ public class RestApi {
             }
         });
         getSystemInfo(info -> {
-            mLocalDeviceId = info.myID;
-            mUrVersionMax = info.urVersionMax;
+            mLocalDeviceId = info.getMyID();
+            mUrVersionMax = info.getUrVersionMax();
             synchronized (mAsyncQueryCompleteLock) {
                 asyncQuerySystemInfoComplete = true;
                 checkReadConfigFromRestApiCompleted();
@@ -403,13 +405,16 @@ public class RestApi {
         return mVersion;
     }
 
-    public List<Folder> getFolders() {
-        List<Folder> folders;
+    public @Nullable List<Folder> getFolders() {
         synchronized (mConfigLock) {
-            folders = deepCopy(mConfig.folders, new TypeToken<@NonNull List<Folder>>(){}.getType());
+
+            if (mConfig == null || mConfig.folders == null) { return null; }
+            List<Folder> folders = deepCopy(mConfig.folders, new TypeToken<@NonNull List<Folder>>(){}.getType());
+            if (folders != null) {
+                Collections.sort(folders, FOLDERS_COMPARATOR);
+            }
+            return folders;
         }
-        Collections.sort(folders, FOLDERS_COMPARATOR);
-        return folders;
     }
 
     /**
@@ -426,7 +431,7 @@ public class RestApi {
 
     public void updateFolder(Folder newFolder) {
         synchronized (mConfigLock) {
-            removeFolderInternal(newFolder.id);
+            removeFolderInternal(newFolder.getId());
             mConfig.folders.add(newFolder);
             sendConfig();
         }
@@ -449,7 +454,7 @@ public class RestApi {
             Iterator<Folder> it = mConfig.folders.iterator();
             while (it.hasNext()) {
                 Folder f = it.next();
-                if (f.id.equals(id)) {
+                if (f.getId().equals(id)) {
                     it.remove();
                     break;
                 }
@@ -462,18 +467,21 @@ public class RestApi {
      *
      * @param includeLocal True if the local device should be included in the result.
      */
-    public List<Device> getDevices(boolean includeLocal) {
+    public @Nullable List<Device> getDevices(boolean includeLocal) {
         List<Device> devices;
         synchronized (mConfigLock) {
+            if (mConfig == null || mConfig.devices == null) { return null; }
             devices = deepCopy(mConfig.devices, new TypeToken<@NonNull List<Device>>(){}.getType());
         }
-
-        Iterator<Device> it = devices.iterator();
-        while (it.hasNext()) {
-            Device device = it.next();
+        if (devices == null) {
+            return null;
+        }
+        Iterator<Device> iterator = devices.iterator();
+        while (iterator.hasNext()) {
+            Device device = iterator.next();
             boolean isLocalDevice = Objects.equal(mLocalDeviceId, device.deviceID);
             if (!includeLocal && isLocalDevice) {
-                it.remove();
+                iterator.remove();
                 break;
             }
         }

@@ -543,4 +543,5 @@
     <string name="api_level_30_button">Restablecer la base de datos</string>
     <string name="notification_permission_title">Permiso de notificación</string>
     <string name="require_notification_permission_desc">Necesario para mostrar las notificaciones sobre nuevas conexiones en los dispositivos, solicitudes para compartir las carpetas, etc.</string>
+    <string name="default_indicator">Predeterminado</string>
 </resources>

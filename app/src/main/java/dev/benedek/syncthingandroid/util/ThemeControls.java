@@ -10,7 +10,15 @@ import androidx.annotation.Nullable;
  */
 public class ThemeControls {
     @NonNull
-    public static final Boolean useDynamicColor = false;
+    public static final Boolean useDynamicColor = true;
     @Nullable
     public static final Boolean useDarkMode = null; // null = auto
+
+    @NonNull
+    public static final Boolean showDividers = false;
+
+    public static final int dividerThickness = 1;
+
+    public static final boolean blurEnabled = true;
+    public static final int blurRadius = 12;
 }

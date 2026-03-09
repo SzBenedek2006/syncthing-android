@@ -14,6 +14,7 @@ build/
 gen/
 obj/
 .gradle/
+.kotlin/
 syncthing/gobuild
 syncthing/pkg
 __pycache__

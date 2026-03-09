@@ -539,4 +539,5 @@
     <string name="api_level_30_title">Upgrade-Information</string>
     <string name="toast_api_level_30_must_reset">Ein Fortsetzen ist nur durch Klicken auf die Schaltfläche zum Zurücksetzen der Datenbank möglich.</string>
     <string name="require_notification_permission_desc">Erforderlich für die Anzeige von Benachrichtigungen bezüglich neuer Geräteverbindungen, Ordnerfreigabeanfragen usw.</string>
+    <string name="default_indicator">Standard</string>
 </resources>

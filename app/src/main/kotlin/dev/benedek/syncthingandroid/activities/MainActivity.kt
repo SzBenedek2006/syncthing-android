@@ -11,7 +11,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -27,6 +26,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -51,6 +51,9 @@ import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.Util
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import androidx.core.content.edit
+import androidx.core.net.toUri
+import dev.benedek.syncthingandroid.ui.MainViewModel
 
 /**
  * Shows [dev.benedek.syncthingandroid.fragments.FolderListFragment] and
@@ -59,20 +62,22 @@ import java.util.concurrent.TimeUnit
  */
 
 class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChangeListener {
-    private var mBatteryOptimizationsDialog: AlertDialog? = null
-    private var mQrCodeDialog: AlertDialog? = null
-    private var mRestartDialog: Dialog? = null
+    private val viewModel: MainViewModel by viewModels()
 
-    private var mBatteryOptimizationDialogDismissed = false
+    private var batteryOptimizationsDialog: AlertDialog? = null
+    private var qrCodeDialog: AlertDialog? = null
+    private var restartDialog: Dialog? = null
 
-    private lateinit var mViewPager: ViewPager2
+    private var batteryOptimizationDialogDismissed = false
 
-    private var mFolderListFragment: FolderListFragment? = null
-    private var mDeviceListFragment: DeviceListFragment? = null
-    private var mDrawerFragment: DrawerFragment? = null
+    private lateinit var viewPager: ViewPager2
 
-    private var mDrawerToggle: ActionBarDrawerToggle? = null
-    private var mDrawerLayout: DrawerLayout? = null
+    private var folderListFragment: FolderListFragment? = null
+    private var deviceListFragment: DeviceListFragment? = null
+    private var drawerFragment: DrawerFragment? = null
+
+    private var drawerToggle: ActionBarDrawerToggle? = null
+    private var drawerLayout: DrawerLayout? = null
 
     /**
      * Handles various dialogs based on current state.
@@ -83,8 +88,8 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             SyncthingService.State.ACTIVE -> {
                 intent.putExtra(EXTRA_KEY_GENERATION_IN_PROGRESS, false)
                 showBatteryOptimizationDialogIfNecessary()
-                mDrawerLayout!!.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                mDrawerFragment!!.requestGuiUpdate()
+                drawerLayout!!.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                drawerFragment!!.requestGuiUpdate()
 
                 // Check if the usage reporting minimum delay passed by.
                 val usageReportingDelayPassed =
@@ -102,28 +107,27 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     }
 
     private fun showBatteryOptimizationDialogIfNecessary() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         val pm = getSystemService(POWER_SERVICE) as PowerManager
-        val dontShowAgain = mPreferences.getBoolean("battery_optimization_dont_show_again", false)
-        if (dontShowAgain || mBatteryOptimizationsDialog != null ||
+        val dontShowAgain = sharedPreferences.getBoolean("battery_optimization_dont_show_again", false)
+        if (dontShowAgain || batteryOptimizationsDialog != null ||
             pm.isIgnoringBatteryOptimizations(packageName) ||
-            mBatteryOptimizationDialogDismissed
+            batteryOptimizationDialogDismissed
         ) {
             return
         }
 
-        mBatteryOptimizationsDialog = Util.getAlertDialogBuilder(this)
+        batteryOptimizationsDialog = Util.getAlertDialogBuilder(this)
             .setTitle(R.string.dialog_disable_battery_optimization_title)
             .setMessage(R.string.dialog_disable_battery_optimization_message)
             .setPositiveButton(
                 R.string.dialog_disable_battery_optimization_turn_off
             ) { _: DialogInterface?, _: Int ->
                 val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                intent.setData(Uri.parse("package:" + packageName))
+                intent.setData(("package:$packageName").toUri())
                 try {
                     startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
-                    // Some devices dont seem to support this request (according to Google Play
+                    // Some devices don't seem to support this request (according to Google Play
                     // crash reports).
                     Log.w(TAG, "Request ignore battery optimizations not supported", e)
                     Toast.makeText(
@@ -131,23 +135,25 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                         R.string.dialog_disable_battery_optimizations_not_supported,
                         Toast.LENGTH_LONG
                     ).show()
-                    mPreferences.edit()
-                        .putBoolean("battery_optimization_dont_show_again", true).apply()
+                    sharedPreferences.edit {
+                        putBoolean("battery_optimization_dont_show_again", true)
+                    }
                 }
             }
             .setNeutralButton(
                 R.string.dialog_disable_battery_optimization_later
             ) { _: DialogInterface?, _: Int ->
-                mBatteryOptimizationDialogDismissed = true
+                batteryOptimizationDialogDismissed = true
             }
             .setNegativeButton(
                 R.string.dialog_disable_battery_optimization_dont_show_again
             ) { _: DialogInterface?, _: Int ->
-                mPreferences.edit().putBoolean("battery_optimization_dont_show_again", true)
-                    .apply()
+                sharedPreferences.edit {
+                    putBoolean("battery_optimization_dont_show_again", true)
+                }
             }
             .setOnCancelListener { _: DialogInterface? ->
-                mBatteryOptimizationDialogDismissed = true
+                batteryOptimizationDialogDismissed = true
             }
             .show()
     }
@@ -162,7 +168,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             try {
                 firstInstallTime = pm.getPackageInfo(packageName, 0).firstInstallTime
             } catch (e: PackageManager.NameNotFoundException) {
-                Log.w(TAG, "This should never happen", e)
+                Log.wtf(TAG, "This should never happen", e)
             }
             return firstInstallTime
         }
@@ -171,8 +177,8 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
                 return when (position) {
-                    0 -> mFolderListFragment!!
-                    1 -> mDeviceListFragment!!
+                    0 -> folderListFragment!!
+                    1 -> deviceListFragment!!
                     else -> throw IllegalStateException("Unexpected position $position")
                 }
             }
@@ -191,11 +197,11 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         (application as SyncthingApp).component().inject(this)
 
         setContentView(R.layout.activity_main)
-        mDrawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.drawer_layout)
 
         // Targeting android 15 enables and 16 forces edge-to-edge,
         ViewCompat.setOnApplyWindowInsetsListener(
-            mDrawerLayout!!.getRootView()
+            drawerLayout!!.getRootView()
         ) { v: View?, windowInsets: WindowInsetsCompat? ->
             val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
             val mlp = v!!.layoutParams as ViewGroup.MarginLayoutParams
@@ -207,7 +213,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(
-            mDrawerLayout!!.getRootView()
+            drawerLayout!!.getRootView()
         ) { v: View?, insets: WindowInsetsCompat? ->
             val bars = insets!!.getInsets(
                 WindowInsetsCompat.Type.systemBars()
@@ -219,27 +225,27 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
         val fm = supportFragmentManager
         if (savedInstanceState != null) {
-            mFolderListFragment = (fm.getFragment(
+            folderListFragment = (fm.getFragment(
                 savedInstanceState, FolderListFragment::class.java.getName()
             ) as? FolderListFragment) ?: FolderListFragment()
-            mDeviceListFragment = (fm.getFragment(
+            deviceListFragment = (fm.getFragment(
                 savedInstanceState, DeviceListFragment::class.java.getName()
             ) as? DeviceListFragment) ?: DeviceListFragment()
-            mDrawerFragment = (fm.getFragment(
+            drawerFragment = (fm.getFragment(
                 savedInstanceState, DrawerFragment::class.java.getName()
             ) as? DrawerFragment) ?: DrawerFragment()
         } else {
-            mFolderListFragment = FolderListFragment()
-            mDeviceListFragment = DeviceListFragment()
-            mDrawerFragment = DrawerFragment()
+            folderListFragment = FolderListFragment()
+            deviceListFragment = DeviceListFragment()
+            drawerFragment = DrawerFragment()
         }
 
-        mViewPager = findViewById(R.id.pager)
-        mViewPager.adapter = mSectionsPagerAdapter
+        viewPager = findViewById(R.id.pager)
+        viewPager.adapter = mSectionsPagerAdapter
 
         val tabLayout = findViewById<TabLayout>(R.id.tabContainer)
 
-        TabLayoutMediator(tabLayout, mViewPager) { tab, position ->
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.folders_fragment_title)
                 1 -> getString(R.string.devices_fragment_title)
@@ -248,11 +254,11 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         }.attach()
 
         if (savedInstanceState != null) {
-            mViewPager.currentItem = savedInstanceState.getInt("currentTab")
+            viewPager.currentItem = savedInstanceState.getInt("currentTab")
             if (savedInstanceState.getBoolean(IS_SHOWING_RESTART_DIALOG)) {
                 showRestartDialog()
             }
-            mBatteryOptimizationDialogDismissed = savedInstanceState.getBoolean(
+            batteryOptimizationDialogDismissed = savedInstanceState.getBoolean(
                 BATTERY_DIALOG_DISMISSED
             )
             if (savedInstanceState.getBoolean(IS_QRCODE_DIALOG_DISPLAYED)) {
@@ -271,10 +277,10 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             }
         }
 
-        fm.beginTransaction().replace(R.id.drawer, mDrawerFragment!!).commit()
-        mDrawerToggle = Toggle(this, mDrawerLayout)
-        mDrawerLayout!!.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        mDrawerLayout!!.addDrawerListener(mDrawerToggle!!)
+        fm.beginTransaction().replace(R.id.drawer, drawerFragment!!).commit()
+        drawerToggle = Toggle(this, drawerLayout)
+        drawerLayout!!.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        drawerLayout!!.addDrawerListener(drawerToggle!!)
         //setOptimalDrawerWidth(findViewById<View>(R.id.drawer))
 
         // SyncthingService needs to be started from this activity as the user
@@ -288,7 +294,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (mDrawerLayout!!.isDrawerOpen(GravityCompat.START)) {
+                if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
                     closeDrawer()
                 } else {
                     moveTaskToBack(true)
@@ -312,31 +318,34 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             this.finish()
         }
 
-        // Evaluate run conditions to detect changes made to the metered wifi flags.
-        val mSyncthingService = service
-        if (mSyncthingService != null) {
-            mSyncthingService.evaluateRunConditions()
+        // Evaluate run conditions to detect changes made to the metered Wi-Fi flags.
+        val syncthingService = service
+        if (syncthingService != null) {
+            syncthingService.evaluateRunConditions()
         }
         super.onResume()
     }
 
     public override fun onDestroy() {
         super.onDestroy()
-        val mSyncthingService = service
-        if (mSyncthingService != null) {
-            mSyncthingService.unregisterOnServiceStateChangeListener(this)
-            mSyncthingService.unregisterOnServiceStateChangeListener(mFolderListFragment)
-            mSyncthingService.unregisterOnServiceStateChangeListener(mDeviceListFragment)
+        val syncthingService = service
+        if (syncthingService != null) {
+            syncthingService.unregisterOnServiceStateChangeListener(this)
+            syncthingService.unregisterOnServiceStateChangeListener(folderListFragment)
+            syncthingService.unregisterOnServiceStateChangeListener(deviceListFragment)
         }
     }
 
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         super.onServiceConnected(componentName, iBinder)
+
+        viewModel.setService(service)
+
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
         val syncthingService = syncthingServiceBinder.service
         syncthingService.registerOnServiceStateChangeListener(this)
-        syncthingService.registerOnServiceStateChangeListener(mFolderListFragment)
-        syncthingService.registerOnServiceStateChangeListener(mDeviceListFragment)
+        syncthingService.registerOnServiceStateChangeListener(folderListFragment)
+        syncthingService.registerOnServiceStateChangeListener(deviceListFragment)
     }
 
     /**
@@ -351,51 +360,49 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                 fm.putFragment(outState, fragment.javaClass.getName(), fragment)
             }
         }
-        putFragment.accept(mFolderListFragment)
-        putFragment.accept(mDeviceListFragment)
-        putFragment.accept(mDrawerFragment)
+        putFragment.accept(folderListFragment)
+        putFragment.accept(deviceListFragment)
+        putFragment.accept(drawerFragment)
 
-        outState.putInt("currentTab", mViewPager.currentItem)
+        outState.putInt("currentTab", viewPager.currentItem)
         outState.putBoolean(
             BATTERY_DIALOG_DISMISSED,
-            mBatteryOptimizationsDialog == null || !mBatteryOptimizationsDialog!!.isShowing
+            batteryOptimizationsDialog == null || !batteryOptimizationsDialog!!.isShowing
         )
         outState.putBoolean(
             IS_SHOWING_RESTART_DIALOG,
-            mRestartDialog != null && mRestartDialog!!.isShowing
+            restartDialog != null && restartDialog!!.isShowing
         )
-        if (mQrCodeDialog != null && mQrCodeDialog!!.isShowing) {
+        if (qrCodeDialog != null && qrCodeDialog!!.isShowing) {
             outState.putBoolean(IS_QRCODE_DIALOG_DISPLAYED, true)
-            val qrCode = mQrCodeDialog!!.findViewById<ImageView?>(R.id.qrcode_image_view)
-            val deviceID = mQrCodeDialog!!.findViewById<TextView?>(R.id.device_id)
+            val qrCode = qrCodeDialog!!.findViewById<ImageView?>(R.id.qrcode_image_view)
+            val deviceID = qrCodeDialog!!.findViewById<TextView?>(R.id.device_id)
             outState.putParcelable(
                 QRCODE_BITMAP_KEY,
                 (qrCode!!.getDrawable() as BitmapDrawable).bitmap
             )
             outState.putString(DEVICEID_KEY, deviceID!!.getText().toString())
         }
-        Util.dismissDialogSafe(mRestartDialog, this)
+        Util.dismissDialogSafe(restartDialog, this)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        mDrawerToggle!!.syncState()
+        drawerToggle!!.syncState()
 
         val actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true)
-        }
+        actionBar?.setHomeButtonEnabled(true)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        mDrawerToggle!!.onConfigurationChanged(newConfig)
+        drawerToggle!!.onConfigurationChanged(newConfig)
     }
 
     fun showRestartDialog() {
-        mRestartDialog = createRestartDialog()
-        mRestartDialog!!.show()
+        restartDialog = createRestartDialog()
+        restartDialog!!.show()
     }
 
     private fun createRestartDialog(): Dialog {
@@ -434,13 +441,13 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         }
         qrCodeImageView.setImageBitmap(qrCode)
 
-        mQrCodeDialog = Util.getAlertDialogBuilder(this)
+        qrCodeDialog = Util.getAlertDialogBuilder(this)
             .setTitle(R.string.device_id)
             .setView(qrCodeDialogView)
             .setPositiveButton(R.string.finish, null)
             .create()
 
-        mQrCodeDialog!!.show()
+        qrCodeDialog!!.show()
     }
 
     private fun shareDeviceId(deviceId: String?) {
@@ -456,7 +463,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return mDrawerToggle!!.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+        return drawerToggle!!.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
     }
 
     /**
@@ -466,12 +473,12 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         ActionBarDrawerToggle(activity, drawerLayout, R.string.app_name, R.string.app_name) {
         override fun onDrawerOpened(drawerView: View) {
             super.onDrawerOpened(drawerView)
-            mDrawerFragment!!.onDrawerOpened()
+            drawerFragment!!.onDrawerOpened()
         }
 
         override fun onDrawerClosed(view: View) {
             super.onDrawerClosed(view)
-            mDrawerFragment!!.onDrawerClosed()
+            drawerFragment!!.onDrawerClosed()
         }
 
         override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
@@ -483,7 +490,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
      * Closes the drawer. Use when navigating away from activity.
      */
     fun closeDrawer() {
-        mDrawerLayout!!.closeDrawer(GravityCompat.START)
+        drawerLayout!!.closeDrawer(GravityCompat.START)
     }
 
     /**
@@ -491,7 +498,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
      */
     override fun onKeyDown(keyCode: Int, e: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (!mDrawerLayout!!.isDrawerOpen(GravityCompat.START)) mDrawerLayout!!.openDrawer(
+            if (!drawerLayout!!.isDrawerOpen(GravityCompat.START)) drawerLayout!!.openDrawer(
                 GravityCompat.START
             )
             else closeDrawer()
@@ -540,7 +547,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                     }
 
                     DialogInterface.BUTTON_NEUTRAL -> {
-                        val uri = Uri.parse("https://data.syncthing.net")
+                        val uri = "https://data.syncthing.net".toUri()
                         startActivity(Intent(Intent.ACTION_VIEW, uri))
                     }
                 }
