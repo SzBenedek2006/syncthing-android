@@ -1,10 +1,10 @@
 FROM docker.io/eclipse-temurin:17-jdk-jammy
 
-ENV GO_VERSION 1.24.0
+ENV GO_VERSION 1.26.1
 
 # Can be found scrolling down on this page:
 # https://developer.android.com/studio/index.html#command-tools
-ARG ANDROID_SDK_FILENAME=commandlinetools-linux-9123335_latest.zip
+ARG ANDROID_SDK_FILENAME=commandlinetools-linux-14742923_latest.zip
 WORKDIR /opt
 
 # The '--reinstall' combined with 'build-essentials' is necessary for cgo
@@ -31,11 +31,12 @@ ARG SDKMANAGER="${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROI
 # Accept the SDK license, as we can't install packages otherwise
 RUN yes | $SDKMANAGER --licenses > /dev/null
 
-# NDK version
-ENV NDK_VERSION 29.0.14033849
+# NDK version (more info about versions:)
+# https://developer.android.com/ndk/downloads
+ENV NDK_VERSION 29.0.14206865
 
 # Install other android packages, including NDK
-RUN $SDKMANAGER tools platform-tools "build-tools;35.0.0" "platforms;android-35" "extras;android;m2repository" "ndk;${NDK_VERSION}"
+RUN $SDKMANAGER tools platform-tools "build-tools;36.0.0" "platforms;android-36" "extras;android;m2repository" "ndk;${NDK_VERSION}"
 
 # Accept licenses of newly installed packages
 RUN yes | $SDKMANAGER --licenses
