@@ -12,7 +12,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.widget.ShareActionProvider
 import androidx.core.view.MenuItemCompat
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import dev.benedek.syncthingandroid.R
@@ -25,11 +24,11 @@ import java.lang.ref.WeakReference
  * Shows the log information from Syncthing.
  */
 class LogActivity : SyncthingActivity() {
-    private var mLog: TextView? = null
-    private var mSyncthingLog = true
-    private var mFetchLogTask: AsyncTask<*, *, *>? = null
-    private var mScrollView: ScrollView? = null
-    private var mShareIntent: Intent? = null
+    private var log: TextView? = null
+    private var syncthingLog = true
+    private var fetchLogTask: AsyncTask<*, *, *>? = null
+    private var scrollView: ScrollView? = null
+    private var shareIntent: Intent? = null
 
     /**
      * Initialize Log.
@@ -69,19 +68,19 @@ class LogActivity : SyncthingActivity() {
 
 
         if (savedInstanceState != null) {
-            mSyncthingLog = savedInstanceState.getBoolean("syncthingLog")
+            syncthingLog = savedInstanceState.getBoolean("syncthingLog")
             invalidateOptionsMenu()
         }
 
-        mLog = findViewById(R.id.log)
-        mScrollView = findViewById(R.id.scroller)
+        log = findViewById(R.id.log)
+        scrollView = findViewById(R.id.scroller)
 
         updateLog()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean("syncthingLog", mSyncthingLog)
+        outState.putBoolean("syncthingLog", syncthingLog)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -89,24 +88,24 @@ class LogActivity : SyncthingActivity() {
         inflater.inflate(R.menu.log_list, menu)
 
         val switchLog = menu.findItem(R.id.switch_logs)
-        switchLog.setTitle(if (mSyncthingLog) R.string.view_android_log else R.string.view_syncthing_log)
+        switchLog.setTitle(if (syncthingLog) R.string.view_android_log else R.string.view_syncthing_log)
 
         // Add the share button
         val shareItem = menu.findItem(R.id.menu_share)
         val actionProvider = MenuItemCompat.getActionProvider(shareItem) as ShareActionProvider?
-        mShareIntent = Intent()
-        mShareIntent!!.setAction(Intent.ACTION_SEND)
-        mShareIntent!!.setType("text/plain")
-        mShareIntent!!.putExtra(Intent.EXTRA_TEXT, mLog!!.getText())
-        actionProvider!!.setShareIntent(mShareIntent)
+        shareIntent = Intent()
+        shareIntent!!.setAction(Intent.ACTION_SEND)
+        shareIntent!!.setType("text/plain")
+        shareIntent!!.putExtra(Intent.EXTRA_TEXT, log!!.getText())
+        actionProvider!!.setShareIntent(shareIntent)
 
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.switch_logs) {
-            mSyncthingLog = !mSyncthingLog
-            if (mSyncthingLog) {
+            syncthingLog = !syncthingLog
+            if (syncthingLog) {
                 item.setTitle(R.string.view_android_log)
                 setTitle(R.string.syncthing_log_title)
             } else {
@@ -120,11 +119,11 @@ class LogActivity : SyncthingActivity() {
     }
 
     private fun updateLog() {
-        if (mFetchLogTask != null) {
-            mFetchLogTask!!.cancel(true)
+        if (fetchLogTask != null) {
+            fetchLogTask!!.cancel(true)
         }
-        mLog!!.setText(R.string.retrieving_logs)
-        mFetchLogTask = UpdateLogTask(this).execute()
+        log!!.setText(R.string.retrieving_logs)
+        fetchLogTask = UpdateLogTask(this).execute()
     }
 
     private class UpdateLogTask(context: LogActivity?) : AsyncTask<Void?, Void?, String?>() {
@@ -138,7 +137,7 @@ class LogActivity : SyncthingActivity() {
                 cancel(true)
                 return ""
             }
-            return getLog(logActivity.mSyncthingLog)
+            return getLog(logActivity.syncthingLog)
         }
 
         @Deprecated("Deprecated in Java")
@@ -148,15 +147,15 @@ class LogActivity : SyncthingActivity() {
             if (logActivity == null || logActivity.isFinishing) {
                 return
             }
-            logActivity.mLog!!.text = log
-            if (logActivity.mShareIntent != null) {
-                logActivity.mShareIntent!!.putExtra(Intent.EXTRA_TEXT, log)
+            logActivity.log!!.text = log
+            if (logActivity.shareIntent != null) {
+                logActivity.shareIntent!!.putExtra(Intent.EXTRA_TEXT, log)
             }
             // Scroll to bottom
-            logActivity.mScrollView!!.post {
-                logActivity.mScrollView!!.scrollTo(
+            logActivity.scrollView!!.post {
+                logActivity.scrollView!!.scrollTo(
                     0,
-                    logActivity.mLog!!.bottom
+                    logActivity.log!!.bottom
                 )
             }
         }
@@ -197,7 +196,7 @@ class LogActivity : SyncthingActivity() {
                 )
                 val log = StringBuilder()
                 var line: String?
-                val sep = System.getProperty("line.separator")
+                val sep = System.lineSeparator()
                 while ((bufferedReader.readLine().also { line = it }) != null) {
                     log.append(line)
                     log.append(sep)
