@@ -314,7 +314,8 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
                         continue
                     }
                     inputStream = shareActivity.contentResolver.openInputStream(entry.key!!)
-                    Files.asByteSink(outFile).writeFrom(inputStream)
+                    if (inputStream != null)
+                        Files.asByteSink(outFile).writeFrom(inputStream)
                     copied++
                 } catch (e: FileNotFoundException) {
                     Log.e(
