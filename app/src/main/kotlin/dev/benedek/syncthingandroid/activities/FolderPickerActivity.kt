@@ -91,7 +91,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
             displayRoot()
         }
 
-        val prefUseRoot = mPreferences!!.getBoolean(Constants.PREF_USE_ROOT, false)
+        val prefUseRoot = sharedPreferences!!.getBoolean(Constants.PREF_USE_ROOT, false)
         if (!prefUseRoot) {
             Toast.makeText(this, R.string.kitkat_external_storage_warning, Toast.LENGTH_LONG)
                 .show()
@@ -121,7 +121,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
             roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS))
 
             // Add paths that might not be accessible to Syncthing.
-            if (mPreferences!!.getBoolean("advanced_folder_picker", false)) {
+            if (sharedPreferences!!.getBoolean("advanced_folder_picker", false)) {
                 Collections.addAll(roots, *File("/storage/").listFiles())
                 roots.add(File("/"))
             }
