@@ -37,33 +37,33 @@ class LogActivity : SyncthingActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val rootView = getLayoutInflater().inflate(R.layout.activity_log, null)
+        val rootView = layoutInflater.inflate(R.layout.activity_log, null)
         setContentView(rootView)
         setTitle(R.string.syncthing_log_title)
 
         // Targeting android 15 enables and 16 forces edge-to-edge,
         ViewCompat.setOnApplyWindowInsetsListener(
-            rootView,
-            OnApplyWindowInsetsListener { v: View?, windowInsets: WindowInsetsCompat? ->
-                val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
-                val mlp = v!!.getLayoutParams() as MarginLayoutParams
-                mlp.leftMargin = insets.left
-                mlp.bottomMargin = insets.bottom
-                mlp.rightMargin = insets.right
-                v.setLayoutParams(mlp)
-                WindowInsetsCompat.CONSUMED
-            })
+            rootView
+        ) { v: View?, windowInsets: WindowInsetsCompat? ->
+            val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            val mlp = v!!.layoutParams as MarginLayoutParams
+            mlp.leftMargin = insets.left
+            mlp.bottomMargin = insets.bottom
+            mlp.rightMargin = insets.right
+            v.setLayoutParams(mlp)
+            WindowInsetsCompat.CONSUMED
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(
-            rootView,
-            OnApplyWindowInsetsListener { v: View?, insets: WindowInsetsCompat? ->
-                val bars = insets!!.getInsets(
-                    WindowInsetsCompat.Type.systemBars()
-                            or WindowInsetsCompat.Type.displayCutout()
-                )
-                v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-                WindowInsetsCompat.CONSUMED
-            })
+            rootView
+        ) { v: View?, insets: WindowInsetsCompat? ->
+            val bars = insets!!.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+            )
+            v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
 
 
 
@@ -73,8 +73,8 @@ class LogActivity : SyncthingActivity() {
             invalidateOptionsMenu()
         }
 
-        mLog = findViewById<TextView>(R.id.log)
-        mScrollView = findViewById<ScrollView>(R.id.scroller)
+        mLog = findViewById(R.id.log)
+        mScrollView = findViewById(R.id.scroller)
 
         updateLog()
     }
@@ -85,7 +85,7 @@ class LogActivity : SyncthingActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = getMenuInflater()
+        val inflater = menuInflater
         inflater.inflate(R.menu.log_list, menu)
 
         val switchLog = menu.findItem(R.id.switch_logs)
@@ -104,7 +104,7 @@ class LogActivity : SyncthingActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.getItemId() == R.id.switch_logs) {
+        if (item.itemId == R.id.switch_logs) {
             mSyncthingLog = !mSyncthingLog
             if (mSyncthingLog) {
                 item.setTitle(R.string.view_android_log)
@@ -128,39 +128,37 @@ class LogActivity : SyncthingActivity() {
     }
 
     private class UpdateLogTask(context: LogActivity?) : AsyncTask<Void?, Void?, String?>() {
-        private val refLogActivity: WeakReference<LogActivity?>
+        private val refLogActivity: WeakReference<LogActivity?> = WeakReference<LogActivity?>(context)
 
-        init {
-            refLogActivity = WeakReference<LogActivity?>(context)
-        }
-
+        @Deprecated("Deprecated in Java")
         override fun doInBackground(vararg params: Void?): String {
             // Get a reference to the activity if it is still there.
             val logActivity = refLogActivity.get()
-            if (logActivity == null || logActivity.isFinishing()) {
+            if (logActivity == null || logActivity.isFinishing) {
                 cancel(true)
                 return ""
             }
             return getLog(logActivity.mSyncthingLog)
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onPostExecute(log: String?) {
             // Get a reference to the activity if it is still there.
             val logActivity = refLogActivity.get()
-            if (logActivity == null || logActivity.isFinishing()) {
+            if (logActivity == null || logActivity.isFinishing) {
                 return
             }
-            logActivity.mLog!!.setText(log)
+            logActivity.mLog!!.text = log
             if (logActivity.mShareIntent != null) {
                 logActivity.mShareIntent!!.putExtra(Intent.EXTRA_TEXT, log)
             }
             // Scroll to bottom
-            logActivity.mScrollView!!.post(Runnable {
+            logActivity.mScrollView!!.post {
                 logActivity.mScrollView!!.scrollTo(
                     0,
-                    logActivity.mLog!!.getBottom()
+                    logActivity.mLog!!.bottom
                 )
-            })
+            }
         }
 
         /**
@@ -195,7 +193,7 @@ class LogActivity : SyncthingActivity() {
                 pb.redirectErrorStream(true)
                 process = pb.start()
                 val bufferedReader = BufferedReader(
-                    InputStreamReader(process.getInputStream(), "UTF-8"), 8192
+                    InputStreamReader(process.inputStream, "UTF-8"), 8192
                 )
                 val log = StringBuilder()
                 var line: String?
@@ -208,9 +206,7 @@ class LogActivity : SyncthingActivity() {
             } catch (e: IOException) {
                 Log.w(TAG, "Error reading Android log", e)
             } finally {
-                if (process != null) {
-                    process.destroy()
-                }
+                process?.destroy()
             }
             return ""
         }
