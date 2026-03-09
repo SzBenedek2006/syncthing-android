@@ -47,15 +47,15 @@ import androidx.core.content.edit
  */
 class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
     OnServiceStateChangeListener {
-    private var mSubDirectoryTextView: TextView? = null
+    private var subDirectoryTextView: TextView? = null
 
-    private var mFoldersSpinner: Spinner? = null
+    private var foldersSpinner: Spinner? = null
 
     private var binding: ActivityShareBinding? = null
 
     @JvmField
     @Inject
-    var mPreferences: SharedPreferences? = null
+    var preferences: SharedPreferences? = null
 
     override fun onServiceStateChange(currentState: SyncthingService.State?) {
         if (currentState != SyncthingService.State.ACTIVE || api == null) return
@@ -64,7 +64,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
 
         // Get the index of the previously selected folder.
         var folderIndex = 0
-        val savedFolderId: String = mPreferences!!.getString(
+        val savedFolderId: String = preferences!!.getString(
             PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, ""
         )!!
         for (folder in folders!!) {
@@ -103,8 +103,8 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
 
         registerOnServiceConnectedListener(this)
 
-        mSubDirectoryTextView = findViewById(R.id.sub_directory_Textview)
-        mFoldersSpinner = findViewById(R.id.folders)
+        subDirectoryTextView = findViewById(R.id.sub_directory_Textview)
+        foldersSpinner = findViewById(R.id.folders)
 
         // TODO: add support for EXTRA_TEXT (notes, memos sharing)
         var extrasToCopy: ArrayList<Uri>? = ArrayList()
@@ -142,20 +142,20 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
         binding!!.shareButton.setOnClickListener { _: View? ->
             if (files.size == 1) files.entries.iterator().next()
                 .setValue(binding!!.name.getText().toString())
-            val folder = mFoldersSpinner!!.getSelectedItem() as Folder
+            val folder = foldersSpinner!!.getSelectedItem() as Folder
             val directory = File(folder.path, savedSubDirectory)
             val mCopyFilesTask = CopyFilesTask(this, files, folder, directory)
             mCopyFilesTask.execute()
         }
 
-        mFoldersSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        foldersSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                mSubDirectoryTextView?.text = savedSubDirectory
+                subDirectoryTextView?.text = savedSubDirectory
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -163,7 +163,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
         }
 
         binding!!.browseButton.setOnClickListener { _: View? ->
-            val folder = mFoldersSpinner!!.getSelectedItem() as Folder
+            val folder = foldersSpinner!!.getSelectedItem() as Folder
             val initialDirectory = File(folder.path, savedSubDirectory)
             startActivityForResult(
                 createIntent(
@@ -175,7 +175,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
         }
 
         binding!!.cancelButton.setOnClickListener { _: View? -> finish() }
-        mSubDirectoryTextView!!.text = savedSubDirectory
+        subDirectoryTextView!!.text = savedSubDirectory
     }
 
     /**
@@ -262,11 +262,11 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
          */
         get() {
             val selectedFolder =
-                mFoldersSpinner!!.getSelectedItem() as Folder?
+                foldersSpinner!!.getSelectedItem() as Folder?
             var savedSubDirectory = ""
 
             if (selectedFolder != null) {
-                savedSubDirectory = mPreferences?.getString(
+                savedSubDirectory = preferences?.getString(
                     PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id,
                     ""
                 )!!
@@ -277,20 +277,20 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
 
     private class CopyFilesTask(
         context: ShareActivity?,
-        private val mFiles: MutableMap<Uri, String>,
-        private val mFolder: Folder,
-        private val mDirectory: File?
+        private val files: MutableMap<Uri, String>,
+        private val folder: Folder,
+        private val directory: File?
     ) : AsyncTask<Void?, Void?, Boolean?>() {
         private val refShareActivity: WeakReference<ShareActivity> = WeakReference<ShareActivity>(context)
-        private var mProgress: ProgressDialog? = null
-        private var mCopied = 0
-        private var mIgnored = 0
+        private var progress: ProgressDialog? = null
+        private var copied = 0
+        private var ignored = 0
 
         override fun onPreExecute() {
             // Get a reference to the activity if it is still there.
             val shareActivity: ShareActivity = refShareActivity.get()!!
             // shareActivity cannot be null before the task executes.
-            mProgress = ProgressDialog.show(
+            progress = ProgressDialog.show(
                 shareActivity, null,
                 shareActivity.getString(R.string.copy_progress), true
             )
@@ -305,17 +305,17 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
             }
 
             var isError = false
-            for (entry in mFiles.entries) {
+            for (entry in files.entries) {
                 var inputStream: InputStream? = null
                 try {
-                    val outFile = File(mDirectory, entry.value)
+                    val outFile = File(directory, entry.value)
                     if (outFile.isFile()) {
-                        mIgnored++
+                        ignored++
                         continue
                     }
                     inputStream = shareActivity.contentResolver.openInputStream(entry.key!!)
                     Files.asByteSink(outFile).writeFrom(inputStream)
-                    mCopied++
+                    copied++
                 } catch (e: FileNotFoundException) {
                     Log.e(
                         TAG, String.format(
@@ -349,14 +349,14 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
             if (shareActivity == null || shareActivity.isFinishing) {
                 return
             }
-            Util.dismissDialogSafe(mProgress, shareActivity)
+            Util.dismissDialogSafe(progress, shareActivity)
             Toast.makeText(
-                shareActivity, if (mIgnored > 0) shareActivity.getResources().getQuantityString(
-                    R.plurals.copy_success_partially, mCopied,
-                    mCopied, mFolder.label, mIgnored
+                shareActivity, if (ignored > 0) shareActivity.getResources().getQuantityString(
+                    R.plurals.copy_success_partially, copied,
+                    copied, folder.label, ignored
                 ) else shareActivity.getResources().getQuantityString(
-                    R.plurals.copy_success, mCopied, mCopied,
-                    mFolder.label
+                    R.plurals.copy_success, copied, copied,
+                    folder.label
                 ),
                 Toast.LENGTH_LONG
             ).show()
@@ -372,9 +372,9 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
 
     override fun onPause() {
         super.onPause()
-        if (mFoldersSpinner!!.getSelectedItem() != null) {
-            val selectedFolder = mFoldersSpinner!!.getSelectedItem() as Folder
-            mPreferences!!.edit {
+        if (foldersSpinner!!.getSelectedItem() != null) {
+            val selectedFolder = foldersSpinner!!.getSelectedItem() as Folder
+            preferences!!.edit {
                 putString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, selectedFolder.id)
             }
         }
@@ -383,14 +383,14 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == FolderPickerActivity.DIRECTORY_REQUEST_CODE && resultCode == RESULT_OK) {
-            val selectedFolder = mFoldersSpinner!!.getSelectedItem() as Folder
+            val selectedFolder = foldersSpinner!!.getSelectedItem() as Folder
             val folderDirectory = Util.formatPath(selectedFolder.path)
             var subDirectory = data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
             //Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
             subDirectory = subDirectory!!.replace(folderDirectory, "")
-            mSubDirectoryTextView!!.text = subDirectory
+            subDirectoryTextView!!.text = subDirectory
 
-            mPreferences!!
+            preferences!!
                 .edit {
                     putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
                 }
