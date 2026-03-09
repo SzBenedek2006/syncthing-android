@@ -108,7 +108,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
     private fun showBatteryOptimizationDialogIfNecessary() {
         val pm = getSystemService(POWER_SERVICE) as PowerManager
-        val dontShowAgain = mPreferences.getBoolean("battery_optimization_dont_show_again", false)
+        val dontShowAgain = sharedPreferences.getBoolean("battery_optimization_dont_show_again", false)
         if (dontShowAgain || batteryOptimizationsDialog != null ||
             pm.isIgnoringBatteryOptimizations(packageName) ||
             batteryOptimizationDialogDismissed
@@ -135,7 +135,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                         R.string.dialog_disable_battery_optimizations_not_supported,
                         Toast.LENGTH_LONG
                     ).show()
-                    mPreferences.edit {
+                    sharedPreferences.edit {
                         putBoolean("battery_optimization_dont_show_again", true)
                     }
                 }
@@ -148,7 +148,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             .setNegativeButton(
                 R.string.dialog_disable_battery_optimization_dont_show_again
             ) { _: DialogInterface?, _: Int ->
-                mPreferences.edit {
+                sharedPreferences.edit {
                     putBoolean("battery_optimization_dont_show_again", true)
                 }
             }
@@ -168,7 +168,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             try {
                 firstInstallTime = pm.getPackageInfo(packageName, 0).firstInstallTime
             } catch (e: PackageManager.NameNotFoundException) {
-                Log.w(TAG, "This should never happen", e)
+                Log.wtf(TAG, "This should never happen", e)
             }
             return firstInstallTime
         }
@@ -319,20 +319,20 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
         }
 
         // Evaluate run conditions to detect changes made to the metered Wi-Fi flags.
-        val mSyncthingService = service
-        if (mSyncthingService != null) {
-            mSyncthingService.evaluateRunConditions()
+        val syncthingService = service
+        if (syncthingService != null) {
+            syncthingService.evaluateRunConditions()
         }
         super.onResume()
     }
 
     public override fun onDestroy() {
         super.onDestroy()
-        val mSyncthingService = service
-        if (mSyncthingService != null) {
-            mSyncthingService.unregisterOnServiceStateChangeListener(this)
-            mSyncthingService.unregisterOnServiceStateChangeListener(folderListFragment)
-            mSyncthingService.unregisterOnServiceStateChangeListener(deviceListFragment)
+        val syncthingService = service
+        if (syncthingService != null) {
+            syncthingService.unregisterOnServiceStateChangeListener(this)
+            syncthingService.unregisterOnServiceStateChangeListener(folderListFragment)
+            syncthingService.unregisterOnServiceStateChangeListener(deviceListFragment)
         }
     }
 
