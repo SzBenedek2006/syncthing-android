@@ -59,7 +59,7 @@ class DeviceListFragment : ListFragment(), OnServiceStateChangeListener, OnItemC
 
     /**
      * Refreshes ListView by updating devices and info.
-     * 
+     *
      * Also creates adapter if it doesn't exist yet.
      */
     private fun updateList() {
