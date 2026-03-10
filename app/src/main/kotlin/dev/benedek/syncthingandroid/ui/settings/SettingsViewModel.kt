@@ -27,7 +27,7 @@ import java.lang.ref.WeakReference
 class SettingsViewModel : ViewModel() {
 
     private var serviceReference: WeakReference<SyncthingService>? = null
-    private var api: RestApi? = null
+    private val api: RestApi? get() = serviceReference?.get()?.api
 
     private var cachedUrVersionMax = 0
 
@@ -81,7 +81,6 @@ class SettingsViewModel : ViewModel() {
 
     fun setService(boundService: SyncthingService) {
         this.serviceReference = WeakReference(boundService)
-        this.api = boundService.api
         this.isServiceConnected.value = true
         refreshValues()
     }

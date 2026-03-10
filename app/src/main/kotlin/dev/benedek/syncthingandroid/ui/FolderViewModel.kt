@@ -31,7 +31,8 @@ import kotlin.random.Random
 
 class FolderViewModel : ViewModel() {
     private var serviceReference: WeakReference<SyncthingService>? = null
-    private var api: RestApi? = null
+    private val api: RestApi? get() = serviceReference?.get()?.api
+
     var folder by mutableStateOf(Folder(), policy = neverEqualPolicy())
         private set
     var folderUri: Uri by mutableStateOf(Uri.EMPTY)
@@ -130,7 +131,6 @@ class FolderViewModel : ViewModel() {
 
     fun setService(service: SyncthingService) {
         serviceReference = WeakReference(service)
-        api = service.api
     }
 
     fun setInitialState(
