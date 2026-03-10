@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.common.io.Files;
@@ -548,7 +549,7 @@ public class SyncthingService extends Service {
      *
      * @see #unregisterOnServiceStateChangeListener
      */
-    public void registerOnServiceStateChangeListener(OnServiceStateChangeListener listener) {
+    public void registerOnServiceStateChangeListener(@NonNull OnServiceStateChangeListener listener) {
         // Make sure we don't send an invalid state or syncthing might show a "disabled" message
         // when it's just starting up.
         listener.onServiceStateChange(mCurrentState);
