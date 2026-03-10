@@ -66,7 +66,6 @@ class DrawerFragment : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        updateExitButtonVisibility()
     }
 
     fun onDrawerClosed() {
@@ -119,13 +118,6 @@ class DrawerFragment : Fragment(), View.OnClickListener {
         if (savedInstanceState != null && savedInstanceState.getBoolean("active")) {
             onDrawerOpened()
         }
-
-        updateExitButtonVisibility()
-    }
-
-    private fun updateExitButtonVisibility() {
-        val alwaysInBackground = alwaysRunInBackground()
-        exitButton!!.visibility = View.VISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -209,6 +201,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
     }
 
     /**
+     * IMPLEMENTED IN COMPOSE!
      * Gets QRCode and displays it in a Dialog.
      */
     private fun showQrCode() {
@@ -244,7 +237,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    // View only, delete when migration is finished
+    // IMPLEMENTED IN COMPOSE!
     override fun onClick(v: View) {
         when (v.id) {
             R.id.drawerActionWebGui -> {
@@ -275,7 +268,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
                         .setPositiveButton(
                             R.string.yes
                         ) { _: DialogInterface?, _: Int ->
-                            doExit()
+                            mainActivity.doExit()
                         }
                         .setNegativeButton(
                             R.string.no
@@ -283,7 +276,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
                         .show()
                 } else {
                     // App is not running as a service.
-                    doExit()
+                    mainActivity.doExit()
                 }
                 mainActivity.closeDrawer()
             }
@@ -293,19 +286,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun alwaysRunInBackground(): Boolean {
-        val sp = PreferenceManager.getDefaultSharedPreferences(requireActivity())
-        return sp.getBoolean(Constants.PREF_START_SERVICE_ON_BOOT, false)
-    }
 
-    private fun doExit() {
-        if (mainActivity.isFinishing) {
-            return
-        }
-        Log.i(TAG, "Exiting app on user request")
-        mainActivity.stopService(Intent(mainActivity, SyncthingService::class.java))
-        mainActivity.finishAndRemoveTask()
-    }
 
     companion object {
         private const val TAG = "DrawerFragment"
