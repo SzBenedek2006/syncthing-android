@@ -616,7 +616,7 @@ fun CustomDialog(
     title: String? = null,
     description: String? = null,
     onDismissRequest: () -> Unit,
-    onOk: () -> Unit,
+    onOk: (() -> Unit)?,
 
     okText: String = stringResource(android.R.string.ok),
     cancelText: String = stringResource(android.R.string.cancel),
@@ -675,8 +675,10 @@ fun CustomDialog(
                     TextButton(onDismissRequest) {
                         Text(cancelText)
                     }
-                    TextButton(onOk) {
-                        Text(okText)
+                    if (onOk != null) {
+                        TextButton(onOk) {
+                            Text(okText)
+                        }
                     }
                 }
             }
