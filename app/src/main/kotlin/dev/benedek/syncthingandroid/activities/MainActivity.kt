@@ -88,7 +88,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     /**
      * Handles various dialogs based on current state.
      */
-    override fun onServiceStateChange(currentState: SyncthingService.State) {
+    override fun onServiceStateChange(currentState: SyncthingService.State?) {
         when (currentState) {
             SyncthingService.State.STARTING -> {}
             SyncthingService.State.ACTIVE -> {
