@@ -1,21 +1,24 @@
 package dev.benedek.syncthingandroid.ui
 
+import android.content.Context
 import android.content.Intent
-import android.widget.Space
-import androidx.compose.animation.core.animateDpAsState
+import android.widget.Toast
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -30,40 +33,42 @@ import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.PowerSettingsNew
-import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -73,10 +78,11 @@ import androidx.navigation.compose.rememberNavController
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
+import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
+import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
-import dev.benedek.syncthingandroid.ui.reusable.topBorder
 import dev.benedek.syncthingandroid.ui.reusable.topBorderWithCorners
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -86,7 +92,7 @@ import kotlin.math.abs
 
 
 @Composable
-fun Main(viewModel: MainViewModel) {
+fun Main(viewModel: MainViewModel, exit: () -> Unit) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
     val scope = rememberCoroutineScope()
@@ -99,7 +105,7 @@ fun Main(viewModel: MainViewModel) {
     val density = LocalDensity.current
     val containerWidth = LocalWindowInfo.current.containerSize.width
 
-    val blurRadius by remember {
+    val drawerBlurAmount by remember {
         derivedStateOf {
 
             if (!ThemeControls.blurEnabled) {
@@ -120,6 +126,12 @@ fun Main(viewModel: MainViewModel) {
             }
         }
     }
+    val dialogBlurAmount by animateFloatAsState(
+        targetValue = if (ThemeControls.blurEnabled &&
+            (viewModel.showDeviceIdDialog || viewModel.showExitDialog || viewModel.showRestartDialog)
+            ) ThemeControls.blurRadius.toFloat() else 0f,
+        label = "DialogBlurAnimation"
+    )
 
 
 
@@ -153,6 +165,7 @@ fun Main(viewModel: MainViewModel) {
 
                 HorizontalDivider()
 
+
                 Column(
                     Modifier
                         .windowInsetsPadding(WindowInsets.displayCutout)
@@ -161,32 +174,37 @@ fun Main(viewModel: MainViewModel) {
                         title = stringResource(R.string.ram_usage),
                         description = Util.readableFileSize(context, viewModel.systemInfo?.sys ?: 0),
                         noIconPadding = true,
-                        contentColor = contentColor
+                        contentColor = contentColor,
+                        enabled = viewModel.api != null
                     )
                     OptionTile(
                         title = stringResource(R.string.download_title),
                         description = Util.readableTransferRate(context, viewModel.connections?.total?.inBits ?: 0),
                         noIconPadding = true,
-                        contentColor = contentColor
+                        contentColor = contentColor,
+                        enabled = viewModel.api != null
                     )
                     OptionTile(
                         title = stringResource(R.string.upload_title),
                         description = Util.readableTransferRate(context, viewModel.connections?.total?.outBits ?: 0),
                         noIconPadding = true,
-                        contentColor = contentColor
+                        contentColor = contentColor,
+                        enabled = viewModel.api != null
                     )
                     OptionTile(
                         title = stringResource(R.string.announce_server),
                         description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
                         descriptionColor = if (viewModel.announceConnected > 0) Color.Green else Color.Red,
                         noIconPadding = true,
-                        contentColor = contentColor
+                        contentColor = contentColor,
+                        enabled = viewModel.api != null
                     )
                     OptionTile(
                         title = stringResource(R.string.syncthing_version_title),
                         description = viewModel.systemVersion?.version ?: "null",
                         noIconPadding = true,
-                        contentColor = contentColor
+                        contentColor = contentColor,
+                        enabled = viewModel.api != null
                     )
                 }
 
@@ -211,7 +229,12 @@ fun Main(viewModel: MainViewModel) {
                         OptionTile(
                             title = stringResource(R.string.show_device_id),
                             leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
-                            onClick = { /*TODO*/ }
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                                viewModel.showDeviceIdDialog = true
+                            }
                         )
                         OptionTile(
                             title = stringResource(R.string.web_gui_title),
@@ -247,12 +270,22 @@ fun Main(viewModel: MainViewModel) {
                         OptionTile(
                             title = stringResource(R.string.restart),
                             leftIconPainter = painterResource(R.drawable.ic_autorenew_24dp),
-                            onClick = { viewModel.showRestartDialog = true }
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                                viewModel.showRestartDialog = true
+                            }
                         )
                         OptionTile(
                             title = stringResource(R.string.exit),
                             leftIconPainter = rememberVectorPainter(Icons.Outlined.PowerSettingsNew),
-                            onClick = { viewModel.showExitDialog = true }
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                                viewModel.showExitDialog = true
+                            }
                         )
                     }
                 }
@@ -263,7 +296,7 @@ fun Main(viewModel: MainViewModel) {
         Box(
             Modifier
                 .fillMaxSize()
-                .blur(blurRadius)
+                .blur(max(drawerBlurAmount, dialogBlurAmount.dp))
         ) {
             AppScaffold(
                 topAppBarTitle = stringResource(R.string.app_name),
@@ -347,32 +380,185 @@ fun Main(viewModel: MainViewModel) {
                     composable("devices") { DeviceList() }
                 }
 
+                // Dialogs
+                if (viewModel.showDeviceIdDialog) {
+                    if (viewModel.systemInfo?.myID != null) {
+                        QrCodeDialog(viewModel.systemInfo!!.myID!!, viewModel)
+                    } else {
+                        viewModel.showDeviceIdDialog = false
+                        Toast.makeText(context, R.string.could_not_access_deviceid, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                if (viewModel.showRestartDialog)
+                    RestartDialog(viewModel, context)
+                if (viewModel.showExitDialog)
+                    ExitDialog(viewModel, context, exit)
+
+
             }
         }
     }
 }
 
+
+// DIALOGS
+
 @Composable
-fun FolderList() {
-    // TODO: Implement
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Folder List placeholder")
+fun QrCodeDialog(deviceId: String, viewModel: MainViewModel) {
+    CustomDialog(
+        stringResource(R.string.device_id),
+        null,
+        { viewModel.showDeviceIdDialog = false },
+        null,
+        "",
+        stringResource(R.string.finish)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(Modifier.fillMaxWidth()) {
+                Text(
+                    deviceId,
+                    Modifier
+                        .weight(1f)
+                        .padding(vertical = 6.dp),
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontFamily = FontFamily.Monospace,
+                    lineHeight = 15.sp,
+                    letterSpacing = 0.25.sp
+                )
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_content_copy_24dp),
+                        contentDescription =  stringResource(android.R.string.copy)
+                    )
+                }
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_share_24dp),
+                        contentDescription =  stringResource(R.string.share_title)
+                    )
+                }
+            }
+
+            val qrCode = remember { viewModel.generateQrBitmap(deviceId) }
+            if (qrCode != null)
+                Image(
+                    qrCode.asImageBitmap(),
+                    null,
+                    Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth(0.8f),
+                    contentScale = ContentScale.FillWidth
+                )
+        }
     }
 }
 
 @Composable
-fun DeviceList() {
-    // TODO: Implement
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Device List placeholder")
-    }
+fun RestartDialog(viewModel: MainViewModel, context: Context) {
+    val onDismissRequest = { viewModel.showRestartDialog = false }
+    AlertDialog(
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    val intent = Intent(context, SyncthingService::class.java).apply {
+                        action = SyncthingService.ACTION_RESTART
+                    }
+                    context.startService(intent)
+                    onDismissRequest()
+                }
+            ) {
+                Text(stringResource(android.R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismissRequest
+            ) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+        title = {
+            Text(
+                stringResource(R.string.restart),
+                fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+        },
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier,
+    )
 }
 
+@Composable
+fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
+    val onDismissRequest = { viewModel.showExitDialog = false }
+    AlertDialog(
+        confirmButton = {
+            TextButton(
+                onClick = exit
+            ) {
+                Text(stringResource(android.R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismissRequest
+            ) {
+                Text(stringResource(android.R.string.cancel))
 
-@Preview(showBackground = true, showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
+            }
+        },
+        title = {
+            Text(
+                stringResource(R.string.exit),
+                fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+        },
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier,
+    )}
+
+
+
+
+// PREVIEWS
+
+@Preview
 @Composable
 fun MainPreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
-        Main(viewModel<MainViewModel>())
+        Main(viewModel<MainViewModel>(), {})
+    }
+}
+
+@Preview
+@Composable
+fun QrCodeDialogPreview() {
+    SyncthingandroidTheme() {
+        QrCodeDialog("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE", viewModel())
+    }
+
+}
+
+@Preview
+@Composable
+fun RestartDialogPreview() {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+        RestartDialog(viewModel(), LocalContext.current)
+    }
+}
+
+@Preview
+@Composable
+fun ExitDialogPreview() {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+        ExitDialog(viewModel(), LocalContext.current, {})
     }
 }
