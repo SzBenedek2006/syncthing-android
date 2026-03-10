@@ -27,10 +27,10 @@ class SyncthingTrustManager implements X509TrustManager {
 
     private static final String TAG = "SyncthingTrustManager";
 
-    private final File mHttpsCertPath;
+    private final File httpsCertPath;
 
     SyncthingTrustManager(File httpsCertPath) {
-        mHttpsCertPath = httpsCertPath;
+        this.httpsCertPath = httpsCertPath;
     }
 
     @Override
@@ -47,7 +47,7 @@ class SyncthingTrustManager implements X509TrustManager {
                                    String authType) throws CertificateException {
         InputStream is = null;
         try {
-            is = new FileInputStream(mHttpsCertPath);
+            is = new FileInputStream(httpsCertPath);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             X509Certificate ca = (X509Certificate) cf.generateCertificate(is);
             for (X509Certificate cert : certs) {

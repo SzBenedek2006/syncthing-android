@@ -54,43 +54,43 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
      * Use the MainThread for all callbacks and message handling
      * or we have to track down nasty threading problems.
      */
-    private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
+    private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
-    private volatile long mLastEventId = 0;
-    private volatile boolean mShutdown = true;
+    private volatile long lastEventId = 0;
+    private volatile boolean shutdown = true;
 
-    private final Context mContext;
-    private final RestApi mApi;
-    @Inject SharedPreferences mPreferences;
-    @Inject NotificationHandler mNotificationHandler;
+    private final Context context;
+    private final RestApi api;
+    @Inject SharedPreferences preferences;
+    @Inject NotificationHandler notificationHandler;
 
     public EventProcessor(Context context, RestApi api) {
         ((SyncthingApp) context.getApplicationContext()).component().inject(this);
-        mContext = context;
-        mApi = api;
+        this.context = context;
+        this.api = api;
     }
 
     @Override
     public void run() {
         // Restore the last event id if the event processor may have been restarted.
-        if (mLastEventId == 0) {
-            mLastEventId = mPreferences.getLong(PREF_LAST_SYNC_ID, 0);
+        if (lastEventId == 0) {
+            lastEventId = preferences.getLong(PREF_LAST_SYNC_ID, 0);
         }
 
         // First check if the event number ran backwards.
         // If that's the case we've to start at zero because syncthing was restarted.
-        mApi.getEvents(0, 1, new RestApi.OnReceiveEventListener() {
+        api.getEvents(0, 1, new RestApi.OnReceiveEventListener() {
             @Override
             public void onEvent(Event event) {
             }
 
             @Override
             public void onDone(long lastId) {
-                if (lastId < mLastEventId) mLastEventId = 0;
+                if (lastId < lastEventId) lastEventId = 0;
 
-                Log.d(TAG, "Reading events starting with id " + mLastEventId);
+                Log.d(TAG, "Reading events starting with id " + lastEventId);
 
-                mApi.getEvents(mLastEventId, 0, EventProcessor.this);
+                api.getEvents(lastEventId, 0, EventProcessor.this);
             }
         });
     }
@@ -106,9 +106,9 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
         } catch (ClassCastException e) { }
         switch (event.type) {
             case "ConfigSaved":
-                if (mApi != null) {
+                if (api != null) {
                     Log.v(TAG, "Forwarding ConfigSaved event to RestApi to get the updated config.");
-                    mApi.reloadConfig();
+                    api.reloadConfig();
                 }
                 break;
             case "PendingDevicesChanged":
@@ -117,7 +117,7 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
             case "FolderCompletion":
                 CompletionInfo completionInfo = new CompletionInfo();
                 completionInfo.completion = (Double) mapData.get("completion");
-                mApi.setCompletionInfo(
+                api.setCompletionInfo(
                     (String) mapData.get("device"),          // deviceId
                     (String) mapData.get("folder"),          // folderId
                     completionInfo
@@ -129,7 +129,7 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
             case "ItemFinished":
                 String folder = (String) mapData.get("folder");
                 String folderPath = null;
-                for (Folder f : mApi.getFolders()) {
+                for (Folder f : api.getFolders()) {
                     if (f.getId().equals(folder)) {
                         folderPath = f.getPath();
                     }
@@ -137,7 +137,7 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
                 File updatedFile = new File(folderPath, (String) mapData.get("item"));
                 if (!"delete".equals(mapData.get("action"))) {
                     Log.i(TAG, "Rescanned file via MediaScanner: " + updatedFile.toString());
-                    MediaScannerConnection.scanFile(mContext, new String[]{updatedFile.getPath()},
+                    MediaScannerConnection.scanFile(context, new String[]{updatedFile.getPath()},
                             null, null);
                 } else {
                     // Starting with Android 10/Q and targeting API level 29/removing legacy storage flag,
@@ -155,7 +155,7 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
                     // https://stackoverflow.com/a/29881556/1837158
                     Log.i(TAG, "Deleted file from MediaStore: " + updatedFile.toString());
                     Uri contentUri = MediaStore.Files.getContentUri("external");
-                    ContentResolver resolver = mContext.getContentResolver();
+                    ContentResolver resolver = context.getContentResolver();
                     resolver.delete(contentUri, MediaStore.Images.ImageColumns.DATA + " = ?",
                             new String[]{updatedFile.getPath()});
                 }
@@ -189,17 +189,17 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
 
     @Override
     public void onDone(long id) {
-        if (mLastEventId < id) {
-            mLastEventId = id;
+        if (lastEventId < id) {
+            lastEventId = id;
 
             // Store the last EventId in case we get killed
-            mPreferences.edit().putLong(PREF_LAST_SYNC_ID, mLastEventId).apply();
+            preferences.edit().putLong(PREF_LAST_SYNC_ID, lastEventId).apply();
         }
 
-        synchronized (mMainThreadHandler) {
-            if (!mShutdown) {
-                mMainThreadHandler.removeCallbacks(this);
-                mMainThreadHandler.postDelayed(this, EVENT_UPDATE_INTERVAL);
+        synchronized (mainThreadHandler) {
+            if (!shutdown) {
+                mainThreadHandler.removeCallbacks(this);
+                mainThreadHandler.postDelayed(this, EVENT_UPDATE_INTERVAL);
             }
         }
     }
@@ -209,18 +209,18 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
 
         // Remove all pending callbacks and add a new one. This makes sure that only one
         // event poller is running at any given time.
-        synchronized (mMainThreadHandler) {
-            mShutdown = false;
-            mMainThreadHandler.removeCallbacks(this);
-            mMainThreadHandler.postDelayed(this, EVENT_UPDATE_INTERVAL);
+        synchronized (mainThreadHandler) {
+            shutdown = false;
+            mainThreadHandler.removeCallbacks(this);
+            mainThreadHandler.postDelayed(this, EVENT_UPDATE_INTERVAL);
         }
     }
 
     public void stop() {
         Log.d(TAG, "Stopping event processor.");
-        synchronized (mMainThreadHandler) {
-            mShutdown = true;
-            mMainThreadHandler.removeCallbacks(this);
+        synchronized (mainThreadHandler) {
+            shutdown = true;
+            mainThreadHandler.removeCallbacks(this);
         }
     }
 
@@ -233,31 +233,31 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
         }
         Log.d(TAG, "Unknown device " + deviceName + "(" + deviceId + ") wants to connect");
 
-        String title = mContext.getString(R.string.device_rejected,
+        String title = context.getString(R.string.device_rejected,
                 deviceName.isEmpty() ? deviceId.substring(0, 7) : deviceName);
-        int notificationId = mNotificationHandler.getNotificationIdFromText(title);
+        int notificationId = notificationHandler.getNotificationIdFromText(title);
 
         // Prepare "accept" action.
-        Intent intentAccept = new Intent(mContext, DeviceActivity.class)
+        Intent intentAccept = new Intent(context, DeviceActivity.class)
                 .putExtra(DeviceActivity.EXTRA_NOTIFICATION_ID, notificationId)
                 .putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
                 .putExtra(DeviceActivity.EXTRA_DEVICE_ID, deviceId)
                 .putExtra(DeviceActivity.EXTRA_DEVICE_NAME, deviceName);
-        PendingIntent piAccept = PendingIntent.getActivity(mContext, notificationId,
+        PendingIntent piAccept = PendingIntent.getActivity(context, notificationId,
             intentAccept, Constants.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Prepare "ignore" action.
-        Intent intentIgnore = new Intent(mContext, SyncthingService.class)
+        Intent intentIgnore = new Intent(context, SyncthingService.class)
                 .putExtra(SyncthingService.EXTRA_NOTIFICATION_ID, notificationId)
                 .putExtra(SyncthingService.EXTRA_DEVICE_ID, deviceId)
                 .putExtra(SyncthingService.EXTRA_DEVICE_NAME, deviceName)
                 .putExtra(SyncthingService.EXTRA_DEVICE_ADDRESS, deviceAddress);
         intentIgnore.setAction(SyncthingService.ACTION_IGNORE_DEVICE);
-        PendingIntent piIgnore = PendingIntent.getService(mContext, 0,
+        PendingIntent piIgnore = PendingIntent.getService(context, 0,
             intentIgnore, Constants.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Show notification.
-        mNotificationHandler.showConsentNotification(notificationId, title, piAccept, piIgnore);
+        notificationHandler.showConsentNotification(notificationId, title, piAccept, piIgnore);
     }
 
     private void onPendingFoldersChanged(Map<String, String> added) {
@@ -272,40 +272,40 @@ public class EventProcessor implements  Runnable, RestApi.OnReceiveEventListener
 
         // Find the deviceName corresponding to the deviceId
         String deviceName = null;
-        for (Device d : mApi.getDevices(false)) {
+        for (Device d : api.getDevices(false)) {
             if (d.deviceID.equals(deviceId)) {
                 deviceName = d.getDisplayName();
                 break;
             }
         }
-        String title = mContext.getString(R.string.folder_rejected, deviceName,
+        String title = context.getString(R.string.folder_rejected, deviceName,
                 folderLabel.isEmpty() ? folderId : folderLabel + " (" + folderId + ")");
-        int notificationId = mNotificationHandler.getNotificationIdFromText(title);
+        int notificationId = notificationHandler.getNotificationIdFromText(title);
 
         // Prepare "accept" action.
-        boolean isNewFolder = Stream.of(mApi.getFolders())
+        boolean isNewFolder = Stream.of(api.getFolders())
                 .noneMatch(f -> f.getId().equals(folderId));
-        Intent intentAccept = new Intent(mContext, FolderActivity.class)
+        Intent intentAccept = new Intent(context, FolderActivity.class)
                 .putExtra(FolderViewModel.EXTRA_NOTIFICATION_ID, notificationId)
                 .putExtra(FolderViewModel.EXTRA_IS_CREATE, isNewFolder)
                 .putExtra(FolderViewModel.EXTRA_DEVICE_ID, deviceId)
                 .putExtra(FolderViewModel.EXTRA_FOLDER_ID, folderId)
                 .putExtra(FolderViewModel.EXTRA_FOLDER_LABEL, folderLabel);
-        PendingIntent piAccept = PendingIntent.getActivity(mContext, notificationId,
+        PendingIntent piAccept = PendingIntent.getActivity(context, notificationId,
             intentAccept, Constants.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Prepare "ignore" action.
-        Intent intentIgnore = new Intent(mContext, SyncthingService.class)
+        Intent intentIgnore = new Intent(context, SyncthingService.class)
                 .putExtra(SyncthingService.EXTRA_NOTIFICATION_ID, notificationId)
                 .putExtra(SyncthingService.EXTRA_DEVICE_ID, deviceId)
                 .putExtra(SyncthingService.EXTRA_FOLDER_ID, folderId)
                 .putExtra(SyncthingService.EXTRA_FOLDER_LABEL, folderLabel);
         intentIgnore.setAction(SyncthingService.ACTION_IGNORE_FOLDER);
-        PendingIntent piIgnore = PendingIntent.getService(mContext, 0,
+        PendingIntent piIgnore = PendingIntent.getService(context, 0,
             intentIgnore, Constants.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Show notification.
-        mNotificationHandler.showConsentNotification(notificationId, title, piAccept, piIgnore);
+        notificationHandler.showConsentNotification(notificationId, title, piAccept, piIgnore);
     }
 
     private <T> void mapNullable(List<T> l, Consumer<T> c) {

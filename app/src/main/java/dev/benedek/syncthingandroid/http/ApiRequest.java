@@ -58,28 +58,28 @@ public abstract class ApiRequest {
 
     private RequestQueue getVolleyQueue() {
         if (sVolleyQueue == null) {
-            Context context = mContext.getApplicationContext();
+            Context context = this.context.getApplicationContext();
             sVolleyQueue = Volley.newRequestQueue(context, new NetworkStack());
         }
         return sVolleyQueue;
     }
 
-    private final Context mContext;
-    private final URL mUrl;
-    private final String mPath;
-    private final String mApiKey;
+    private final Context context;
+    private final URL url;
+    private final String path;
+    private final String apiKey;
 
     ApiRequest(Context context, URL url, String path, String apiKey) {
-        mContext = context;
-        mUrl           = url;
-        mPath          = path;
-        mApiKey        = apiKey;
+        this.context = context;
+        this.url = url;
+        this.path = path;
+        this.apiKey = apiKey;
     }
 
     Uri buildUri(Map<String, String> params) {
-        Uri.Builder uriBuilder = Uri.parse(mUrl.toString())
+        Uri.Builder uriBuilder = Uri.parse(url.toString())
                 .buildUpon()
-                .path(mPath);
+                .path(path);
         for (Map.Entry<String, String> entry : params.entrySet()) {
             uriBuilder.appendQueryParameter(entry.getKey(), entry.getValue());
         }
@@ -105,7 +105,7 @@ public abstract class ApiRequest {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                return ImmutableMap.of(HEADER_API_KEY, mApiKey);
+                return ImmutableMap.of(HEADER_API_KEY, apiKey);
             }
 
             @Override
@@ -138,7 +138,7 @@ public abstract class ApiRequest {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                return ImmutableMap.of(HEADER_API_KEY, mApiKey);
+                return ImmutableMap.of(HEADER_API_KEY, apiKey);
             }
         };
 
@@ -156,7 +156,7 @@ public abstract class ApiRequest {
         }
         @Override
         protected HttpURLConnection createConnection(URL url) throws IOException {
-            if (mUrl.toString().startsWith("https://")) {
+            if (ApiRequest.this.url.toString().startsWith("https://")) {
                 HttpsURLConnection connection = (HttpsURLConnection) super.createConnection(url);
                 connection.setHostnameVerifier((hostname, session) -> true);
                 return connection;
@@ -168,7 +168,7 @@ public abstract class ApiRequest {
     private SSLSocketFactory getSslSocketFactory() {
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            File httpsCertPath = Constants.getHttpsCertFile(mContext);
+            File httpsCertPath = Constants.getHttpsCertFile(context);
             sslContext.init(null, new TrustManager[]{new SyncthingTrustManager(httpsCertPath)},
                     new SecureRandom());
             return sslContext.getSocketFactory();

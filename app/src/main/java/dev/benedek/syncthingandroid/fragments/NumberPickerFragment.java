@@ -16,24 +16,24 @@ import dev.benedek.syncthingandroid.R;
 
 public class NumberPickerFragment extends Fragment {
 
-    private NumberPicker mNumberPicker;
+    private NumberPicker numberPicker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mNumberPicker = (NumberPicker) inflater.inflate(R.layout.numberpicker_fragment, container, false);
-        mNumberPicker.setWrapSelectorWheel(false);
+        numberPicker = (NumberPicker) inflater.inflate(R.layout.numberpicker_fragment, container, false);
+        numberPicker.setWrapSelectorWheel(false);
 
-        return mNumberPicker;
+        return numberPicker;
     }
 
     public void setOnValueChangedLisenter(NumberPicker.OnValueChangeListener onValueChangeListener){
-        mNumberPicker.setOnValueChangedListener(onValueChangeListener);
+        numberPicker.setOnValueChangedListener(onValueChangeListener);
     }
 
     public void updateNumberPicker(int maxValue, int minValue, int currentValue){
-        mNumberPicker.setMaxValue(maxValue);
-        mNumberPicker.setMinValue(minValue);
-        mNumberPicker.setValue(currentValue);
+        numberPicker.setMaxValue(maxValue);
+        numberPicker.setMinValue(minValue);
+        numberPicker.setValue(currentValue);
     }
 }

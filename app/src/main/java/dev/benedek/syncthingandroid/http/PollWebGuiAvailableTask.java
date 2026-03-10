@@ -25,28 +25,28 @@ public class PollWebGuiAvailableTask extends ApiRequest {
      */
     private static final long WEB_GUI_POLL_INTERVAL = 100;
 
-    private final Handler mHandler = new Handler();
+    private final Handler handler = new Handler();
 
-    private OnSuccessListener mListener;
+    private OnSuccessListener listener;
 
     private Integer logIncidence = 0;
 
     /**
      * Object that must be locked upon accessing mListener
      */
-    private final Object mListenerLock = new Object();
+    private final Object listenerLock = new Object();
 
     public PollWebGuiAvailableTask(Context context, URL url, String apiKey,
                                    OnSuccessListener listener) {
         super(context, url, "", apiKey);
         Log.i(TAG, "Starting to poll for web gui availability");
-        mListener = listener;
+        this.listener = listener;
         performRequest();
     }
 
     public void cancelRequestsAndCallback() {
-        synchronized(mListenerLock) {
-            mListener = null;
+        synchronized(listenerLock) {
+            listener = null;
         }
     }
 
@@ -56,9 +56,9 @@ public class PollWebGuiAvailableTask extends ApiRequest {
     }
 
     private void onSuccess(String result) {
-        synchronized(mListenerLock) {
-            if (mListener != null) {
-                mListener.onSuccess(result);
+        synchronized(listenerLock) {
+            if (listener != null) {
+                listener.onSuccess(result);
             } else {
                 Log.v(TAG, "Cancelled callback and outstanding requests");
             }
@@ -66,14 +66,14 @@ public class PollWebGuiAvailableTask extends ApiRequest {
     }
 
     private void onError(VolleyError error) {
-        synchronized(mListenerLock) {
-            if (mListener == null) {
+        synchronized(listenerLock) {
+            if (listener == null) {
                 Log.v(TAG, "Cancelled callback and outstanding requests");
                 return;
             }
         }
 
-        mHandler.postDelayed(this::performRequest, WEB_GUI_POLL_INTERVAL);
+        handler.postDelayed(this::performRequest, WEB_GUI_POLL_INTERVAL);
         Throwable cause = error.getCause();
         if (cause == null || cause.getClass().equals(ConnectException.class)) {
             // Reduce lag caused by massively logging the same line while waiting.

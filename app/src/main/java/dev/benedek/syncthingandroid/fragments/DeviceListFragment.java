@@ -28,20 +28,20 @@ import java.util.TimerTask;
 /**
  * Displays a list of all existing devices.
  */
-public class DeviceListFragment extends ListFragment implements SyncthingService.OnServiceStateChangeListener,
-        ListView.OnItemClickListener {
+public class DeviceListFragment extends ListFragment
+        implements SyncthingService.OnServiceStateChangeListener, ListView.OnItemClickListener {
 
     private final static Comparator<Device> DEVICES_COMPARATOR = (lhs, rhs) -> lhs.name.compareTo(rhs.name);
 
-    private DevicesAdapter mAdapter;
+    private DevicesAdapter adapter;
 
-    private Timer mTimer;
+    private Timer timer;
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mTimer != null) {
-            mTimer.cancel();
+        if (timer != null) {
+            timer.cancel();
         }
     }
 
@@ -50,8 +50,8 @@ public class DeviceListFragment extends ListFragment implements SyncthingService
         if (currentState != SyncthingService.State.ACTIVE)
             return;
 
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (getActivity() == null)
@@ -90,18 +90,18 @@ public class DeviceListFragment extends ListFragment implements SyncthingService
         if (devices == null) {
             return;
         }
-        if (mAdapter == null) {
-            mAdapter = new DevicesAdapter(activity);
-            setListAdapter(mAdapter);
+        if (adapter == null) {
+            adapter = new DevicesAdapter(activity);
+            setListAdapter(adapter);
         }
 
         // Prevent scroll position reset due to list update from clear().
-        mAdapter.setNotifyOnChange(false);
-        mAdapter.clear();
+        adapter.setNotifyOnChange(false);
+        adapter.clear();
         Collections.sort(devices, DEVICES_COMPARATOR);
-        mAdapter.addAll(devices);
-        mAdapter.updateConnections(restApi);
-        mAdapter.notifyDataSetChanged();
+        adapter.addAll(devices);
+        adapter.updateConnections(restApi);
+        adapter.notifyDataSetChanged();
         setListShown(true);
     }
 
@@ -109,7 +109,7 @@ public class DeviceListFragment extends ListFragment implements SyncthingService
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getActivity(), DeviceActivity.class);
         intent.putExtra(DeviceActivity.EXTRA_IS_CREATE, false);
-        intent.putExtra(DeviceActivity.EXTRA_DEVICE_ID, mAdapter.getItem(i).deviceID);
+        intent.putExtra(DeviceActivity.EXTRA_DEVICE_ID, adapter.getItem(i).deviceID);
         startActivity(intent);
     }
 

@@ -30,7 +30,7 @@ public class AppConfigReceiver extends BroadcastReceiver {
      */
     private static final String ACTION_STOP  = "dev.benedek.syncthingandroid.action.STOP";
 
-    @Inject NotificationHandler mNotificationHandler;
+    @Inject NotificationHandler notificationHandler;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -41,7 +41,7 @@ public class AppConfigReceiver extends BroadcastReceiver {
                 break;
             case ACTION_STOP:
                 if (startServiceOnBoot(context)) {
-                    mNotificationHandler.showStopSyncthingWarningNotification();
+                    notificationHandler.showStopSyncthingWarningNotification();
                 } else {
                     context.stopService(new Intent(context, SyncthingService.class));
                 }
