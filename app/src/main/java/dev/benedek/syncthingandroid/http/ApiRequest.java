@@ -9,8 +9,12 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -21,8 +25,10 @@ import dev.benedek.syncthingandroid.service.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -103,6 +109,19 @@ public abstract class ApiRequest {
                 Log.w(TAG, "Request to " + uri + " failed, " + error.getMessage());
             }
         }) {
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String charset = HttpHeaderParser.parseCharset(response.headers, "UTF-8");
+                    String parsed = new String(response.data, charset);
+                    return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(this.toString(), e.toString());
+                    return Response.success(new String(response.data, StandardCharsets.UTF_8),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                }
+            }
+
             @Override
             public Map<String, String> getHeaders() {
                 return ImmutableMap.of(HEADER_API_KEY, apiKey);
