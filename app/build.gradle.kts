@@ -78,7 +78,7 @@ configure<ApplicationExtension> {
         versionCode = 4501
         versionName = "2.0.15.1"
         testApplicationId = "dev.benedek.syncthingandroid.test"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
