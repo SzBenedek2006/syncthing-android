@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.SyncthingApp
@@ -47,15 +48,16 @@ import androidx.core.content.edit
  */
 class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
     OnServiceStateChangeListener {
+
+    private val preferences: SharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(this)
+    }
     private var subDirectoryTextView: TextView? = null
 
     private var foldersSpinner: Spinner? = null
 
     private var binding: ActivityShareBinding? = null
 
-    @JvmField
-    @Inject
-    var preferences: SharedPreferences? = null
 
     override fun onServiceStateChange(currentState: SyncthingService.State?) {
         if (currentState != SyncthingService.State.ACTIVE || api == null) return

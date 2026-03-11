@@ -9,6 +9,7 @@ import android.os.PowerManager
 import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
+import androidx.preference.PreferenceManager
 import com.google.common.io.FileWriteMode
 import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
@@ -42,14 +43,13 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
     private val mCommand: Array<String?>
     private val mLogFile: File
 
-    @JvmField
-    @Inject
-    var mPreferences: SharedPreferences? = null
+    val mPreferences: SharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(mContext)
+    }
     private val mUseRoot: Boolean
-
-    @JvmField
-    @Inject
-    var mNotificationHandler: NotificationHandler? = null
+    val mNotificationHandler: NotificationHandler by lazy {
+        NotificationHandler(context)
+    }
 
     enum class Command {
         deviceid,  // Output the device ID to the command line.
