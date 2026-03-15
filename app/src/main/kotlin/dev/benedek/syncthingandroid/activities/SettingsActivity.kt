@@ -95,9 +95,7 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 
 
     override fun onServiceConnected() {
-        if (service != null) {
-            viewModel.setService(service)
-        }
+        service?.let { viewModel.setService(it) }
     }
 
     companion object {

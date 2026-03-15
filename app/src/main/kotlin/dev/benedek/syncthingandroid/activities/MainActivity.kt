@@ -39,7 +39,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.annimon.stream.function.Consumer
-import com.google.android.material.tabs.TabLayout
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.fragments.DeviceListFragment
@@ -101,7 +100,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                 val usageReportingDelayPassed =
                     (Date().time > this.firstStartTime + USAGE_REPORTING_DIALOG_DELAY)
                 val restApi = api
-                if (usageReportingDelayPassed && restApi != null && !restApi.isUsageReportingDecided()) {
+                if (usageReportingDelayPassed && restApi != null && !restApi.isUsageReportingDecided) {
                     showUsageReportingDialog(restApi)
                 }
             }
@@ -114,8 +113,9 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
     private fun showBatteryOptimizationDialogIfNecessary() {
         val pm = getSystemService(POWER_SERVICE) as PowerManager
-        val dontShowAgain = sharedPreferences.getBoolean("battery_optimization_dont_show_again", false)
-        if (dontShowAgain || batteryOptimizationsDialog != null ||
+        val dontShowAgain =
+            sharedPreferences?.getBoolean("battery_optimization_dont_show_again", false)
+        if (dontShowAgain == true || batteryOptimizationsDialog != null ||
             pm.isIgnoringBatteryOptimizations(packageName) ||
             batteryOptimizationDialogDismissed
         ) {
@@ -141,7 +141,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
                         R.string.dialog_disable_battery_optimizations_not_supported,
                         Toast.LENGTH_LONG
                     ).show()
-                    sharedPreferences.edit {
+                    sharedPreferences?.edit {
                         putBoolean("battery_optimization_dont_show_again", true)
                     }
                 }
@@ -154,7 +154,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             .setNegativeButton(
                 R.string.dialog_disable_battery_optimization_dont_show_again
             ) { _: DialogInterface?, _: Int ->
-                sharedPreferences.edit {
+                sharedPreferences?.edit {
                     putBoolean("battery_optimization_dont_show_again", true)
                 }
             }
@@ -363,9 +363,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
 
         // Evaluate run conditions to detect changes made to the metered Wi-Fi flags.
         val syncthingService = service
-        if (syncthingService != null) {
-            syncthingService.evaluateRunConditions()
-        }
+        syncthingService?.evaluateRunConditions()
         super.onResume()
     }
 
@@ -382,7 +380,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         super.onServiceConnected(componentName, iBinder)
 
-        viewModel.setService(service)
+        service?.let { viewModel.setService(it) }
 
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
         val syncthingService = syncthingServiceBinder.service

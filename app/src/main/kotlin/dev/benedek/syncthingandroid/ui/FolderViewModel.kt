@@ -420,7 +420,7 @@ class FolderViewModel : ViewModel() {
         val currentApi = api ?: return
         val folders = currentApi.folders ?: emptyList<Folder>()
 
-        val found = folders.find { it.id == folderId }
+        val found = folders.find { it?.id == folderId }
         if (found == null) {
             onDone(context, onFinish)
             return

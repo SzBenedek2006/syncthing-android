@@ -18,9 +18,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.android.volley.VolleyError
-import com.google.common.base.Function
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableMap
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.MainActivity
 import dev.benedek.syncthingandroid.activities.SettingsActivity
@@ -31,10 +28,8 @@ import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.model.SystemVersion
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.RestApi
-import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util
 import java.text.NumberFormat
-import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 
@@ -195,9 +190,9 @@ class DrawerFragment : Fragment(), View.OnClickListener {
      * Populates views with status received via [RestApi.getConnections].
      */
     private fun onReceiveConnections(connections: Connections) {
-        val c = connections.total
-        download!!.text = Util.readableTransferRate(mainActivity, c.inBits)
-        upload!!.text = Util.readableTransferRate(mainActivity, c.outBits)
+        val total = connections.total
+        download!!.text = Util.readableTransferRate(mainActivity, total?.inBits ?: 0)
+        upload!!.text = Util.readableTransferRate(mainActivity, total?.outBits ?: 0)
     }
 
     /**
@@ -211,16 +206,16 @@ class DrawerFragment : Fragment(), View.OnClickListener {
             return
         }
         try {
-            val apiKey = restApi.gui.apiKey
-            val deviceId = restApi.getLocalDevice().deviceID
+            val apiKey = restApi.gui?.apiKey
+            val deviceId = restApi.localDevice?.deviceID
             val url = restApi.url
             //The QRCode request takes one paramteer called "text", which is the text to be converted to a QRCode.
             ImageGetRequest(
                 mainActivity,
                 url,
                 ImageGetRequest.QR_CODE_GENERATOR,
-                apiKey,
-                ImmutableMap.of("text", deviceId),
+                apiKey!!,
+                mutableMapOf("text" to deviceId),
                 { qrCodeBitmap: Bitmap? ->
                     mainActivity.showQrCodeDialog(deviceId, qrCodeBitmap)
                     mainActivity.closeDrawer()

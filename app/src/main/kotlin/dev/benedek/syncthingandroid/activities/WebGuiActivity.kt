@@ -95,7 +95,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
-                if (request.url.host == service.webGuiUrl.host) {
+                if (request.url.host == service?.webGuiUrl?.host) {
                     return false
                 } else {
                     startActivity(Intent(Intent.ACTION_VIEW, request.url))
@@ -173,7 +173,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
                 )
                 val headers: MutableMap<String?, String?> = HashMap()
                 headers["Authorization"] = "Basic $b64Credentials"
-                binding!!.webview.loadUrl(service.webGuiUrl.toString(), headers)
+                binding!!.webview.loadUrl(service?.webGuiUrl.toString(), headers)
             }
         }
     }

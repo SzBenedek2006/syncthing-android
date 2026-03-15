@@ -74,7 +74,7 @@ class SettingsViewModel : ViewModel() {
 
         val currentApi = api
         if (currentApi != null) {
-            syncthingVersion.value = currentApi.version
+            syncthingVersion.value = currentApi.version.toString()
         }
         syncthingAppVersion.value = context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: ""
     }
@@ -92,7 +92,7 @@ class SettingsViewModel : ViewModel() {
         if (currentApi == null) return
 
         currentApi.getSystemInfo { info ->
-            cachedUrVersionMax = info.urVersionMax
+            cachedUrVersionMax = info?.urVersionMax ?: 0
 
             val options = currentApi.options
             if (options != null) {
@@ -105,8 +105,8 @@ class SettingsViewModel : ViewModel() {
 
         val options = currentApi.options
         if (options != null) {
-            listenAddresses.value = options.listenAddresses.joinToString(", ")
-            globalAnnounceServers.value = options.globalAnnounceServers.joinToString(", ")
+            listenAddresses.value = options.listenAddresses?.joinToString(", ") ?: "null"
+            globalAnnounceServers.value = options.globalAnnounceServers?.joinToString(", ") ?: "null"
             maxRecvKbps.value = options.maxRecvKbps.toString()
             maxSendKbps.value = options.maxSendKbps.toString()
 

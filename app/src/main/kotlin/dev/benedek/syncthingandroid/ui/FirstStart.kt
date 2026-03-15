@@ -372,7 +372,7 @@ fun SlideContent(
 
     fun askForLocationPermission() {
         // TODO: Implement one click background location permission logic, similar to askForStoragePermission() if needed
-        locationLauncher.launch(PermissionUtil.getLocationPermissions())
+        locationLauncher.launch(PermissionUtil.locationPermissions)
     }
 
     fun askForNotificationPermission() {

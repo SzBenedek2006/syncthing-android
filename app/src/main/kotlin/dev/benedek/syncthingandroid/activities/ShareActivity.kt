@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
@@ -36,8 +37,6 @@ import java.io.InputStream
 import java.lang.ref.WeakReference
 import java.text.DateFormat
 import java.util.Date
-import javax.inject.Inject
-import androidx.core.content.edit
 
 /**
  * Shares incoming files to syncthing folders.
@@ -62,15 +61,15 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
     override fun onServiceStateChange(currentState: SyncthingService.State?) {
         if (currentState != SyncthingService.State.ACTIVE || api == null) return
 
-        val folders = api.folders
+        val folders = api!!.folders
 
         // Get the index of the previously selected folder.
         var folderIndex = 0
-        val savedFolderId: String = preferences!!.getString(
+        val savedFolderId: String = preferences.getString(
             PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, ""
         )!!
         for (folder in folders!!) {
-            if (folder.id == savedFolderId) {
+            if (folder?.id == savedFolderId) {
                 folderIndex = folders.indexOf(folder)
                 break
             }
@@ -86,7 +85,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
     }
 
     override fun onServiceConnected() {
-        service.registerOnServiceStateChangeListener(this)
+        service?.registerOnServiceStateChangeListener(this)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -268,7 +267,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
             var savedSubDirectory = ""
 
             if (selectedFolder != null) {
-                savedSubDirectory = preferences?.getString(
+                savedSubDirectory = preferences.getString(
                     PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id,
                     ""
                 )!!
@@ -315,7 +314,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
                         ignored++
                         continue
                     }
-                    inputStream = shareActivity.contentResolver.openInputStream(entry.key!!)
+                    inputStream = shareActivity.contentResolver.openInputStream(entry.key)
                     if (inputStream != null)
                         Files.asByteSink(outFile).writeFrom(inputStream)
                     copied++
@@ -377,7 +376,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
         super.onPause()
         if (foldersSpinner!!.getSelectedItem() != null) {
             val selectedFolder = foldersSpinner!!.getSelectedItem() as Folder
-            preferences!!.edit {
+            preferences.edit {
                 putString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, selectedFolder.id)
             }
         }
@@ -387,16 +386,15 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == FolderPickerActivity.DIRECTORY_REQUEST_CODE && resultCode == RESULT_OK) {
             val selectedFolder = foldersSpinner!!.getSelectedItem() as Folder
-            val folderDirectory = Util.formatPath(selectedFolder.path)
+            val folderDirectory: String = Util.formatPath(selectedFolder.path!!)!!
             var subDirectory = data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
             //Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
             subDirectory = subDirectory!!.replace(folderDirectory, "")
             subDirectoryTextView!!.text = subDirectory
 
-            preferences!!
-                .edit {
-                    putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
-                }
+            preferences.edit {
+                putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
+            }
         }
     }
 

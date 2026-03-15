@@ -89,10 +89,10 @@ fun Behaviour(contentPadding: PaddingValues) {
                 defaultValue = Languages.USE_SYSTEM_DEFAULT,
                 valueToText = { value ->
                     AnnotatedString(
-                        map[value] ?: value
+                        map[value!!] ?: value
                     )
                 },
-                summary = { value -> Text(map[value] ?: value) }
+                summary = { value -> Text(map[value!!] ?: value) }
 
             )
         }

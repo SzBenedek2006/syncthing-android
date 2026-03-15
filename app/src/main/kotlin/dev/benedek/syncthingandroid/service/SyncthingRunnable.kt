@@ -366,7 +366,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
         }
     }
 
-    interface OnSyncthingKilled {
+    fun interface OnSyncthingKilled {
         fun onKilled()
     }
 
