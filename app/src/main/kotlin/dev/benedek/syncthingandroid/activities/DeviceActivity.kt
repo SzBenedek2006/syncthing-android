@@ -33,73 +33,76 @@ import dev.benedek.syncthingandroid.util.Util
  * Shows device details and allows changing them.
  */
 class DeviceActivity : SyncthingActivity(), View.OnClickListener {
-    private var mDevice: Device? = null
+    private var device: Device? = null
 
     private var binding: ActivityDeviceBinding? = null
 
-    private var mIsCreateMode = false
+    private var isCreateMode = false
 
-    private var mDeviceNeedsToUpdate = false
+    private var deviceNeedsToUpdate = false
 
-    private var mDeleteDialog: Dialog? = null
-    private var mDiscardDialog: Dialog? = null
-    private var mCompressionDialog: Dialog? = null
+    private var deleteDialog: Dialog? = null
+    private var discardDialog: Dialog? = null
+    private var compressionDialog: Dialog? = null
 
-    private val mCompressionEntrySelectedListener: DialogInterface.OnClickListener =
+    private val serviceStateChangeListener =
+        SyncthingService.OnServiceStateChangeListener { currentState -> this@DeviceActivity.onServiceStateChange(currentState) }
+
+    private val compressionEntrySelectedListener: DialogInterface.OnClickListener =
         DialogInterface.OnClickListener { dialog, which ->
             dialog.dismiss()
             val compression = Compression.fromIndex(which)
             // Don't pop the restart dialog unless the value is actually different.
             if (compression != Compression.fromValue(
                     this@DeviceActivity,
-                    mDevice!!.compression
+                    device!!.compression
                 )
             ) {
-                mDeviceNeedsToUpdate = true
+                deviceNeedsToUpdate = true
 
-                mDevice!!.compression = compression.getValue(this@DeviceActivity)
+                device!!.compression = compression.getValue(this@DeviceActivity)
                 binding!!.compressionValue.text = compression.getTitle(this@DeviceActivity)
             }
         }
 
-    private val mIdTextWatcher: TextWatcher = object : TextWatcherAdapter() {
-        override fun afterTextChanged(s: Editable) {
-            if (s.toString() != mDevice!!.deviceID) {
-                mDeviceNeedsToUpdate = true
-                mDevice!!.deviceID = s.toString()
+    private val idTextWatcher: TextWatcher = object : TextWatcherAdapter() {
+        override fun afterTextChanged(s: Editable?) {
+            if (s.toString() != device!!.deviceID) {
+                deviceNeedsToUpdate = true
+                device!!.deviceID = s.toString()
             }
         }
     }
 
-    private val mNameTextWatcher: TextWatcher = object : TextWatcherAdapter() {
-        override fun afterTextChanged(s: Editable) {
-            if (s.toString() != mDevice!!.name) {
-                mDeviceNeedsToUpdate = true
-                mDevice!!.name = s.toString()
+    private val nameTextWatcher: TextWatcher = object : TextWatcherAdapter() {
+        override fun afterTextChanged(s: Editable?) {
+            if (s.toString() != device!!.name) {
+                deviceNeedsToUpdate = true
+                device!!.name = s.toString()
             }
         }
     }
 
-    private val mAddressesTextWatcher: TextWatcher = object : TextWatcherAdapter() {
-        override fun afterTextChanged(s: Editable) {
+    private val addressesTextWatcher: TextWatcher = object : TextWatcherAdapter() {
+        override fun afterTextChanged(s: Editable?) {
             if (s.toString() != displayableAddresses()) {
-                mDeviceNeedsToUpdate = true
-                mDevice!!.addresses = persistableAddresses(s)
+                deviceNeedsToUpdate = true
+                device!!.addresses = persistableAddresses(s)
             }
         }
     }
 
-    private val mCheckedListener: CompoundButton.OnCheckedChangeListener =
+    private val checkedListener: CompoundButton.OnCheckedChangeListener =
         CompoundButton.OnCheckedChangeListener { view, isChecked ->
             when (view.id) {
                 R.id.introducer -> {
-                    mDevice!!.introducer = isChecked
-                    mDeviceNeedsToUpdate = true
+                    device!!.introducer = isChecked
+                    deviceNeedsToUpdate = true
                 }
 
                 R.id.devicePause -> {
-                    mDevice!!.paused = isChecked
-                    mDeviceNeedsToUpdate = true
+                    device!!.paused = isChecked
+                    deviceNeedsToUpdate = true
                 }
             }
         }
@@ -134,24 +137,24 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             WindowInsetsCompat.CONSUMED
         }
 
-        mIsCreateMode = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
+        isCreateMode = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
         registerOnServiceConnectedListener { this.onServiceConnected() }
-        setTitle(if (mIsCreateMode) R.string.add_device else R.string.edit_device)
+        setTitle(if (isCreateMode) R.string.add_device else R.string.edit_device)
 
         binding!!.qrButton.setOnClickListener(this)
         binding!!.compressionContainer.setOnClickListener(this)
 
         if (savedInstanceState != null) {
-            if (mDevice == null) {
-                mDevice = Gson().fromJson(
+            if (device == null) {
+                device = Gson().fromJson(
                     savedInstanceState.getString("device"),
                     Device::class.java
                 )
             }
             restoreDialogStates(savedInstanceState)
         }
-        if (mIsCreateMode) {
-            if (mDevice == null) {
+        if (isCreateMode) {
+            if (device == null) {
                 initDevice()
             }
         } else {
@@ -168,7 +171,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             showDeleteDialog()
         }
 
-        if (mIsCreateMode) {
+        if (isCreateMode) {
             if (savedInstanceState.getBoolean(IS_SHOWING_DISCARD_DIALOG)) {
                 showDiscardDialog()
             }
@@ -184,15 +187,11 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
                     EXTRA_NOTIFICATION_ID, 0
                 )
             )
-            syncthingService.unregisterOnServiceStateChangeListener { currentState: SyncthingService.State? ->
-                this.onServiceStateChange(
-                    currentState
-                )
-            }
+            syncthingService.unregisterOnServiceStateChangeListener(serviceStateChangeListener)
         }
-        binding!!.id.removeTextChangedListener(mIdTextWatcher)
-        binding!!.name.removeTextChangedListener(mNameTextWatcher)
-        binding!!.addresses.removeTextChangedListener(mAddressesTextWatcher)
+        binding!!.id.removeTextChangedListener(idTextWatcher)
+        binding!!.name.removeTextChangedListener(nameTextWatcher)
+        binding!!.addresses.removeTextChangedListener(addressesTextWatcher)
     }
 
     public override fun onPause() {
@@ -200,36 +199,36 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
         // We don't want to update every time a TextView's character changes,
         // so we hold off until the view stops being visible to the user.
-        if (mDeviceNeedsToUpdate) {
+        if (deviceNeedsToUpdate) {
             updateDevice()
         }
     }
 
     /**
-     * Save current settings in case we are in create mode and they aren't yet stored in the config.
+     * Save current settings in case we are in create mode, and they aren't yet stored in the config.
      */
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("device", Gson().toJson(mDevice))
-        if (mIsCreateMode) {
+        outState.putString("device", Gson().toJson(device))
+        if (isCreateMode) {
             outState.putBoolean(
                 IS_SHOWING_DISCARD_DIALOG,
-                mDiscardDialog != null && mDiscardDialog!!.isShowing
+                discardDialog != null && discardDialog!!.isShowing
             )
-            Util.dismissDialogSafe(mDiscardDialog, this)
+            Util.dismissDialogSafe(discardDialog, this)
         }
 
         outState.putBoolean(
             IS_SHOWING_COMPRESSION_DIALOG,
-            mCompressionDialog != null && mCompressionDialog!!.isShowing
+            compressionDialog != null && compressionDialog!!.isShowing
         )
-        Util.dismissDialogSafe(mCompressionDialog, this)
+        Util.dismissDialogSafe(compressionDialog, this)
 
         outState.putBoolean(
             IS_SHOWING_DELETE_DIALOG,
-            mDeleteDialog != null && mDeleteDialog!!.isShowing
+            deleteDialog != null && deleteDialog!!.isShowing
         )
-        Util.dismissDialogSafe(mDeleteDialog, this)
+        Util.dismissDialogSafe(deleteDialog, this)
     }
 
     private fun onServiceConnected() {
@@ -240,11 +239,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
                 EXTRA_NOTIFICATION_ID, 0
             )
         )
-        syncthingService.registerOnServiceStateChangeListener { currentState: SyncthingService.State? ->
-            this.onServiceStateChange(
-                currentState
-            )
-        }
+        syncthingService.registerOnServiceStateChangeListener(serviceStateChangeListener)
     }
 
     /**
@@ -256,11 +251,11 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
      */
     private fun onReceiveConnections(connections: Connections) {
         val viewsExist = binding?.syncthingVersion != null
-        if (viewsExist && connections.connections.containsKey(mDevice!!.deviceID)) {
+        if (viewsExist && connections.connectionsMap?.containsKey(device!!.deviceID) == true) {
             binding!!.currentAddress.visibility = View.VISIBLE
             binding!!.syncthingVersion.visibility = View.VISIBLE
-            binding!!.currentAddress.text = connections.connections[mDevice!!.deviceID]!!.address
-            binding!!.syncthingVersion.text = connections.connections[mDevice!!.deviceID]!!.clientVersion
+            binding!!.currentAddress.text = connections.connectionsMap!![device!!.deviceID]!!.address
+            binding!!.syncthingVersion.text = connections.connectionsMap!![device!!.deviceID]!!.clientVersion
         }
     }
 
@@ -270,23 +265,23 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             return
         }
 
-        if (!mIsCreateMode) {
-            val devices = api.getDevices(false) ?: emptyList<Device>()
-            mDevice = null
+        if (!isCreateMode) {
+            val devices = api?.getDevices(false) ?: emptyList()
+            device = null
             for (device in devices) {
                 if (device.deviceID == intent.getStringExtra(EXTRA_DEVICE_ID)) {
-                    mDevice = device
+                    this@DeviceActivity.device = device
                     break
                 }
             }
-            if (mDevice == null) {
+            if (device == null) {
                 Log.w(TAG, "Device not found in API update, maybe it was deleted?")
                 finish()
                 return
             }
         }
 
-        api.getConnections { connections: Connections? ->
+        api?.getConnections { connections: Connections? ->
             this.onReceiveConnections(
                 connections!!
             )
@@ -296,26 +291,26 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
     }
 
     private fun updateViewsAndSetListeners() {
-        binding!!.id.removeTextChangedListener(mIdTextWatcher)
-        binding!!.name.removeTextChangedListener(mNameTextWatcher)
-        binding!!.addresses.removeTextChangedListener(mAddressesTextWatcher)
+        binding!!.id.removeTextChangedListener(idTextWatcher)
+        binding!!.name.removeTextChangedListener(nameTextWatcher)
+        binding!!.addresses.removeTextChangedListener(addressesTextWatcher)
         binding!!.introducer.setOnCheckedChangeListener(null)
         binding!!.devicePause.setOnCheckedChangeListener(null)
 
         // Update views
-        binding!!.id.setText(mDevice!!.deviceID)
-        binding!!.name.setText(mDevice!!.name)
+        binding!!.id.setText(device!!.deviceID)
+        binding!!.name.setText(device!!.name)
         binding!!.addresses.setText(displayableAddresses())
-        binding!!.compressionValue.text = Compression.fromValue(this, mDevice!!.compression).getTitle(this)
-        binding!!.introducer.setChecked(mDevice!!.introducer)
-        binding!!.devicePause.setChecked(mDevice!!.paused)
+        binding!!.compressionValue.text = Compression.fromValue(this, device!!.compression).getTitle(this)
+        binding!!.introducer.setChecked(device!!.introducer)
+        binding!!.devicePause.setChecked(device!!.paused)
 
         // Keep state updated
-        binding!!.id.addTextChangedListener(mIdTextWatcher)
-        binding!!.name.addTextChangedListener(mNameTextWatcher)
-        binding!!.addresses.addTextChangedListener(mAddressesTextWatcher)
-        binding!!.introducer.setOnCheckedChangeListener(mCheckedListener)
-        binding!!.devicePause.setOnCheckedChangeListener(mCheckedListener)
+        binding!!.id.addTextChangedListener(idTextWatcher)
+        binding!!.name.addTextChangedListener(nameTextWatcher)
+        binding!!.addresses.addTextChangedListener(addressesTextWatcher)
+        binding!!.introducer.setOnCheckedChangeListener(checkedListener)
+        binding!!.devicePause.setOnCheckedChangeListener(checkedListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -324,22 +319,22 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menu.findItem(R.id.create).isVisible = mIsCreateMode
-        menu.findItem(R.id.share_device_id).isVisible = !mIsCreateMode
-        menu.findItem(R.id.remove).isVisible = !mIsCreateMode
+        menu.findItem(R.id.create).isVisible = isCreateMode
+        menu.findItem(R.id.share_device_id).isVisible = !isCreateMode
+        menu.findItem(R.id.remove).isVisible = !isCreateMode
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.create -> {
-                if (TextUtils.isEmpty(mDevice!!.deviceID)) {
+                if (TextUtils.isEmpty(device!!.deviceID)) {
                     Toast.makeText(this, R.string.device_id_required, Toast.LENGTH_LONG)
                         .show()
                     return true
                 }
-                api.addDevice(
-                    mDevice
+                api?.addDevice(
+                    device!!
                 ) { error: String? ->
                     Toast.makeText(
                         this,
@@ -352,7 +347,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             }
 
             R.id.share_device_id -> {
-                shareDeviceId(this, mDevice!!.deviceID)
+                shareDeviceId(this, device!!.deviceID)
                 return true
             }
 
@@ -372,8 +367,8 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
 
     private fun showDeleteDialog() {
-        mDeleteDialog = createDeleteDialog()
-        mDeleteDialog!!.show()
+        deleteDialog = createDeleteDialog()
+        deleteDialog!!.show()
     }
 
     private fun createDeleteDialog(): Dialog {
@@ -382,7 +377,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             .setPositiveButton(
                 android.R.string.ok
             ) { _: DialogInterface?, _: Int ->
-                api.removeDevice(mDevice!!.deviceID)
+                api?.removeDevice(device!!.deviceID)
                 finish()
             }
             .setNegativeButton(android.R.string.cancel, null)
@@ -399,21 +394,21 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             if (resultCode == RESULT_OK) {
                 val scanResult = intent?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
                 if (scanResult != null) {
-                    mDevice!!.deviceID = scanResult
-                    binding!!.id.setText(mDevice!!.deviceID)
+                    device!!.deviceID = scanResult
+                    binding!!.id.setText(device!!.deviceID)
                 }
             }
         }
     }
 
     private fun initDevice() {
-        mDevice = Device()
-        mDevice!!.name = intent.getStringExtra(EXTRA_DEVICE_NAME)
-        mDevice!!.deviceID = intent.getStringExtra(EXTRA_DEVICE_ID)
-        mDevice!!.addresses = DYNAMIC_ADDRESS
-        mDevice!!.compression = Compression.METADATA.getValue(this)
-        mDevice!!.introducer = false
-        mDevice!!.paused = false
+        device = Device()
+        device!!.name = intent.getStringExtra(EXTRA_DEVICE_NAME).toString()
+        device!!.deviceID = intent.getStringExtra(EXTRA_DEVICE_ID)
+        device!!.addresses = DYNAMIC_ADDRESS
+        device!!.compression = Compression.METADATA.getValue(this)
+        device!!.introducer = false
+        device!!.paused = false
     }
 
     private fun prepareEditMode() {
@@ -431,8 +426,8 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
      * Sends the updated device info if in edit mode.
      */
     private fun updateDevice() {
-        if (!mIsCreateMode && mDeviceNeedsToUpdate && mDevice != null) {
-            api.editDevice(mDevice)
+        if (!isCreateMode && deviceNeedsToUpdate && device != null) {
+            api?.editDevice(device!!)
         }
     }
 
@@ -446,10 +441,10 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
     }
 
     private fun displayableAddresses(): String? {
-        val list = if (DYNAMIC_ADDRESS == mDevice!!.addresses)
+        val list = if (DYNAMIC_ADDRESS == device!!.addresses)
             DYNAMIC_ADDRESS
         else
-            mDevice!!.addresses
+            device!!.addresses
         return TextUtils.join(" ", list!!)
     }
 
@@ -463,14 +458,14 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
                 startActivityForResult(qrIntent, QR_SCAN_REQUEST_CODE)
             }
             binding!!.idContainer -> {
-                Util.copyDeviceId(this, mDevice!!.deviceID)
+                Util.copyDeviceId(this, device!!.deviceID)
             }
         }
     }
 
     private fun showCompressionDialog() {
-        mCompressionDialog = createCompressionDialog()
-        mCompressionDialog!!.show()
+        compressionDialog = createCompressionDialog()
+        compressionDialog!!.show()
     }
 
     private fun createCompressionDialog(): Dialog {
@@ -478,8 +473,8 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             .setTitle(R.string.compression)
             .setSingleChoiceItems(
                 R.array.compress_entries,
-                Compression.fromValue(this, mDevice!!.compression).index,
-                mCompressionEntrySelectedListener
+                Compression.fromValue(this, device!!.compression).index,
+                compressionEntrySelectedListener
             )
             .create()
     }
@@ -499,8 +494,9 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
         )
     }
 
+    // FIXME
     override fun onBackPressed() {
-        if (mIsCreateMode) {
+        if (isCreateMode) {
             showDiscardDialog()
         } else {
             super.onBackPressed()
@@ -508,8 +504,8 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
     }
 
     private fun showDiscardDialog() {
-        mDiscardDialog = createDiscardDialog()
-        mDiscardDialog!!.show()
+        discardDialog = createDiscardDialog()
+        discardDialog!!.show()
     }
 
     private fun createDiscardDialog(): Dialog {
