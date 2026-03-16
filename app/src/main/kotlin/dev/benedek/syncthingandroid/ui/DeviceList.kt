@@ -4,16 +4,28 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
-fun DeviceList() {
+fun DeviceList(
+    devices: List<Device>
+) {
     // TODO: Implement
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text("Device List placeholder")
+    if (devices.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = stringResource(id = R.string.devices_list_empty))
+        }
     }
 }
 
@@ -27,7 +39,7 @@ fun DeviceListItem() {
 @Composable
 fun DeviceListPreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.blurEnabled) {
-        DeviceList()
+        DeviceList(emptyList())
     }
 }
 
