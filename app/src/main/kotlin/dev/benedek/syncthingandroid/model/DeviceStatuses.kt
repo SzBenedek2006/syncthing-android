@@ -1,12 +1,15 @@
 package dev.benedek.syncthingandroid.model
 
+import com.google.gson.annotations.SerializedName
 import kotlin.math.max
 
-class Connections {
-    var total: Connection? = null
-    var connectionsMap: MutableMap<String?, Connection?>? = null
+class DeviceStatuses {
+    var total: DeviceStatus? = null
+    // DeviceID - Connection data
+    @SerializedName("connections") // Fixes serialization issue with device status
+    var connectionsMap: MutableMap<String?, DeviceStatus?>? = null
 
-    class Connection {
+    class DeviceStatus {
         var paused: Boolean = false
         var clientVersion: String? = null
         var at: String? = null
@@ -21,7 +24,7 @@ class Connections {
         var inBits: Long = 0
         var outBits: Long = 0
 
-        fun setTransferRate(previous: Connection, msElapsed: Long) {
+        fun setTransferRate(previous: DeviceStatus, msElapsed: Long) {
             val secondsElapsed = msElapsed / 1000
             val inBytes = 8 * (inBytesTotal - previous.inBytesTotal) / secondsElapsed
             val outBytes = 8 * (outBytesTotal - previous.outBytesTotal) / secondsElapsed
