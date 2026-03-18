@@ -23,7 +23,7 @@ import dev.benedek.syncthingandroid.activities.MainActivity
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
 import dev.benedek.syncthingandroid.http.ImageGetRequest
-import dev.benedek.syncthingandroid.model.Connections
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.model.SystemVersion
 import dev.benedek.syncthingandroid.service.Constants
@@ -141,9 +141,9 @@ class DrawerFragment : Fragment(), View.OnClickListener {
                     info!!
                 )
             }
-            mApi.getConnections { connections: Connections? ->
+            mApi.getConnections { deviceStatuses: DeviceStatuses? ->
                 this.onReceiveConnections(
-                    connections!!
+                    deviceStatuses!!
                 )
             }
         }
@@ -189,8 +189,8 @@ class DrawerFragment : Fragment(), View.OnClickListener {
     /**
      * Populates views with status received via [RestApi.getConnections].
      */
-    private fun onReceiveConnections(connections: Connections) {
-        val total = connections.total
+    private fun onReceiveConnections(deviceStatuses: DeviceStatuses) {
+        val total = deviceStatuses.total
         download!!.text = Util.readableTransferRate(mainActivity, total?.inBits ?: 0)
         upload!!.text = Util.readableTransferRate(mainActivity, total?.outBits ?: 0)
     }

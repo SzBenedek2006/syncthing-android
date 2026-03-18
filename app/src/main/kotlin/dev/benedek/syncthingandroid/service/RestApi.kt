@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.preference.PreferenceManager
-import com.google.common.collect.ImmutableMap
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -21,7 +20,7 @@ import dev.benedek.syncthingandroid.model.Completion
 import dev.benedek.syncthingandroid.model.CompletionInfo
 import dev.benedek.syncthingandroid.model.Config
 import dev.benedek.syncthingandroid.model.Config.Gui
-import dev.benedek.syncthingandroid.model.Connections
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.model.Folder
@@ -80,7 +79,7 @@ class RestApi(
      * Stores the result of the last successful request to [GetRequest.URI_CONNECTIONS],
      * or an empty Map.
      */
-    private var previousConnections: Connections? = null
+    private var previousDeviceStatuses: DeviceStatuses? = null
 
     /**
      * Stores the timestamp of the last successful request to [GetRequest.URI_CONNECTIONS].
@@ -643,7 +642,7 @@ class RestApi(
     /**
      * Returns connection info for the local device and all connected devices.
      */
-    fun getConnections(listener: OnResultListener1<Connections?>) {
+    fun getConnections(listener: OnResultListener1<DeviceStatuses?>) {
         GetRequest(
             mContext,
             this.url,
@@ -653,26 +652,26 @@ class RestApi(
             OnSuccessListener { result: String? ->
                 val now = System.currentTimeMillis()
                 val msElapsed = now - previousConnectionTime
-                if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousConnections != null) {
+                if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousDeviceStatuses != null) {
                     listener.onResult(
-                        deepCopy<Connections?>(
-                            previousConnections,
-                            Connections::class.java
+                        deepCopy<DeviceStatuses?>(
+                            previousDeviceStatuses,
+                            DeviceStatuses::class.java
                         )
                     )
                     return@OnSuccessListener
                 }
 
                 previousConnectionTime = now
-                val connections = Gson().fromJson(result, Connections::class.java)
+                val deviceStatuses = Gson().fromJson(result, DeviceStatuses::class.java)
 
-                if (connections.connectionsMap != null) {
-                    for (entry in connections.connectionsMap!!.entries) {
+                if (deviceStatuses.connectionsMap != null) {
+                    for (entry in deviceStatuses.connectionsMap!!.entries) {
                         entry.value?.completion = completion.getDeviceCompletion(entry.key)
 
-                        val prev = if (previousConnections?.connectionsMap?.containsKey(entry.key) != null) {
-                            previousConnections!!.connectionsMap!![entry.key]
-                        } else Connections.Connection()
+                        val prev = if (previousDeviceStatuses?.connectionsMap?.containsKey(entry.key) != null) {
+                            previousDeviceStatuses!!.connectionsMap!![entry.key]
+                        } else DeviceStatuses.DeviceStatus()
 
                         if (prev != null) {
                             entry.value?.setTransferRate(prev, msElapsed)
@@ -680,15 +679,15 @@ class RestApi(
                     }
                 }
 
-                val prevTotal = if (previousConnections != null)
-                    previousConnections!!.total
+                val prevTotal = if (previousDeviceStatuses != null)
+                    previousDeviceStatuses!!.total
                 else
-                    Connections.Connection()
+                    DeviceStatuses.DeviceStatus()
 
-                connections.total?.setTransferRate(prevTotal!!, msElapsed)
+                deviceStatuses.total?.setTransferRate(prevTotal!!, msElapsed)
 
-                previousConnections = connections
-                listener.onResult(deepCopy<Connections?>(connections, Connections::class.java))
+                previousDeviceStatuses = deviceStatuses
+                listener.onResult(deepCopy<DeviceStatuses?>(deviceStatuses, DeviceStatuses::class.java))
             })
     }
 

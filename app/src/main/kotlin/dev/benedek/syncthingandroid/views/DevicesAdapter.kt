@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.color.MaterialColors
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.model.Connections
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.util.Util
@@ -19,7 +19,7 @@ import dev.benedek.syncthingandroid.util.Util
  * Generates item views for device items.
  */
 class DevicesAdapter(context: Context) : ArrayAdapter<Device?>(context, R.layout.item_device_list) {
-    private var connections: Connections? = null
+    private var deviceStatuses: DeviceStatuses? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
@@ -39,9 +39,9 @@ class DevicesAdapter(context: Context) : ArrayAdapter<Device?>(context, R.layout
         name.text = getItem(position)!!.displayName
         val r = context.resources
 
-        var conn: Connections.Connection? = null
-        if (connections != null && connections!!.connectionsMap?.containsKey(deviceId) == true) {
-            conn = connections!!.connectionsMap!![deviceId]
+        var conn: DeviceStatuses.DeviceStatus? = null
+        if (deviceStatuses != null && deviceStatuses!!.connectionsMap?.containsKey(deviceId) == true) {
+            conn = deviceStatuses!!.connectionsMap!![deviceId]
         }
 
         if (conn == null) {
@@ -97,16 +97,16 @@ class DevicesAdapter(context: Context) : ArrayAdapter<Device?>(context, R.layout
      */
     fun updateConnections(api: RestApi) {
         for (i in 0..<count) {
-            api.getConnections { connections: Connections? ->
+            api.getConnections { deviceStatuses: DeviceStatuses? ->
                 this.onReceiveConnections(
-                    connections
+                    deviceStatuses
                 )
             }
         }
     }
 
-    private fun onReceiveConnections(connections: Connections?) {
-        this.connections = connections
+    private fun onReceiveConnections(deviceStatuses: DeviceStatuses?) {
+        this.deviceStatuses = deviceStatuses
         notifyDataSetChanged()
     }
 }

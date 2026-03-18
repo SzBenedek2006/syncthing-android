@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.gson.Gson
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding
-import dev.benedek.syncthingandroid.model.Connections
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Compression
@@ -249,13 +249,13 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
      * NOTE: This is only called once on startup, should be called more often to properly display
      * version/address changes.
      */
-    private fun onReceiveConnections(connections: Connections) {
+    private fun onReceiveConnections(deviceStatuses: DeviceStatuses) {
         val viewsExist = binding?.syncthingVersion != null
-        if (viewsExist && connections.connectionsMap?.containsKey(device!!.deviceID) == true) {
+        if (viewsExist && deviceStatuses.connectionsMap?.containsKey(device!!.deviceID) == true) {
             binding!!.currentAddress.visibility = View.VISIBLE
             binding!!.syncthingVersion.visibility = View.VISIBLE
-            binding!!.currentAddress.text = connections.connectionsMap!![device!!.deviceID]!!.address
-            binding!!.syncthingVersion.text = connections.connectionsMap!![device!!.deviceID]!!.clientVersion
+            binding!!.currentAddress.text = deviceStatuses.connectionsMap!![device!!.deviceID]!!.address
+            binding!!.syncthingVersion.text = deviceStatuses.connectionsMap!![device!!.deviceID]!!.clientVersion
         }
     }
 
@@ -281,9 +281,9 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
             }
         }
 
-        api?.getConnections { connections: Connections? ->
+        api?.getConnections { deviceStatuses: DeviceStatuses? ->
             this.onReceiveConnections(
-                connections!!
+                deviceStatuses!!
             )
         }
 
