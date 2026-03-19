@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 public class SyncthingApp extends Application {
 
-    @Inject DaggerComponent mComponent;
 
     @Override
     public void onCreate() {
@@ -29,10 +28,6 @@ public class SyncthingApp extends Application {
         super.onCreate();
         setupLegacySsl(this);
 
-        DaggerDaggerComponent.builder()
-                .syncthingModule(new SyncthingModule(this))
-                .build()
-                .inject(this);
 
         new Languages(this).setLanguage(this);
 
@@ -45,10 +40,6 @@ public class SyncthingApp extends Application {
                 .penaltyLog()
                 .build();
         StrictMode.setVmPolicy(policy);
-    }
-
-    public DaggerComponent component() {
-        return mComponent;
     }
 
     private void setupLegacySsl(Context context) {
