@@ -15,6 +15,7 @@ import dev.benedek.syncthingandroid.util.Util
 import org.apache.commons.io.FileUtils
 import java.io.File
 import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
 import dev.benedek.syncthingandroid.util.ThemeControls
 
@@ -28,13 +29,13 @@ class FirstStartActivity : ComponentActivity() {
     }
 
 
-    lateinit var mPreferences: SharedPreferences // Use lateinit for injected fields
-
+    private val preferences: SharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        mPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this)
         /**
          * Recheck storage permission. If it has been revoked after the user
          * completed the welcome slides, displays the slides again.
@@ -43,20 +44,19 @@ class FirstStartActivity : ComponentActivity() {
             startApp()
             return
         } else {
-            mPreferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
+            preferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
         }
 
         setContent {
             SyncthingandroidTheme(
                 dynamicColor = ThemeControls.useDynamicColor
             ) {
-                //Settings()
                 FirstStartScreen(
                     onFinish = {
-                        mPreferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
+                        preferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
                         startApp()
                     },
-                    prefs = mPreferences,
+                    prefs = preferences,
                     activity = this
                 )
             }
@@ -64,11 +64,11 @@ class FirstStartActivity : ComponentActivity() {
     }
 
     fun isFirstStart(): Boolean {
-        return mPreferences.getBoolean(Constants.PREF_FIRST_START, true)
+        return preferences.getBoolean(Constants.PREF_FIRST_START, true)
     }
 
     fun upgradedToApiLevel30(): Boolean {
-        if (mPreferences.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false)) {
+        if (preferences.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false)) {
             return true
         }
         if (isFirstStart()) {
@@ -86,7 +86,7 @@ class FirstStartActivity : ComponentActivity() {
          * In case start_into_web_gui option is enabled, start both activities
          * so that back navigation works as expected.
          */
-        if (mPreferences.getBoolean(Constants.PREF_START_INTO_WEB_GUI, false)) {
+        if (preferences.getBoolean(Constants.PREF_START_INTO_WEB_GUI, false)) {
             startActivities(arrayOf(mainIntent, Intent(this, WebGuiActivity::class.java)))
         } else {
             startActivity(mainIntent)
@@ -108,6 +108,6 @@ class FirstStartActivity : ComponentActivity() {
                 }
             }
         }
-        mPreferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
+        preferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
     }
 }
