@@ -124,7 +124,6 @@ class SyncthingService : Service() {
     override fun onCreate() {
         Log.v(TAG, "onCreate")
         super.onCreate()
-        (application as SyncthingApp).component().inject(this)
         handler = Handler(Looper.getMainLooper())
 
         /*

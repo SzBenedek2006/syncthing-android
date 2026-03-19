@@ -4,27 +4,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.preference.PreferenceManager
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.receiver.BootReceiver.Companion.startServiceCompat
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.NotificationHandler
 import dev.benedek.syncthingandroid.service.SyncthingService
-import javax.inject.Inject
 
 /**
  * Broadcast-receiver to control and configure Syncthing remotely.
  */
 class AppConfigReceiver : BroadcastReceiver() {
-    @JvmField
-    @Inject
-    var notificationHandler: NotificationHandler? = null
 
     override fun onReceive(context: Context, intent: Intent) {
-        (context.applicationContext as SyncthingApp).component().inject(this)
+        val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
         when (intent.action) {
             ACTION_START -> startServiceCompat(context)
             ACTION_STOP -> if (startServiceOnBoot(context)) {
-                notificationHandler!!.showStopSyncthingWarningNotification()
+                notificationHandler.showStopSyncthingWarningNotification()
             } else {
                 context.stopService(Intent(context, SyncthingService::class.java))
             }

@@ -96,7 +96,6 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as SyncthingApp).component().inject(this)
         binding = ActivityShareBinding.inflate(layoutInflater)
         setContentView(binding!!.getRoot())
 

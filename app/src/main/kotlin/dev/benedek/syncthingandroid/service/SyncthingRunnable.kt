@@ -30,7 +30,6 @@ import java.nio.charset.StandardCharsets
 import java.security.InvalidParameterException
 import java.util.HashSet
 import java.util.concurrent.atomic.AtomicReference
-import javax.inject.Inject
 
 /**
  * Runs the syncthing binary from command line, and prints its output to logcat.
@@ -65,7 +64,6 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      * @param command Which type of Syncthing command to execute.
      */
     init {
-        (context.applicationContext as SyncthingApp).component().inject(this)
         mContext = context
         mSyncthingBinary = Constants.getSyncthingBinary(mContext)
         mLogFile = Constants.getLogFile(mContext)

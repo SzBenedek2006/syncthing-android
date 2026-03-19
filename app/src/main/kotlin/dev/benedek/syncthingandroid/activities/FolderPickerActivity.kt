@@ -48,7 +48,6 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as SyncthingApp).component().inject(this)
 
         setContentView(R.layout.activity_folder_picker)
 

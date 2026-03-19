@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
+import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingRunnable
@@ -19,7 +20,6 @@ import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.Random
-import javax.inject.Inject
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.transform.TransformerException
@@ -35,10 +35,7 @@ import javax.xml.transform.stream.StreamResult
 class ConfigXml(private val context: Context) {
     class OpenConfigException : RuntimeException()
 
-    @JvmField
-    @Inject
-    var preferences: SharedPreferences? = null
-
+    private val preferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val configFile: File = Constants.getConfigFile(this.context)
 
     private var config: Document? = null

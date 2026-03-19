@@ -23,10 +23,9 @@ import dev.benedek.syncthingandroid.ui.FolderViewModel
 import java.io.File
 import java.util.Objects
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlin.concurrent.Volatile
 import androidx.core.content.edit
-
+import androidx.preference.PreferenceManager
 
 
 // FIXME: Fix the nullability errors
@@ -54,16 +53,10 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
     private val context: Context
     private val api: RestApi?
 
-    @JvmField
-    @Inject
-    var preferences: SharedPreferences? = null
 
-    @JvmField
-    @Inject
-    var notificationHandler: NotificationHandler? = null
-
+    private val preferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+    val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
     init {
-        (context.applicationContext as SyncthingApp).component().inject(this)
         this.context = context
         this.api = api
     }

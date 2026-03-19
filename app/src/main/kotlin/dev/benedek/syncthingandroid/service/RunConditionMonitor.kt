@@ -13,11 +13,10 @@ import android.os.BatteryManager
 import android.os.Handler
 import android.os.PowerManager
 import android.util.Log
-import dev.benedek.syncthingandroid.SyncthingApp
+import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult.BlockerReason
 import dev.benedek.syncthingandroid.service.ReceiverManager.registerReceiver
-import javax.inject.Inject
 
 // FIXME: use connectivityManager.registerDefaultNetworkCallback after it got deprecated
 
@@ -38,11 +37,7 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 
     private val mContext: Context
 
-    @JvmField
-    @Inject
-    var mPreferences: SharedPreferences? = null
-    private val mReceiverManager: ReceiverManager? = null
-
+    private val mPreferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     /**
      * Sending callback notifications through [OnRunConditionChangedListener] is enabled if not null.
      */
@@ -55,7 +50,6 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 
     init {
         Log.v(TAG, "Created new instance")
-        (context.applicationContext as SyncthingApp).component().inject(this)
         mContext = context
         mOnRunConditionChangedListener = listener
 
@@ -97,7 +91,7 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
             ContentResolver.removeStatusChangeListener(mSyncStatusObserverHandle)
             mSyncStatusObserverHandle = null
         }
-        mReceiverManager!!.unregisterAllReceivers(mContext)
+        ReceiverManager.unregisterAllReceivers(mContext)
     }
 
     private inner class BatteryReceiver : BroadcastReceiver() {

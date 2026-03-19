@@ -18,7 +18,6 @@ import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.activities.LogActivity
 import dev.benedek.syncthingandroid.activities.MainActivity
-import javax.inject.Inject
 
 class NotificationHandler(context: Context) {
     private val mContext: Context
@@ -35,7 +34,6 @@ class NotificationHandler(context: Context) {
     private var appShutdownInProgress = false
 
     init {
-        (context.applicationContext as SyncthingApp).component().inject(this)
         mContext = context
         notificationManager =
             mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

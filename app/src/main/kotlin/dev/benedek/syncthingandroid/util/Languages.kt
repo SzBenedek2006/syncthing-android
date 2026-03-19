@@ -9,11 +9,9 @@ import android.text.TextUtils
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.SyncthingApp
-import java.util.Arrays
 import java.util.Collections
 import java.util.Locale
 import java.util.TreeMap
-import javax.inject.Inject
 import androidx.core.content.edit
 
 /**
@@ -93,7 +91,6 @@ class Languages(context: Context) {
         }
 
     init {
-        (context.applicationContext as SyncthingApp).component().inject(this)
         val tmpMap: MutableMap<String?, String?> = TreeMap<String?, String?>()
         val locales = listOf<Locale?>(*LOCALES_TO_TEST)
         // Capitalize language names

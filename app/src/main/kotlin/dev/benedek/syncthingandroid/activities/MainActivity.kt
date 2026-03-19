@@ -200,11 +200,11 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
      */
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as SyncthingApp).component().inject(this)
-
-        val compose = false
+        val compose = true
 
         if (compose) {
+            lifecycle.addObserver(viewModel.mainVisibilityObserver)
+
             setContent {
                 SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
                     Main(viewModel, this::doExit)

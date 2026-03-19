@@ -36,7 +36,6 @@ import java.text.SimpleDateFormat
 import java.util.Collections
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 import androidx.core.content.edit
 
 /**
@@ -120,9 +119,8 @@ class RestApi(
      */
     private val completion = Completion()
 
-    @JvmField
-    @Inject
-    var notificationHandler: NotificationHandler? = null
+
+    val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
 
     fun interface OnApiAvailableListener {
         fun onApiAvailable()
@@ -133,7 +131,6 @@ class RestApi(
     private val onConfigChangedListener: OnConfigChangedListener
 
     init {
-        (context.applicationContext as SyncthingApp).component().inject(this)
         mContext = context
         this.url = url
         mApiKey = apiKey
