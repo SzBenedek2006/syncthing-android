@@ -197,7 +197,7 @@ class FoldersAdapter(private val context: Context) : ArrayAdapter<Folder?>(
         /**
          * Returns the folder's state as a localized string.
          */
-        private fun getLocalizedState(c: Context, folderStatus: FolderStatus): String {
+        fun getLocalizedState(c: Context, folderStatus: FolderStatus): String {
             when (folderStatus.state) {
                 "idle" -> return c.getString(R.string.state_idle)
                 "scanning" -> return c.getString(R.string.state_scanning)

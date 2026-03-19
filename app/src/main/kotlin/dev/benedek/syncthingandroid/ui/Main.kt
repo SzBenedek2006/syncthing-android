@@ -2,12 +2,12 @@ package dev.benedek.syncthingandroid.ui
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.BackEventCompat
+import androidx.activity.compose.PredictiveBackHandler
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -50,13 +52,16 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -69,13 +74,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.activities.DeviceActivity
+import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
 import dev.benedek.syncthingandroid.service.SyncthingService
@@ -85,25 +88,32 @@ import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.topBorderWithCorners
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
 
 
 @Composable
 fun Main(viewModel: MainViewModel, exit: () -> Unit) {
     val context = LocalContext.current
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val contentColor = MaterialTheme.colorScheme.onSurface
+    val red = MaterialTheme.extendedColorScheme.red.color
+    val green = MaterialTheme.extendedColorScheme.green.color
+    val blue = MaterialTheme.extendedColorScheme.blue.color
+    val yellow = MaterialTheme.extendedColorScheme.yellow.color
 
-    val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route ?: "folders"
+
 
     val density = LocalDensity.current
     val containerWidth = LocalWindowInfo.current.containerSize.width
+
+    val pagerState = rememberPagerState(pageCount = { 2 })
 
     val drawerBlurAmount by remember {
         derivedStateOf {
@@ -126,6 +136,29 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
             }
         }
     }
+
+    var predictiveBackProgress by remember { mutableFloatStateOf(0f) }
+
+    PredictiveBackHandler(drawerState.isOpen) { progress: Flow<BackEventCompat> ->
+        try {
+            progress.collect { backEvent ->
+                predictiveBackProgress = backEvent.progress
+            }
+            // This block is executed only if the gesture completes successfully.
+            scope.launch {
+                drawerState.close()
+                animate(predictiveBackProgress, 0f) { value, _ ->
+                    predictiveBackProgress = value
+                }
+            }
+        } catch (_: CancellationException) {
+            predictiveBackProgress = 0f
+        } finally {
+
+        }
+    }
+
+
     val dialogBlurAmount by animateFloatAsState(
         targetValue = if (ThemeControls.blurEnabled &&
             (viewModel.showDeviceIdDialog || viewModel.showExitDialog || viewModel.showRestartDialog)
@@ -146,6 +179,21 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                 modifier = Modifier
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
+                    .graphicsLayer {
+                        // 1. Slide it away slightly
+                        translationX = -predictiveBackProgress * 200f
+
+                        // 2. Shrink it slightly (Modern Android look)
+                        val scale = 1f - (predictiveBackProgress * 0.05f)
+                        scaleX = scale
+                        scaleY = scale
+
+                        // 3. Smoothly round the corners more as it pulls away
+                        shape = RoundedCornerShape(
+                            topEnd = 16.dp + (predictiveBackProgress * 16).dp,
+                            bottomEnd = 16.dp + (predictiveBackProgress * 16).dp)
+                        clip = true
+                    }
             ) {
                 Column(
                     Modifier
@@ -179,14 +227,14 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                     )
                     OptionTile(
                         title = stringResource(R.string.download_title),
-                        description = Util.readableTransferRate(context, viewModel.connections?.total?.inBits ?: 0),
+                        description = Util.readableTransferRate(context, viewModel.deviceStatuses?.total?.inBits ?: 0),
                         noIconPadding = true,
                         contentColor = contentColor,
                         enabled = viewModel.api != null
                     )
                     OptionTile(
                         title = stringResource(R.string.upload_title),
-                        description = Util.readableTransferRate(context, viewModel.connections?.total?.outBits ?: 0),
+                        description = Util.readableTransferRate(context, viewModel.deviceStatuses?.total?.outBits ?: 0),
                         noIconPadding = true,
                         contentColor = contentColor,
                         enabled = viewModel.api != null
@@ -194,7 +242,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                     OptionTile(
                         title = stringResource(R.string.announce_server),
                         description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
-                        descriptionColor = if (viewModel.announceConnected > 0) Color.Green else Color.Red,
+                        descriptionColor = if (viewModel.announceConnected > 0) green else red,
                         noIconPadding = true,
                         contentColor = contentColor,
                         enabled = viewModel.api != null
@@ -309,38 +357,48 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                     }
                 },
                 floatingActionButton = {
-                    FloatingActionButton(onClick = {/*TODO*/}) {
+                    FloatingActionButton(onClick = {
+                        when (pagerState.currentPage) {
+                            0 -> {
+                                val intent = Intent(context, FolderActivity::class.java)
+                                    .putExtra(FolderViewModel.EXTRA_IS_CREATE, true)
+                                context.startActivity(intent)
+                            }
+                            1 -> {
+                                val intent = Intent(context, DeviceActivity::class.java)
+                                    .putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
+                                context.startActivity(intent)
+                            }
+                            else -> {
+                                Toast.makeText(context, "Invalid page, this should never happen!", Toast.LENGTH_SHORT)
+                                    .show()
+                                Log.wtf("FAB onClick", "Invalid page, this should never happen!")
+                            }
+                        }
+
+                    }) {
                         Icon(Icons.Outlined.Add, contentDescription = "Add")
                     }
                 },
                 bottomBar = {
                     NavigationBar() {
                         NavigationBarItem(
-                            selected = currentRoute == "folders",
+                            selected = pagerState.currentPage == 0,
                             onClick = {
-                                navController.navigate("folders") {
-                                // Pop up to start destination so back stack doesn't build up
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                                scope.launch {
+                                    pagerState.animateScrollToPage(0)
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                                      },
+                            },
                             icon = { Icon(Icons.Outlined.Folder, stringResource(R.string.folders_fragment_title)) },
                             label = { Text(stringResource(R.string.folders_fragment_title)) }
                         )
                         NavigationBarItem(
-                            selected = currentRoute == "devices",
+                            selected = pagerState.currentPage == 1,
                             onClick = {
-                                navController.navigate("devices") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                                scope.launch {
+                                    pagerState.animateScrollToPage(1)
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                                      },
+                            },
                             icon = { Icon(Icons.Outlined.Devices, stringResource(R.string.devices_fragment_title)) },
                             label = { Text(stringResource(R.string.devices_fragment_title)) }
                         )
@@ -348,36 +406,18 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                 }
             ) { paddingValues ->
 
-                NavHost(
-                    navController = navController,
-                    startDestination = "folders",
+                val folderStatusesMap by viewModel.folderStatuses.collectAsStateWithLifecycle()
+
+                HorizontalPager(
+                    state = pagerState,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
-                    enterTransition = {
-                        val initialIndex = if (initialState.destination.route == "folders") 0 else 1
-                        val targetIndex = if (targetState.destination.route == "folders") 0 else 1
-
-                        if (targetIndex > initialIndex) {
-                            slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) + fadeIn()
-                        } else {
-                            slideInHorizontally(initialOffsetX = { fullWidth -> -fullWidth }) + fadeIn()
-                        }
-                    },
-                    exitTransition = {
-                        val initialIndex = if (initialState.destination.route == "folders") 0 else 1
-                        val targetIndex = if (targetState.destination.route == "folders") 0 else 1
-
-                        // Slide out to left if moving forward, to right if moving backward (or back button)
-                        if (targetIndex > initialIndex) {
-                            slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) + fadeOut()
-                        } else {
-                            slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth }) + fadeOut()
-                        }
+                        .padding(paddingValues)
+                ) { page ->
+                    when (page) {
+                        0 -> FolderList(viewModel.folders, folderStatusesMap, viewModel.isApiReady)
+                        1 -> DeviceList(viewModel.devices ?: emptyList(), viewModel.deviceStatuses, viewModel.isApiReady)
                     }
-                ) {
-                    composable("folders") { FolderList() }
-                    composable("devices") { DeviceList() }
                 }
 
                 // Dialogs
