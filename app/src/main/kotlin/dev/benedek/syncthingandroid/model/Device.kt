@@ -17,7 +17,7 @@ class Device {
          * Returns the device name, or the first characters of the ID if the name is empty.
          */
         get() = if (TextUtils.isEmpty(name))
-            deviceID!!.substring(0, 7)
+            deviceID?.substring(0, 7).toString()
         else
             name
 }
