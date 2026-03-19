@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -8,13 +7,22 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 
+
+@Immutable
+data class ExtendedColorScheme(
+    val blue: ColorFamily,
+    val red: ColorFamily,
+    val green: ColorFamily,
+    val yellow: ColorFamily
+)
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
@@ -243,6 +251,169 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
+
+val extendedLight = ExtendedColorScheme(
+    blue = ColorFamily(
+        blueLight,
+        onBlueLight,
+        blueContainerLight,
+        onBlueContainerLight,
+    ),
+    red = ColorFamily(
+        redLight,
+        onRedLight,
+        redContainerLight,
+        onRedContainerLight,
+    ),
+    green = ColorFamily(
+        greenLight,
+        onGreenLight,
+        greenContainerLight,
+        onGreenContainerLight,
+    ),
+    yellow = ColorFamily(
+        yellowLight,
+        onYellowLight,
+        yellowContainerLight,
+        onYellowContainerLight,
+    )
+)
+
+val extendedDark = ExtendedColorScheme(
+    blue = ColorFamily(
+        blueDark,
+        onBlueDark,
+        blueContainerDark,
+        onBlueContainerDark,
+    ),
+    red = ColorFamily(
+        redDark,
+        onRedDark,
+        redContainerDark,
+        onRedContainerDark,
+    ),
+    green = ColorFamily(
+        greenDark,
+        onGreenDark,
+        greenContainerDark,
+        onGreenContainerDark,
+    ),
+    yellow = ColorFamily(
+        yellowDark,
+        onYellowDark,
+        yellowContainerDark,
+        onYellowContainerDark,
+    ),
+)
+
+val extendedLightMediumContrast = ExtendedColorScheme(
+    blue = ColorFamily(
+        blueLightMediumContrast,
+        onBlueLightMediumContrast,
+        blueContainerLightMediumContrast,
+        onBlueContainerLightMediumContrast,
+    ),
+    red = ColorFamily(
+        redLightMediumContrast,
+        onRedLightMediumContrast,
+        redContainerLightMediumContrast,
+        onRedContainerLightMediumContrast,
+    ),
+    green = ColorFamily(
+        greenLightMediumContrast,
+        onGreenLightMediumContrast,
+        greenContainerLightMediumContrast,
+        onGreenContainerLightMediumContrast,
+    ),
+    yellow = ColorFamily(
+        yellowLightMediumContrast,
+        onYellowLightMediumContrast,
+        yellowContainerLightMediumContrast,
+        onYellowContainerLightMediumContrast,
+    ),
+)
+
+val extendedLightHighContrast = ExtendedColorScheme(
+    blue = ColorFamily(
+        blueLightHighContrast,
+        onBlueLightHighContrast,
+        blueContainerLightHighContrast,
+        onBlueContainerLightHighContrast,
+    ),
+    red = ColorFamily(
+        redLightHighContrast,
+        onRedLightHighContrast,
+        redContainerLightHighContrast,
+        onRedContainerLightHighContrast,
+    ),
+    green = ColorFamily(
+        greenLightHighContrast,
+        onGreenLightHighContrast,
+        greenContainerLightHighContrast,
+        onGreenContainerLightHighContrast,
+    ),
+    yellow = ColorFamily(
+        yellowLightHighContrast,
+        onYellowLightHighContrast,
+        yellowContainerLightHighContrast,
+        onYellowContainerLightHighContrast,
+    ),
+)
+
+val extendedDarkMediumContrast = ExtendedColorScheme(
+    blue = ColorFamily(
+        blueDarkMediumContrast,
+        onBlueDarkMediumContrast,
+        blueContainerDarkMediumContrast,
+        onBlueContainerDarkMediumContrast,
+    ),
+    red = ColorFamily(
+        redDarkMediumContrast,
+        onRedDarkMediumContrast,
+        redContainerDarkMediumContrast,
+        onRedContainerDarkMediumContrast,
+    ),
+    green = ColorFamily(
+        greenDarkMediumContrast,
+        onGreenDarkMediumContrast,
+        greenContainerDarkMediumContrast,
+        onGreenContainerDarkMediumContrast,
+    ),
+    yellow = ColorFamily(
+        yellowDarkMediumContrast,
+        onYellowDarkMediumContrast,
+        yellowContainerDarkMediumContrast,
+        onYellowContainerDarkMediumContrast,
+    ),
+)
+
+val extendedDarkHighContrast = ExtendedColorScheme(
+    blue = ColorFamily(
+        blueDarkHighContrast,
+        onBlueDarkHighContrast,
+        blueContainerDarkHighContrast,
+        onBlueContainerDarkHighContrast,
+    ),
+    red = ColorFamily(
+        redDarkHighContrast,
+        onRedDarkHighContrast,
+        redContainerDarkHighContrast,
+        onRedContainerDarkHighContrast,
+    ),
+    green = ColorFamily(
+        greenDarkHighContrast,
+        onGreenDarkHighContrast,
+        greenContainerDarkHighContrast,
+        onGreenContainerDarkHighContrast,
+    ),
+    yellow = ColorFamily(
+        yellowDarkHighContrast,
+        onYellowDarkHighContrast,
+        yellowContainerDarkHighContrast,
+        onYellowContainerDarkHighContrast,
+    ),
+)
+
 @Immutable
 data class ColorFamily(
     val color: Color,
@@ -254,6 +425,20 @@ data class ColorFamily(
 val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
+
+
+val LocalExtendedColors = staticCompositionLocalOf {
+    ExtendedColorScheme(
+        blue = unspecified_scheme,
+        red = unspecified_scheme,
+        green = unspecified_scheme,
+        yellow = unspecified_scheme
+    )
+}
+val MaterialTheme.extendedColorScheme: ExtendedColorScheme
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalExtendedColors.current
 
 @Composable
 fun SyncthingandroidTheme(
@@ -272,10 +457,14 @@ fun SyncthingandroidTheme(
         else -> lightScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = AppTypography,
-        content = content
-    )
+    val extendedColors = if (darkTheme) extendedDark else extendedLight
+
+    CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = AppTypography,
+            content = content
+        )
+    }
 }
 
