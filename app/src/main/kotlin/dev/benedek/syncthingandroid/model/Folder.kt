@@ -15,40 +15,40 @@ val String.isValid: Boolean
         return regex.matches(this)
     }
 
-class Folder {
-    var id: String? = null
-    var label: String? = null
-    var filesystemType: String = "basic"
-    var path: String? = null
-    var type: String = Constants.FOLDER_TYPE_SEND_RECEIVE
-    var fsWatcherEnabled: Boolean = true
-    var fsWatcherDelayS: Int = 10
-    val devices: MutableList<Device> = ArrayList<Device>()
-    var rescanIntervalS: Int = 0
-    val ignorePerms: Boolean = true
-    var autoNormalize: Boolean = true
-    var minDiskFree: MinDiskFree? = null
-    var versioning: Versioning? = null
-    var copiers: Int = 0
-    var pullerMaxPendingKiB: Int = 0
-    var hashers: Int = 0
-    var order: String? = null
-    var ignoreDelete: Boolean = false
-    var scanProgressIntervalS: Int = 0
-    var pullerPauseS: Int = 0
-    var maxConflicts: Int = 10
-    var disableSparseFiles: Boolean = false
-    var disableTempIndexes: Boolean = false
-    var paused: Boolean = false
-    var useLargeBlocks: Boolean = false
-    var weakHashThresholdPct: Int = 25
-    var markerName: String = ".stfolder"
-    var invalid: String? = null
-
-    class Versioning : Serializable {
-        var type: String? = null
+data class Folder (
+    var id: String? = null,
+    var label: String? = null,
+    var filesystemType: String = "basic",
+    var path: String? = null,
+    var type: String = Constants.FOLDER_TYPE_SEND_RECEIVE,
+    var fsWatcherEnabled: Boolean = true,
+    var fsWatcherDelayS: Int = 10,
+    val devices: MutableList<Device> = ArrayList<Device>(),
+    var rescanIntervalS: Int = 0,
+    val ignorePerms: Boolean = true,
+    var autoNormalize: Boolean = true,
+    var minDiskFree: MinDiskFree? = null,
+    var versioning: Versioning? = null,
+    var copiers: Int = 0,
+    var pullerMaxPendingKiB: Int = 0,
+    var hashers: Int = 0,
+    var order: String? = null,
+    var ignoreDelete: Boolean = false,
+    var scanProgressIntervalS: Int = 0,
+    var pullerPauseS: Int = 0,
+    var maxConflicts: Int = 10,
+    var disableSparseFiles: Boolean = false,
+    var disableTempIndexes: Boolean = false,
+    var paused: Boolean = false,
+    var useLargeBlocks: Boolean = false,
+    var weakHashThresholdPct: Int = 25,
+    var markerName: String = ".stfolder",
+    var invalid: String? = null,
+) {
+    data class Versioning(
+        var type: String? = null,
         var params: MutableMap<String?, String?> = HashMap()
-
+    ) : Serializable {
         fun deepCopy(): Versioning {
             val copy = Versioning()
             copy.type = type
@@ -59,9 +59,11 @@ class Folder {
 
 
 
-    class MinDiskFree {
-        var value: Float = 0f
+    data class MinDiskFree(
+        var value: Float = 0f,
         var unit: String? = null
+    ) {
+
     }
 
     fun addDevice(deviceId: String?) {
@@ -93,9 +95,11 @@ class Folder {
         return (if (!TextUtils.isEmpty(label)) label else id)!!
     }
 
-    class Device {
-        var deviceID: String? = null
-        var introducedBy: String? = null
+    data class Device(
+        var deviceID: String? = null,
+        var introducedBy: String? = null,
         var encryptionPassword: String? = null
+    ) {
+
     }
 }
