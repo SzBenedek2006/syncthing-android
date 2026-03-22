@@ -442,11 +442,14 @@ val MaterialTheme.extendedColorScheme: ExtendedColorScheme
 
 @Composable
 fun SyncthingandroidTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean? = null,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    var darkTheme = darkTheme
+    if (darkTheme == null) darkTheme = isSystemInDarkTheme()
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
