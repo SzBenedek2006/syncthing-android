@@ -26,6 +26,8 @@ object Constants {
     const val PREF_FIRST_START: String = "first_start"
     const val PREF_START_INTO_WEB_GUI: String = "start_into_web_gui"
     const val PREF_APP_THEME: String = "theme"
+    const val PREF_ENABLE_BLUR: String = "enable_blur"
+    const val PREF_ENABLE_MONET: String = "enable_monet"
     const val PREF_USE_ROOT: String = "use_root"
     const val PREF_ENVIRONMENT_VARIABLES: String = "environment_variables"
     const val PREF_DEBUG_FACILITIES_ENABLED: String = "debug_facilities_enabled"
