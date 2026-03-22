@@ -95,7 +95,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
-
+import androidx.compose.runtime.collectAsState
+import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable
 fun Main(viewModel: MainViewModel, exit: () -> Unit) {
@@ -110,6 +111,8 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 
 
+
+
     val density = LocalDensity.current
     val containerWidth = LocalWindowInfo.current.containerSize.width
 
@@ -118,7 +121,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
     val drawerBlurAmount by remember {
         derivedStateOf {
 
-            if (!ThemeControls.blurEnabled) {
+            if (!isBlurEnabled) {
                 0.dp
             } else if (drawerState.currentOffset.isNaN()) {
                 // Fallback before the drawer's layout has been measured
@@ -160,7 +163,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 
     val dialogBlurAmount by animateFloatAsState(
-        targetValue = if (ThemeControls.blurEnabled &&
+        targetValue = if (isBlurEnabled &&
             (viewModel.showDeviceIdDialog || viewModel.showExitDialog || viewModel.showRestartDialog)
             ) ThemeControls.blurRadius.toFloat() else 0f,
         label = "DialogBlurAnimation"
@@ -191,7 +194,8 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                         // 3. Smoothly round the corners more as it pulls away
                         shape = RoundedCornerShape(
                             topEnd = 16.dp + (predictiveBackProgress * 16).dp,
-                            bottomEnd = 16.dp + (predictiveBackProgress * 16).dp)
+                            bottomEnd = 16.dp + (predictiveBackProgress * 16).dp
+                        )
                         clip = true
                     }
             ) {
@@ -227,14 +231,14 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                     )
                     OptionTile(
                         title = stringResource(R.string.download_title),
-                        description = Util.readableTransferRate(context, viewModel.deviceStatuses?.total?.inBits ?: 0),
+                        description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.inBits ?: 0),
                         noIconPadding = true,
                         contentColor = contentColor,
                         enabled = viewModel.api != null
                     )
                     OptionTile(
                         title = stringResource(R.string.upload_title),
-                        description = Util.readableTransferRate(context, viewModel.deviceStatuses?.total?.outBits ?: 0),
+                        description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.outBits ?: 0),
                         noIconPadding = true,
                         contentColor = contentColor,
                         enabled = viewModel.api != null
@@ -527,8 +531,14 @@ fun RestartDialog(viewModel: MainViewModel, context: Context) {
         },
         title = {
             Text(
-                stringResource(R.string.restart),
+                stringResource(R.string.restart_question),
                 fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+        },
+        text = {
+            Text(
+                stringResource(R.string.restart_description),
+                fontSize = MaterialTheme.typography.labelLarge.fontSize
             )
         },
         onDismissRequest = onDismissRequest,
@@ -557,8 +567,14 @@ fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
         },
         title = {
             Text(
-                stringResource(R.string.exit),
+                stringResource(R.string.exit_question),
                 fontSize = MaterialTheme.typography.titleLarge.fontSize
+            )
+        },
+        text = {
+            Text(
+                stringResource(R.string.exit_description),
+                fontSize = MaterialTheme.typography.labelLarge.fontSize
             )
         },
         onDismissRequest = onDismissRequest,
@@ -573,7 +589,7 @@ fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
 @Preview
 @Composable
 fun MainPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
         Main(viewModel<MainViewModel>(), {})
     }
 }
@@ -590,7 +606,7 @@ fun QrCodeDialogPreview() {
 @Preview
 @Composable
 fun RestartDialogPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
         RestartDialog(viewModel(), LocalContext.current)
     }
 }
@@ -598,7 +614,7 @@ fun RestartDialogPreview() {
 @Preview
 @Composable
 fun ExitDialogPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
         ExitDialog(viewModel(), LocalContext.current, {})
     }
 }

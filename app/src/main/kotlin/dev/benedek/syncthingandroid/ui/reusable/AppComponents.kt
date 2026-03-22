@@ -640,8 +640,8 @@ fun CustomDialog(
                         focusManager.clearFocus()
                     })
             },
-            MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp
+            shape = MaterialTheme.shapes.extraLarge
+
         ) {
             Column(Modifier.padding(24.dp)) {
                 if (title != null) {
