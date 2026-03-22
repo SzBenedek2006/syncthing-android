@@ -169,8 +169,8 @@ fun Folder(
                         },
                         shape = RoundedCornerShape(0.dp),
                         colors = ButtonColors(
-                            containerColor = MaterialTheme.colorScheme.onPrimary,
-                            contentColor = MaterialTheme.colorScheme.onBackground,
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                             disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
                             disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
                             ),
