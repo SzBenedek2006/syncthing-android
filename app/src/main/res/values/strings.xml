@@ -777,5 +777,14 @@
     <string name="unset_indicator">unset</string>
     <string name="folder_id_not_valid">Invalid folder ID</string>
     <string name="delete_folder_description">Removes this folder from Syncthing. No files on disk will be deleted.</string>
+    <string name="only_available_on_android_or_higher">Only available on android %1$d or higher</string>
+    <string name="dynamic_colors_description">Follows your system colors using Material You\'s monet engine.</string>
+    <string name="dynamic_colors_title">Dynamic colors</string>
+    <string name="blur_description">Blurs behind floating elements\' backgrounds.</string>
+    <string name="blur_title">Blur</string>
+    <string name="exit_question">Exit?</string>
+    <string name="exit_description">This will close the app and stop Syncthing.</string>
+    <string name="restart_question">Restart?</string>
+    <string name="restart_description">Restart Syncthing in the background?\nThis will not exit the app.</string>
 
 </resources>
