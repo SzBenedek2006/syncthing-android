@@ -1,21 +1,75 @@
 package dev.benedek.syncthingandroid.util
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.preference.PreferenceManager
+import dev.benedek.syncthingandroid.service.Constants
 
 /**
  * [ThemeControls] stores the global state of theming controls.
  * It stores 2 fields: [.useDynamicColor] and [.useDarkMode],
  * both of them are Boolean type.
  */
-object ThemeControls {
-    const val useDynamicColor: Boolean = true
-    val useDarkMode: Boolean? = null // null = auto
+object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
 
     val showDividers: Boolean = false
 
     val dividerThickness: Int = 1
 
-    val blurEnabled: Boolean = true
+    // Plain old vars backed by Compose State.
+    // Reading these automatically registers the Composable for updates.
+    var isBlurEnabled: Boolean by mutableStateOf(false)
+        private set
+
+    var isMonetEnabled: Boolean by mutableStateOf(false)
+        private set
+    var useDarkMode: Boolean? by mutableStateOf(null) // null = auto
+
+    private var isInitialized = false
+
+    /**
+     * Call this ONCE at app startup (e.g., Application.onCreate or MainActivity.onCreate).
+     * It loads the initial values and binds the singleton as a listener so the GC doesn't kill it.
+     */
+    fun init(context: Context) {
+        if (isInitialized) return
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context.applicationContext)
+
+        isBlurEnabled = prefs.getBoolean(Constants.PREF_ENABLE_BLUR, false)
+        isMonetEnabled = prefs.getBoolean(Constants.PREF_ENABLE_MONET, false)
+        useDarkMode = useDarkMode(prefs)
+
+        prefs.registerOnSharedPreferenceChangeListener(this)
+        isInitialized = true
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+        when (key) {
+            Constants.PREF_ENABLE_BLUR -> isBlurEnabled = sharedPreferences.getBoolean(key, false)
+            Constants.PREF_ENABLE_MONET -> isMonetEnabled = sharedPreferences.getBoolean(key, false)
+            Constants.PREF_APP_THEME -> useDarkMode = useDarkMode(sharedPreferences)
+        }
+    }
+    private fun useDarkMode(prefs: SharedPreferences): Boolean? {
+        val themeValue = prefs.getString(Constants.PREF_APP_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM.toString())
+        AppCompatDelegate.setDefaultNightMode(themeValue?.toInt() ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+        return if (themeValue?.toInt() == AppCompatDelegate.MODE_NIGHT_YES) {
+            true
+        } else if (themeValue?.toInt() == AppCompatDelegate.MODE_NIGHT_NO) {
+            false
+        } else {
+            null
+        }
+
+    }
+
     val blurRadius: Int = 12
 
     const val previewDarkTheme = true
