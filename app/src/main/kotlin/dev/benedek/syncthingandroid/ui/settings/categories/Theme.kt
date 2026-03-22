@@ -1,5 +1,6 @@
 package dev.benedek.syncthingandroid.ui.settings.categories
 
+import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,7 +14,9 @@ import androidx.compose.ui.text.AnnotatedString
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
+import dev.benedek.syncthingandroid.util.ThemeControls
 import me.zhanghai.compose.preference.listPreference
+import me.zhanghai.compose.preference.switchPreference
 
 @Composable
 fun Theme(contentPadding: PaddingValues) {
@@ -36,5 +39,33 @@ fun Theme(contentPadding: PaddingValues) {
             defaultValue = "-1",
             summary = { value -> Text(themeMap[value] ?: value) },
         )
+        val minVersion = 12
+        switchPreference(
+            key = Constants.PREF_ENABLE_BLUR,
+            title = { Text(stringResource(R.string.blur_title)) },
+            summary = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    Text(stringResource(R.string.blur_description))
+                else
+                    Text(stringResource(R.string.only_available_on_android_or_higher, minVersion))
+                      },
+            defaultValue = false,
+            enabled = { Build.VERSION.SDK_INT >= Build.VERSION_CODES.S }
+        )
+        switchPreference(
+            key = Constants.PREF_ENABLE_MONET,
+            title = {
+                Text(stringResource(R.string.dynamic_colors_title))
+            },
+            summary = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    Text(stringResource(R.string.dynamic_colors_description))
+                else
+                    Text(stringResource(R.string.only_available_on_android_or_higher, minVersion))
+            },
+            defaultValue = false,
+            enabled = { Build.VERSION.SDK_INT >= Build.VERSION_CODES.S }
+        )
     }
 }
+
