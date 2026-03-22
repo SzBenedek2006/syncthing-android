@@ -27,6 +27,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -40,7 +41,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.annimon.stream.function.Consumer
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.fragments.DeviceListFragment
 import dev.benedek.syncthingandroid.fragments.DrawerFragment
 import dev.benedek.syncthingandroid.fragments.FolderListFragment
@@ -201,12 +201,13 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val compose = true
+        //enableEdgeToEdge()
 
         if (compose) {
             lifecycle.addObserver(viewModel.mainVisibilityObserver)
 
             setContent {
-                SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+                SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
                     Main(viewModel, this::doExit)
                 }
 

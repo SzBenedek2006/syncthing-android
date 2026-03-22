@@ -24,7 +24,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
         registerOnServiceConnectedListener(this)
 
         setContent {
-            SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+            SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
                 Folder(
                     viewModel = viewModel,
                     onFinish = { finish() } // Pass the function to close the activity

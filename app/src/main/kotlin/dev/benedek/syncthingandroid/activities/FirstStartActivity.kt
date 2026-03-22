@@ -49,7 +49,7 @@ class FirstStartActivity : ComponentActivity() {
 
         setContent {
             SyncthingandroidTheme(
-                dynamicColor = ThemeControls.useDynamicColor
+                dynamicColor = ThemeControls.isMonetEnabled
             ) {
                 FirstStartScreen(
                     onFinish = {

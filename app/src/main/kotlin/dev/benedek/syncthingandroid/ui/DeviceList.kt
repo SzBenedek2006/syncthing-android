@@ -211,7 +211,7 @@ fun getLocalizedDeviceStatus(
 @Preview(uiMode = ThemeControls.uiMode)
 @Composable
 fun DeviceListPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.blurEnabled, darkTheme = ThemeControls.previewDarkTheme) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.previewDarkTheme) {
         Surface { DeviceList(emptyList(), DeviceStatuses(), true) }
     }
 }
@@ -219,7 +219,7 @@ fun DeviceListPreview() {
 @Preview(uiMode = ThemeControls.uiMode)
 @Composable
 fun DeviceListItemPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.blurEnabled, darkTheme = ThemeControls.previewDarkTheme) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.previewDarkTheme) {
         Surface{ DeviceListItem(Device(), DeviceStatuses.DeviceStatus()) }
     }
 }

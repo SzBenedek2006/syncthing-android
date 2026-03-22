@@ -36,7 +36,8 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 
         setContent {
             SyncthingandroidTheme(
-                dynamicColor = ThemeControls.useDynamicColor
+                dynamicColor = ThemeControls.isMonetEnabled,
+                darkTheme = ThemeControls.useDarkMode
             ) {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
