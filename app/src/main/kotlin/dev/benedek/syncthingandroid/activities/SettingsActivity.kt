@@ -19,7 +19,7 @@ import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
-import me.zhanghai.compose.preference.isDefaultPreferenceFlowLongSupportEnabled
+import me.zhanghai.compose.preference.isDefaultPreferenceFlowAndroidLongSupportEnabled
 
 class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnectedListener {
 
@@ -32,7 +32,7 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
         registerOnServiceConnectedListener(this)
 
 
-        isDefaultPreferenceFlowLongSupportEnabled = true
+        isDefaultPreferenceFlowAndroidLongSupportEnabled = true
 
         setContent {
             SyncthingandroidTheme(

@@ -4,7 +4,6 @@ plugins {
     id("com.android.application")
     id("com.github.ben-manes.versions")
     id("com.github.triplet.play") version "4.0.0"
-//    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -28,31 +27,21 @@ dependencies {
     implementation("com.google.dagger:dagger:2.59.2")
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
-    implementation("androidx.activity:activity-compose:1.12.4")
-    implementation(platform("androidx.compose:compose-bom:2026.02.01"))
+    implementation("androidx.activity:activity-compose:1.13.0")
+    implementation(platform("androidx.compose:compose-bom:2026.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("androidx.compose.ui:ui-graphics:1.10.4")
-    implementation("androidx.compose.ui:ui-graphics:1.10.4")
-    implementation("androidx.compose.animation:animation-core:1.10.4")
     implementation("androidx.navigation:navigation-compose:2.9.7")
     implementation("androidx.compose.material3:material3:1.4.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2026.02.01"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.59.2")
-    androidTestImplementation("androidx.test:rules:1.7.0")
-    androidTestImplementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.preference:preference:1.2.1")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     val workVersion = "2.11.1"
-    implementation("androidx.work:work-runtime:${workVersion}") // (Java only)
+    implementation("androidx.work:work-runtime:${workVersion}") // Java only
     implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
-    implementation("androidx.work:work-multiprocess:${workVersion}") // optional - Multiprocess support
+    implementation("androidx.work:work-multiprocess:${workVersion}") // Multiprocess support
 
-    implementation("me.zhanghai.compose.preference:preference:2.1.1")
+    implementation("me.zhanghai.compose.preference:preference:2.2.0")
 }
 
 configure<ApplicationExtension> {
@@ -133,24 +122,6 @@ play {
     )
     track.set("beta")
 }
-
-/**
- * Some languages are not supported by Google Play, so we ignore them.
- */
-tasks.register<Delete>("deleteUnsupportedPlayTranslations") {
-    delete(
-        "src/main/play/listings/de_DE/",
-        "src/main/play/listings/el-EL/",
-        "src/main/play/listings/en/",
-        "src/main/play/listings/eo/",
-        "src/main/play/listings/eu/",
-        "src/main/play/listings/nb/",
-        "src/main/play/listings/nl_BE/",
-        "src/main/play/listings/nn/",
-        "src/main/play/listings/ta/",
-    )
-}
-
 
 androidComponents {
     onVariants { variant ->
