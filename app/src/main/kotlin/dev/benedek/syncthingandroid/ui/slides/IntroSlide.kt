@@ -46,7 +46,7 @@ fun IntroSlide() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun IntroSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.useDynamicColor) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
         IntroSlide()
     }
 }
