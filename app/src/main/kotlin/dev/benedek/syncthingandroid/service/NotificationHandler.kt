@@ -75,8 +75,8 @@ class NotificationHandler(context: Context) {
         }
     }
 
-    private fun getNotificationBuilder(channel: NotificationChannel): NotificationCompat.Builder {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    private fun getNotificationBuilder(channel: NotificationChannel?): NotificationCompat.Builder {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel != null) {
             NotificationCompat.Builder(mContext, channel.id)
         } else {
             NotificationCompat.Builder(mContext)
@@ -141,7 +141,7 @@ class NotificationHandler(context: Context) {
         val idToShow: Int = if (syncthingRunning) ID_PERSISTENT else ID_PERSISTENT_WAITING
         val idToCancel: Int = if (syncthingRunning) ID_PERSISTENT_WAITING else ID_PERSISTENT
         val intent = Intent(mContext, MainActivity::class.java)
-        val channel = (if (syncthingRunning) persistentChannel else persistentChannelWaiting)!!
+        val channel = (if (syncthingRunning) persistentChannel else persistentChannelWaiting)
         val builder = getNotificationBuilder(channel)
             .setContentTitle(mContext.getString(title))
             .setSmallIcon(R.drawable.ic_stat_notify)
