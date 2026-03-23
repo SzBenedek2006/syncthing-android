@@ -12,7 +12,6 @@ import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.Util
-import org.apache.commons.io.FileUtils
 import java.io.File
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
@@ -99,9 +98,9 @@ class FirstStartActivity : ComponentActivity() {
         val dbDir = File(filesDir, "index-v0.14.0.db")
         if (dbDir.exists()) {
             try {
-                FileUtils.deleteQuietly(dbDir)
+                dbDir.deleteRecursively()
             } catch (e: Throwable) {
-                Log.w("FirstStart", "Deleting database with FileUtils failed", e)
+                Log.w("FirstStart", "Deleting database with Kotlin failed", e)
                 Util.runShellCommand("rm -r " + dbDir.absolutePath, false)
                 if (dbDir.exists()) {
                     throw RuntimeException("Failed to delete existing database")

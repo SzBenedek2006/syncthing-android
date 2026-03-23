@@ -16,7 +16,6 @@ dependencies {
     implementation("com.google.guava:guava:33.5.0-android")
     implementation("com.annimon:stream:1.2.2")
     implementation("com.android.volley:volley:1.2.1")
-    implementation("commons-io:commons-io:2.21.0")
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
         isTransitive = false
@@ -24,7 +23,6 @@ dependencies {
     implementation("com.google.zxing:core:3.5.4")
 
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("com.google.dagger:dagger:2.59.2")
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("androidx.activity:activity-compose:1.13.0")
