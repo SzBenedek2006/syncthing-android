@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Environment
-import android.text.TextUtils
 import android.util.Log
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
@@ -19,13 +18,13 @@ import java.io.File
 import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
-import java.util.Random
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 import javax.xml.transform.TransformerException
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
+import kotlin.random.Random
 
 /**
  * Provides direct access to the config.xml file in the file system.
@@ -38,7 +37,7 @@ class ConfigXml(private val context: Context) {
     private val preferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val configFile: File = Constants.getConfigFile(this.context)
 
-    private var config: Document? = null
+    private lateinit var config: Document
 
     init {
         val isFirstStart = !configFile.exists()
@@ -122,7 +121,7 @@ class ConfigXml(private val context: Context) {
         changed = migrateSyncthingOptions()
 
         /* Get refs to important config objects */
-        val folders = config!!.documentElement.getElementsByTagName("folder")
+        val folders = config.documentElement.getElementsByTagName("folder")
 
         /* Section - folders */
         for (i in 0..<folders.length) {
@@ -159,14 +158,14 @@ class ConfigXml(private val context: Context) {
         // Set password to the API key
         var password = gui.getElementsByTagName("password").item(0)
         if (password == null) {
-            password = config!!.createElement("password")
+            password = config.createElement("password")
             gui.appendChild(password)
         }
         val apikey = this.apiKey
         val pw = password.textContent
         var passwordOk: Boolean
         try {
-            passwordOk = !TextUtils.isEmpty(pw) && BCrypt.checkpw(apikey, pw)
+            passwordOk = !pw.isNullOrEmpty() && BCrypt.checkpw(apikey, pw)
         } catch (e: IllegalArgumentException) {
             Log.w(TAG, "Malformed password", e)
             passwordOk = false
@@ -180,7 +179,7 @@ class ConfigXml(private val context: Context) {
         /* Section - options */
         // Disable weak hash benchmark for faster startup.
         // https://github.com/syncthing/syncthing/issues/4348
-        val options = config!!.documentElement
+        val options = config.documentElement
             .getElementsByTagName("options").item(0) as Element
         changed = setConfigElement(options, "weakHashSelectionMethod", "never") || changed
 
@@ -213,7 +212,7 @@ class ConfigXml(private val context: Context) {
      */
     private fun migrateSyncthingOptions(): Boolean {
         /* Read existing config version */
-        var iConfigVersion = config!!.documentElement.getAttribute("version").toInt()
+        var iConfigVersion = config.documentElement.getAttribute("version").toInt()
         val iOldConfigVersion = iConfigVersion
         Log.i(TAG, "Found existing config version $iConfigVersion")
 
@@ -223,7 +222,7 @@ class ConfigXml(private val context: Context) {
             Log.i(TAG, "Migrating config version $iConfigVersion to 28 ...")
 
             /* Enable fsWatcher for all folders */
-            val folders = config!!.documentElement.getElementsByTagName("folder")
+            val folders = config.documentElement.getElementsByTagName("folder")
             for (i in 0..<folders.length) {
                 val r = folders.item(i) as Element
 
@@ -245,7 +244,7 @@ class ConfigXml(private val context: Context) {
         }
 
         if (iConfigVersion != iOldConfigVersion) {
-            config!!.documentElement.setAttribute("version", iConfigVersion.toString())
+            config.documentElement.setAttribute("version", iConfigVersion.toString())
             Log.i(TAG, "New config version is $iConfigVersion")
             return true
         } else {
@@ -256,7 +255,7 @@ class ConfigXml(private val context: Context) {
     private fun setConfigElement(parent: Element, tagName: String?, textContent: String): Boolean {
         var element = parent.getElementsByTagName(tagName).item(0)
         if (element == null) {
-            element = config!!.createElement(tagName)
+            element = config.createElement(tagName)
             parent.appendChild(element)
         }
         if (textContent != element.textContent) {
@@ -267,7 +266,7 @@ class ConfigXml(private val context: Context) {
     }
 
     private val guiElement: Element
-        get() = config!!.documentElement.getElementsByTagName("gui")
+        get() = config.documentElement.getElementsByTagName("gui")
             .item(0) as Element
 
     /**
@@ -279,7 +278,7 @@ class ConfigXml(private val context: Context) {
      * Returns if changes to the config have been made.
      */
     private fun changeLocalDeviceName(localDeviceID: String?): Boolean {
-        val childNodes = config!!.documentElement.childNodes
+        val childNodes = config.documentElement.childNodes
         for (i in 0..<childNodes.length) {
             val node = childNodes.item(i)
             if (node.nodeName == "device") {
@@ -301,13 +300,9 @@ class ConfigXml(private val context: Context) {
      * Returns if changes to the config have been made.
      */
     private fun changeDefaultFolder(): Boolean {
-        val folder = config!!.documentElement
+        val folder = config.documentElement
             .getElementsByTagName("folder").item(0) as Element
-        val deviceModel = Build.MODEL
-            .replace(" ", "_")
-            .lowercase()
-            .replace("[^a-z0-9_-]".toRegex(), "")
-        val defaultFolderId = deviceModel + "_" + generateRandomString(FOLDER_ID_APPENDIX_LENGTH)
+        val defaultFolderId = generateRandomFolderId()
         folder.setAttribute("label", context.getString(R.string.default_folder_label))
         folder.setAttribute("id", context.getString(R.string.default_folder_id, defaultFolderId))
         folder.setAttribute(
@@ -320,17 +315,21 @@ class ConfigXml(private val context: Context) {
         return true
     }
 
-    /**
-     * Generates a random String with a given length
-     */
-    private fun generateRandomString(length: Int): String {
-        val chars = "abcdefghjkmnpqrstuvwxyz123456789".toCharArray()
-        val random = Random()
-        val sb = StringBuilder()
-        for (i in 0..<length) {
-            sb.append(chars[random.nextInt(chars.size)])
+
+    private fun generateRandomFolderId(): String {
+        val chars = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray()
+        val chArr = CharArray(11)
+        var i = 0
+        while (i <= 10) {
+            if (i == 5) {
+                chArr[5] = '-'
+                i++
+            }
+            val char = chars[Random.nextInt(chars.size)]
+            chArr[i] = char
+            i++
         }
-        return sb.toString()
+        return String(chArr)
     }
 
     /**
@@ -365,6 +364,5 @@ class ConfigXml(private val context: Context) {
 
     companion object {
         private const val TAG = "ConfigXml"
-        private const val FOLDER_ID_APPENDIX_LENGTH = 4
     }
 }
