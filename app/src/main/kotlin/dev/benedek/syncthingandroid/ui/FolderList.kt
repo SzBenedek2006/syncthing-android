@@ -275,20 +275,20 @@ fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
 }
 
 
-@Preview(showBackground = true, uiMode = ThemeControls.uiMode)
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun FolderListPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.previewDarkTheme) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.PREVIEW_DARK_THEME) {
         Surface {
             FolderList(emptyList(), emptyMap(), true)
         }
     }
 }
 
-@Preview(showBackground = true, uiMode = ThemeControls.uiMode)
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun FolderListItemPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.previewDarkTheme) {
+    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.PREVIEW_DARK_THEME) {
         Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
             FolderListItem(
                 Folder(
