@@ -43,12 +43,11 @@ dependencies {
 }
 
 configure<ApplicationExtension> {
-    //val ndkVersionShared = rootProject.extra.get("ndkVersionShared") // not needed if built in docker
     // Changes to these values need to be reflected in `../docker/Dockerfile`
     //noinspection GradleDependency
     compileSdk = 36
     buildToolsVersion = "36.0.0"
-    //ndkVersion = "$ndkVersionShared" // not needed if built in docker
+    ndkVersion = "29.0.14206865"
 
     buildFeatures {
         dataBinding = true
@@ -61,8 +60,8 @@ configure<ApplicationExtension> {
         applicationId = "dev.benedek.syncthingandroid"
         minSdk = 23
         targetSdk = 36
-        versionCode = 4502
-        versionName = "2.0.15.2"
+        versionCode = 4503
+        versionName = "2.0.15.3"
         testApplicationId = "dev.benedek.syncthingandroid.test"
         //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -123,6 +122,8 @@ play {
 
 androidComponents {
     onVariants { variant ->
+        val ndkDirProvider = sdkComponents.ndkDirectory.map { it.asFile.absolutePath }
+        gradle.rootProject.extra["ndk.dir"] = ndkDirProvider.get()
 
         variant.outputs.forEach { output ->
             // This abomination is needed for a simple renaming of an output file?

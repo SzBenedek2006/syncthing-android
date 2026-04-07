@@ -5,33 +5,25 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.util.Locale
+import javax.inject.Inject
+import org.gradle.api.file.ArchiveOperations
+import org.gradle.api.file.FileSystemOperations
+import org.gradle.kotlin.dsl.support.serviceOf
 
-//import ru.vyarus.gradle.plugin.python.task.PythonTask
-
-//plugins {
-//    id("ru.vyarus.use-python") version "4.1.0"
-//}
-/*
-tasks.register<PythonTask>("buildNative") {
-    val ndkVersionShared = rootProject.extra.get("ndkVersionShared")
-    environment("NDK_VERSION", "$ndkVersionShared")
-    inputs.dir("$projectDir/src/")
-    outputs.dir("$projectDir/../app/src/main/jniLibs/")
-    command = "-u ./build-syncthing.py"
-}
-*/
-
-
+val goVersionShared = "1.26.1"
 
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
-    val goVersion = "1.26.1"
+    val goVersion = goVersionShared
 
     val goInstallDir = layout.projectDirectory.dir(".gradle/go/$goVersion").asFile
     val goBinDir = File(goInstallDir, "go/bin")
-    // Gradle will cache this task as long as the directory exists
+
+    // Gradle cache
     outputs.dir(goInstallDir)
     outputs.upToDateWhen { goBinDir.exists() }
 
+    val fs = project.serviceOf<FileSystemOperations>()
+    val archives = project.serviceOf<ArchiveOperations>()
 
     doLast {
 
@@ -67,8 +59,8 @@ val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
 
         println("Extracting Go from $archive into $goInstallDir")
 
-        copy {
-            from(if (goExt == "zip") zipTree(archive) else tarTree(archive))
+        fs.copy {
+            from(if (goExt == "zip") archives.zipTree(archive) else archives.tarTree(archive))
             into(goInstallDir)
         }
         println("Success!")
@@ -76,28 +68,176 @@ val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
 
     }
 }
-tasks.register<Exec>("buildNative") {
-    dependsOn(setupGo) // Currently not needed, but it will soon.
-
-    val mountVolume = "$rootDir:/mnt"
-    val scriptPath = "syncthing/build-syncthing.py"
-
-    inputs.dir("$rootDir/syncthing")
-    outputs.dir("$rootDir/app/src/main/jniLibs")
 
 
 
-    commandLine = listOf(
-        "podman", "run", "--rm",
-        "-v", mountVolume,
-        "-e", "EXTRA_LDFLAGS=-checklinkname=0",
-        "syncthing-android-builder",
-        "python3", scriptPath // The path is now correct relative to the mount point
-    )
+// BUILD_TARGETS
+data class GoTarget(val arch: String, val goArch: String, val jniDir: String, val ccTemplate: String)
+val buildTargets = listOf(
+    GoTarget("arm", "arm", "armeabi-v7a", "armv7a-linux-androideabi%s-clang"),
+    GoTarget("arm64", "arm64", "arm64-v8a", "aarch64-linux-android%s-clang"),
+    GoTarget("x86", "386", "x86", "i686-linux-android%s-clang"),
+    GoTarget("x86_64", "amd64", "x86_64", "x86_64-linux-android%s-clang")
+)
+
+
+
+// Git fetch tags
+// TODO: Maybe don't depend on tags?
+val fetchSyncthingTags = tasks.register<Exec>("fetchSyncthingTags") {
+    workingDir = layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
+    commandLine("git", "fetch", "--tags")
+    isIgnoreExitValue = true // Don't crash if offline
 }
 
 
+// stupid helper because exec didn't work
+object ShellRunner {
+    fun runShellCommand(vararg args: String, workDir: File, env: Map<String, String>) {
+        val pb = ProcessBuilder(args.toList())
+        pb.directory(workDir)
+        val contextEnv = pb.environment()
+        contextEnv.putAll(System.getenv())
+        contextEnv.putAll(env)
 
+        val localGoBin = env["_GRADLE_GO_BIN_DIR"]
+        if (localGoBin != null) {
+            val pKey = if (System.getProperty("os.name").lowercase().contains("win")) "Path" else "PATH"
+            contextEnv[pKey] = "$localGoBin${File.pathSeparator}${contextEnv[pKey]}"
+        }
+
+        pb.inheritIO() // get output from running program
+        println("Running command:\n\t${pb.command().joinToString("\n\t")}")
+        val process = pb.start()
+        val exitCode = process.waitFor()
+        if (exitCode != 0) {
+            error("Command failed with exit code $exitCode: ${args.joinToString(" ")}")
+        }
+    }
+}
+
+val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
+
+    tasks.register("buildNative_$target") {
+        dependsOn(setupGo, fetchSyncthingTags)
+        val goVersion = goVersionShared
+
+
+
+        // PLATFORM_DIRS
+        val hostOsName = System.getProperty("os.name").lowercase()
+        val ndkOs = when {
+            hostOsName.contains("win") -> "windows-x86_64"
+            hostOsName.contains("mac") -> "darwin-x86_64"
+            else -> "linux-x86_64"
+        }
+
+        val goOs = when {
+            hostOsName.contains("win") -> "windows"
+            hostOsName.contains("mac") -> "darwin"
+            else -> "linux"
+        }
+        val goBinaryName = if (goOs == "windows") "go.exe" else "go"
+
+        val targetData = when(target) {
+            "arm"    -> listOf("arm", "armeabi-v7a", "armv7a-linux-androideabi%s-clang")
+            "arm64"  -> listOf("arm64", "arm64-v8a", "aarch64-linux-android%s-clang")
+            "x86"    -> listOf("386", "x86", "i686-linux-android%s-clang")
+            "x86_64" -> listOf("amd64", "x86_64", "x86_64-linux-android%s-clang")
+            else -> error("Unknown arch")
+        }
+
+        val goArch = targetData[0]
+        val jniDir = targetData[1]
+        val ccTemplate = targetData[2]
+
+        // Paths
+        val syncthingSrcDir = layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
+        val pkgDir = layout.projectDirectory.dir("gobuild/go-packages/$goArch").asFile
+        val jniOutDir = layout.projectDirectory.dir("../app/src/main/jniLibs/$jniDir").asFile
+        val goBin = layout.projectDirectory.file(".gradle/go/$goVersion/go/bin/$goBinaryName").asFile
+        val goCache = layout.projectDirectory.dir("gobuild/go-cache").asFile
+
+        // Gradle caching
+        inputs.dir(syncthingSrcDir)
+        outputs.dir(jniOutDir)
+
+        // get_ndk_home():
+        val ndkDir = rootProject.extra["ndk.dir"] as String
+
+
+        // get_min_sdk(project_dir):
+        val appBuildGradle = layout.projectDirectory.file("../app/build.gradle.kts").asFile
+        val minSdk = appBuildGradle.readLines()
+            .firstOrNull { it.contains("minSdk") }
+            ?.filter { it.isDigit() } ?: error("Could not find minSdk in build.gradle.kts")
+
+
+        doLast {
+            val ccPath = File("$ndkDir/toolchains/llvm/prebuilt/$ndkOs/bin/${ccTemplate.format(minSdk)}").absolutePath
+
+            // Ensure build directories exist
+            pkgDir.mkdirs()
+            goCache.mkdirs()
+
+            // Environment for Host Tools
+            val hostEnv = mapOf(
+                "GO111MODULE" to "on",
+                "_GRADLE_GO_BIN_DIR" to goBin.parentFile.absolutePath
+            )
+
+            // Environment for Cross-Compiling
+            val targetEnv = mutableMapOf<String, String>().apply {
+                putAll(hostEnv)
+                put("CGO_ENABLED", "1")
+                put("GOCACHE", goCache.absolutePath)
+
+                // this is very important for building the android variant.
+                put("EXTRA_LDFLAGS", "-checklinkname=0")
+            }.toMap()
+
+            println("Building syncthing for ${target}...")
+            val goExe = goBin.absolutePath
+
+            ShellRunner.runShellCommand(goExe, "version", workDir = syncthingSrcDir, env = hostEnv)
+            ShellRunner.runShellCommand(goExe, "run", "build.go", "version", workDir = syncthingSrcDir, env = hostEnv)
+
+            val artifact = File(temporaryDir, "bin")
+            ShellRunner.runShellCommand(
+                goExe,
+                "run",
+                "build.go",
+                "-goos", "android",
+                "-goarch", goArch,
+                "-cc", ccPath,
+                "-pkgdir", pkgDir.absolutePath,
+                "-no-upgrade",
+                "-build-out", artifact.absolutePath,
+                "build",
+                workDir = syncthingSrcDir,
+                env = targetEnv
+            )
+
+            // Move output
+            if (artifact.exists()) {
+                jniOutDir.mkdirs()
+                println("Moving file ${artifact.path} -> ${jniOutDir.path}${ if (hostOsName.contains("win")) "\\" else "/"}libsyncthing.so")
+                artifact.copyTo(File(jniOutDir, "libsyncthing.so"), overwrite = true)
+                artifact.delete()
+                println("Finished build for $target")
+            } else {
+                error("Build produced no artifact at $artifact")
+            }
+        }
+    }
+}
+
+tasks.register("buildNative") {
+    dependsOn(buildNativeTasks)
+    doLast {
+        println("All builds finished")
+    }
+}
 
 /**
  * Use separate task instead of standard clean(), so these folders aren't deleted by `gradle clean`.
