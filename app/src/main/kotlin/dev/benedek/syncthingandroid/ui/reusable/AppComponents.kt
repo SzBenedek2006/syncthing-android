@@ -31,7 +31,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -87,7 +86,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+
+val dialogTonalElevation = 6.dp
 
 @Composable
 fun AppTextField(
@@ -527,7 +529,7 @@ fun SingleSelectDialog(
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp,
+            tonalElevation = dialogTonalElevation,
             modifier = Modifier
         ) {
             Column(
@@ -640,8 +642,8 @@ fun CustomDialog(
                         focusManager.clearFocus()
                     })
             },
-            shape = MaterialTheme.shapes.extraLarge
-
+            shape = MaterialTheme.shapes.extraLarge,
+            tonalElevation = dialogTonalElevation
         ) {
             Column(Modifier.padding(24.dp)) {
                 if (title != null) {
@@ -689,47 +691,55 @@ fun CustomDialog(
 
 // PREVIEWS
 
-@Preview
+@Preview(uiMode = ThemeControls.UI_MODE)
 @Composable
 fun AppScaffoldPreview() {
-    AppScaffold(topAppBarTitle = "Preview") { innerPadding ->
-        Box(
-            Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("Content")
+    SyncthingandroidTheme {
+        AppScaffold(topAppBarTitle = "Preview") { innerPadding ->
+            Box(
+                Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Content")
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun OptionTilePreview() {
-    var checked = true
-    OptionTile(
-        leftIconPainter = painterResource(R.drawable.ic_label_outline_24dp),
-        title = "Content",
-        checked = checked,
-        onCheckedChange = {checked = !checked}
-    )
+    SyncthingandroidTheme {
+        var checked = true
+        OptionTile(
+            leftIconPainter = painterResource(R.drawable.ic_label_outline_24dp),
+            title = "Content",
+            checked = checked,
+            onCheckedChange = {checked = !checked}
+        )
+    }
 }
 
-@Preview
+@Preview(uiMode = ThemeControls.UI_MODE)
 @Composable
 fun SingleSelectDialogPreview() {
-    SingleSelectDialog(
-        "Title",
-        "Description 1 2 3!",
-        listOf("1", "2", "3", "Lorem ipsum dolor sit amet")
-    )
+    SyncthingandroidTheme {
+        SingleSelectDialog(
+            "Title",
+            "Description 1 2 3!",
+            listOf("1", "2", "3", "Lorem ipsum dolor sit amet")
+        )
+    }
 }
 
-@Preview
+@Preview(uiMode = ThemeControls.UI_MODE)
 @Composable
 fun CustomDialogPreview() {
-    CustomDialog("Title", "Description", {}, {}) {
-        Text("Content")
+    SyncthingandroidTheme {
+        CustomDialog("Title", "Description", {}, {}) {
+            Text("Content")
+        }
     }
 }
