@@ -72,7 +72,7 @@ object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
 
     val blurRadius: Int = 12
 
-    const val previewDarkTheme = true
+    const val PREVIEW_DARK_THEME = true
 
     /**
      * A compile-time knowable if-statement would be perfectly sane here, but Kotlin *somehow*
@@ -89,5 +89,5 @@ object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
      * Anyway, Bool.compareTo saved the day.
      */
 
-    const val uiMode = UI_MODE_NIGHT_YES * (1 + previewDarkTheme.compareTo(false))
+    const val UI_MODE = UI_MODE_NIGHT_YES * (1 + PREVIEW_DARK_THEME.compareTo(true))
 }
