@@ -47,6 +47,16 @@ ENV SYNCTHING_ANDROID_PREBUILT 1
 # Set location of go cache
 ENV GOCACHE /opt/gocache
 
+# Create a temporary directory for Go dependency resolution
+WORKDIR /tmp/go-deps
+
+# Copy ONLY go.mod and go.sum first. 
+# This ensures Podman uses layer caching and only re-downloads if these files change!
+COPY syncthing/src/github.com/syncthing/syncthing/go.mod syncthing/src/github.com/syncthing/syncthing/go.sum ./
+
+# Download the dependencies into the Docker image layer (saves to /opt/gopath/pkg/mod)
+RUN go mod download
+
 # Set location of GOPATH to persist packages for module builds in GOPATH/pkg/mod
 ENV GOPATH /opt/gopath
 
