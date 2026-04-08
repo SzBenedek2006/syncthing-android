@@ -4,20 +4,6 @@
     <!-- Material 3 switch ? -->
     <eat-comment />
 
-    <style name="ThemeOverlay.Syncthing.Preference" parent="PreferenceThemeOverlay">
-        <item name="android:textColorPrimary">?attr/colorOnSurface</item>
-        <item name="android:textColorSecondary">?attr/colorOnSurfaceVariant</item>
-
-        <item name="switchPreferenceCompatStyle">
-            @style/Preference.Syncthing.PreferenceMaterialSwitch
-        </item>
-    </style>
-
-    <style name="Preference.Syncthing.PreferenceMaterialSwitch" parent="@style/Preference.SwitchPreferenceCompat.Material">
-        <item name="widgetLayout">@layout/preference_switch</item>
-    </style>
-
-
     <style name="Theme.Syncthing" parent="Base.Theme.Syncthing">
         <!-- Fix white mode, only used in white mode -->
         <item name="android:windowLightStatusBar" >true</item>
