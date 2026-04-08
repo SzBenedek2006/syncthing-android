@@ -250,8 +250,15 @@ fun getStatusColor(folderStatus: FolderStatus): Color {
 @Composable
 fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
     return remember(folderStatus, context) {
+        val neededItems =
+            folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
+        val outOfSync = folderStatus.state == "idle" && neededItems > 0
+
         when (folderStatus.state) {
-            "idle" -> context.getString(R.string.state_idle)
+            "idle" -> {
+                if (outOfSync) context.getString(R.string.status_outofsync)
+                else context.getString(R.string.state_idle)
+            }
             "scanning" -> context.getString(R.string.state_scanning)
             "syncing" -> {
                 val percentage = if (folderStatus.globalBytes != 0L)
