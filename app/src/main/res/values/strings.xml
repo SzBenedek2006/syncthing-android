@@ -786,5 +786,6 @@
     <string name="exit_description">This will close the app and stop Syncthing.</string>
     <string name="restart_question">Restart?</string>
     <string name="restart_description">Restart Syncthing in the background?\nThis will not exit the app.</string>
+    <string name="preview">Preview</string>
 
 </resources>
