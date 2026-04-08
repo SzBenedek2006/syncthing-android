@@ -14,6 +14,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import dev.benedek.syncthingandroid.util.ThemeControls
 
 
 @Immutable
@@ -445,12 +446,13 @@ fun SyncthingandroidTheme(
     darkTheme: Boolean? = null,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    pureBlack: Boolean = ThemeControls.pureBlack,
     content: @Composable () -> Unit
 ) {
     var darkTheme = darkTheme
     if (darkTheme == null) darkTheme = isSystemInDarkTheme()
 
-    val colorScheme = when {
+    var colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -458,6 +460,13 @@ fun SyncthingandroidTheme(
 
         darkTheme -> darkScheme
         else -> lightScheme
+    }
+
+    if (darkTheme && pureBlack) {
+        colorScheme = colorScheme.copy(
+            surface = Color.Black,
+            background = Color.Black
+        )
     }
 
     val extendedColors = if (darkTheme) extendedDark else extendedLight

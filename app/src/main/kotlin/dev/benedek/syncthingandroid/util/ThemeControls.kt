@@ -30,6 +30,8 @@ object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
         private set
     var useDarkMode: Boolean? by mutableStateOf(null) // null = auto
 
+    var pureBlack: Boolean by mutableStateOf(false)
+
     private var isInitialized = false
 
     /**
@@ -44,6 +46,7 @@ object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
         isBlurEnabled = prefs.getBoolean(Constants.PREF_ENABLE_BLUR, false)
         isMonetEnabled = prefs.getBoolean(Constants.PREF_ENABLE_MONET, false)
         useDarkMode = useDarkMode(prefs)
+        pureBlack = prefs.getBoolean(Constants.PREF_PURE_BLACK, false)
 
         prefs.registerOnSharedPreferenceChangeListener(this)
         isInitialized = true
@@ -54,6 +57,7 @@ object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
             Constants.PREF_ENABLE_BLUR -> isBlurEnabled = sharedPreferences.getBoolean(key, false)
             Constants.PREF_ENABLE_MONET -> isMonetEnabled = sharedPreferences.getBoolean(key, false)
             Constants.PREF_APP_THEME -> useDarkMode = useDarkMode(sharedPreferences)
+            Constants.PREF_PURE_BLACK -> pureBlack = sharedPreferences.getBoolean(key, false)
         }
     }
     private fun useDarkMode(prefs: SharedPreferences): Boolean? {
