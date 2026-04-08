@@ -8,6 +8,7 @@ import android.os.StrictMode.VmPolicy
 import android.system.Os
 import android.util.Log
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.DynamicColorsOptions
 import dev.benedek.syncthingandroid.util.Languages
 import dev.benedek.syncthingandroid.util.ThemeControls
 import java.io.File
@@ -15,10 +16,14 @@ import java.io.FileOutputStream
 
 class SyncthingApp : Application() {
     override fun onCreate() {
-        if (ThemeControls.isMonetEnabled) DynamicColors.applyToActivitiesIfAvailable(this)
-
         super.onCreate()
+
         ThemeControls.init(this)
+
+        val dynamicColorsOptions = DynamicColorsOptions.Builder()
+            .setPrecondition { _, _ -> ThemeControls.isMonetEnabled }
+            .build()
+        DynamicColors.applyToActivitiesIfAvailable(this, dynamicColorsOptions)
 
         setupLegacySsl(this)
 
