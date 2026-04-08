@@ -107,7 +107,7 @@ fun Theme(contentPadding: PaddingValues) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("PURE BLACK")
+                    Text("Pure black")
                     Badge(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -118,8 +118,10 @@ fun Theme(contentPadding: PaddingValues) {
                 }
             },
             summary = {
-                Text("Saves power on amoled screens and looks cool.\n" +
-                        "What else do you need?")
+                Text("Saves power on AMOLED screens and looks cool.\n" +
+                        /*"What else do you need?"*/
+                        "The current implementation disables\n" +
+                        "dynamic colors for old, xml based UIs.")
             },
             defaultValue = false,
             enabled = { ThemeControls.useDarkMode != false }
