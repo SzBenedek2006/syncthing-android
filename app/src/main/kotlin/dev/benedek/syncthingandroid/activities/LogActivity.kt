@@ -1,6 +1,7 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.util.ThemeControls
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -37,6 +39,15 @@ class LogActivity : SyncthingActivity() {
      * Initialize Log.
      */
     public override fun onCreate(savedInstanceState: Bundle?) {
+        // Needed for pureBlack
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (ThemeControls.useDarkMode != null) {
+            if (ThemeControls.useDarkMode!! && ThemeControls.pureBlack)
+                setTheme(R.style.Theme_Syncthing_Black)
+        } else if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            if (ThemeControls.pureBlack)
+                setTheme(R.style.Theme_Syncthing_Black)
+        }
         super.onCreate(savedInstanceState)
 
         val rootView = layoutInflater.inflate(R.layout.activity_log, null)

@@ -6,12 +6,21 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
+    <!-- Pure Black Theme -->
+    <style name="Theme.Syncthing.Black" parent="Theme.Syncthing">
+        <!-- Main Background -->
+        <item name="android:colorBackground">@android:color/black</item>
 
-    <style name="Dynamic.Theme.Syncthing" parent="Base.Theme.Syncthing">
+        <!-- Surfaces -->
+        <item name="colorSurface">@android:color/black</item>
+        <item name="colorSurfaceBright">@android:color/black</item>
+        <item name="colorSurfaceDim">@android:color/black</item>
 
-
+        <!-- Material 3 Surface Containers -->
+        <item name="colorSurfaceContainer">@android:color/black</item>
+        <item name="colorSurfaceContainerLow">@android:color/black</item>
+        <item name="colorSurfaceContainerLowest">@android:color/black</item>
     </style>
-
 
     <style name="Base.Theme.Syncthing" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/md_theme_primary</item>

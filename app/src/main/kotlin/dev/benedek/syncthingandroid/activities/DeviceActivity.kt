@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -16,6 +17,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +29,7 @@ import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Compression
 import dev.benedek.syncthingandroid.util.TextWatcherAdapter
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
 
 /**
@@ -108,9 +111,21 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
         }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
+        // Needed for pureBlack
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (ThemeControls.useDarkMode != null) {
+            if (ThemeControls.useDarkMode!! && ThemeControls.pureBlack)
+                setTheme(R.style.Theme_Syncthing_Black)
+        } else if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            if (ThemeControls.pureBlack)
+                setTheme(R.style.Theme_Syncthing_Black)
+        }
+
+
         super.onCreate(savedInstanceState)
         binding = ActivityDeviceBinding.inflate(layoutInflater)
         setContentView(binding!!.getRoot())
+
 
 
         // Targeting android 15 enables and 16 forces edge-to-edge,

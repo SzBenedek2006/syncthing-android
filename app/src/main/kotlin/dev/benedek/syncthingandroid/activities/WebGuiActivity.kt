@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Proxy
 import android.net.http.SslError
 import android.os.Build
@@ -29,6 +30,7 @@ import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
 import dev.benedek.syncthingandroid.util.ConfigXml
+import dev.benedek.syncthingandroid.util.ThemeControls
 import java.io.ByteArrayInputStream
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -59,6 +61,16 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
      */
     @SuppressLint("SetJavaScriptEnabled")
     public override fun onCreate(savedInstanceState: Bundle?) {
+        // Needed for pureBlack
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (ThemeControls.useDarkMode != null) {
+            if (ThemeControls.useDarkMode!! && ThemeControls.pureBlack)
+                setTheme(R.style.Theme_Syncthing_Black)
+        } else if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            if (ThemeControls.pureBlack)
+                setTheme(R.style.Theme_Syncthing_Black)
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityWebGuiBinding.inflate(layoutInflater)
         setContentView(binding!!.getRoot())
