@@ -48,46 +48,6 @@
     </style>
 
 
-<!--    <style name="Base.Theme.Syncthing" parent="Theme.Material3.DayNight.NoActionBar"> &lt;!&ndash; renamed from Theme.Syncthing.Base &ndash;&gt;-->
-
-<!--        <item name="textAppearanceListItemPrimary">@style/TextAppearance.Syncthing.ListItemPrimary-->
-<!--        </item>-->
-<!--        <item name="textAppearanceListItemSecondary">-->
-<!--            @style/TextAppearance.Syncthing.ListItemSecondary-->
-<!--        </item>-->
-<!--        <item name="textAppearanceListItemSmall">@style/TextAppearance.Syncthing.ListItemSmall-->
-<!--        </item>-->
-
-<!--        <item name="windowActionModeOverlay">true</item>-->
-<!--        <item name="android:listViewStyle">@style/Widget.Syncthing.ListView</item>-->
-<!--        <item name="android:listDivider">@drawable/list_divider_inset</item>-->
-
-<!--        <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>-->
-<!--        <item name="android:spinnerItemStyle">@style/Widget.Syncthing.TextView.SpinnerItem</item>-->
-
-<!--        <item name="android:alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet-->
-<!--        </item>-->
-<!--        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet</item>-->
-<!--        <item name="android:dialogCornerRadius" tools:targetApi="p">@dimen/dialog_corner_radius-->
-<!--        </item>-->
-<!--        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>-->
-
-<!--        <item name="android:statusBarColor" >@android:color/transparent</item>-->
-<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
-
-<!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
-<!--        <item name="android:windowIsTranslucent">false</item>-->
-
-<!--        <item name="preferenceTheme">@style/ThemeOverlay.Syncthing.Preference</item>-->
-<!--    </style>-->
-
-    <!--
-    <style name="Theme.Syncthing" parent="Theme.Syncthing.Base">
-        <item name="android:windowLightStatusBar" >true</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
-    </style>
-    -->
-
 
     <style name="Base.Theme.Syncthing" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/md_theme_primary</item>
