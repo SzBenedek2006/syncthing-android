@@ -201,7 +201,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val compose = true
-        //enableEdgeToEdge()
+        enableEdgeToEdge()
 
         if (compose) {
             lifecycle.addObserver(viewModel.mainVisibilityObserver)
