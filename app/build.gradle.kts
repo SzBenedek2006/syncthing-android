@@ -13,7 +13,7 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("org.mindrot:jbcrypt:0.4")
-    implementation("com.google.guava:guava:33.5.0-android")
+    implementation("com.google.guava:guava:33.6.0-android")
     implementation("com.annimon:stream:1.2.2")
     implementation("com.android.volley:volley:1.2.1")
 
@@ -26,7 +26,7 @@ dependencies {
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
     implementation("androidx.activity:activity-compose:1.13.0")
-    implementation(platform("androidx.compose:compose-bom:2026.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2026.03.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
@@ -34,7 +34,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.preference:preference:1.2.1")
 
-    val workVersion = "2.11.1"
+    val workVersion = "2.11.2"
     implementation("androidx.work:work-runtime:${workVersion}") // Java only
     implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
     implementation("androidx.work:work-multiprocess:${workVersion}") // Multiprocess support
