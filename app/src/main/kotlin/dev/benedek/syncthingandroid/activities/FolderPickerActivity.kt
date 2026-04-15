@@ -23,27 +23,24 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
-import java.util.Collections
-
 /**
  * Activity that allows selecting a directory in the local file system.
  */
 class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListener,
     SyncthingService.OnServiceStateChangeListener {
-    private var mListView: ListView? = null
-    private var mFilesAdapter: FileAdapter? = null
-    private var mRootsAdapter: RootsAdapter? = null
+    private var listView: ListView? = null
+    private var filesAdapter: FileAdapter? = null
+    private var rootsAdapter: RootsAdapter? = null
 
     /**
      * Location of null means that the list of roots is displayed.
      */
-    private var mLocation: File? = null
+    private var location: File? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,12 +52,12 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
 
         /* Don't set window insets handling here */
-        mListView = findViewById(android.R.id.list)
-        mListView!!.onItemClickListener = this
-        mListView!!.setEmptyView(findViewById(android.R.id.empty))
-        mFilesAdapter = FileAdapter(this)
-        mRootsAdapter = RootsAdapter(this)
-        mListView!!.setAdapter(mFilesAdapter)
+        listView = findViewById(android.R.id.list)
+        listView!!.onItemClickListener = this
+        listView!!.setEmptyView(findViewById(android.R.id.empty))
+        filesAdapter = FileAdapter(this)
+        rootsAdapter = RootsAdapter(this)
+        listView!!.setAdapter(filesAdapter)
 
         /**
          * Goes up a directory, up to the list of roots if there are multiple roots.
@@ -71,9 +68,9 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
          */
         val backCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (!mRootsAdapter!!.contains(mLocation) && mLocation != null) {
-                    displayFolder(mLocation!!.getParentFile())
-                } else if (mRootsAdapter!!.contains(mLocation) && mRootsAdapter!!.count > 1) {
+                if (!rootsAdapter!!.contains(location) && location != null) {
+                    displayFolder(location!!.getParentFile())
+                } else if (rootsAdapter!!.contains(location) && rootsAdapter!!.count > 1) {
                     displayRoot()
                 } else {
                     setResult(RESULT_CANCELED)
@@ -90,7 +87,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
             displayRoot()
         }
 
-        val prefUseRoot = sharedPreferences!!.getBoolean(Constants.PREF_USE_ROOT, false)
+        val prefUseRoot = sharedPreferences.getBoolean(Constants.PREF_USE_ROOT, false)
         if (!prefUseRoot) {
             Toast.makeText(this, R.string.kitkat_external_storage_warning, Toast.LENGTH_LONG)
                 .show()
@@ -113,28 +110,20 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
             roots.add(File(rootDir!!))
         } else {
             roots.add(Environment.getExternalStorageDirectory())
-            roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC))
-            roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES))
-            roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-            roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM))
-            roots.add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS))
 
             // Add paths that might not be accessible to Syncthing.
-            if (sharedPreferences!!.getBoolean("advanced_folder_picker", false)) {
-                Collections.addAll(roots, *File("/storage/").listFiles())
+            if (sharedPreferences.getBoolean("advanced_folder_picker", false)) {
+                File("/storage/").listFiles()?.let { roots.addAll(it) }
+
                 roots.add(File("/"))
             }
         }
-        // Remove any invalid directories.
-        val it = roots.iterator()
-        while (it.hasNext()) {
-            val f = it.next()
-            if (f == null || !f.exists() || !f.isDirectory()) {
-                it.remove()
-            }
+
+        roots.removeAll { file ->
+            file == null || !file.exists() || !file.isDirectory
         }
 
-        mRootsAdapter!!.addAll(roots.filterNotNull().toSortedSet())
+        rootsAdapter!!.addAll(roots.filterNotNull().toSortedSet())
     }
 
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
@@ -150,7 +139,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (mListView!!.adapter === mRootsAdapter) return true
+        if (listView!!.adapter === rootsAdapter) return true
 
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.folder_picker, menu)
@@ -184,7 +173,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
             }
             R.id.select -> {
                 val intent = Intent()
-                    .putExtra(EXTRA_RESULT_DIRECTORY, Util.formatPath(mLocation!!.absolutePath))
+                    .putExtra(EXTRA_RESULT_DIRECTORY, Util.formatPath(location!!.absolutePath))
                 setResult(RESULT_OK, intent)
                 finish()
                 return true
@@ -204,7 +193,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
      * Creates a new folder with the given name and enters it.
      */
     private fun createFolder(name: String) {
-        val newFolder = File(mLocation, name)
+        val newFolder = File(location, name)
         if (newFolder.mkdir()) {
             displayFolder(newFolder)
         } else {
@@ -216,9 +205,9 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
      * Refreshes the ListView to show the contents of the folder in ``mLocation.peek()}.
      */
     private fun displayFolder(folder: File?) {
-        mLocation = folder
-        mFilesAdapter!!.clear()
-        var contents = mLocation!!.listFiles()
+        location = folder
+        filesAdapter!!.clear()
+        var contents = location!!.listFiles()
         // In case we don't have read access to the folder, just display nothing.
         if (contents == null) contents = arrayOf<File?>()
 
@@ -228,9 +217,9 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
         )
 
         for (f in contents) {
-            mFilesAdapter!!.add(f)
+            filesAdapter!!.add(f)
         }
-        mListView!!.setAdapter(mFilesAdapter)
+        listView!!.setAdapter(filesAdapter)
     }
 
     override fun onItemClick(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
@@ -299,25 +288,25 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
      * contents of that folder.
      */
     private fun displayRoot() {
-        mFilesAdapter!!.clear()
-        if (mRootsAdapter!!.count == 1) {
-            displayFolder(mRootsAdapter!!.getItem(0))
+        filesAdapter!!.clear()
+        if (rootsAdapter!!.count == 1) {
+            displayFolder(rootsAdapter!!.getItem(0))
         } else {
-            mListView!!.setAdapter(mRootsAdapter)
-            mLocation = null
+            listView!!.setAdapter(rootsAdapter)
+            location = null
         }
         invalidateOptions()
     }
 
     companion object {
         private const val EXTRA_INITIAL_DIRECTORY =
-            "activities.syncthingandroid.nutomic.dev.FolderPickerActivity.INITIAL_DIRECTORY"
+            "activities.syncthingandroid.benedek.dev.FolderPickerActivity.INITIAL_DIRECTORY"
 
         private const val EXTRA_ROOT_DIRECTORY =
-            "activities.syncthingandroid.nutomic.dev.FolderPickerActivity.ROOT_DIRECTORY"
+            "activities.syncthingandroid.benedek.dev.FolderPickerActivity.ROOT_DIRECTORY"
 
         const val EXTRA_RESULT_DIRECTORY: String =
-            "activities.syncthingandroid.nutomic.dev.FolderPickerActivity.RESULT_DIRECTORY"
+            "activities.syncthingandroid.benedek.dev.FolderPickerActivity.RESULT_DIRECTORY"
 
         const val DIRECTORY_REQUEST_CODE: Int = 234
 
