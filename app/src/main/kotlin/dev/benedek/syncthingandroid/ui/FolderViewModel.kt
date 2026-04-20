@@ -477,6 +477,44 @@ class FolderViewModel : ViewModel() {
         }
     }
 
+    fun checkPathAccess(): Boolean {
+        if (folder.path == null) {
+            return false
+        }
+        val file = File(folder.path!!)
+
+        return if (file.exists()) {
+            file.canWrite() && file.canRead()
+        } else {
+            val parentDir = file.parentFile
+            parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(file)
+        }
+    }
+
+    private fun checkFileName(file: File): Boolean {
+        return try {
+            if (file.createNewFile()) {
+                file.delete() // Clean up instantly if successful
+                true
+            } else {
+                false
+            }
+        } catch (e: IOException) {
+            false
+        }
+    }
+
+    fun prettyFileName(path: String?): String {
+        if (path == null) return ""
+        val regex = Regex("^/storage/emulated/0")
+        return path.replace(regex, "~")
+    }
+
+    fun unPrettyFileName(path: String): String {
+        val regex = Regex("^~")
+        return path.replace(regex, "/storage/emulated/0")
+    }
+
 
 
 
