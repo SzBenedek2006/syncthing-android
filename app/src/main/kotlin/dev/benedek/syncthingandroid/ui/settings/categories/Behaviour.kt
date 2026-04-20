@@ -75,7 +75,7 @@ fun Behaviour(contentPadding: PaddingValues) {
         contentPadding = contentPadding
     ) {
         switchPreference(
-            key = "advanced_folder_picker",
+            key = Constants.PREF_ADVANCED_FOLDER_PICKER,
             title = { Text(stringResource(R.string.advanced_folder_picker)) },
             summary = { Text(stringResource(R.string.advanced_folder_picker_summary)) },
             defaultValue = false
