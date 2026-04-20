@@ -22,6 +22,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
@@ -47,6 +49,31 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_folder_picker)
+        val rootView = findViewById<View>(android.R.id.content)
+
+        // Targeting android 15 enables and 16 forces edge-to-edge,
+        ViewCompat.setOnApplyWindowInsetsListener(
+            rootView
+        ) { v: View?, windowInsets: WindowInsetsCompat? ->
+            val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            val mlp = v!!.layoutParams as ViewGroup.MarginLayoutParams
+            mlp.leftMargin = insets.left
+            mlp.bottomMargin = insets.bottom
+            mlp.rightMargin = insets.right
+            v.setLayoutParams(mlp)
+            WindowInsetsCompat.CONSUMED
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+            rootView
+        ) { v: View?, insets: WindowInsetsCompat? ->
+            val bars = insets!!.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+            )
+            v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
 
 
 
