@@ -1,5 +1,6 @@
 package dev.benedek.syncthingandroid.ui
 
+import android.app.Activity
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.ExpandMore
@@ -35,6 +37,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -58,10 +61,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.activities.FolderPickerActivity
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.isValid
 import dev.benedek.syncthingandroid.service.Constants
@@ -72,7 +76,9 @@ import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.FileUtils
+import dev.benedek.syncthingandroid.util.ThemeControls
 import java.io.File
 import kotlin.collections.forEachIndexed
 
@@ -104,6 +110,17 @@ fun Folder(
     ) { uri: Uri? ->
         if (uri != null) {
             viewModel.onFolderSelectedViaSaf(uri, context)
+        }
+    }
+
+    val advancedDirectoryPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val path = result.data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
+            if (!path.isNullOrEmpty()) {
+                viewModel.onPathChange(path)
+            }
         }
     }
 
@@ -158,14 +175,31 @@ fun Folder(
                     readOnly = !viewModel.isCreateMode
                 )
                 if (viewModel.isCreateMode) {
+
+                    if (viewModel.checkPathAccess()) {
+                        Icon(Icons.Outlined.CheckCircle, "")
+                    }
+
                     Button(
                         onClick = {
-                            directoryPicker.launch(
-                                FileUtils.getPickerInitialUri(
-                                    context,
-                                    viewModel.folder.path
+                            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+                            if (prefs.getBoolean(Constants.PREF_ADVANCED_FOLDER_PICKER, false)) {
+                                val intent = FolderPickerActivity.createIntent(
+                                    context = context,
+                                    initialDirectory = viewModel.folder.path,
+                                    rootDirectory = null // or whatever your logic requires
                                 )
-                            )
+                                advancedDirectoryPicker.launch(intent)
+                            } else {
+                                directoryPicker.launch(
+                                    FileUtils.getPickerInitialUri(
+                                        context,
+                                        viewModel.folder.path
+                                    )
+                                )
+                            }
+
                         },
                         shape = RoundedCornerShape(0.dp),
                         colors = ButtonColors(
@@ -534,9 +568,9 @@ fun VersioningDialog(
 
 
 @Composable
-@Preview(showSystemUi = true, showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(showSystemUi = true, showBackground = true, uiMode = ThemeControls.UI_MODE)
 fun FolderPreview() {
-    MaterialTheme() {
+    SyncthingandroidTheme(ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
         Folder(FolderViewModel())
     }
 }
