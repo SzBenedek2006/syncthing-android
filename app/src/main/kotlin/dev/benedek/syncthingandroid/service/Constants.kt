@@ -37,6 +37,7 @@ object Constants {
     const val PREF_SOCKS_PROXY_ADDRESS: String = "socks_proxy_address"
     const val PREF_HTTP_PROXY_ADDRESS: String = "http_proxy_address"
     const val PREF_UPGRADED_TO_API_LEVEL_30: String = "upgraded_to_api_level_30"
+    const val PREF_ADVANCED_FOLDER_PICKER: String = "advanced_folder_picker"
 
     /**
      * Available options cache for preference [app_settings.debug_facilities_enabled]
