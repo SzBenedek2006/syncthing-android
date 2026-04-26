@@ -1,5 +1,7 @@
 package dev.benedek.syncthingandroid.ui
 
+import android.annotation.SuppressLint
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -98,6 +100,9 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
@@ -456,6 +461,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 // DIALOGS
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun QrCodeDialog(
     deviceId: String,
@@ -470,6 +476,10 @@ fun QrCodeDialog(
         "",
         stringResource(R.string.finish)
     ) {
+        val clipboard = LocalClipboard.current
+        val scope = rememberCoroutineScope()
+        val context = LocalContext.current
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -485,15 +495,30 @@ fun QrCodeDialog(
                     letterSpacing = 0.25.sp
                 )
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        val clipData = ClipData.newPlainText(
+                            context.getString(R.string.device_id),
+                            deviceId
+                        )
+                        val clipEntry = ClipEntry(clipData)
+                        scope.launch {
+                            clipboard.setClipEntry(clipEntry)
+                        }
+                    }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_content_copy_24dp),
                         contentDescription =  stringResource(android.R.string.copy)
                     )
                 }
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, deviceId)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = { context.startActivity(shareIntent) }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_share_24dp),
