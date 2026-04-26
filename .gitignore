@@ -41,3 +41,6 @@ gradle/wrapper/gradlew*
 
 # External build artifacts
 ext/
+
+# Go compiler
+go/
