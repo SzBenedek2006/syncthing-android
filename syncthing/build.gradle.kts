@@ -15,12 +15,12 @@ val goVersionShared = "1.26.1"
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
     val goVersion = goVersionShared
 
-    val goInstallDir = layout.projectDirectory.dir(".gradle/go/$goVersion").asFile
+    val goInstallDir = layout.projectDirectory.dir("go/$goVersion").asFile
     val goBinDir = File(goInstallDir, "go/bin")
 
     // Gradle cache
     outputs.dir(goInstallDir)
-    outputs.upToDateWhen { goBinDir.exists() }
+    inputs.property("goVersion", goVersionShared)
 
     val fs = project.serviceOf<FileSystemOperations>()
     val archives = project.serviceOf<ArchiveOperations>()
