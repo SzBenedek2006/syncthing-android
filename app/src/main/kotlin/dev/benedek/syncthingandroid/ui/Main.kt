@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -606,26 +607,38 @@ fun MainPreview() {
 @Composable
 fun QrCodeDialogPreview() {
     SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-        QrCodeDialog(
-            "SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE",
-            {  },
-            remember { MainViewModel().generateQrBitmap("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE")!! }
-        )
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            QrCodeDialog(
+                "SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE",
+                {  },
+                remember { MainViewModel().generateQrBitmap("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE")!! }
+            )
+        }
     }
 }
 
-@Preview
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun RestartDialogPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        RestartDialog(viewModel(), LocalContext.current)
+    SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            RestartDialog(viewModel(), LocalContext.current)
+        }
     }
 }
 
-@Preview
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun ExitDialogPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        ExitDialog(viewModel(), LocalContext.current, {})
+    SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            ExitDialog(viewModel(), LocalContext.current, {})
+        }
     }
 }
