@@ -2,6 +2,7 @@ package dev.benedek.syncthingandroid.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.BackEventCompat
@@ -96,6 +97,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.tooling.preview.AndroidUiModes
 import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable
@@ -427,7 +429,11 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                 // Dialogs
                 if (viewModel.showDeviceIdDialog) {
                     if (viewModel.systemInfo?.myID != null) {
-                        QrCodeDialog(viewModel.systemInfo!!.myID!!, viewModel)
+                        QrCodeDialog(
+                            viewModel.systemInfo!!.myID!!,
+                            { viewModel.showDeviceIdDialog = false },
+                            remember { viewModel.generateQrBitmap(viewModel.systemInfo!!.myID)!! }
+                        )
                     } else {
                         viewModel.showDeviceIdDialog = false
                         Toast.makeText(context, R.string.could_not_access_deviceid, Toast.LENGTH_SHORT)
@@ -450,11 +456,15 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 // DIALOGS
 
 @Composable
-fun QrCodeDialog(deviceId: String, viewModel: MainViewModel) {
+fun QrCodeDialog(
+    deviceId: String,
+    onDismissRequest: () -> Unit,
+    qrCode: Bitmap
+) {
     CustomDialog(
         stringResource(R.string.device_id),
         null,
-        { viewModel.showDeviceIdDialog = false },
+        onDismissRequest,
         null,
         "",
         stringResource(R.string.finish)
@@ -491,16 +501,14 @@ fun QrCodeDialog(deviceId: String, viewModel: MainViewModel) {
                 }
             }
 
-            val qrCode = remember { viewModel.generateQrBitmap(deviceId) }
-            if (qrCode != null)
-                Image(
-                    qrCode.asImageBitmap(),
-                    null,
-                    Modifier
-                        .padding(vertical = 10.dp)
-                        .fillMaxWidth(0.8f),
-                    contentScale = ContentScale.FillWidth
-                )
+            Image(
+                qrCode.asImageBitmap(),
+                null,
+                Modifier
+                    .padding(vertical = 10.dp)
+                    .fillMaxWidth(0.8f),
+                contentScale = ContentScale.FillWidth
+            )
         }
     }
 }
@@ -594,13 +602,16 @@ fun MainPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun QrCodeDialogPreview() {
-    SyncthingandroidTheme() {
-        QrCodeDialog("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE", viewModel())
+    SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
+        QrCodeDialog(
+            "SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE",
+            {  },
+            remember { MainViewModel().generateQrBitmap("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE")!! }
+        )
     }
-
 }
 
 @Preview
