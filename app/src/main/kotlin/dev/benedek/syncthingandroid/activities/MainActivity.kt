@@ -179,7 +179,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
             return firstInstallTime
         }
 
-    private val mSectionsPagerAdapter: FragmentStateAdapter =
+    private val sectionsPagerAdapter: FragmentStateAdapter =
         object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
                 return when (position) {
@@ -277,7 +277,7 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
              * findViewById(R.id.pager)
              */
             viewPager = binding.pager
-            viewPager?.adapter = mSectionsPagerAdapter
+            viewPager?.adapter = sectionsPagerAdapter
 
             /**
              * This replaces

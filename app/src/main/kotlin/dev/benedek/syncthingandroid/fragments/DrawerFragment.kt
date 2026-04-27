@@ -129,19 +129,19 @@ class DrawerFragment : Fragment(), View.OnClickListener {
             return
         }
 
-        val mApi = mainActivity.api
-        if (mApi != null) {
-            mApi.getSystemInfo { info: SystemInfo? ->
+        val api = mainActivity.api
+        if (api != null) {
+            api.getSystemInfo { info: SystemInfo? ->
                 this.onReceiveSystemInfo(
                     info!!
                 )
             }
-            mApi.getSystemVersion { info: SystemVersion? ->
+            api.getSystemVersion { info: SystemVersion? ->
                 this.onReceiveSystemVersion(
                     info!!
                 )
             }
-            mApi.getConnections { deviceStatuses: DeviceStatuses? ->
+            api.getConnections { deviceStatuses: DeviceStatuses? ->
                 this.onReceiveConnections(
                     deviceStatuses!!
                 )
@@ -257,7 +257,7 @@ class DrawerFragment : Fragment(), View.OnClickListener {
                      * App is running as a service. Show an explanation why exiting syncthing is an
                      * extraordinary request, then ask the user to confirm.
                      */
-                    val mExitConfirmationDialog = Util.getAlertDialogBuilder(mainActivity)
+                    val exitConfirmationDialog = Util.getAlertDialogBuilder(mainActivity)
                         .setTitle(R.string.dialog_exit_while_running_as_service_title)
                         .setMessage(R.string.dialog_exit_while_running_as_service_message)
                         .setPositiveButton(

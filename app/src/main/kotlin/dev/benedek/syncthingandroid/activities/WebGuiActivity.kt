@@ -46,9 +46,9 @@ import java.security.cert.X509Certificate
  * Holds a WebView that shows the web ui of the local syncthing instance.
  */
 class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateChangeListener {
-    private var mCaCert: X509Certificate? = null
+    private var caCert: X509Certificate? = null
 
-    private var mConfig: ConfigXml? = null
+    private var config: ConfigXml? = null
 
     private var binding: ActivityWebGuiBinding? = null
 
@@ -87,14 +87,14 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, error: SslError) {
                 val cert = error.certificate
 
-                if (mCaCert != null && cert != null) {
+                if (caCert != null && cert != null) {
                     val x509Cert = getX509Certificate(cert)
 
                     if (x509Cert != null) {
                         try {
                             // Verify the server's certificate against our loaded CA certificate
                             // and hopefully stop the play console alert
-                            x509Cert.verify(mCaCert!!.publicKey)
+                            x509Cert.verify(caCert!!.publicKey)
                             handler.proceed()
                             return
                         } catch (e: Exception) {
@@ -144,7 +144,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
             v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
             WindowInsetsCompat.CONSUMED
         }
-        mConfig = ConfigXml(this)
+        config = ConfigXml(this)
         loadCaCert()
 
         binding!!.webview.getSettings().javaScriptEnabled = true
@@ -178,7 +178,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
                     0,
                     "localhost|0.0.0.0|127.*|[::1]"
                 )
-                val credentials = mConfig!!.userName + ":" + mConfig!!.apiKey
+                val credentials = config!!.userName + ":" + config!!.apiKey
                 val b64Credentials = Base64.encodeToString(
                     credentials.toByteArray(StandardCharsets.UTF_8),
                     Base64.NO_WRAP
@@ -203,8 +203,8 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
     }
 
     override fun onDestroy() {
-        val mSyncthingService = service
-        mSyncthingService?.unregisterOnServiceStateChangeListener(this)
+        val syncthingService = service
+        syncthingService?.unregisterOnServiceStateChangeListener(this)
         binding!!.webview.destroy()
         super.onDestroy()
     }
@@ -224,7 +224,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
         try {
             inStream = FileInputStream(httpsCertFile)
             val cf = CertificateFactory.getInstance("X.509")
-            mCaCert = cf.generateCertificate(inStream) as X509Certificate
+            caCert = cf.generateCertificate(inStream) as X509Certificate
         } catch (e: FileNotFoundException) {
             throw IllegalArgumentException("Untrusted Certificate", e)
         } catch (e: CertificateException) {
@@ -283,11 +283,11 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
 
             try {
                 val applictionCls = Class.forName("android.app.Application")
-                val loadedApkField = applictionCls.getDeclaredField("mLoadedApk")
+                val loadedApkField = applictionCls.getDeclaredField("loadedApk")
                 loadedApkField.isAccessible = true
                 val loadedApk = loadedApkField.get(appContext)
                 val loadedApkCls = Class.forName("android.app.LoadedApk")
-                val receiversField = loadedApkCls.getDeclaredField("mReceivers")
+                val receiversField = loadedApkCls.getDeclaredField("receivers")
                 receiversField.isAccessible = true
                 val receivers = receiversField.get(loadedApk) as ArrayMap<*, *>?
                 for (receiverMap in receivers!!.values) {

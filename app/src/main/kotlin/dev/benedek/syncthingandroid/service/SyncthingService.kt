@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.preference.PreferenceManager
 import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.http.PollWebGuiAvailableTask
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
 import dev.benedek.syncthingandroid.service.Constants.getConfigFile
@@ -94,11 +93,11 @@ class SyncthingService : Service() {
     val notificationHandler: NotificationHandler by lazy { NotificationHandler(this) }
 
     // FIXME
-    private val mPreferences: SharedPreferences by lazy {
+    private val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(this)
     }
     /**
-     * Object that must be locked upon accessing mCurrentState
+     * Object that must be locked upon accessing currentState
      */
     private val stateLock = Any()
 
@@ -155,7 +154,7 @@ class SyncthingService : Service() {
           This is required that components know about the service State.DISABLED
           if RunConditionMonitor does not send a "shouldRun = true" callback
           to start the binary according to preferences shortly after its creation.
-          See {@link mLastDeterminedShouldRun} defaulting to "false".
+          See {@link lastDeterminedShouldRun} defaulting to "false".
          */
         if (this.currentState == State.DISABLED) {
             synchronized(stateLock) {
@@ -183,18 +182,18 @@ class SyncthingService : Service() {
             shutdown(State.INIT) { this.launchStartupTask() }
         } else if (ACTION_RESET_DATABASE == action) {
             shutdown(State.INIT) {
-                SyncthingRunnable(this, SyncthingRunnable.Command.resetdatabase).run()
+                SyncthingRunnable(this, SyncthingRunnable.Command.ResetDatabase).run()
                 launchStartupTask()
             }
         } else if (ACTION_RESET_DELTAS == action) {
             shutdown(State.INIT) {
-                SyncthingRunnable(this, SyncthingRunnable.Command.resetdeltas).run()
+                SyncthingRunnable(this, SyncthingRunnable.Command.ResetDeltas).run()
                 launchStartupTask()
             }
         } else if (ACTION_REFRESH_NETWORK_INFO == action) {
             runConditionMonitor!!.updateShouldRunDecision()
         } else if (ACTION_IGNORE_DEVICE == action && this.currentState == State.ACTIVE) {
-            // mApi is not null due to State.ACTIVE
+            // api is not null due to State.ACTIVE
             checkNotNull(this.api)
             api!!.ignoreDevice(
                 intent.getStringExtra(EXTRA_DEVICE_ID)!!, intent.getStringExtra(
@@ -207,7 +206,7 @@ class SyncthingService : Service() {
                 )
             )
         } else if (ACTION_IGNORE_FOLDER == action && this.currentState == State.ACTIVE) {
-            // mApi is not null due to State.ACTIVE
+            // api is not null due to State.ACTIVE
             checkNotNull(this.api)
             api!!.ignoreFolder(
                 intent.getStringExtra(EXTRA_DEVICE_ID)!!, intent.getStringExtra(
@@ -326,7 +325,7 @@ class SyncthingService : Service() {
             Log.e(TAG, "onStartupTaskCompleteListener: Syncthing binary lifecycle violated")
             return
         }
-        syncthingRunnable = SyncthingRunnable(this, SyncthingRunnable.Command.main)
+        syncthingRunnable = SyncthingRunnable(this, SyncthingRunnable.Command.Main)
         syncthingRunnableThread = Thread(syncthingRunnable)
         syncthingRunnableThread!!.start()
 
@@ -352,12 +351,12 @@ class SyncthingService : Service() {
     /**
      * Called when [RestApi.checkReadConfigFromRestApiCompleted] detects
      * the RestApi class has been fully initialized.
-     * UI stressing results in mApi getting null on simultaneous shutdown, so
+     * UI stressing results in api getting null on simultaneous shutdown, so
      * we check it for safety.
      */
     fun onApiAvailable() {
         if (this.api == null) {
-            Log.e(TAG, "onApiAvailable: Did we stop the binary during startup? mApi == null")
+            Log.e(TAG, "onApiAvailable: Did we stop the binary during startup? api == null")
             return
         }
         synchronized(stateLock) {
@@ -431,7 +430,7 @@ class SyncthingService : Service() {
      * Stop Syncthing and all helpers like event processor and api handler.
      *
      *
-     * Sets [.mCurrentState] to newState, and calls onKilledListener once Syncthing is killed.
+     * Sets [.currentState] to newState, and calls onKilledListener once Syncthing is killed.
      */
     private fun shutdown(newState: State, onKilledListener: OnSyncthingKilled) {
         Log.i(TAG, "Shutting down background service")
@@ -457,13 +456,13 @@ class SyncthingService : Service() {
         if (syncthingRunnable != null) {
             syncthingRunnable!!.killSyncthing()
             if (syncthingRunnableThread != null) {
-                Log.v(TAG, "Waiting for mSyncthingRunnableThread to finish after killSyncthing ...")
+                Log.v(TAG, "Waiting for syncthingRunnableThread to finish after killSyncthing ...")
                 try {
                     syncthingRunnableThread!!.join()
                 } catch (_: InterruptedException) {
-                    Log.w(TAG, "mSyncthingRunnableThread InterruptedException")
+                    Log.w(TAG, "syncthingRunnableThread InterruptedException")
                 }
-                Log.v(TAG, "Finished mSyncthingRunnableThread.")
+                Log.v(TAG, "Finished syncthingRunnableThread.")
                 syncthingRunnableThread = null
             }
             syncthingRunnable = null

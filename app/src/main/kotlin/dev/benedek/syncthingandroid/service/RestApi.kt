@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import dev.benedek.syncthingandroid.BuildConfig
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.activities.ShareActivity
 import dev.benedek.syncthingandroid.http.ApiRequest.OnSuccessListener
 import dev.benedek.syncthingandroid.http.GetRequest
@@ -42,7 +41,8 @@ import androidx.core.content.edit
  * Provides functions to interact with the syncthing REST API.
  */
 class RestApi(
-    context: Context, url: URL, apiKey: String, apiListener: OnApiAvailableListener,
+    private val context: Context, val url: URL,
+    private val apiKey: String, apiListener: OnApiAvailableListener,
     configListener: OnConfigChangedListener
 ) {
     fun interface OnConfigChangedListener {
@@ -56,10 +56,6 @@ class RestApi(
     fun interface OnResultListener2<T, R> {
         fun onResult(t: T?, r: R?)
     }
-
-    private val mContext: Context
-    val url: URL
-    private val mApiKey: String
 
     /**
      * Returns the version name, or a (text) error message on failure.
@@ -91,7 +87,7 @@ class RestApi(
      * We do this to avoid getting stuck with our main thread due to synchronous REST queries.
      * The correct indication of full initialisation is crucial to stability as other listeners of
      * [SettingsActivity.onServiceStateChange] needs cached config and system information available.
-     * e.g. SettingsFragment need "mLocalDeviceId"
+     * e.g. SettingsFragment need "localDeviceId"
      */
     private var asyncQueryConfigComplete = false
     private var asyncQueryVersionComplete = false
@@ -104,7 +100,7 @@ class RestApi(
     private val asyncQueryCompleteLock = Any()
 
     /**
-     * Object that must be locked upon accessing mConfig
+     * Object that must be locked upon accessing config
      */
     private val configLock = Any()
 
@@ -126,17 +122,9 @@ class RestApi(
         fun onApiAvailable()
     }
 
-    private val onApiAvailableListener: OnApiAvailableListener
+    private val onApiAvailableListener: OnApiAvailableListener = apiListener
 
-    private val onConfigChangedListener: OnConfigChangedListener
-
-    init {
-        mContext = context
-        this.url = url
-        mApiKey = apiKey
-        onApiAvailableListener = apiListener
-        onConfigChangedListener = configListener
-    }
+    private val onConfigChangedListener: OnConfigChangedListener = configListener
 
     /**
      * Gets local device ID, syncthing version and config, then calls all OnApiAvailableListeners.
@@ -149,10 +137,10 @@ class RestApi(
             asyncQuerySystemInfoComplete = false
         }
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_VERSION,
-            mApiKey,
+            apiKey,
             null
         ) { result: String? ->
             val json = JsonParser.parseString(result).getAsJsonObject()
@@ -165,10 +153,10 @@ class RestApi(
             }
         }
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_CONFIG,
-            mApiKey,
+            apiKey,
             null
         ) { result: String? ->
             onReloadConfigComplete(result)
@@ -196,10 +184,10 @@ class RestApi(
 
     fun reloadConfig() {
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_CONFIG,
-            mApiKey,
+            apiKey,
             null
         ) { result: String? -> this.onReloadConfigComplete(result) }
     }
@@ -217,11 +205,11 @@ class RestApi(
         if (BuildConfig.DEBUG) {
             Log.v(
                 TAG,
-                "mConfig.remoteIgnoredDevices = " + Gson().toJson(config!!.remoteIgnoredDevices)
+                "config.remoteIgnoredDevices = " + Gson().toJson(config!!.remoteIgnoredDevices)
             )
         }
 
-        // Update cached device and folder information stored in the mCompletion model.
+        // Update cached device and folder information stored in the completion model.
         completion.updateFromConfig(getDevices(true), this.folders)
     }
 
@@ -229,36 +217,12 @@ class RestApi(
      * Queries debug facilities available from the currently running syncthing binary
      * if the syncthing binary version changed. First launch of the binary is also
      * considered as a version change.
-     * Precondition: [.mVersion] read from REST
+     * Precondition: [.mersion] read from REST
      * 
      * 
      * It's not possible as of 2.0, so always falling back to the hardcoded list.
      */
-    //    private void updateDebugFacilitiesCache() {
-    //        final String PREF_LAST_BINARY_VERSION = "lastBinaryVersion";
-    //        if (!mVersion.equals(PreferenceManager.getDefaultSharedPreferences(mContext).getString(PREF_LAST_BINARY_VERSION, ""))) {
-    //            // First binary launch or binary upgraded case.
-    //            new GetRequest(mContext, mUrl, GetRequest.URI_DEBUG, mApiKey, null, result -> {
-    //                try {
-    //                    JsonObject json = JsonParser.parseString(result).getAsJsonObject();
-    //                    JsonObject jsonFacilities = json.getAsJsonObject("facilities");
-    //                    Set<String> facilitiesToStore = new HashSet<>(jsonFacilities.keySet());
-    //
-    //                    PreferenceManager.getDefaultSharedPreferences(mContext).edit()
-    //                        .putStringSet(Constants.PREF_DEBUG_FACILITIES_AVAILABLE, facilitiesToStore)
-    //                        .apply();
-    //
-    //                    // Store current binary version so we will only store this information again
-    //                    // after a binary update.
-    //                    PreferenceManager.getDefaultSharedPreferences(mContext).edit()
-    //                        .putString(PREF_LAST_BINARY_VERSION, mVersion)
-    //                        .apply();
-    //                } catch (Exception e) {
-    //                    Log.w(TAG, "updateDebugFacilitiesCache: Failed to get debug facilities. result=" + result);
-    //                }
-    //            });
-    //        }
-    //    }
+
     /**
      * Permanently ignore a device when it tries to connect.
      * Ignored devices will not trigger the "DeviceRejected" event
@@ -367,8 +331,8 @@ class RestApi(
     fun overrideChanges(folderId: String) {
         Log.d(TAG, "overrideChanges '$folderId'")
         PostRequest(
-            mContext,
-            this.url, PostRequest.URI_DB_OVERRIDE, mApiKey,
+            context,
+            this.url, PostRequest.URI_DB_OVERRIDE, apiKey,
             mutableMapOf("folder" to folderId), null
         )
     }
@@ -383,7 +347,7 @@ class RestApi(
         synchronized(configLock) {
             jsonConfig = Gson().toJson(config)
         }
-        PostConfigRequest(mContext, this.url, mApiKey, jsonConfig, null)
+        PostConfigRequest(context, this.url, apiKey, jsonConfig, null)
         onConfigChangedListener.onConfigChanged()
     }
 
@@ -396,20 +360,20 @@ class RestApi(
             jsonConfig = Gson().toJson(config)
         }
         PostConfigRequest(
-            mContext,
+            context,
             this.url,
-            mApiKey,
+            apiKey,
             jsonConfig
         ) { _: String? ->
-            val intent = Intent(mContext, SyncthingService::class.java)
+            val intent = Intent(context, SyncthingService::class.java)
                 .setAction(SyncthingService.ACTION_RESTART)
-            mContext.startService(intent)
+            context.startService(intent)
         }
         onConfigChangedListener.onConfigChanged()
     }
 
     fun shutdown() {
-        notificationHandler!!.cancelRestartNotification()
+        notificationHandler.cancelRestartNotification()
     }
 
     val folders: MutableList<Folder?>?
@@ -457,10 +421,10 @@ class RestApi(
     fun removeFolder(id: String?) {
         synchronized(configLock) {
             removeFolderInternal(id)
-            // mCompletion will be updated after the ConfigSaved event.
+            // completion will be updated after the ConfigSaved event.
             sendConfig()
         }
-        PreferenceManager.getDefaultSharedPreferences(mContext).edit {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
             remove(ShareActivity.PREF_FOLDER_SAVED_SUBDIRECTORY + id)
         }
     }
@@ -543,7 +507,7 @@ class RestApi(
     fun removeDevice(deviceId: String?) {
         synchronized(configLock) {
             removeDeviceInternal(deviceId)
-            // mCompletion will be updated after the ConfigSaved event.
+            // completion will be updated after the ConfigSaved event.
             sendConfig()
         }
     }
@@ -603,8 +567,8 @@ class RestApi(
      */
     fun getSystemInfo(listener: OnResultListener1<SystemInfo?>) {
         GetRequest(
-            mContext,
-            this.url, GetRequest.URI_SYSTEM, mApiKey, null
+            context,
+            this.url, GetRequest.URI_SYSTEM, apiKey, null
         ) { result: String? ->
             listener.onResult(
                 Gson().fromJson(result, SystemInfo::class.java)
@@ -624,10 +588,10 @@ class RestApi(
      */
     fun getSystemVersion(listener: OnResultListener1<SystemVersion?>) {
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_VERSION,
-            mApiKey,
+            apiKey,
             null
         ) { result: String? ->
             val systemVersion =
@@ -641,10 +605,10 @@ class RestApi(
      */
     fun getConnections(listener: OnResultListener1<DeviceStatuses?>) {
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_CONNECTIONS,
-            mApiKey,
+            apiKey,
             null,
             OnSuccessListener { result: String? ->
                 val now = System.currentTimeMillis()
@@ -693,10 +657,10 @@ class RestApi(
      */
     fun getFolderStatus(folderId: String, listener: OnResultListener2<String?, FolderStatus?>) {
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_STATUS,
-            mApiKey,
+            apiKey,
             mutableMapOf("folder" to folderId)
         ) { result: String? ->
             val m = Gson().fromJson(result, FolderStatus::class.java)
@@ -734,10 +698,10 @@ class RestApi(
             "limit" to limit.toString()
         )
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_EVENTS,
-            mApiKey,
+            apiKey,
             params
         ) { result: String? ->
             val jsonEvents = JsonParser.parseString(result).getAsJsonArray()
@@ -763,8 +727,8 @@ class RestApi(
         errorListener: OnResultListener1<String?>
     ) {
         GetRequest(
-            mContext,
-            this.url, GetRequest.URI_DEVICEID, mApiKey,
+            context,
+            this.url, GetRequest.URI_DEVICEID, apiKey,
             mutableMapOf("id" to id)
         ) { result: String? ->
             val json = JsonParser.parseString(result).getAsJsonObject()
@@ -788,10 +752,10 @@ class RestApi(
      */
     fun getUsageReport(listener: OnResultListener1<String?>) {
         GetRequest(
-            mContext,
+            context,
             this.url,
             GetRequest.URI_REPORT,
-            mApiKey,
+            apiKey,
             null
         ) { result: String? ->
             val json = JsonParser.parseString(result)

@@ -8,7 +8,7 @@ import android.util.Log
 object ReceiverManager {
     private const val TAG = "ReceiverManager"
 
-    private val mReceivers: MutableList<BroadcastReceiver?> = ArrayList()
+    private val receivers: MutableList<BroadcastReceiver?> = ArrayList()
 
     @JvmStatic
     @Synchronized
@@ -17,7 +17,7 @@ object ReceiverManager {
         receiver: BroadcastReceiver?,
         intentFilter: IntentFilter?
     ) {
-        mReceivers.add(receiver)
+        receivers.add(receiver)
         // FIXME
         context.registerReceiver(receiver, intentFilter)
         Log.v(TAG, "Registered receiver: $receiver with filter: $intentFilter")
@@ -25,7 +25,7 @@ object ReceiverManager {
 
     @Synchronized
     fun isReceiverRegistered(receiver: BroadcastReceiver?): Boolean {
-        return mReceivers.contains(receiver)
+        return receivers.contains(receiver)
     }
 
     @JvmStatic
@@ -35,7 +35,7 @@ object ReceiverManager {
             Log.e(TAG, "unregisterReceiver: context is null")
             return
         }
-        val iter = mReceivers.iterator()
+        val iter = receivers.iterator()
         while (iter.hasNext()) {
             val receiver = iter.next()
             if (isReceiverRegistered(receiver)) {

@@ -72,13 +72,13 @@ object FileUtils {
                     .absolutePath
             }
 
-            val mStorageManager =
+            val storageManager =
                 context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
             val storageVolumeClazz = Class.forName("android.os.storage.StorageVolume")
-            val getVolumeList = mStorageManager.javaClass.getMethod("getVolumeList")
+            val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
             val getUuid = storageVolumeClazz.getMethod("getUuid")
             val isPrimary = storageVolumeClazz.getMethod("isPrimary")
-            val result = getVolumeList.invoke(mStorageManager)
+            val result = getVolumeList.invoke(storageManager)
 
             val length = result?.let { Array.getLength(result) } ?: 0
             for (i in 0..<length) {

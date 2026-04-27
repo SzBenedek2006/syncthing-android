@@ -24,7 +24,7 @@ abstract class SyncthingActivity : ThemedAppCompatActivity(), ServiceConnection 
     var service: SyncthingService? = null
         private set
 
-    private val mServiceConnectedListeners = LinkedList<OnServiceConnectedListener?>()
+    private val serviceConnectedListeners = LinkedList<OnServiceConnectedListener?>()
 
     /**
      * To be used for Fragments.
@@ -63,9 +63,9 @@ abstract class SyncthingActivity : ThemedAppCompatActivity(), ServiceConnection 
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
         this.service = syncthingServiceBinder.service
-        Stream.of<OnServiceConnectedListener?>(mServiceConnectedListeners)
+        Stream.of<OnServiceConnectedListener?>(serviceConnectedListeners)
             .forEach(Consumer { obj: OnServiceConnectedListener? -> obj!!.onServiceConnected() })
-        mServiceConnectedListeners.clear()
+        serviceConnectedListeners.clear()
     }
 
     override fun onServiceDisconnected(componentName: ComponentName?) {
@@ -79,7 +79,7 @@ abstract class SyncthingActivity : ThemedAppCompatActivity(), ServiceConnection 
         if (this.service != null) {
             listener.onServiceConnected()
         } else {
-            mServiceConnectedListeners.addLast(listener)
+            serviceConnectedListeners.addLast(listener)
         }
     }
 

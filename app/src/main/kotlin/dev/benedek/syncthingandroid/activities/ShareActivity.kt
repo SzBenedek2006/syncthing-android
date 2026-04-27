@@ -22,7 +22,6 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.activities.FolderPickerActivity.Companion.createIntent
 import dev.benedek.syncthingandroid.activities.SyncthingActivity.OnServiceConnectedListener
 import dev.benedek.syncthingandroid.databinding.ActivityShareBinding
@@ -144,8 +143,8 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
                 .setValue(binding!!.name.getText().toString())
             val folder = foldersSpinner!!.getSelectedItem() as Folder
             val directory = File(folder.path, savedSubDirectory)
-            val mCopyFilesTask = CopyFilesTask(this, files, folder, directory)
-            mCopyFilesTask.execute()
+            val copyFilesTask = CopyFilesTask(this, files, folder, directory)
+            copyFilesTask.execute()
         }
 
         foldersSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

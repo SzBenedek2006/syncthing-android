@@ -10,10 +10,7 @@ import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
 import androidx.preference.PreferenceManager
-import com.google.common.io.FileWriteMode
-import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.util.Util
 import eu.chainfire.libsuperuser.Shell
 import java.io.BufferedReader
@@ -36,26 +33,27 @@ import java.util.concurrent.atomic.AtomicReference
  *
  * @see [Command Line Docs](http://docs.syncthing.net/users/syncthing.html)
  */
-class SyncthingRunnable(context: Context, command: Command) : Runnable {
-    private val mContext: Context
-    private val mSyncthingBinary: File
-    private val mCommand: Array<String?>
-    private val mLogFile: File
+class SyncthingRunnable(private val context: Context, command: Command) : Runnable {
+    private val syncthingBinary: File = Constants.getSyncthingBinary(this@SyncthingRunnable.context)
+    private val command: Array<String?>
+    private val logFile: File = Constants.getLogFile(this@SyncthingRunnable.context)
 
-    val mPreferences: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(mContext)
+    val preferences: SharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(this@SyncthingRunnable.context)
     }
-    private val mUseRoot: Boolean
-    val mNotificationHandler: NotificationHandler by lazy {
+
+    // Get preferences relevant to starting syncthing core.
+    private val useRoot: Boolean = preferences.getBoolean(Constants.PREF_USE_ROOT, false) && Shell.SU.available()
+    val notificationHandler: NotificationHandler by lazy {
         NotificationHandler(context)
     }
 
     enum class Command {
-        deviceid,  // Output the device ID to the command line.
-        generate,  // Generate keys, a config file and immediately exit.
-        main,  // Run the main Syncthing application.
-        resetdatabase,  // Reset Syncthing's database
-        resetdeltas,  // Reset Syncthing's delta indexes
+        DeviceId,  // Output the device ID to the command line.
+        Generate,  // Generate keys, a config file and immediately exit.
+        Main,  // Run the main Syncthing application.
+        ResetDatabase,  // Reset Syncthing's database
+        ResetDeltas,  // Reset Syncthing's delta indexes
     }
 
     /**
@@ -64,56 +62,50 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      * @param command Which type of Syncthing command to execute.
      */
     init {
-        mContext = context
-        mSyncthingBinary = Constants.getSyncthingBinary(mContext)
-        mLogFile = Constants.getLogFile(mContext)
-
-        // Get preferences relevant to starting syncthing core.
-        mUseRoot = mPreferences!!.getBoolean(Constants.PREF_USE_ROOT, false) && Shell.SU.available()
         @Suppress("REDUNDANT_ELSE_IN_WHEN")
         when (command) {
-            Command.deviceid ->                 // CHANGED: "device-id" is now a subcommand
-                mCommand = arrayOf<String?>(
-                    mSyncthingBinary.path,
+            Command.DeviceId ->                 // CHANGED: "device-id" is now a subcommand
+                this@SyncthingRunnable.command = arrayOf<String?>(
+                    syncthingBinary.path,
                     "device-id",
                     "--home",
-                    mContext.filesDir.toString()
+                    context.filesDir.toString()
                 )
 
-            Command.generate ->                 // CHANGED: "generate" is now a subcommand, and "-logflags" is removed
-                mCommand = arrayOf<String?>(
-                    mSyncthingBinary.path,
+            Command.Generate ->                 // CHANGED: "generate" is now a subcommand, and "-logflags" is removed
+                this@SyncthingRunnable.command = arrayOf<String?>(
+                    syncthingBinary.path,
                     "generate",
                     "--home",
-                    mContext.filesDir.toString()
+                    context.filesDir.toString()
                 )
 
-            Command.main ->                 // CHANGED: "-logflags" is removed. The default logging is fine.
-                mCommand = arrayOf<String?>(
-                    mSyncthingBinary.path,
+            Command.Main ->                 // CHANGED: "-logflags" is removed. The default logging is fine.
+                this@SyncthingRunnable.command = arrayOf<String?>(
+                    syncthingBinary.path,
                     "--home",
-                    mContext.filesDir.toString(),
+                    context.filesDir.toString(),
                     "--no-browser"
                 )
 
-            Command.resetdatabase ->                 // CHANGED: "reset-database" is now a CLI subcommand
-                mCommand = arrayOf<String?>(
-                    mSyncthingBinary.path,
+            Command.ResetDatabase ->                 // CHANGED: "reset-database" is now a CLI subcommand
+                this@SyncthingRunnable.command = arrayOf<String?>(
+                    syncthingBinary.path,
                     "cli",
                     "database",
                     "reset",
                     "--home",
-                    mContext.filesDir.toString()
+                    context.filesDir.toString()
                 )
 
-            Command.resetdeltas ->                 // CHANGED: "reset-deltas" is now a CLI subcommand
-                mCommand = arrayOf<String?>(
-                    mSyncthingBinary.path,
+            Command.ResetDeltas ->                 // CHANGED: "reset-deltas" is now a CLI subcommand
+                this@SyncthingRunnable.command = arrayOf<String?>(
+                    syncthingBinary.path,
                     "cli",
                     "deltas",
                     "reset",
                     "--home",
-                    mContext.filesDir.toString()
+                    context.filesDir.toString()
                 )
 
             else -> throw InvalidParameterException("Unknown command option")
@@ -131,7 +123,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
         val capturedStdOut = StringBuilder()
         // Make sure Syncthing is executable
         try {
-            val pb = ProcessBuilder("chmod", "500", mSyncthingBinary.path)
+            val pb = ProcessBuilder("chmod", "500", syncthingBinary.path)
             val p = pb.start()
             p.waitFor()
         } catch (e: IOException) {
@@ -142,11 +134,11 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
         // Loop Syncthing
         var process: Process? = null
         // Potential fix for #498, keep the CPU running while native binary is running
-        val pm = mContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wakeLock = if (useWakeLock())
             pm.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK,
-                mContext.getString(R.string.app_name) + ":" + TAG
+                context.getString(R.string.app_name) + ":" + TAG
             )
         else
             null
@@ -157,7 +149,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
             val targetEnv = buildEnvironment()
             process = setupAndLaunch(targetEnv)
 
-            mSyncthing.set(process)
+            syncthing.set(process)
 
             var lInfo: Thread? = null
             var lWarn: Thread? = null
@@ -187,7 +179,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
 
             ret = process.waitFor()
             Log.i(TAG, "Syncthing exited with code $ret")
-            mSyncthing.set(null)
+            syncthing.set(null)
             lInfo?.join()
             lWarn?.join()
 
@@ -200,23 +192,23 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
                     )
                     // Restart was requested via Rest API call.
                     Log.i(TAG, "Restarting syncthing")
-                    mContext.startService(
-                        Intent(mContext, SyncthingService::class.java)
+                    context.startService(
+                        Intent(context, SyncthingService::class.java)
                             .setAction(SyncthingService.ACTION_RESTART)
                     )
                 }
 
                 3 -> {
                     Log.i(TAG, "Restarting syncthing")
-                    mContext.startService(
-                        Intent(mContext, SyncthingService::class.java)
+                    context.startService(
+                        Intent(context, SyncthingService::class.java)
                             .setAction(SyncthingService.ACTION_RESTART)
                     )
                 }
 
                 else -> {
                     Log.w(TAG, "Syncthing has crashed (exit code $ret)")
-                    mNotificationHandler!!.showCrashedNotification(
+                    notificationHandler.showCrashedNotification(
                         R.string.notification_crash_title,
                         false
                     )
@@ -251,7 +243,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      * Returns true if the experimental setting for using wake locks has been enabled in settings.
      */
     private fun useWakeLock(): Boolean {
-        return mPreferences!!.getBoolean(Constants.PREF_USE_WAKE_LOCK, false)
+        return preferences.getBoolean(Constants.PREF_USE_WAKE_LOCK, false)
     }
 
     private val syncthingPIDs: MutableList<String?>
@@ -266,7 +258,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
             var psOut: DataOutputStream? = null
             var br: BufferedReader? = null
             try {
-                ps = Runtime.getRuntime().exec(if (mUseRoot) "su" else "sh")
+                ps = Runtime.getRuntime().exec(if (useRoot) "su" else "sh")
                 psOut = DataOutputStream(ps.outputStream)
                 psOut.writeBytes("ps\n")
                 psOut.writeBytes("exit\n")
@@ -325,7 +317,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      * Manually run "sysctl fs.inotify" in a root shell terminal to check current limit.
      */
     private fun increaseInotifyWatches() {
-        if (!mUseRoot || !Shell.SU.available()) {
+        if (!useRoot || !Shell.SU.available()) {
             Log.i(
                 TAG,
                 "increaseInotifyWatches: Root is not available. Cannot increase inotify limit."
@@ -341,7 +333,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      * Look for a running libsyncthing.so process and nice its IO.
      */
     private fun niceSyncthing() {
-        if (!mUseRoot || !Shell.SU.available()) {
+        if (!useRoot || !Shell.SU.available()) {
             Log.i(TAG_NICE, "Root is not available. Cannot nice syncthing.")
             return
         }
@@ -389,9 +381,9 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
                     // Force termination of the process by sending SIGKILL.
                     SystemClock.sleep(3000)
                     exitCode =
-                        Util.runShellCommand("kill -SIGKILL $syncthingPID\n", mUseRoot)
+                        Util.runShellCommand("kill -SIGKILL $syncthingPID\n", useRoot)
                 } else {
-                    exitCode = Util.runShellCommand("kill -SIGINT $syncthingPID\n", mUseRoot)
+                    exitCode = Util.runShellCommand("kill -SIGINT $syncthingPID\n", useRoot)
                     SystemClock.sleep(1000)
                 }
                 if (exitCode == 0) {
@@ -407,18 +399,18 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
     }
 
     /**
-     * Logs the outputs of a stream to logcat and mNativeLog.
+     * Logs the outputs of a stream to logcat and nativeLog.
      *
      * @param is The stream to log.
      * @param priority The priority level.
-     * @param saveLog True if the log should be stored to [.mLogFile].
+     * @param saveLog True if the log should be stored to [.logFile].
      */
     @Suppress("SameParameterValue")
     private fun log(`is`: InputStream?, priority: Int, saveLog: Boolean): Thread {
         val t = Thread {
             try {
                 BufferedReader(InputStreamReader(`is`, StandardCharsets.UTF_8)).use { br ->
-                    val fw = if (saveLog) FileWriter(mLogFile, true) else null
+                    val fw = if (saveLog) FileWriter(logFile, true) else null
                     val bw = if (fw != null) BufferedWriter(fw) else null
 
                     bw.use { bw ->
@@ -446,25 +438,25 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      * Only keep last [.LOG_FILE_MAX_LINES] lines in log file, to avoid bloat.
      */
     private fun trimLogFile() {
-        if (!mLogFile.exists()) return
+        if (!logFile.exists()) return
 
-        if (mLogFile.length() > 2 * 2024*1024) { // > 2 MiB
-            mLogFile.delete()
+        if (logFile.length() > 2 * 2024*1024) { // > 2 MiB
+            logFile.delete()
             Log.w(TAG, "Logfile somehow became larger than 2 MiB, so deleting.\n" +
                     "If this happens again, this is a bug!")
             return
         }
 
         try {
-            val lnr = LineNumberReader(FileReader(mLogFile))
+            val lnr = LineNumberReader(FileReader(logFile))
             lnr.skip(Long.MAX_VALUE)
 
             val lineCount = lnr.lineNumber
             lnr.close()
 
-            val tempFile = File(mContext.getExternalFilesDir(null), "syncthing.log.tmp")
+            val tempFile = File(context.getExternalFilesDir(null), "syncthing.log.tmp")
 
-            val reader = BufferedReader(FileReader(mLogFile))
+            val reader = BufferedReader(FileReader(logFile))
             val writer = BufferedWriter(FileWriter(tempFile))
 
             var currentLine: String?
@@ -478,8 +470,8 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
             }
             writer.close()
             reader.close()
-            if (!tempFile.renameTo(mLogFile)) {
-                Log.w(TAG, "Failed to rename $tempFile to $mLogFile.")
+            if (!tempFile.renameTo(logFile)) {
+                Log.w(TAG, "Failed to rename $tempFile to $logFile.")
             }
         } catch (e: IOException) {
             Log.w(TAG, "Failed to trim log file", e)
@@ -492,12 +484,12 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
         targetEnv["HOME"] = Environment.getExternalStorageDirectory().absolutePath
         targetEnv["STTRACE"] = TextUtils.join(
             " ",
-            mPreferences!!.getStringSet(
+            preferences!!.getStringSet(
                 Constants.PREF_DEBUG_FACILITIES_ENABLED,
                 HashSet()
             )!!
         )
-        val externalFilesDir: File = checkNotNull(mContext.getExternalFilesDir(null))
+        val externalFilesDir: File = checkNotNull(context.getExternalFilesDir(null))
         Log.d("externalFilesDir", externalFilesDir.toString())
         targetEnv["STGUIASSETS"] = externalFilesDir.absolutePath + "/gui"
         targetEnv["STMONITORED"] = "1"
@@ -505,11 +497,11 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
         // Disable hash benchmark for faster startup.
         // https://github.com/syncthing/syncthing/issues/4348
         targetEnv["STHASHING"] = "minio"
-        if (mPreferences!!.getBoolean(Constants.PREF_USE_TOR, false)) {
+        if (preferences!!.getBoolean(Constants.PREF_USE_TOR, false)) {
             targetEnv["all_proxy"] = "socks5://localhost:9050"
             targetEnv["ALL_PROXY_NO_FALLBACK"] = "1"
         } else {
-            val socksProxyAddress: String = mPreferences!!.getString(
+            val socksProxyAddress: String = preferences!!.getString(
                 Constants.PREF_SOCKS_PROXY_ADDRESS,
                 ""
             )!!
@@ -517,7 +509,7 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
                 targetEnv["all_proxy"] = socksProxyAddress
             }
 
-            val httpProxyAddress: String = mPreferences!!.getString(
+            val httpProxyAddress: String = preferences!!.getString(
                 Constants.PREF_HTTP_PROXY_ADDRESS,
                 ""
             )!!
@@ -526,14 +518,14 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
                 targetEnv["https_proxy"] = httpProxyAddress
             }
         }
-        if (mPreferences!!.getBoolean("use_legacy_hashing", false)) targetEnv["STHASHING"] = "standard"
-        putCustomEnvironmentVariables(targetEnv, mPreferences!!)
+        if (preferences!!.getBoolean("use_legacy_hashing", false)) targetEnv["STHASHING"] = "standard"
+        putCustomEnvironmentVariables(targetEnv, preferences!!)
         return targetEnv
     }
 
     @Throws(IOException::class)
     private fun setupAndLaunch(env: HashMap<String?, String?>): Process {
-        if (mUseRoot) {
+        if (useRoot) {
             val pb = ProcessBuilder("su")
             val process = pb.start()
             // The su binary prohibits the inheritance of environment variables.
@@ -548,12 +540,12 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
             // Without using exec, the process will drop to the root shell as soon as Syncthing terminates like a normal shell does.
             // If we did not use exec, we would wait infinitely for the process to terminate (ret = process.waitFor(); in run()).
             // With exec the whole process terminates when Syncthing exits.
-            suOut.writeBytes("exec " + TextUtils.join(" ", mCommand) + "\n")
+            suOut.writeBytes("exec " + TextUtils.join(" ", command) + "\n")
             // suOut.flush has to be called to fix issue - #1005 Endless loader after enabling "Superuser mode"
             suOut.flush()
             return process
         } else {
-            val pb = ProcessBuilder(*mCommand)
+            val pb = ProcessBuilder(*command)
             pb.environment().putAll(env)
             return pb.start()
         }
@@ -565,6 +557,6 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
         private const val TAG_NICE = "SyncthingRunnableIoNice"
         private const val LOG_FILE_MAX_LINES = 10
 
-        private val mSyncthing = AtomicReference<Process?>()
+        private val syncthing = AtomicReference<Process?>()
     }
 }

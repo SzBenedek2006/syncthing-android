@@ -122,9 +122,9 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     }
 
     /**
-     * If a root directory is specified it is added to [.mRootsAdapter] otherwise
+     * If a root directory is specified it is added to [.rootsAdapter] otherwise
      * all available storage devices/folders from various APIs are inserted into
-     * [.mRootsAdapter].
+     * [.rootsAdapter].
      */
     @SuppressLint("NewApi")
     private fun populateRoots() {
@@ -229,7 +229,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     }
 
     /**
-     * Refreshes the ListView to show the contents of the folder in ``mLocation.peek()}.
+     * Refreshes the ListView to show the contents of the folder in ``location.peek()}.
      */
     private fun displayFolder(folder: File?) {
         location = folder

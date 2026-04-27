@@ -23,7 +23,7 @@ class PollWebGuiAvailableTask(
     private var logIncidence = 0
 
     /**
-     * Object that must be locked upon accessing mListener
+     * Object that must be locked upon accessing listener
      */
     private val listenerLock = Any()
 

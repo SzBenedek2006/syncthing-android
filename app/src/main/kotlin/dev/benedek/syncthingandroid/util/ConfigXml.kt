@@ -43,7 +43,7 @@ class ConfigXml(private val context: Context) {
         val isFirstStart = !configFile.exists()
         if (isFirstStart) {
             Log.i(TAG, "App started for the first time. Generating keys and config.")
-            SyncthingRunnable(context, SyncthingRunnable.Command.generate).run()
+            SyncthingRunnable(context, SyncthingRunnable.Command.Generate).run()
         }
 
         readConfig()
@@ -52,7 +52,7 @@ class ConfigXml(private val context: Context) {
             var changed = false
 
             Log.i(TAG, "Starting syncthing to retrieve local device id.")
-            val logOutput = SyncthingRunnable(context, SyncthingRunnable.Command.deviceid).run(true)
+            val logOutput = SyncthingRunnable(context, SyncthingRunnable.Command.DeviceId).run(true)
             val localDeviceID = logOutput.replace("\n", "")
             // Verify local device ID is correctly formatted.
             if (localDeviceID.matches("^([A-Z0-9]{7}-){7}[A-Z0-9]{7}$".toRegex())) {
@@ -272,7 +272,7 @@ class ConfigXml(private val context: Context) {
     /**
      * Set device model name as device name for Syncthing.
      * 
-     * We need to iterate through XML nodes manually, as mConfig.getDocumentElement() will also
+     * We need to iterate through XML nodes manually, as config.getDocumentElement() will also
      * return nested elements inside folder element. We have to check that we only rename the
      * device corresponding to the local device ID.
      * Returns if changes to the config have been made.
@@ -333,7 +333,7 @@ class ConfigXml(private val context: Context) {
     }
 
     /**
-     * Writes updated mConfig back to file.
+     * Writes updated config back to file.
      */
     private fun saveChanges() {
         if (!configFile.canWrite() && !fixAppDataPermissions(context)) {
@@ -342,19 +342,19 @@ class ConfigXml(private val context: Context) {
         }
 
         Log.i(TAG, "Writing updated config file")
-        val mConfigTempFile = Constants.getConfigTempFile(context)
+        val configTempFile = Constants.getConfigTempFile(context)
         try {
             val transformerFactory = TransformerFactory.newInstance()
             val transformer = transformerFactory.newTransformer()
             val domSource = DOMSource(config)
-            val streamResult = StreamResult(mConfigTempFile)
+            val streamResult = StreamResult(configTempFile)
             transformer.transform(domSource, streamResult)
         } catch (e: TransformerException) {
             Log.w(TAG, "Failed to save temporary config file", e)
             return
         }
         try {
-            if (!mConfigTempFile.renameTo(configFile)) {
+            if (!configTempFile.renameTo(configFile)) {
                 Log.w(TAG, "Failed to rename temporary config file to original file")
             }
         } catch (e: Exception) {

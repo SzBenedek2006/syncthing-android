@@ -14,18 +14,16 @@ import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.activities.LogActivity
 import dev.benedek.syncthingandroid.activities.MainActivity
 
-class NotificationHandler(context: Context) {
-    private val mContext: Context
+class NotificationHandler(private val context: Context) {
 
     private val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val persistentChannel: NotificationChannel?
     private val persistentChannelWaiting: NotificationChannel?
     private val infoChannel: NotificationChannel?
@@ -34,13 +32,10 @@ class NotificationHandler(context: Context) {
     private var appShutdownInProgress = false
 
     init {
-        mContext = context
-        notificationManager =
-            mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             persistentChannel = NotificationChannel(
-                CHANNEL_PERSISTENT, mContext.getString(R.string.notifications_persistent_channel),
+                CHANNEL_PERSISTENT, context.getString(R.string.notifications_persistent_channel),
                 NotificationManager.IMPORTANCE_MIN
             )
             persistentChannel.enableLights(false)
@@ -51,7 +46,7 @@ class NotificationHandler(context: Context) {
 
             persistentChannelWaiting = NotificationChannel(
                 CHANNEL_PERSISTENT_WAITING,
-                mContext.getString(R.string.notification_persistent_waiting_channel),
+                context.getString(R.string.notification_persistent_waiting_channel),
                 NotificationManager.IMPORTANCE_MIN
             )
             persistentChannelWaiting.enableLights(false)
@@ -61,7 +56,7 @@ class NotificationHandler(context: Context) {
             notificationManager.createNotificationChannel(persistentChannelWaiting)
 
             infoChannel = NotificationChannel(
-                CHANNEL_INFO, mContext.getString(R.string.notifications_other_channel),
+                CHANNEL_INFO, context.getString(R.string.notifications_other_channel),
                 NotificationManager.IMPORTANCE_LOW
             )
             infoChannel.enableVibration(false)
@@ -77,9 +72,9 @@ class NotificationHandler(context: Context) {
 
     private fun getNotificationBuilder(channel: NotificationChannel?): NotificationCompat.Builder {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel != null) {
-            NotificationCompat.Builder(mContext, channel.id)
+            NotificationCompat.Builder(context, channel.id)
         } else {
-            NotificationCompat.Builder(mContext)
+            NotificationCompat.Builder(context)
         }
     }
 
@@ -140,17 +135,17 @@ class NotificationHandler(context: Context) {
          */
         val idToShow: Int = if (syncthingRunning) ID_PERSISTENT else ID_PERSISTENT_WAITING
         val idToCancel: Int = if (syncthingRunning) ID_PERSISTENT_WAITING else ID_PERSISTENT
-        val intent = Intent(mContext, MainActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java)
         val channel = (if (syncthingRunning) persistentChannel else persistentChannelWaiting)
         val builder = getNotificationBuilder(channel)
-            .setContentTitle(mContext.getString(title))
+            .setContentTitle(context.getString(title))
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setContentIntent(
                 PendingIntent.getActivity(
-                    mContext,
+                    context,
                     0,
                     intent,
                     Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -191,14 +186,14 @@ class NotificationHandler(context: Context) {
 
     fun showCrashedNotification(@StringRes title: Int, force: Boolean) {
         if (force || preferences!!.getBoolean("notify_crashes", false)) {
-            val intent = Intent(mContext, LogActivity::class.java)
+            val intent = Intent(context, LogActivity::class.java)
             val n = getNotificationBuilder(infoChannel!!)
-                .setContentTitle(mContext.getString(title))
-                .setContentText(mContext.getString(R.string.notification_crash_text))
+                .setContentTitle(context.getString(title))
+                .setContentText(context.getString(R.string.notification_crash_text))
                 .setSmallIcon(R.drawable.ic_stat_notify)
                 .setContentIntent(
                     PendingIntent.getActivity(
-                        mContext,
+                        context,
                         0,
                         intent,
                         Constants.FLAG_IMMUTABLE
@@ -246,15 +241,15 @@ class NotificationHandler(context: Context) {
          */
         notificationManager.cancel(notificationId)
         val n = getNotificationBuilder(infoChannel!!)
-            .setContentTitle(mContext.getString(R.string.app_name))
+            .setContentTitle(context.getString(R.string.app_name))
             .setContentText(text)
             .setStyle(
                 NotificationCompat.BigTextStyle()
                     .bigText(text)
             )
             .setContentIntent(piAccept)
-            .addAction(R.drawable.ic_stat_notify, mContext.getString(R.string.accept), piAccept)
-            .addAction(R.drawable.ic_stat_notify, mContext.getString(R.string.ignore), piIgnore)
+            .addAction(R.drawable.ic_stat_notify, context.getString(R.string.accept), piAccept)
+            .addAction(R.drawable.ic_stat_notify, context.getString(R.string.ignore), piIgnore)
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setAutoCancel(true)
             .build()
@@ -262,14 +257,14 @@ class NotificationHandler(context: Context) {
     }
 
     fun showStoragePermissionRevokedNotification() {
-        val intent = Intent(mContext, FirstStartActivity::class.java)
+        val intent = Intent(context, FirstStartActivity::class.java)
         val n = getNotificationBuilder(infoChannel!!)
-            .setContentTitle(mContext.getString(R.string.syncthing_terminated))
-            .setContentText(mContext.getString(R.string.toast_write_storage_permission_required))
+            .setContentTitle(context.getString(R.string.syncthing_terminated))
+            .setContentText(context.getString(R.string.toast_write_storage_permission_required))
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setContentIntent(
                 PendingIntent.getActivity(
-                    mContext,
+                    context,
                     0,
                     intent,
                     Constants.FLAG_IMMUTABLE
@@ -283,14 +278,14 @@ class NotificationHandler(context: Context) {
 
     // FIXME
     fun showRestartNotification() {
-        val intent = Intent(mContext, SyncthingService::class.java)
+        val intent = Intent(context, SyncthingService::class.java)
             .setAction(SyncthingService.ACTION_RESTART)
         // FIXME
-        val pi = PendingIntent.getService(mContext, 0, intent, Constants.FLAG_IMMUTABLE)
+        val pi = PendingIntent.getService(context, 0, intent, Constants.FLAG_IMMUTABLE)
 
         val n = getNotificationBuilder(infoChannel!!)
-            .setContentTitle(mContext.getString(R.string.restart_title))
-            .setContentText(mContext.getString(R.string.restart_notification_text))
+            .setContentTitle(context.getString(R.string.restart_title))
+            .setContentText(context.getString(R.string.restart_notification_text))
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setContentIntent(pi)
             .build()
@@ -303,18 +298,18 @@ class NotificationHandler(context: Context) {
     }
 
     fun showStopSyncthingWarningNotification() {
-        val msg = mContext.getString(R.string.appconfig_receiver_background_enabled)
+        val msg = context.getString(R.string.appconfig_receiver_background_enabled)
         val nb = getNotificationBuilder(infoChannel!!)
             .setContentText(msg)
             .setTicker(msg)
             .setStyle(NotificationCompat.BigTextStyle().bigText(msg))
-            .setContentTitle(mContext.getText(mContext.applicationInfo.labelRes))
+            .setContentTitle(context.getText(context.applicationInfo.labelRes))
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setAutoCancel(true)
             .setContentIntent(
                 PendingIntent.getActivity(
-                    mContext, 0,
-                    Intent(mContext, MainActivity::class.java),
+                    context, 0,
+                    Intent(context, MainActivity::class.java),
                     Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
