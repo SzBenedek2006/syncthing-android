@@ -416,25 +416,26 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
     @Suppress("SameParameterValue")
     private fun log(`is`: InputStream?, priority: Int, saveLog: Boolean): Thread {
         val t = Thread {
-            var br: BufferedReader? = null
             try {
-                br = BufferedReader(InputStreamReader(`is`, StandardCharsets.UTF_8))
-                var line: String?
-                while ((br.readLine().also { line = it }) != null) {
-                    Log.println(priority, TAG_NATIVE, line!!)
+                BufferedReader(InputStreamReader(`is`, StandardCharsets.UTF_8)).use { br ->
+                    val fw = if (saveLog) FileWriter(mLogFile, true) else null
+                    val bw = if (fw != null) BufferedWriter(fw) else null
 
-                    if (saveLog) {
-                        Files.asCharSink(mLogFile, StandardCharsets.UTF_8, FileWriteMode.APPEND)
-                            .write(line)
+                    bw.use { bw ->
+                        var line: String?
+                        while ((br.readLine().also { line = it } != null)) {
+                            Log.println(priority, TAG_NATIVE, line!!)
+
+                            if (bw != null) {
+                                bw.write(line)
+                                bw.write("\n")
+                                bw.flush()
+                            }
+                        }
                     }
                 }
             } catch (e: IOException) {
                 Log.w(TAG, "Failed to read Syncthing's command line output", e)
-            }
-            try {
-                br!!.close()
-            } catch (e: IOException) {
-                Log.w(TAG, "log: Failed to close bufferedReader", e)
             }
         }
         t.start()
@@ -446,6 +447,13 @@ class SyncthingRunnable(context: Context, command: Command) : Runnable {
      */
     private fun trimLogFile() {
         if (!mLogFile.exists()) return
+
+        if (mLogFile.length() > 2 * 2024*1024) { // > 2 MiB
+            mLogFile.delete()
+            Log.w(TAG, "Logfile somehow became larger than 2 MiB, so deleting.\n" +
+                    "If this happens again, this is a bug!")
+            return
+        }
 
         try {
             val lnr = LineNumberReader(FileReader(mLogFile))
