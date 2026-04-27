@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import java.util.Collections
 import java.util.Locale
 import java.util.TreeMap
@@ -39,13 +38,18 @@ class Languages(context: Context) {
             locale = DEFAULT_LOCALE
         } else {
             /* handle locales with the country in it, i.e. zh_CN, zh_TW, etc */
-            val localeSplit: Array<String?> =
-                language.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (localeSplit.size > 1) {
-                locale = Locale(localeSplit[0], localeSplit[1])
-            } else {
-                locale = Locale(language)
-            }
+
+            val languageTag = language.replace('_', '-')
+            locale = Locale.forLanguageTag(languageTag)
+
+            // Old implementation TODO: Remove after testing
+//            val localeSplit: Array<String?> =
+//                language.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+//            if (localeSplit.size > 1) {
+//                locale = Locale(localeSplit[0], localeSplit[1])
+//            } else {
+//                locale = Locale(language)
+//            }
         }
         Locale.setDefault(locale)
 
@@ -78,7 +82,7 @@ class Languages(context: Context) {
          * @return an array of the names of all the supported languages, sorted to
          * match what is returned by [Languages.getSupportedLocales].
          */
-        get() = mAvailableLanguages.values.toTypedArray<String?>()
+        get() = availableLanguages.values.toTypedArray<String?>()
 
     val supportedLocales: Array<String?>
         /**
@@ -86,41 +90,40 @@ class Languages(context: Context) {
          */
         get() {
             val keys: MutableSet<String?> =
-                mAvailableLanguages.keys
+                availableLanguages.keys
             return keys.toTypedArray<String?>()
         }
 
     init {
         val tmpMap: MutableMap<String?, String?> = TreeMap<String?, String?>()
-        val locales = listOf<Locale?>(*LOCALES_TO_TEST)
+        val locales = listOf(*LOCALES_TO_TEST)
         // Capitalize language names
-        Collections.sort(
-            locales,
-            Comparator { l1: Locale?, l2: Locale? ->
-                l1!!.displayLanguage.compareTo(l2!!.displayLanguage)
-            })
-        for (locale in locales) {
-            var displayLanguage = locale?.getDisplayLanguage(locale)
+        val sortedLocales = locales.filterNotNull().sortedWith { l1, l2 -> l1.displayLanguage.compareTo(l2.displayLanguage) }
+
+
+        for (locale in sortedLocales) {
+            var displayLanguage = locale.getDisplayLanguage(locale)
             displayLanguage =
-                locale?.let { displayLanguage?.substring(0, 1)?.uppercase(it) } + displayLanguage?.substring(1)
-            tmpMap[locale?.language] = displayLanguage
+                locale.let { displayLanguage.substring(0, 1).uppercase(it) } + displayLanguage.substring(1)
+            tmpMap[locale.language] = displayLanguage
         }
 
         // remove the current system language from the menu
         tmpMap.remove(Locale.getDefault().language)
 
         /* SYSTEM_DEFAULT is a fake one for displaying in a chooser menu. */
-        tmpMap.put(USE_SYSTEM_DEFAULT, context.getString(R.string.pref_language_default))
-        mAvailableLanguages = Collections.unmodifiableMap<String?, String?>(tmpMap)
+        tmpMap[USE_SYSTEM_DEFAULT] = context.getString(R.string.pref_language_default)
+        availableLanguages = Collections.unmodifiableMap<String?, String?>(tmpMap)
     }
 
+    @Suppress("JoinDeclarationAndAssignment")
     companion object {
         const val USE_SYSTEM_DEFAULT: String = ""
 
         private val DEFAULT_LOCALE: Locale
         const val PREFERENCE_LANGUAGE: String = "pref_current_language"
 
-        private lateinit var mAvailableLanguages: MutableMap<String?, String?>
+        private lateinit var availableLanguages: MutableMap<String?, String?>
 
         init {
             DEFAULT_LOCALE = Locale.getDefault()
@@ -135,44 +138,44 @@ class Languages(context: Context) {
             Locale.KOREAN,
             Locale.SIMPLIFIED_CHINESE,
             Locale.TRADITIONAL_CHINESE,
-            Locale("af"),
-            Locale("ar"),
-            Locale("be"),
-            Locale("bg"),
-            Locale("ca"),
-            Locale("cs"),
-            Locale("da"),
-            Locale("el"),
-            Locale("es"),
-            Locale("eo"),
-            Locale("et"),
-            Locale("eu"),
-            Locale("fa"),
-            Locale("fi"),
-            Locale("he"),
-            Locale("hi"),
-            Locale("hu"),
-            Locale("hy"),
-            Locale("id"),
-            Locale("is"),
-            Locale("it"),
-            Locale("ml"),
-            Locale("my"),
-            Locale("nb"),
-            Locale("nl"),
-            Locale("pl"),
-            Locale("pt"),
-            Locale("ro"),
-            Locale("ru"),
-            Locale("sc"),
-            Locale("sk"),
-            Locale("sn"),
-            Locale("sr"),
-            Locale("sv"),
-            Locale("th"),
-            Locale("tr"),
-            Locale("uk"),
-            Locale("vi"),
+            Locale.forLanguageTag("af"),
+            Locale.forLanguageTag("ar"),
+            Locale.forLanguageTag("be"),
+            Locale.forLanguageTag("bg"),
+            Locale.forLanguageTag("ca"),
+            Locale.forLanguageTag("cs"),
+            Locale.forLanguageTag("da"),
+            Locale.forLanguageTag("el"),
+            Locale.forLanguageTag("es"),
+            Locale.forLanguageTag("eo"),
+            Locale.forLanguageTag("et"),
+            Locale.forLanguageTag("eu"),
+            Locale.forLanguageTag("fa"),
+            Locale.forLanguageTag("fi"),
+            Locale.forLanguageTag("he"),
+            Locale.forLanguageTag("hi"),
+            Locale.forLanguageTag("hu"),
+            Locale.forLanguageTag("hy"),
+            Locale.forLanguageTag("id"),
+            Locale.forLanguageTag("is"),
+            Locale.forLanguageTag("it"),
+            Locale.forLanguageTag("ml"),
+            Locale.forLanguageTag("my"),
+            Locale.forLanguageTag("nb"),
+            Locale.forLanguageTag("nl"),
+            Locale.forLanguageTag("pl"),
+            Locale.forLanguageTag("pt"),
+            Locale.forLanguageTag("ro"),
+            Locale.forLanguageTag("ru"),
+            Locale.forLanguageTag("sc"),
+            Locale.forLanguageTag("sk"),
+            Locale.forLanguageTag("sn"),
+            Locale.forLanguageTag("sr"),
+            Locale.forLanguageTag("sv"),
+            Locale.forLanguageTag("th"),
+            Locale.forLanguageTag("tr"),
+            Locale.forLanguageTag("uk"),
+            Locale.forLanguageTag("vi"),
         )
     }
 }
