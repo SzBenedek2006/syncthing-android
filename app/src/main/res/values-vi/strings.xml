@@ -275,11 +275,9 @@
     <string name="use_tor_title">Sử dụng Tor</string>
     <string name="use_tor_summary">Buộc tất cả lưu lượng đi qua Tor để tăng sự riêng tư. Yêu cầu Orbot. Tắt các tuỳ chọn proxy.</string>
     <string name="socks_proxy_address_title">Proxy SOCKS5</string>
-    <string name="socks_proxy_address_example">socks5://192.168.0.1:1080</string>
     <!--Toast after entering invalid socks proxy address-->
     <string name="toast_invalid_socks_proxy_address">Đầu vào vi phạm cú pháp proxy \'socks5://[IP/TÊN MIỀN]:[CỔNG]\'</string>
     <string name="http_proxy_address_title">Proxy HTTP(S)</string>
-    <string name="http_proxy_address_example">http://192.168.0.1:8080</string>
     <!--Toast after entering invalid http proxy address-->
     <string name="toast_invalid_http_proxy_address">Đầu vào vi phạm cú pháp proxy \'http://[IP/TÊN MIỀN]:[CỔNG]\'</string>
     <string name="use_legacy_hashing_title">Sử dụng hash cũ</string>

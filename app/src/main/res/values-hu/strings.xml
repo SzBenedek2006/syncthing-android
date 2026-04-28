@@ -15,6 +15,7 @@
     <string name="storage_permission_title">Tárhely jogosultság</string>
     <string name="storage_permission_desc">A szinkronizáláshoz a Syncthingnek hozzáférésre van szüksége a tárhelyhez.</string>
     <!--Slide 3-->
+    <string name="dialog_all_files_access_not_supported">Az eszközöd nem támogatja az összes fájl hozzáférését</string>
     <string name="location_permission_title">Földrajzi hely engedély (háttérben)</string>
     <string name="location_permission_desc">A Syncthing beállítható úgy, hogy csak a kiválasztott Wi-Fi hálózatokon szinkronizáljon. Ehhez az alkalmazás bezárásakor is meg kell keresnie az éppen csatlakoztatott Wi-Fi SSID-jét. Ezért engedélyt igényel a helymeghatározáshoz való hozzáféréshez a háttérben. Ezt az információt nem használja fel az Ön tartózkodási helyének megkeresésére. Az egyetlen tárolt információ az a Wi-Fi, amelyet manuálisan választott a listához - más felhasználói adat nem kerül tárolásra.
 \n
@@ -195,6 +196,7 @@
     <string name="category_debug">Hibakeresés</string>
     <string name="category_experimental">Kísérleti</string>
     <!--Preference screen - Run conditions-->
+    <string name="run_conditions_title">Futási feltételek engedélyezése</string>
     <string name="run_conditions_summary">A következő beállításokkal eldöntheted, hogy a Syncthing mikor fusson.</string>
     <string name="run_on_mobile_data_title">Futtatás mobil adatkapcsolaton</string>
     <string name="run_on_mobile_data_summary">Futtatás mikor az eszköz mobil adatkapcsolattal csatlakozik a hálózathoz. Figyelem: Ez nagy mennyiségű adat szinkronizálásakor sok adatot használ fel mobilszolgáltatói keretből.</string>
@@ -276,11 +278,9 @@
     <string name="use_tor_title">Tor használata</string>
     <string name="use_tor_summary">A megnövelt biztonság érdekében minden forgalom a TOR-on keresztül. Orbot szükséges. Letiltja a proxy beállításokat.</string>
     <string name="socks_proxy_address_title">SOCKS5 proxy</string>
-    <string name="socks_proxy_address_example">socks5://192.168.0.1:1080</string>
     <!--Toast after entering invalid socks proxy address-->
     <string name="toast_invalid_socks_proxy_address">A bemenet sérti a proxy szintaxist \'socks5://[IP/HOSTNAME]:[PORT]\'</string>
     <string name="http_proxy_address_title">HTTP(S) proxy</string>
-    <string name="http_proxy_address_example">http://192.168.0.1:8080</string>
     <!--Toast after entering invalid http proxy address-->
     <string name="toast_invalid_http_proxy_address">A bemenet sérti a proxy szintaxist \'http://[IP/HOSTNAME]:[PORT]\'</string>
     <string name="use_legacy_hashing_title">Régi típusú hashing használata</string>
@@ -528,8 +528,25 @@
     <string name="browse">Tallóz</string>
     <string name="no_sub_folder_is_selected">Nincs kiválasztott almappa</string>
     <string name="share_device_id_chooser">Eszközazonosító megosztása ezzel</string>
+    <string name="enable_notification_permission">Értesítési engedély engedélyezése</string>
+    <string name="title_activity_test">Teszt</string>
     <string name="select">Kiválaszt</string>
     <string name="open_stignore_description">A .stignore fájl megnyitása a szerkesztődben.</string>
     <string name="default_indicator">alapértelmezett</string>
     <string name="unset_indicator">nincs beállítva</string>
+    <string name="folder_id_not_valid">Helytelen mappaazonosító</string>
+    <string name="delete_folder_description">Eltávolítja ezt a mappát a Syncthing-ből. Fájlok a lemezen nem kerülnek törlésre.</string>
+    <string name="only_available_on_android_or_higher">Android %1$d vagy magasabb szükséges.</string>
+    <string name="dynamic_colors_description">Követi a rendszer színeit a Material You monet témázás használatával.</string>
+    <string name="dynamic_colors_title">Dinamikus szín</string>
+    <string name="blur_description">Elhomályosítja lebegő elemek háttereit.</string>
+    <string name="blur_title">Elhomályosítás</string>
+    <string name="exit_question">Kilépés?</string>
+    <string name="exit_description">Ez be fogja zárni az appot és leállítja a Syncthinget.</string>
+    <string name="restart_question">Újraindítás?</string>
+    <string name="restart_description">Újraindítja a Syncthinget a háttérben. Ez nem fogja bezárni az appot.</string>
+    <string name="preview">Előnézet</string>
+    <string name="require_notification_permission_desc">Szükséges az új eszközcsatlakozásokról, mappamegosztási kérelmekről stb. szóló értesítések megjelenítéséhez.</string>
+    <string name="notification_permission_title">Értesítési engedély</string>
+    <string name="beta">Béta</string>
 </resources>

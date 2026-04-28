@@ -143,9 +143,7 @@
     <!--Titles for the preference to undo ignored devices and folders-->
     <!--Toast after entering invalid integer value-->
     <!--Experimental options-->
-    <string name="socks_proxy_address_example">socks5://192.168.0.1:1080</string>
     <!--Toast after entering invalid socks proxy address-->
-    <string name="http_proxy_address_example">http://192.168.0.1:8080</string>
     <!--Toast after entering invalid http proxy address-->
     <!--Dialog shown before config export-->
     <!--Dialog shown before config import-->

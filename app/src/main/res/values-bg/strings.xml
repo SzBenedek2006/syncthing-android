@@ -276,11 +276,9 @@
     <string name="use_tor_title">Ползване на Тор</string>
     <string name="use_tor_summary">Пренасочва целия трафик през мрежата на Тор с цел поверителност. Изисква Orbot. Изключва настройките за мрежов посредник.</string>
     <string name="socks_proxy_address_title">Мрежов посредник на SOCKS5</string>
-    <string name="socks_proxy_address_example">socks5://192.168.0.1:1080</string>
     <!--Toast after entering invalid socks proxy address-->
     <string name="toast_invalid_socks_proxy_address">Неприемлив синтаксис за мрежов посредник \'socks5://[IP/HOSTNAME]:[PORT]\'</string>
     <string name="http_proxy_address_title">Мрежов посредник за HTTP(S)</string>
-    <string name="http_proxy_address_example">http://192.168.0.1:8080</string>
     <!--Toast after entering invalid http proxy address-->
     <string name="toast_invalid_http_proxy_address">Неприемлив синтаксис за мрежов посредник \'http://[IP/HOSTNAME]:[PORT]\'</string>
     <string name="use_legacy_hashing_title">Стари отпечатъци</string>
