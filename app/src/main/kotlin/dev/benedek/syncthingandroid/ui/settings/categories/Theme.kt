@@ -1,16 +1,13 @@
 package dev.benedek.syncthingandroid.ui.settings.categories
 
 import android.os.Build
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
-import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import me.zhanghai.compose.preference.listPreference
 import me.zhanghai.compose.preference.switchPreference
@@ -63,7 +58,7 @@ fun Theme(contentPadding: PaddingValues) {
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        Text(stringResource(R.string.preview))
+                        Text(stringResource(R.string.beta))
                     }
                 }
             },
@@ -88,7 +83,7 @@ fun Theme(contentPadding: PaddingValues) {
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        Text(stringResource(R.string.preview))
+                        Text(stringResource(R.string.beta))
                     }
                 }
             },
@@ -107,13 +102,13 @@ fun Theme(contentPadding: PaddingValues) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Pure black")
+                    Text(stringResource(R.string.pure_black))
                     Badge(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.padding(4.dp)
                     ) {
-                        Text(stringResource(R.string.preview))
+                        Text(stringResource(R.string.beta))
                     }
                 }
             },
