@@ -10,7 +10,7 @@ import org.gradle.api.file.ArchiveOperations
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.kotlin.dsl.support.serviceOf
 
-val goVersionShared = "1.26.1"
+val goVersionShared = "1.26.2"
 
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
     val goVersion = goVersionShared
@@ -155,7 +155,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
         val syncthingSrcDir = layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
         val pkgDir = layout.projectDirectory.dir("gobuild/go-packages/$goArch").asFile
         val jniOutDir = layout.projectDirectory.dir("../app/src/main/jniLibs/$jniDir").asFile
-        val goBin = layout.projectDirectory.file(".gradle/go/$goVersion/go/bin/$goBinaryName").asFile
+        val goBin = layout.projectDirectory.file("go/$goVersion/go/bin/$goBinaryName").asFile
         val goCache = layout.projectDirectory.dir("gobuild/go-cache").asFile
 
         // Gradle caching
