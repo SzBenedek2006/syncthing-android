@@ -26,6 +26,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -52,6 +53,7 @@ import dev.benedek.syncthingandroid.util.Util
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import androidx.core.content.edit
+import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import dev.benedek.syncthingandroid.databinding.ActivityMainBinding
 import dev.benedek.syncthingandroid.ui.Main
@@ -200,8 +202,22 @@ class MainActivity : StateDialogActivity(), SyncthingService.OnServiceStateChang
      */
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+        enableEdgeToEdge(
+            navigationBarStyle = if (
+                ThemeControls.useDarkMode == true ||
+                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            ) {
+                SystemBarStyle.dark("#00000000".toColorInt())
+            } else {
+                SystemBarStyle.light(
+                    "#00000000".toColorInt(),
+                    "#801b1b1b".toColorInt()
+                )
+            }
+        )
         val compose = true
-        enableEdgeToEdge()
 
         if (compose) {
             lifecycle.addObserver(viewModel.mainVisibilityObserver)

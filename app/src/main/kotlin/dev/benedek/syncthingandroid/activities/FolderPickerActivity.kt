@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Environment
 import android.os.IBinder
@@ -21,13 +22,17 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
 /**
@@ -47,6 +52,22 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+        enableEdgeToEdge(
+            navigationBarStyle = if (
+                ThemeControls.useDarkMode == true ||
+                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            ) {
+                SystemBarStyle.dark("#00000000".toColorInt())
+            } else {
+                SystemBarStyle.light(
+                    "#00000000".toColorInt(),
+                    "#801b1b1b".toColorInt()
+                )
+            }
+        )
 
         setContentView(R.layout.activity_folder_picker)
         val rootView = findViewById<View>(android.R.id.content)

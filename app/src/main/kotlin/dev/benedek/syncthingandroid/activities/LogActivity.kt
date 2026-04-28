@@ -10,7 +10,10 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.ShareActionProvider
+import androidx.core.graphics.toColorInt
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -49,6 +52,20 @@ class LogActivity : SyncthingActivity() {
                 setTheme(R.style.Theme_Syncthing_Black)
         }
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge(
+            navigationBarStyle = if (
+                ThemeControls.useDarkMode == true ||
+                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            ) {
+                SystemBarStyle.dark("#00000000".toColorInt())
+            } else {
+                SystemBarStyle.light(
+                    "#00000000".toColorInt(),
+                    "#801b1b1b".toColorInt()
+                )
+            }
+        )
 
         val rootView = layoutInflater.inflate(R.layout.activity_log, null)
         setContentView(rootView)

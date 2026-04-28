@@ -2,9 +2,11 @@ package dev.benedek.syncthingandroid.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 
@@ -14,6 +16,7 @@ import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
 import androidx.core.content.edit
+import androidx.core.graphics.toColorInt
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -33,8 +36,21 @@ class FirstStartActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
+        enableEdgeToEdge(
+            navigationBarStyle = if (
+                ThemeControls.useDarkMode == true ||
+                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            ) {
+                SystemBarStyle.dark("#00000000".toColorInt())
+            } else {
+                SystemBarStyle.light(
+                    "#00000000".toColorInt(),
+                    "#801b1b1b".toColorInt()
+                )
+            }
+        )
         /**
          * Recheck storage permission. If it has been revoked after the user
          * completed the welcome slides, displays the slides again.

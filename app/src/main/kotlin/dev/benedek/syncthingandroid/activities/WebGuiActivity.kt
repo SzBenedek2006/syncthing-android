@@ -22,6 +22,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import dev.benedek.syncthingandroid.R
@@ -72,6 +75,21 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
         }
 
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge(
+            navigationBarStyle = if (
+                ThemeControls.useDarkMode == true ||
+                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+            ) {
+                SystemBarStyle.dark("#00000000".toColorInt())
+            } else {
+                SystemBarStyle.light(
+                    "#00000000".toColorInt(),
+                    "#801b1b1b".toColorInt()
+                )
+            }
+        )
+
         binding = ActivityWebGuiBinding.inflate(layoutInflater)
         setContentView(binding!!.getRoot())
 
