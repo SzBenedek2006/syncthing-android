@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Material 3 switch ? -->
-    <eat-comment />
 
     <style name="Theme.Syncthing" parent="Base.Theme.Syncthing">
         <!-- Fix white mode, only used in white mode -->
         <item name="android:windowLightStatusBar" >true</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
-
-        <!-- Fix weird colors, also needed in dark mode -->
-        <item name="android:statusBarColor" >@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
 
     </style>
 
