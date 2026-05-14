@@ -66,7 +66,7 @@ data class Folder (
 
     }
 
-    fun addDevice(deviceId: String?) {
+    fun addDevice(deviceId: String) {
         val device = Device()
         device.deviceID = deviceId
         devices.add(device)
