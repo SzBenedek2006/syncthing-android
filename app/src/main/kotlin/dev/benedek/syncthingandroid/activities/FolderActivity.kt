@@ -1,13 +1,11 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.isSystemInDarkTheme
 import dev.benedek.syncthingandroid.ui.Folder
 import dev.benedek.syncthingandroid.ui.FolderViewModel
 import dev.benedek.syncthingandroid.ui.FolderViewModel.Companion.EXTRA_DEVICE_ID
@@ -67,7 +65,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
             onFinish = this::finish,
             isCreate = intent.getBooleanExtra(EXTRA_IS_CREATE, false),
             folderId = intent.getStringExtra(EXTRA_FOLDER_ID),
-            deviceId = intent.getStringExtra(EXTRA_DEVICE_ID),
+            newDeviceId = intent.getStringExtra(EXTRA_DEVICE_ID),
             folderLabel = intent.getStringExtra(EXTRA_FOLDER_LABEL),
         )
     }

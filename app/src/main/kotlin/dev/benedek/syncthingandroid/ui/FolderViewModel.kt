@@ -138,7 +138,7 @@ class FolderViewModel : ViewModel() {
         onFinish: () -> Unit,
         isCreate: Boolean,
         folderId: String?,
-        deviceId: String?,
+        newDeviceId: String?,
         folderLabel: String?
     ) {
         // Prevent resetting state on configuration changes
@@ -151,7 +151,7 @@ class FolderViewModel : ViewModel() {
             if (isCreate) {
                 initNewFolder(
                     folderId,
-                    deviceId,
+                    newDeviceId,
                     folderLabel
                 )
             } else {
@@ -160,7 +160,7 @@ class FolderViewModel : ViewModel() {
                     onFinish()
                     return
                 }
-                loadExistingFolder(folderId, onFinish, context)
+                loadExistingFolder(folderId, newDeviceId, onFinish, context)
             }
         }
 
@@ -357,7 +357,7 @@ class FolderViewModel : ViewModel() {
         }
 
         if (isSelected) {
-            folder.addDevice(device.deviceID)
+            folder.addDevice(device.deviceID!!)
         } else {
             folder.removeDevice(device.deviceID)
         }
@@ -399,7 +399,8 @@ class FolderViewModel : ViewModel() {
         folder.label = folderLabel
         folder.id = folderId ?: generateRandomFolderId()
         folder.path = null
-        folder.addDevice(deviceId)
+
+        deviceId?.let { folder.addDevice(it) }
         if (type != null) folder.type = type
         folder.fsWatcherEnabled = true
         folder.fsWatcherDelayS = 10
@@ -416,7 +417,7 @@ class FolderViewModel : ViewModel() {
         editedVersioning = folder.versioning!!.deepCopy()
     }
 
-    private fun loadExistingFolder(folderId: String, onFinish: () -> Unit, context: Context) {
+    private fun loadExistingFolder(folderId: String, newDeviceId: String?, onFinish: () -> Unit, context: Context) {
         val currentApi = api ?: return
         val folders = currentApi.folders ?: emptyList<Folder>()
 
@@ -428,6 +429,7 @@ class FolderViewModel : ViewModel() {
         folder = found
         checkWritePermissions(serviceReference?.get(), found.path)
 
+        newDeviceId?.let { folder.addDevice(it) }
 
         editedVersioning = folder.versioning!!.deepCopy()
     }
