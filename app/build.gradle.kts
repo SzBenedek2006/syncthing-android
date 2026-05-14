@@ -110,6 +110,11 @@ configure<ApplicationExtension> {
         }
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
 
 }
 
