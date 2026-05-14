@@ -44,3 +44,6 @@ ext/
 
 # Go compiler
 go/
+
+# Sync conflicts
+*.sync-conflict-*
