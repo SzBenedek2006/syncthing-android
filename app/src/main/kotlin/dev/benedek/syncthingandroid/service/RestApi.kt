@@ -11,7 +11,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.activities.ShareActivity
-import dev.benedek.syncthingandroid.http.ApiRequest.OnSuccessListener
 import dev.benedek.syncthingandroid.http.GetRequest
 import dev.benedek.syncthingandroid.http.PostConfigRequest
 import dev.benedek.syncthingandroid.http.PostRequest
@@ -32,10 +31,10 @@ import dev.benedek.syncthingandroid.model.SystemVersion
 import java.lang.reflect.Type
 import java.net.URL
 import java.text.SimpleDateFormat
-import java.util.Collections
 import java.util.Date
 import java.util.Locale
 import androidx.core.content.edit
+import dev.benedek.syncthingandroid.activities.FolderActivity
 
 /**
  * Provides functions to interact with the syncthing REST API.
@@ -76,8 +75,8 @@ class RestApi(
      * In the last-finishing [.readConfigFromRestApi] callback, we have to call
      * [SyncthingService.onApiAvailable] to indicate that the RestApi class is fully initialized.
      * We do this to avoid getting stuck with our main thread due to synchronous REST queries.
-     * The correct indication of full initialisation is crucial to stability as other listeners of
-     * [SettingsActivity.onServiceStateChange] needs cached config and system information available.
+     * The correct indication of full initialization is crucial to stability as other listeners of
+     * [SyncthingService.onServiceStateChange] needs cached config and system information available.
      * e.g. SettingsFragment need "localDeviceId"
      */
     private var asyncQueryConfigComplete = false
@@ -120,38 +119,29 @@ class RestApi(
             asyncQueryConfigComplete = false
             asyncQuerySystemInfoComplete = false
         }
-        GetRequest(
-            context,
-            this.url,
-            GetRequest.URI_VERSION,
-            apiKey,
-            null
-        ) { result: String? ->
+        GetRequest(context, this.url, GetRequest.URI_VERSION, apiKey, null) { result ->
             val json = JsonParser.parseString(result).getAsJsonObject()
             this.version = json.get("version").asString
             Log.i(TAG, "Syncthing version is " + this.version)
+
             //updateDebugFacilitiesCache();
             synchronized(asyncQueryCompleteLock) {
                 asyncQueryVersionComplete = true
                 checkReadConfigFromRestApiCompleted()
             }
         }
-        GetRequest(
-            context,
-            this.url,
-            GetRequest.URI_CONFIG,
-            apiKey,
-            null
-        ) { result: String? ->
+
+        GetRequest(context, this.url, GetRequest.URI_CONFIG, apiKey, null) { result ->
             onReloadConfigComplete(result)
             synchronized(asyncQueryCompleteLock) {
                 asyncQueryConfigComplete = true
                 checkReadConfigFromRestApiCompleted()
             }
         }
+
         getSystemInfo { info: SystemInfo? ->
-            localDeviceId = info!!.myID
-            urVersionMax = info.urVersionMax
+            localDeviceId = info?.myID
+            urVersionMax = info?.urVersionMax
             synchronized(asyncQueryCompleteLock) {
                 asyncQuerySystemInfoComplete = true
                 checkReadConfigFromRestApiCompleted()
@@ -162,7 +152,7 @@ class RestApi(
     fun checkReadConfigFromRestApiCompleted() {
         if (asyncQueryVersionComplete && asyncQueryConfigComplete && asyncQuerySystemInfoComplete) {
             Log.v(TAG, "Reading config from REST completed.")
-            this@RestApi.onApiAvailableListener()
+            onApiAvailableListener()
         }
     }
 
@@ -189,7 +179,7 @@ class RestApi(
         if (BuildConfig.DEBUG) {
             Log.v(
                 TAG,
-                "config.remoteIgnoredDevices = " + Gson().toJson(config!!.remoteIgnoredDevices)
+                "config.remoteIgnoredDevices = " + Gson().toJson(config?.remoteIgnoredDevices)
             )
         }
 
@@ -201,7 +191,7 @@ class RestApi(
      * Queries debug facilities available from the currently running syncthing binary
      * if the syncthing binary version changed. First launch of the binary is also
      * considered as a version change.
-     * Precondition: [.mersion] read from REST
+     * Precondition: [.version] read from REST
      * 
      * 
      * It's not possible as of 2.0, so always falling back to the hardcoded list.
@@ -215,15 +205,16 @@ class RestApi(
     fun ignoreDevice(deviceId: String, deviceName: String?, deviceAddress: String?) {
         synchronized(configLock) {
             // Check if the device has already been ignored.
-            if (config?.remoteIgnoredDevices != null) {
-                for (remoteIgnoredDevice in config!!.remoteIgnoredDevices) {
-                    if (deviceId == remoteIgnoredDevice?.deviceID) {
-                        // Device already ignored.
-                        Log.d(TAG, "Device already ignored [$deviceId]")
-                        return
-                    }
-                }
+
+            val devices = config?.remoteIgnoredDevices ?: return
+
+            if (devices.any { it?.deviceID == deviceId }) {
+                // Device already ignored.
+                Log.d(TAG, "Device already ignored [$deviceId]")
+                return
             }
+
+
 
             val remoteIgnoredDevice = RemoteIgnoredDevice()
             remoteIgnoredDevice.deviceID = deviceId
@@ -243,52 +234,31 @@ class RestApi(
      */
     fun ignoreFolder(deviceId: String, folderId: String, folderLabel: String?) {
         synchronized(configLock) {
-            if (config?.devices != null) {
-                for (device in config!!.devices) {
-                    if (deviceId == device?.deviceID) {
-                        /*
-                          Check if the folder has already been ignored.
-                         */
-                        if (device.ignoredFolders != null) {
-                            for (ignoredFolder in device.ignoredFolders) {
-                                if (folderId == ignoredFolder?.id) {
-                                    // Folder already ignored.
-                                    Log.d(
-                                        TAG,
-                                        "Folder [$folderId] already ignored on device [$deviceId]"
-                                    )
-                                    return
-                                }
-                            }
-                        }
+            val device = config?.devices?.find { it?.deviceID == deviceId } ?: return
 
-
-                        /*
-                          Ignore folder by moving its corresponding "pendingFolder" entry to
-                          a newly created "ignoredFolder" entry.
-                         */
-                        val ignoredFolder = IgnoredFolder()
-                        ignoredFolder.id = folderId
-                        ignoredFolder.label = folderLabel.toString()
-                        ignoredFolder.time = dateFormat.format(Date())
-                        device.ignoredFolders?.add(ignoredFolder)
-                        if (BuildConfig.DEBUG) {
-                            Log.v(
-                                TAG,
-                                "device.ignoredFolders = " + Gson().toJson(device.ignoredFolders)
-                            )
-                        }
-                        sendConfig()
-                        Log.d(
-                            TAG,
-                            "Ignored folder [$folderId] announced by device [$deviceId]"
-                        )
-
-                        // Given deviceId handled.
-                        break
-                    }
-                }
+            //Check if the folder has already been ignored.
+            if (device.ignoredFolders?.any { it?.id == folderId } == true) {
+                // Folder already ignored.
+                Log.d(TAG, "Folder [$folderId] already ignored on device [$deviceId]")
+                return
             }
+
+            /*
+              Ignore folder by moving its corresponding "pendingFolder" entry to
+              a newly created "ignoredFolder" entry.
+             */
+            device.ignoredFolders?.add(IgnoredFolder().apply {
+                this.id = folderId
+                this.label = folderLabel.toString()
+                this.time = dateFormat.format(Date())
+            })
+
+            if (BuildConfig.DEBUG) {
+                Log.v(TAG, "device.ignoredFolders = ${Gson().toJson(device.ignoredFolders)}")
+            }
+            sendConfig()
+            Log.d(TAG, "Ignored folder [$folderId] announced by device [$deviceId]")
+
 
         }
     }
@@ -299,11 +269,9 @@ class RestApi(
     fun undoIgnoredDevicesAndFolders() {
         Log.d(TAG, "Undo ignoring devices and folders ...")
         synchronized(configLock) {
-            if (config?.devices != null) {
-                config!!.remoteIgnoredDevices?.clear()
-                for (device in config!!.devices) {
-                    device?.ignoredFolders?.clear()
-                }
+            config?.let { config ->
+                config.remoteIgnoredDevices?.clear()
+                config.devices?.forEach { device -> device?.ignoredFolders?.clear() }
             }
         }
     }
@@ -316,7 +284,9 @@ class RestApi(
         Log.d(TAG, "overrideChanges '$folderId'")
         PostRequest(
             context,
-            this.url, PostRequest.URI_DB_OVERRIDE, apiKey,
+            this.url,
+            PostRequest.URI_DB_OVERRIDE,
+            apiKey,
             mutableMapOf("folder" to folderId), null
         )
     }
@@ -332,7 +302,7 @@ class RestApi(
             jsonConfig = Gson().toJson(config)
         }
         PostConfigRequest(context, this.url, apiKey, jsonConfig, null)
-        this@RestApi.onConfigChangedListener()
+        onConfigChangedListener()
     }
 
     /**
@@ -353,34 +323,22 @@ class RestApi(
                 .setAction(SyncthingService.ACTION_RESTART)
             context.startService(intent)
         }
-        this@RestApi.onConfigChangedListener()
+        onConfigChangedListener()
     }
 
     fun shutdown() {
         notificationHandler.cancelRestartNotification()
     }
 
-    val folders: MutableList<Folder?>?
-        get() {
-            synchronized(configLock) {
-                if (config == null || config!!.folders == null) {
-                    return null
-                }
-                val folders =
-                    deepCopy<MutableList<Folder?>?>(
-                        config!!.folders,
-                        object :
-                            TypeToken<MutableList<Folder?>>() {}.type
-                    )
-                if (folders != null) {
-                    Collections.sort<Folder?>(
-                        folders,
-                        FOLDERS_COMPARATOR
-                    )
-                }
-                return folders
-            }
+    val folders: MutableList<Folder?>? get() {
+        synchronized(configLock) {
+            val folders = config?.folders ?: return null
+            return deepCopy(folders, object : TypeToken<MutableList<Folder?>>() {}.type.apply {
+                folders.sortWith(FOLDERS_COMPARATOR)
+            })
+
         }
+    }
 
     /**
      * This is only used for new folder creation, see [FolderActivity].
@@ -388,7 +346,7 @@ class RestApi(
     fun createFolder(folder: Folder?) {
         synchronized(configLock) {
             // Add the new folder to the model.
-            config!!.folders?.add(folder)
+            config?.folders?.add(folder)
             // Send model changes to syncthing, does not require a restart.
             sendConfig()
         }
@@ -397,7 +355,7 @@ class RestApi(
     fun updateFolder(newFolder: Folder) {
         synchronized(configLock) {
             removeFolderInternal(newFolder.id)
-            config!!.folders?.add(newFolder)
+            config?.folders?.add(newFolder)
             sendConfig()
         }
     }
@@ -449,41 +407,39 @@ class RestApi(
 
     val localDevice: Device?
         get() {
-            val devices =
-                getDevices(true)
-            if (devices!!.isEmpty()) {
+            val devices = getDevices(true)
+            if (devices.isNullOrEmpty()) {
                 throw RuntimeException("RestApi.getLocalDevice: devices is empty.")
             }
-            Log.v(
-                TAG,
-                "getLocalDevice: Looking for local device ID $localDeviceId"
-            )
-            for (d in devices) {
-                if (d.deviceID == localDeviceId) {
-                    return deepCopy<Device?>(
-                        d,
-                        Device::class.java
-                    )
-                }
+
+            Log.v(TAG, "getLocalDevice: Looking for local device ID $localDeviceId")
+
+            return try {
+                devices.first { it.deviceID == localDeviceId }
+            } catch (_: NoSuchElementException) {
+                throw RuntimeException("RestApi.getLocalDevice: Failed to get the local device crucial to continuing execution.")
             }
-            throw RuntimeException("RestApi.getLocalDevice: Failed to get the local device crucial to continuing execution.")
         }
 
     fun addDevice(device: Device, errorListener: (String?) -> Unit) {
         if (device.deviceID != null) {
-            normalizeDeviceId(device.deviceID!!, { _: String? ->
-                synchronized(configLock) {
-                    config!!.devices?.add(device)
-                    sendConfig()
-                }
-            }, errorListener)
+            normalizeDeviceId(
+                device.deviceID!!,
+                { _: String? ->
+                    synchronized(configLock) {
+                        config!!.devices?.add(device)
+                        sendConfig()
+                    }
+                },
+                errorListener
+            )
         }
     }
 
     fun editDevice(newDevice: Device) {
         synchronized(configLock) {
             removeDeviceInternal(newDevice.deviceID)
-            config!!.devices?.add(newDevice)
+            config?.devices?.add(newDevice)
             sendConfig()
         }
     }
@@ -515,7 +471,7 @@ class RestApi(
         get() {
             synchronized(configLock) {
                 return deepCopy<Options?>(
-                    config!!.options,
+                    config?.options,
                     Options::class.java
                 )
             }
@@ -524,14 +480,14 @@ class RestApi(
     val gui: Gui?
         get() {
             synchronized(configLock) {
-                return deepCopy<Gui?>(config!!.gui, Gui::class.java)
+                return deepCopy<Gui?>(config?.gui, Gui::class.java)
             }
         }
 
     fun editSettings(newGui: Gui?, newOptions: Options?) {
         synchronized(configLock) {
-            config!!.gui = newGui
-            config!!.options = newOptions
+            config?.gui = newGui
+            config?.options = newOptions
         }
     }
 
@@ -588,48 +544,31 @@ class RestApi(
      * Returns connection info for the local device and all connected devices.
      */
     fun getConnections(listener: (DeviceStatuses?) -> Unit) {
-        GetRequest(
-            context,
-            this.url,
-            GetRequest.URI_CONNECTIONS,
-            apiKey,
-            null,
-            OnSuccessListener { result: String? ->
-                val now = System.currentTimeMillis()
-                val msElapsed = now - previousConnectionTime
-                if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousDeviceStatuses != null) {
-                    listener(deepCopy(previousDeviceStatuses, DeviceStatuses::class.java)
-                    )
-                    return@OnSuccessListener
-                }
+        GetRequest(context, this.url, GetRequest.URI_CONNECTIONS, apiKey, null) { result: String? ->
+            val now = System.currentTimeMillis()
+            val msElapsed = now - previousConnectionTime
 
-                previousConnectionTime = now
-                val deviceStatuses = Gson().fromJson(result, DeviceStatuses::class.java)
+            if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousDeviceStatuses != null) {
+                listener(deepCopy(previousDeviceStatuses, DeviceStatuses::class.java))
+                return@GetRequest
+            }
 
-                if (deviceStatuses.connectionsMap != null) {
-                    for (entry in deviceStatuses.connectionsMap!!.entries) {
-                        entry.value?.completion = completion.getDeviceCompletion(entry.key)
+            previousConnectionTime = now
+            val deviceStatuses = Gson().fromJson(result, DeviceStatuses::class.java)
 
-                        val prev = if (previousDeviceStatuses?.connectionsMap?.containsKey(entry.key) != null) {
-                            previousDeviceStatuses!!.connectionsMap!![entry.key]
-                        } else DeviceStatuses.DeviceStatus()
 
-                        if (prev != null) {
-                            entry.value?.setTransferRate(prev, msElapsed)
-                        }
-                    }
-                }
+            deviceStatuses.connectionsMap?.forEach { (key, value) ->
+                value?.completion = completion.getDeviceCompletion(key)
+                val prev = previousDeviceStatuses?.connectionsMap?.get(key) ?: DeviceStatuses.DeviceStatus()
+                value?.setTransferRate(prev, msElapsed)
+            }
 
-                val prevTotal = if (previousDeviceStatuses != null)
-                    previousDeviceStatuses!!.total
-                else
-                    DeviceStatuses.DeviceStatus()
+            val prevTotal = previousDeviceStatuses?.total ?: DeviceStatuses.DeviceStatus()
+            deviceStatuses.total?.setTransferRate(prevTotal, msElapsed)
+            previousDeviceStatuses = deviceStatuses
 
-                deviceStatuses.total?.setTransferRate(prevTotal!!, msElapsed)
-
-                previousDeviceStatuses = deviceStatuses
-                listener(deepCopy(deviceStatuses, DeviceStatuses::class.java))
-            })
+            listener(deepCopy(deviceStatuses, DeviceStatuses::class.java))
+        }
     }
 
     /**
@@ -687,8 +626,7 @@ class RestApi(
             val jsonEvents = JsonParser.parseString(result).getAsJsonArray()
             var lastId: Long = 0
 
-            for (i in 0..<jsonEvents.size()) {
-                val json = jsonEvents.get(i)
+            for (json in jsonEvents) {
                 val event = Gson().fromJson(json, Event::class.java)
 
                 if (lastId < event.id) lastId = event.id.toLong()
@@ -728,7 +666,7 @@ class RestApi(
     }
 
     /**
-     * Returns prettyfied usage report.
+     * Returns prettified usage report.
      */
     fun getUsageReport(listener: (String?) -> Unit) {
         GetRequest(
@@ -755,20 +693,18 @@ class RestApi(
                 )
                 return true
             }
-            return options.isUsageReportingDecided(urVersionMax!!)
+            return options.isUsageReportingDecided(urVersionMax ?: 0)
         }
 
     fun setUsageReporting(acceptUsageReporting: Boolean) {
-        val options = this.options
-        if (options == null) {
-            Log.e(TAG, "setUsageReporting called while options == null")
+        options?.let {
+            it.urAccepted = if (acceptUsageReporting) urVersionMax ?: 0 else Options.USAGE_REPORTING_DENIED
+            synchronized(configLock) {
+                config?.options = options
+            }
             return
         }
-        options.urAccepted =
-            (if (acceptUsageReporting) urVersionMax else Options.USAGE_REPORTING_DENIED)!!
-        synchronized(configLock) {
-            config!!.options = options
-        }
+        Log.e(TAG, "setUsageReporting called while options == null")
     }
 
     companion object {
@@ -783,11 +719,11 @@ class RestApi(
         /**
          * Compares folders by labels, uses the folder ID as fallback if the label is empty
          */
-        private val FOLDERS_COMPARATOR = Comparator { lhs: Folder?, rhs: Folder? ->
+        private val FOLDERS_COMPARATOR = Comparator<Folder?> { lhs, rhs ->
             val lhsLabel =
-                if (lhs!!.label != null && !lhs.label!!.isEmpty()) lhs.label else lhs.id
+                if (!lhs?.label.isNullOrEmpty()) lhs.label else lhs?.id
             val rhsLabel =
-                if (rhs!!.label != null && !rhs.label!!.isEmpty()) rhs.label else rhs.id
+                if (!rhs?.label.isNullOrEmpty()) rhs.label else rhs?.id
 
             checkNotNull(lhsLabel)
             checkNotNull(rhsLabel)
