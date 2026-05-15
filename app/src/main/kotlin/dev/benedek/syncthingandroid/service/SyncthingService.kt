@@ -311,8 +311,11 @@ class SyncthingService : Service() {
     private fun onStartupTaskCompleteListener() {
         if (this.api == null) {
             this.api = RestApi(
-                this, config!!.webGuiUrl, config!!.apiKey!!,
-                { this.onApiAvailable() }, {
+                this,
+                config!!.webGuiUrl,
+                config!!.apiKey!!,
+                { this.onApiAvailable() },
+                {
                     onServiceStateChange(
                         this.currentState
                     )
