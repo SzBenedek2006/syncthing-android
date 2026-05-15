@@ -21,7 +21,6 @@ import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderStatus
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.RestApi
-import dev.benedek.syncthingandroid.service.RestApi.OnResultListener2
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
