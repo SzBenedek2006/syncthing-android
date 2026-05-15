@@ -41,21 +41,12 @@ import androidx.core.content.edit
  * Provides functions to interact with the syncthing REST API.
  */
 class RestApi(
-    private val context: Context, val url: URL,
-    private val apiKey: String, apiListener: OnApiAvailableListener,
-    configListener: OnConfigChangedListener
+    private val context: Context,
+    val url: URL,
+    private val apiKey: String,
+    private val onApiAvailableListener: () -> Unit,
+    private val onConfigChangedListener: () -> Unit
 ) {
-    fun interface OnConfigChangedListener {
-        fun onConfigChanged()
-    }
-
-    fun interface OnResultListener1<T> {
-        fun onResult(t: T?)
-    }
-
-    fun interface OnResultListener2<T, R> {
-        fun onResult(t: T?, r: R?)
-    }
 
     /**
      * Returns the version name, or a (text) error message on failure.
@@ -118,13 +109,6 @@ class RestApi(
 
     val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
 
-    fun interface OnApiAvailableListener {
-        fun onApiAvailable()
-    }
-
-    private val onApiAvailableListener: OnApiAvailableListener = apiListener
-
-    private val onConfigChangedListener: OnConfigChangedListener = configListener
 
     /**
      * Gets local device ID, syncthing version and config, then calls all OnApiAvailableListeners.
@@ -178,7 +162,7 @@ class RestApi(
     fun checkReadConfigFromRestApiCompleted() {
         if (asyncQueryVersionComplete && asyncQueryConfigComplete && asyncQuerySystemInfoComplete) {
             Log.v(TAG, "Reading config from REST completed.")
-            onApiAvailableListener.onApiAvailable()
+            this@RestApi.onApiAvailableListener()
         }
     }
 
@@ -348,7 +332,7 @@ class RestApi(
             jsonConfig = Gson().toJson(config)
         }
         PostConfigRequest(context, this.url, apiKey, jsonConfig, null)
-        onConfigChangedListener.onConfigChanged()
+        this@RestApi.onConfigChangedListener()
     }
 
     /**
@@ -369,7 +353,7 @@ class RestApi(
                 .setAction(SyncthingService.ACTION_RESTART)
             context.startService(intent)
         }
-        onConfigChangedListener.onConfigChanged()
+        this@RestApi.onConfigChangedListener()
     }
 
     fun shutdown() {
@@ -485,7 +469,7 @@ class RestApi(
             throw RuntimeException("RestApi.getLocalDevice: Failed to get the local device crucial to continuing execution.")
         }
 
-    fun addDevice(device: Device, errorListener: OnResultListener1<String?>) {
+    fun addDevice(device: Device, errorListener: (String?) -> Unit) {
         if (device.deviceID != null) {
             normalizeDeviceId(device.deviceID!!, { _: String? ->
                 synchronized(configLock) {
@@ -565,12 +549,12 @@ class RestApi(
     /**
      * Requests and parses information about current system status and resource usage.
      */
-    fun getSystemInfo(listener: OnResultListener1<SystemInfo?>) {
+    fun getSystemInfo(listener: (SystemInfo?) -> Unit) {
         GetRequest(
             context,
             this.url, GetRequest.URI_SYSTEM, apiKey, null
         ) { result: String? ->
-            listener.onResult(
+            listener(
                 Gson().fromJson(result, SystemInfo::class.java)
             )
         }
@@ -586,7 +570,7 @@ class RestApi(
     /**
      * Requests and parses system version information.
      */
-    fun getSystemVersion(listener: OnResultListener1<SystemVersion?>) {
+    fun getSystemVersion(listener: (SystemVersion?) -> Unit) {
         GetRequest(
             context,
             this.url,
@@ -596,14 +580,14 @@ class RestApi(
         ) { result: String? ->
             val systemVersion =
                 Gson().fromJson(result, SystemVersion::class.java)
-            listener.onResult(systemVersion)
+            listener(systemVersion)
         }
     }
 
     /**
      * Returns connection info for the local device and all connected devices.
      */
-    fun getConnections(listener: OnResultListener1<DeviceStatuses?>) {
+    fun getConnections(listener: (DeviceStatuses?) -> Unit) {
         GetRequest(
             context,
             this.url,
@@ -614,11 +598,7 @@ class RestApi(
                 val now = System.currentTimeMillis()
                 val msElapsed = now - previousConnectionTime
                 if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousDeviceStatuses != null) {
-                    listener.onResult(
-                        deepCopy<DeviceStatuses?>(
-                            previousDeviceStatuses,
-                            DeviceStatuses::class.java
-                        )
+                    listener(deepCopy(previousDeviceStatuses, DeviceStatuses::class.java)
                     )
                     return@OnSuccessListener
                 }
@@ -648,14 +628,14 @@ class RestApi(
                 deviceStatuses.total?.setTransferRate(prevTotal!!, msElapsed)
 
                 previousDeviceStatuses = deviceStatuses
-                listener.onResult(deepCopy<DeviceStatuses?>(deviceStatuses, DeviceStatuses::class.java))
+                listener(deepCopy(deviceStatuses, DeviceStatuses::class.java))
             })
     }
 
     /**
      * Returns status information about the folder with the given id.
      */
-    fun getFolderStatus(folderId: String, listener: OnResultListener2<String?, FolderStatus?>) {
+    fun getFolderStatus(folderId: String, listener: (String?, FolderStatus?) -> Unit) {
         GetRequest(
             context,
             this.url,
@@ -665,7 +645,7 @@ class RestApi(
         ) { result: String? ->
             val m = Gson().fromJson(result, FolderStatus::class.java)
             cachedFolderStatuses[folderId] = m
-            listener.onResult(folderId, m)
+            listener(folderId, m)
         }
     }
 
@@ -723,8 +703,8 @@ class RestApi(
      * Normalizes a given device ID.
      */
     private fun normalizeDeviceId(
-        id: String, listener: OnResultListener1<String?>,
-        errorListener: OnResultListener1<String?>
+        id: String, listener: (String?) -> Unit,
+        errorListener: (String?) -> Unit
     ) {
         GetRequest(
             context,
@@ -734,8 +714,8 @@ class RestApi(
             val json = JsonParser.parseString(result).getAsJsonObject()
             val normalizedId = json.get("id")
             val error = json.get("error")
-            if (normalizedId != null) listener.onResult(normalizedId.asString)
-            if (error != null) errorListener.onResult(error.asString)
+            if (normalizedId != null) listener(normalizedId.asString)
+            if (error != null) errorListener(error.asString)
         }
     }
 
@@ -750,7 +730,7 @@ class RestApi(
     /**
      * Returns prettyfied usage report.
      */
-    fun getUsageReport(listener: OnResultListener1<String?>) {
+    fun getUsageReport(listener: (String?) -> Unit) {
         GetRequest(
             context,
             this.url,
@@ -760,7 +740,7 @@ class RestApi(
         ) { result: String? ->
             val json = JsonParser.parseString(result)
             val gson = GsonBuilder().setPrettyPrinting().create()
-            listener.onResult(gson.toJson(json))
+            listener(gson.toJson(json))
         }
     }
 
