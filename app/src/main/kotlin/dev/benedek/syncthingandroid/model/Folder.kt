@@ -4,14 +4,20 @@ import android.text.TextUtils
 import dev.benedek.syncthingandroid.service.Constants
 import java.io.Serializable
 
+
+val validDefaultRegex = Regex("^[a-z0-9]{5}-[a-z0-9]{5}$")
+val validRegex = Regex("^[a-z0-9](?:[a-z0-9._-]{0,61}[a-z0-9])?\$")
+
+
+
 val String.isValidDefault: Boolean
     get() {
-        val regex = Regex("^[a-z0-9]{5}-[a-z0-9]{5}$")
+        val regex = validDefaultRegex
         return regex.matches(this)
     }
 val String.isValid: Boolean
     get() {
-        val regex = Regex("^[a-z0-9](?:[a-z0-9._-]{0,61}[a-z0-9])?\$")
+        val regex = validRegex
         return regex.matches(this)
     }
 
