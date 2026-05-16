@@ -14,11 +14,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 
 
 @SuppressLint("ModifierParameter")
@@ -86,14 +90,26 @@ fun SlideDescription(
 @Composable
 fun SlideImage (
     painter: Painter,
-    modifier: Modifier = Modifier.size(size = dimensionResource(R.dimen.img_width_height)),
+    modifier: Modifier = Modifier,
     contentDescription: String? = null,
     colorFilter: ColorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
 ) {
     Image(
         painter = painter,
         contentDescription = contentDescription,
-        modifier = modifier,
+        modifier = Modifier
+            .size(dimensionResource(R.dimen.img_width_height))
+            .then(modifier),
+        contentScale = ContentScale.Fit,
         colorFilter = colorFilter
     )
+}
+
+
+@Preview
+@Composable
+fun SlideImagePreview() {
+    SyncthingandroidTheme() {
+        SlideImage(painterResource(R.drawable.ic_launcher_monochrome))
+    }
 }
