@@ -35,7 +35,6 @@ fun IntroSlide() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        //SlideWelcomeTitle(stringResource(R.string.welcome_title)) // Legyen vagy ne?
         SlideImage(painterResource(id = R.drawable.ic_monochrome))
         Spacer(modifier = Modifier.height(16.dp))
         SlideTitle(stringResource(R.string.introduction))
