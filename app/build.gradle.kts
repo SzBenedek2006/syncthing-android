@@ -22,6 +22,7 @@ dependencies {
     }
     implementation("com.google.zxing:core:3.5.4")
 
+    implementation("androidx.core:core-splashscreen:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.documentfile:documentfile:1.1.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")

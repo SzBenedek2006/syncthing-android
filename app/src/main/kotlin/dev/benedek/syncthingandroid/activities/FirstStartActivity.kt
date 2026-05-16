@@ -17,6 +17,7 @@ import dev.benedek.syncthingandroid.util.Util
 import java.io.File
 import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -35,6 +36,7 @@ class FirstStartActivity : ComponentActivity() {
         PreferenceManager.getDefaultSharedPreferences(this)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 

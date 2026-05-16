@@ -49,6 +49,7 @@
 
         <activity
             android:name=".activities.FirstStartActivity"
+            android:theme="@style/Starting.Theme.Syncthing"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
