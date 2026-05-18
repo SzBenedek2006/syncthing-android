@@ -3,9 +3,13 @@ package dev.benedek.syncthingandroid.service
 import android.app.Service // TODO: Move to androidx
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.common.io.Files
 import dev.benedek.syncthingandroid.R
@@ -285,7 +289,7 @@ class SyncthingService : Service() {
 
         startupFuture = startupExecutor.submit {
             try {
-                config = ConfigXml(this@SyncthingService)
+                config = ConfigXml(this)
                 config!!.updateIfNeeded()
 
                 // Success: Move to main thread
@@ -295,10 +299,17 @@ class SyncthingService : Service() {
                 }
             } catch (_: OpenConfigException) {
                 handler!!.post {
-                    notificationHandler.showCrashedNotification(
-                        R.string.config_create_failed,
-                        true
-                    )
+                    val areEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
+                    val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                    } else true
+
+                    if (hasPermission || areEnabled) {
+                        notificationHandler.showCrashedNotification(
+                            R.string.config_create_failed,
+                            true
+                        )
+                    }
                     synchronized(stateLock) {
                         onServiceStateChange(State.ERROR)
                     }
