@@ -20,6 +20,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.activities.LogActivity
 import dev.benedek.syncthingandroid.activities.MainActivity
+import kotlin.math.absoluteValue
 
 class NotificationHandler(private val context: Context) {
 
@@ -212,7 +213,7 @@ class NotificationHandler(private val context: Context) {
      * by [EventProcessor].
      */
     fun getNotificationIdFromText(text: String): Int {
-        return 1000 + text.hashCode() % 1000
+        return 1000 + (text.hashCode().absoluteValue % 1000)
     }
 
     /**
