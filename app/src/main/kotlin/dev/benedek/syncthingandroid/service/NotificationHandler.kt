@@ -1,15 +1,18 @@
 package dev.benedek.syncthingandroid.service
 
+import android.Manifest
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import androidx.core.app.NotificationChannelCompat
+import androidx.core.app.NotificationManagerCompat
 import android.app.PendingIntent
+import android.app.Service.STOP_FOREGROUND_DETACH
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
@@ -23,71 +26,64 @@ class NotificationHandler(private val context: Context) {
     private val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
-    private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    private val persistentChannel: NotificationChannel?
-    private val persistentChannelWaiting: NotificationChannel?
-    private val infoChannel: NotificationChannel?
+    private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context) //context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
+    private val persistentChannel: NotificationChannelCompat
+    private val persistentChannelWaiting: NotificationChannelCompat
+    private val infoChannel: NotificationChannelCompat
 
     private var lastStartForegroundService = false
     private var appShutdownInProgress = false
 
     init {
+        persistentChannel = NotificationChannelCompat.Builder(
+            CHANNEL_PERSISTENT,
+            NotificationManagerCompat.IMPORTANCE_MIN
+        )
+            .setName(context.getString(R.string.notifications_persistent_channel))
+            .setLightsEnabled(false)
+            .setVibrationEnabled(false)
+            .setSound(null, null)
+            .setShowBadge(false)
+            .build()
+        notificationManager.createNotificationChannel(persistentChannel)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            persistentChannel = NotificationChannel(
-                CHANNEL_PERSISTENT, context.getString(R.string.notifications_persistent_channel),
-                NotificationManager.IMPORTANCE_MIN
-            )
-            persistentChannel.enableLights(false)
-            persistentChannel.enableVibration(false)
-            persistentChannel.setSound(null, null)
-            persistentChannel.setShowBadge(false)
-            notificationManager.createNotificationChannel(persistentChannel)
+        persistentChannelWaiting = NotificationChannelCompat.Builder(
+            CHANNEL_PERSISTENT_WAITING,
+            NotificationManagerCompat.IMPORTANCE_MIN
+        )
+            .setName(context.getString(R.string.notification_persistent_waiting_channel))
+            .setLightsEnabled(false)
+            .setVibrationEnabled(false)
+            .setSound(null, null)
+            .setShowBadge(false)
+            .build()
+        notificationManager.createNotificationChannel(persistentChannelWaiting)
 
-            persistentChannelWaiting = NotificationChannel(
-                CHANNEL_PERSISTENT_WAITING,
-                context.getString(R.string.notification_persistent_waiting_channel),
-                NotificationManager.IMPORTANCE_MIN
-            )
-            persistentChannelWaiting.enableLights(false)
-            persistentChannelWaiting.enableVibration(false)
-            persistentChannelWaiting.setSound(null, null)
-            persistentChannelWaiting.setShowBadge(false)
-            notificationManager.createNotificationChannel(persistentChannelWaiting)
-
-            infoChannel = NotificationChannel(
-                CHANNEL_INFO, context.getString(R.string.notifications_other_channel),
-                NotificationManager.IMPORTANCE_LOW
-            )
-            infoChannel.enableVibration(false)
-            infoChannel.setSound(null, null)
-            infoChannel.setShowBadge(true)
-            notificationManager.createNotificationChannel(infoChannel)
-        } else {
-            persistentChannel = null
-            persistentChannelWaiting = null
-            infoChannel = null
-        }
+        infoChannel = NotificationChannelCompat.Builder(
+            CHANNEL_INFO,
+            NotificationManagerCompat.IMPORTANCE_LOW
+        )
+            .setName(context.getString(R.string.notifications_other_channel))
+            .setVibrationEnabled(false)
+            .setSound(null, null)
+            .setShowBadge(true)
+            .build()
+        notificationManager.createNotificationChannel(infoChannel)
     }
 
-    private fun getNotificationBuilder(channel: NotificationChannel?): NotificationCompat.Builder {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel != null) {
-            NotificationCompat.Builder(context, channel.id)
-        } else {
-            NotificationCompat.Builder(context)
-        }
+    private fun getNotificationBuilder(channel: NotificationChannelCompat): NotificationCompat.Builder {
+        return NotificationCompat.Builder(context, channel.id)
     }
 
     /**
      * Shows, updates or hides the notification.
      */
     fun updatePersistentNotification(service: SyncthingService) {
-        val startServiceOnBoot =
-            preferences!!.getBoolean(Constants.PREF_START_SERVICE_ON_BOOT, false)
         val currentServiceState = service.currentState
         val syncthingRunning = currentServiceState == SyncthingService.State.ACTIVE ||
                 currentServiceState == SyncthingService.State.STARTING
         var startForegroundService = false
+
         if (!appShutdownInProgress) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 /**
@@ -96,7 +92,7 @@ class NotificationHandler(private val context: Context) {
                  * running as a foreground service. For that reason, we can use a normal
                  * notification if syncthing is DISABLED.
                  */
-                startForegroundService = startServiceOnBoot || syncthingRunning
+                startForegroundService = syncthingRunning // Behavior change for 2.0.15.7 (or whatever is gonna be the next version)
             } else {
                 /**
                  * Android 8+:
@@ -115,7 +111,11 @@ class NotificationHandler(private val context: Context) {
         if (startForegroundService != lastStartForegroundService) {
             if (!startForegroundService) {
                 Log.v(TAG, "Stopping foreground service")
-                service.stopForeground(false)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                    service.stopForeground(STOP_FOREGROUND_DETACH)
+                else
+                    service.stopForeground(false)
+
             }
         }
 
@@ -126,7 +126,7 @@ class NotificationHandler(private val context: Context) {
             SyncthingService.State.DISABLED -> title = R.string.syncthing_disabled
             SyncthingService.State.STARTING -> title = R.string.syncthing_starting
             SyncthingService.State.ACTIVE -> title = R.string.syncthing_active
-            else -> {}
+            //else -> {}
         }
 
         /**
@@ -184,10 +184,11 @@ class NotificationHandler(private val context: Context) {
         appShutdownInProgress = newValue
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showCrashedNotification(@StringRes title: Int, force: Boolean) {
-        if (force || preferences!!.getBoolean("notify_crashes", false)) {
+        if (force || preferences.getBoolean("notify_crashes", false)) {
             val intent = Intent(context, LogActivity::class.java)
-            val n = getNotificationBuilder(infoChannel!!)
+            val notification = getNotificationBuilder(infoChannel)
                 .setContentTitle(context.getString(title))
                 .setContentText(context.getString(R.string.notification_crash_text))
                 .setSmallIcon(R.drawable.ic_stat_notify)
@@ -201,7 +202,7 @@ class NotificationHandler(private val context: Context) {
                 )
                 .setAutoCancel(true)
                 .build()
-            notificationManager.notify(ID_CRASH, n)
+            notificationManager.notify(ID_CRASH, notification)
         }
     }
 
@@ -228,6 +229,7 @@ class NotificationHandler(private val context: Context) {
     /**
      * Used by [EventProcessor]
      */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showConsentNotification(
         notificationId: Int,
         text: String?,
@@ -240,7 +242,7 @@ class NotificationHandler(private val context: Context) {
          * This is also valid if the notification does not exist.
          */
         notificationManager.cancel(notificationId)
-        val n = getNotificationBuilder(infoChannel!!)
+        val n = getNotificationBuilder(infoChannel)
             .setContentTitle(context.getString(R.string.app_name))
             .setContentText(text)
             .setStyle(
@@ -256,9 +258,10 @@ class NotificationHandler(private val context: Context) {
         notificationManager.notify(notificationId, n)
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showStoragePermissionRevokedNotification() {
         val intent = Intent(context, FirstStartActivity::class.java)
-        val n = getNotificationBuilder(infoChannel!!)
+        val n = getNotificationBuilder(infoChannel)
             .setContentTitle(context.getString(R.string.syncthing_terminated))
             .setContentText(context.getString(R.string.toast_write_storage_permission_required))
             .setSmallIcon(R.drawable.ic_stat_notify)
@@ -276,30 +279,14 @@ class NotificationHandler(private val context: Context) {
         notificationManager.notify(ID_MISSING_PERM, n)
     }
 
-    // FIXME
-    fun showRestartNotification() {
-        val intent = Intent(context, SyncthingService::class.java)
-            .setAction(SyncthingService.ACTION_RESTART)
-        // FIXME
-        val pi = PendingIntent.getService(context, 0, intent, Constants.FLAG_IMMUTABLE)
-
-        val n = getNotificationBuilder(infoChannel!!)
-            .setContentTitle(context.getString(R.string.restart_title))
-            .setContentText(context.getString(R.string.restart_notification_text))
-            .setSmallIcon(R.drawable.ic_stat_notify)
-            .setContentIntent(pi)
-            .build()
-        n.flags = n.flags or (Notification.FLAG_ONLY_ALERT_ONCE or Notification.FLAG_AUTO_CANCEL)
-        notificationManager.notify(ID_RESTART, n)
-    }
-
     fun cancelRestartNotification() {
         notificationManager.cancel(ID_RESTART)
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun showStopSyncthingWarningNotification() {
         val msg = context.getString(R.string.appconfig_receiver_background_enabled)
-        val nb = getNotificationBuilder(infoChannel!!)
+        val notificationBuilder = getNotificationBuilder(infoChannel)
             .setContentText(msg)
             .setTicker(msg)
             .setStyle(NotificationCompat.BigTextStyle().bigText(msg))
@@ -315,8 +302,8 @@ class NotificationHandler(private val context: Context) {
             )
 
 
-        nb.setCategory(Notification.CATEGORY_ERROR)
-        notificationManager.notify(ID_STOP_BACKGROUND_WARNING, nb.build())
+        notificationBuilder.setCategory(Notification.CATEGORY_ERROR)
+        notificationManager.notify(ID_STOP_BACKGROUND_WARNING, notificationBuilder.build())
     }
 
     companion object {
