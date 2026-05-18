@@ -1,6 +1,6 @@
 package dev.benedek.syncthingandroid.service
 
-import android.app.Service
+import android.app.Service // TODO: Move to androidx
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Handler
