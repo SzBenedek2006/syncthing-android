@@ -10,7 +10,7 @@ import org.gradle.api.file.ArchiveOperations
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.kotlin.dsl.support.serviceOf
 
-val goVersionShared = "1.26.2"
+val goVersionShared = "1.26.3"
 
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
     val goVersion = goVersionShared
