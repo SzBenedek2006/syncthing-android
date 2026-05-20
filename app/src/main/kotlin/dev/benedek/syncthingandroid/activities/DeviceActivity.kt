@@ -25,6 +25,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.gson.Gson
+import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding
 import dev.benedek.syncthingandroid.model.DeviceStatuses
@@ -552,13 +553,13 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
     companion object {
         const val EXTRA_NOTIFICATION_ID: String =
-            "activities.syncthingandroid.nutomic.dev.DeviceActivity.NOTIFICATION_ID"
+            "${BuildConfig.APPLICATION_ID}.activities.NOTIFICATION_ID"
         const val EXTRA_DEVICE_ID: String =
-            "activities.syncthingandroid.nutomic.dev.DeviceActivity.DEVICE_ID"
+            "${BuildConfig.APPLICATION_ID}.activities.DEVICE_ID"
         const val EXTRA_DEVICE_NAME: String =
-            "activities.syncthingandroid.nutomic.dev.DeviceActivity.DEVICE_NAME"
+            "${BuildConfig.APPLICATION_ID}.activities.DEVICE_NAME"
         const val EXTRA_IS_CREATE: String =
-            "activities.syncthingandroid.nutomic.dev.DeviceActivity.IS_CREATE"
+            "${BuildConfig.APPLICATION_ID}.activities.IS_CREATE"
 
         private const val TAG = "DeviceSettingsFragment"
         private const val IS_SHOWING_DISCARD_DIALOG = "DISCARD_FOLDER_DIALOG_STATE"

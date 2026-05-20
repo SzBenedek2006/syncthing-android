@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.common.io.Files
+import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.http.PollWebGuiAvailableTask
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
@@ -648,75 +649,75 @@ class SyncthingService : Service() {
          * Intent action to perform a Syncthing restart.
          */
         const val ACTION_RESTART: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.RESTART"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.RESTART"
 
         /**
          * Intent action to reset Syncthing's database.
          */
         const val ACTION_RESET_DATABASE: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.RESET_DATABASE"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.RESET_DATABASE"
 
         /**
          * Intent action to reset Syncthing's delta indexes.
          */
         const val ACTION_RESET_DELTAS: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.RESET_DELTAS"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.RESET_DELTAS"
 
         const val ACTION_REFRESH_NETWORK_INFO: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.REFRESH_NETWORK_INFO"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.REFRESH_NETWORK_INFO"
 
         /**
          * Intent action to permanently ignore a device connection request.
          */
         const val ACTION_IGNORE_DEVICE: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.IGNORE_DEVICE"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.IGNORE_DEVICE"
 
         /**
          * Intent action to permanently ignore a folder share request.
          */
         const val ACTION_IGNORE_FOLDER: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.IGNORE_FOLDER"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.IGNORE_FOLDER"
 
         /**
          * Intent action to override folder changes.
          */
         const val ACTION_OVERRIDE_CHANGES: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.OVERRIDE_CHANGES"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.OVERRIDE_CHANGES"
 
         /**
          * Extra used together with ACTION_IGNORE_DEVICE, ACTION_IGNORE_FOLDER.
          */
         const val EXTRA_NOTIFICATION_ID: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_NOTIFICATION_ID"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.EXTRA_NOTIFICATION_ID"
 
         /**
          * Extra used together with ACTION_IGNORE_DEVICE
          */
         const val EXTRA_DEVICE_ID: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_DEVICE_ID"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.EXTRA_DEVICE_ID"
 
         /**
          * Extra used together with ACTION_IGNORE_DEVICE
          */
         const val EXTRA_DEVICE_NAME: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_DEVICE_NAME"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.EXTRA_DEVICE_NAME"
 
         /**
          * Extra used together with ACTION_IGNORE_DEVICE
          */
         const val EXTRA_DEVICE_ADDRESS: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_DEVICE_ADDRESS"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.EXTRA_DEVICE_ADDRESS"
 
         /**
          * Extra used together with ACTION_IGNORE_FOLDER
          */
         const val EXTRA_FOLDER_ID: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_FOLDER_ID"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.EXTRA_FOLDER_ID"
 
         /**
          * Extra used together with ACTION_IGNORE_FOLDER
          */
         const val EXTRA_FOLDER_LABEL: String =
-            "service.syncthingandroid.nutomic.dev.SyncthingService.EXTRA_FOLDER_LABEL"
+            "${BuildConfig.APPLICATION_ID}.service.SyncthingService.EXTRA_FOLDER_LABEL"
     }
 }
