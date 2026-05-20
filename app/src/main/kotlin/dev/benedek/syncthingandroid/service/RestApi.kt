@@ -700,7 +700,7 @@ class RestApi(
         options?.let {
             it.urAccepted = if (acceptUsageReporting) urVersionMax ?: 0 else Options.USAGE_REPORTING_DENIED
             synchronized(configLock) {
-                config?.options = options
+                config?.options = it
             }
             return
         }
