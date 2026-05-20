@@ -85,6 +85,11 @@ configure<ApplicationExtension> {
 
             resValue("string", "app_package_id", "${defaultConfig.applicationId}$applicationIdSuffix")
         }
+        create("beta") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".beta"
+            resValue("string", "app_package_id", "${defaultConfig.applicationId}$applicationIdSuffix")
+        }
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
