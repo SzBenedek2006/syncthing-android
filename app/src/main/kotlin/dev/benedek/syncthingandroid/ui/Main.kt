@@ -38,6 +38,9 @@ import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.PowerSettingsNew
+import androidx.compose.material.icons.outlined.QrCode2
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
@@ -65,6 +68,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -180,9 +184,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
         drawerContent = {
             // DrawerDefaults.modalContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
             ModalDrawerSheet(
-                windowInsets = WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.End + WindowInsetsSides.Top
-                ),
+                windowInsets = WindowInsets(),
                 modifier = Modifier
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
@@ -205,7 +207,9 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
             ) {
                 Column(
                     Modifier
-                        .windowInsetsPadding(WindowInsets.displayCutout)
+                        .windowInsetsPadding(WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Top + WindowInsetsSides.Start
+                        ))
                 ) {
                     Text(
                         stringResource(R.string.app_name),
@@ -223,8 +227,9 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 
                 Column(
-                    Modifier
-                        .windowInsetsPadding(WindowInsets.displayCutout)
+                    Modifier.windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                    )
                 ) {
                     OptionTile(
                         title = stringResource(R.string.ram_usage),
@@ -279,12 +284,13 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                         )
                 ) {
                     Column(
-                        Modifier
-                            .windowInsetsPadding(WindowInsets.displayCutout)
+                        Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                        )
                     ) {
                         OptionTile(
                             title = stringResource(R.string.web_gui_title),
-                            leftIconPainter = painterResource(R.drawable.ic_web_24dp),
+                            leftIconPainter = rememberVectorPainter(Icons.Outlined.Web),
                             onClick = {
                                 scope.launch {
                                     drawerState.close()
@@ -304,7 +310,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                         )
                         OptionTile(
                             title = stringResource(R.string.settings_title),
-                            leftIconPainter = painterResource(R.drawable.ic_settings_24dp),
+                            leftIconPainter = rememberVectorPainter(Icons.Outlined.Settings),
                             onClick = {
                                 scope.launch {
                                     drawerState.close()
