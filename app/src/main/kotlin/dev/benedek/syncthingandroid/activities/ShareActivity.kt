@@ -27,7 +27,6 @@ import dev.benedek.syncthingandroid.activities.SyncthingActivity.OnServiceConnec
 import dev.benedek.syncthingandroid.databinding.ActivityShareBinding
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.service.SyncthingService
-import dev.benedek.syncthingandroid.service.SyncthingService.OnServiceStateChangeListener
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
 import java.io.FileNotFoundException
@@ -44,8 +43,7 @@ import java.util.Date
  * [.getDisplayNameForUri] and [.getDisplayNameFromContentResolver] are taken from
  * ownCloud Android {@see https://github.com/owncloud/android/blob/79664304fdb762b2e04f1ac505f50d0923ddd212/src/com/owncloud/android/utils/UriUtils.java#L193}
  */
-class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
-    OnServiceStateChangeListener {
+class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
     private val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -57,34 +55,33 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener,
     private var binding: ActivityShareBinding? = null
 
 
-    override fun onServiceStateChange(currentState: SyncthingService.State?) {
-        if (currentState != SyncthingService.State.ACTIVE || api == null) return
-
-        val folders = api!!.folders
-
-        // Get the index of the previously selected folder.
-        var folderIndex = 0
-        val savedFolderId: String = preferences.getString(
-            PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, ""
-        )!!
-        for (folder in folders!!) {
-            if (folder?.id == savedFolderId) {
-                folderIndex = folders.indexOf(folder)
-                break
-            }
-        }
-
-        val adapter: ArrayAdapter<Folder?> = ArrayAdapter<Folder?>(
-            this, android.R.layout.simple_spinner_item, folders
-        )
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding!!.folders.setAdapter(adapter)
-        binding!!.folders.setSelection(folderIndex)
-    }
 
     override fun onServiceConnected() {
-        service?.registerOnServiceStateChangeListener(this)
+        service?.registerOnServiceStateChangeListener { currentState ->
+            if (currentState != SyncthingService.State.ACTIVE || api == null) return@registerOnServiceStateChangeListener
+
+            val folders = api!!.folders
+
+            // Get the index of the previously selected folder.
+            var folderIndex = 0
+            val savedFolderId: String = preferences.getString(
+                PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, ""
+            )!!
+            for (folder in folders!!) {
+                if (folder?.id == savedFolderId) {
+                    folderIndex = folders.indexOf(folder)
+                    break
+                }
+            }
+
+            val adapter: ArrayAdapter<Folder?> = ArrayAdapter<Folder?>(
+                this, android.R.layout.simple_spinner_item, folders
+            )
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding!!.folders.setAdapter(adapter)
+            binding!!.folders.setSelection(folderIndex)
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

@@ -26,12 +26,11 @@ abstract class StateDialogActivity : SyncthingActivity() {
     private var disabledDialog: AlertDialog? = null
     private var isPaused = true
 
-    private val onServiceStateChangeListener =
-        SyncthingService.OnServiceStateChangeListener { currentState: SyncthingService.State? ->
-            this.onServiceStateChange(
-                currentState!!
-            )
-        }
+    fun onServiceStateChangeListener (currentState: SyncthingService.State?) {
+        this.onServiceStateChange(
+            currentState!!
+        )
+    }
     private val onRunConditionCheckResultListener =
         SyncthingService.OnRunConditionCheckResultListener { result: RunConditionCheckResult? ->
             this.onRunConditionCheckResultChange(
@@ -42,7 +41,7 @@ abstract class StateDialogActivity : SyncthingActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerOnServiceConnectedListener {
-            service?.registerOnServiceStateChangeListener(onServiceStateChangeListener)
+            service?.registerOnServiceStateChangeListener(::onServiceStateChangeListener)
             service?.registerOnRunConditionCheckResultChange(onRunConditionCheckResultListener)
         }
     }
@@ -66,7 +65,7 @@ abstract class StateDialogActivity : SyncthingActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        service?.unregisterOnServiceStateChangeListener(onServiceStateChangeListener)
+        service?.unregisterOnServiceStateChangeListener(::onServiceStateChangeListener)
         service?.unregisterOnRunConditionCheckResultChange(onRunConditionCheckResultListener)
         dismissDisabledDialog()
     }

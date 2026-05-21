@@ -38,8 +38,7 @@ import java.io.File
 /**
  * Activity that allows selecting a directory in the local file system.
  */
-class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListener,
-    SyncthingService.OnServiceStateChangeListener {
+class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListener {
     private var listView: ListView? = null
     private var filesAdapter: FileAdapter? = null
     private var rootsAdapter: RootsAdapter? = null
@@ -177,13 +176,13 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         super.onServiceConnected(componentName, iBinder)
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
-        syncthingServiceBinder.service.registerOnServiceStateChangeListener(this)
+        syncthingServiceBinder.service.registerOnServiceStateChangeListener(::onServiceStateChange)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         val syncthingService = service
-        syncthingService?.unregisterOnServiceStateChangeListener(this)
+        syncthingService?.unregisterOnServiceStateChangeListener(::onServiceStateChange)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -324,7 +323,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 
 
 
-    override fun onServiceStateChange(currentState: SyncthingService.State?) {
+    fun onServiceStateChange(currentState: SyncthingService.State?) {
         if (!isFinishing && currentState != SyncthingService.State.ACTIVE) {
             setResult(RESULT_CANCELED)
             finish()

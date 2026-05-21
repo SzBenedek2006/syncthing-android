@@ -37,9 +37,6 @@ import java.util.concurrent.atomic.AtomicReference
  * Holds the native syncthing instance and provides an API to access it.
  */
 class SyncthingService : Service() {
-    fun interface OnServiceStateChangeListener {
-        fun onServiceStateChange(currentState: State?)
-    }
 
     fun interface OnRunConditionCheckResultListener {
         fun onRunConditionCheckResultChanged(result: RunConditionCheckResult?)
@@ -90,7 +87,7 @@ class SyncthingService : Service() {
     private var syncthingRunnableThread: Thread? = null
     private var handler: Handler? = null
 
-    private val onServiceStateChangeListeners = HashSet<OnServiceStateChangeListener?>()
+    private val onServiceStateChangeListeners = HashSet<((State?) -> Unit)?>()
     private val onRunConditionCheckResultListeners = HashSet<OnRunConditionCheckResultListener?>()
     private val binder = SyncthingServiceBinder(this)
 
@@ -510,10 +507,10 @@ class SyncthingService : Service() {
      *
      * @see .unregisterOnServiceStateChangeListener
      */
-    fun registerOnServiceStateChangeListener(listener: OnServiceStateChangeListener) {
+    fun registerOnServiceStateChangeListener(listener: (State?) -> Unit) {
         // Make sure we don't send an invalid state or syncthing might show a "disabled" message
         // when it's just starting up.
-        listener.onServiceStateChange(this.currentState)
+        listener(this.currentState)
         onServiceStateChangeListeners.add(listener)
     }
 
@@ -522,7 +519,7 @@ class SyncthingService : Service() {
      *
      * @see .registerOnServiceStateChangeListener
      */
-    fun unregisterOnServiceStateChangeListener(listener: OnServiceStateChangeListener?) {
+    fun unregisterOnServiceStateChangeListener(listener: ((State?) -> Unit)?) {
         onServiceStateChangeListeners.remove(listener)
     }
 
@@ -538,7 +535,7 @@ class SyncthingService : Service() {
             while (i.hasNext()) {
                 val listener = i.next()
                 if (listener != null) {
-                    listener.onServiceStateChange(this.currentState)
+                    listener(this.currentState)
                 } else {
                     i.remove()
                 }

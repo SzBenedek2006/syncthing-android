@@ -48,7 +48,7 @@ import java.security.cert.X509Certificate
 /**
  * Holds a WebView that shows the web ui of the local syncthing instance.
  */
-class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateChangeListener {
+class WebGuiActivity : StateDialogActivity() {
     private var caCert: X509Certificate? = null
 
     private var config: ConfigXml? = null
@@ -182,10 +182,10 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
     override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
         super.onServiceConnected(componentName, iBinder)
         val syncthingServiceBinder = iBinder as SyncthingServiceBinder
-        syncthingServiceBinder.service.registerOnServiceStateChangeListener(this)
+        syncthingServiceBinder.service.registerOnServiceStateChangeListener(::onServiceStateChange)
     }
 
-    override fun onServiceStateChange(newState: SyncthingService.State?) {
+    fun onServiceStateChange(newState: SyncthingService.State?) {
         Log.v(TAG, "onServiceStateChange($newState)")
         if (newState == SyncthingService.State.ACTIVE) {
             if (binding!!.webview.getUrl() == null) {
@@ -222,7 +222,7 @@ class WebGuiActivity : StateDialogActivity(), SyncthingService.OnServiceStateCha
 
     override fun onDestroy() {
         val syncthingService = service
-        syncthingService?.unregisterOnServiceStateChangeListener(this)
+        syncthingService?.unregisterOnServiceStateChangeListener(::onServiceStateChange)
         binding!!.webview.destroy()
         super.onDestroy()
     }

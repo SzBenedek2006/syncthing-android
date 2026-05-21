@@ -19,7 +19,6 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
@@ -52,8 +51,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
     private var discardDialog: Dialog? = null
     private var compressionDialog: Dialog? = null
 
-    private val serviceStateChangeListener =
-        SyncthingService.OnServiceStateChangeListener { currentState -> this@DeviceActivity.onServiceStateChange(currentState) }
+    fun serviceStateChangeListener(currentState: SyncthingService.State?) { this@DeviceActivity.onServiceStateChange(currentState) }
 
     private val compressionEntrySelectedListener: DialogInterface.OnClickListener =
         DialogInterface.OnClickListener { dialog, which ->
@@ -220,7 +218,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
                     EXTRA_NOTIFICATION_ID, 0
                 )
             )
-            syncthingService.unregisterOnServiceStateChangeListener(serviceStateChangeListener)
+            syncthingService.unregisterOnServiceStateChangeListener(::serviceStateChangeListener)
         }
         binding!!.id.removeTextChangedListener(idTextWatcher)
         binding!!.name.removeTextChangedListener(nameTextWatcher)
@@ -272,7 +270,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
                 EXTRA_NOTIFICATION_ID, 0
             )
         )
-        syncthingService.registerOnServiceStateChangeListener(serviceStateChangeListener)
+        syncthingService.registerOnServiceStateChangeListener(::serviceStateChangeListener)
     }
 
     /**
