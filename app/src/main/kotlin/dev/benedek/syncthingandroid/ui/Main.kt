@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -99,11 +98,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.tooling.preview.AndroidUiModes
 import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable
@@ -287,16 +283,6 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                             .windowInsetsPadding(WindowInsets.displayCutout)
                     ) {
                         OptionTile(
-                            title = stringResource(R.string.show_device_id),
-                            leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
-                            onClick = {
-                                scope.launch {
-                                    drawerState.close()
-                                }
-                                viewModel.showDeviceIdDialog = true
-                            }
-                        )
-                        OptionTile(
                             title = stringResource(R.string.web_gui_title),
                             leftIconPainter = painterResource(R.drawable.ic_web_24dp),
                             onClick = {
@@ -304,6 +290,16 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                                     drawerState.close()
                                 }
                                 context.startActivity(Intent(context, WebGuiActivity::class.java))
+                            }
+                        )
+                        OptionTile(
+                            title = stringResource(R.string.show_device_id),
+                            leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
+                            onClick = {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                                viewModel.showDeviceIdDialog = true
                             }
                         )
                         OptionTile(
