@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.ui.main
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -104,6 +104,8 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
+import dev.benedek.syncthingandroid.ui.FolderViewModel
+import dev.benedek.syncthingandroid.ui.MainViewModel
 import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable

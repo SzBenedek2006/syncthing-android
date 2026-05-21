@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -41,6 +41,7 @@ import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderStatus
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
+import dev.benedek.syncthingandroid.ui.FolderViewModel
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
