@@ -2,6 +2,7 @@ package dev.benedek.syncthingandroid.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
@@ -93,5 +94,5 @@ object ThemeControls : SharedPreferences.OnSharedPreferenceChangeListener {
      * Anyway, Bool.compareTo saved the day.
      */
 
-    const val UI_MODE = UI_MODE_NIGHT_YES * (1 + PREVIEW_DARK_THEME.compareTo(true))
+    const val UI_MODE = UI_MODE_NIGHT_NO * (1 + PREVIEW_DARK_THEME.compareTo(false))
 }
