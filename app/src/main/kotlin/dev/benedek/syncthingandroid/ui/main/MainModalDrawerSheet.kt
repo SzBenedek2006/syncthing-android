@@ -1,23 +1,25 @@
 package dev.benedek.syncthingandroid.ui.main
 
 import android.content.Intent
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.PowerSettingsNew
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Web
@@ -28,25 +30,38 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
 import dev.benedek.syncthingandroid.ui.MainViewModel
+import dev.benedek.syncthingandroid.ui.reusable.ComposeBasicLineChart
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
+import dev.benedek.syncthingandroid.ui.reusable.StatTile
 import dev.benedek.syncthingandroid.ui.reusable.topBorderWithCorners
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
@@ -62,18 +77,33 @@ fun MainModalDrawerSheet(
     ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val density = LocalDensity.current
+    val containerWidth = LocalWindowInfo.current.containerSize.width
+
 
     val contentColor = MaterialTheme.colorScheme.onSurface
+    val color = Color.Transparent
     val red = MaterialTheme.extendedColorScheme.red.color
     val green = MaterialTheme.extendedColorScheme.green.color
     val blue = MaterialTheme.extendedColorScheme.blue.color
     val yellow = MaterialTheme.extendedColorScheme.yellow.color
+
+
+    LaunchedEffect(containerWidth) {
+        actualDrawerWidth = if (containerWidth.dp * 0.8f < drawerWidth) {
+            if (containerWidth.dp < smallDrawerWidth) containerWidth.dp else maxOf(containerWidth.dp * 0.8f, smallDrawerWidth)
+        } else {
+            drawerWidth
+        }
+        Log.d(this.toString(), actualDrawerWidth.toString())
+    }
 
     ModalDrawerSheet(
         windowInsets = WindowInsets(),
         modifier = Modifier
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
+            .widthIn(max = actualDrawerWidth)
             .graphicsLayer {
                 // 1. Slide it away slightly
                 translationX = -predictiveBackProgress() * 200f
@@ -91,21 +121,24 @@ fun MainModalDrawerSheet(
                 clip = true
             }
     ) {
-        Column(
+        Row(
             Modifier
                 .windowInsetsPadding(WindowInsets.safeDrawing.only(
                     WindowInsetsSides.Top + WindowInsetsSides.Start
                 ))
+                .padding(horizontal = 10.dp, vertical = 12.dp),
+            Arrangement.Start,
+            Alignment.CenterVertically
         ) {
+            Icon(
+                painterResource(R.drawable.ic_monochrome),
+                null, Modifier.padding(8.dp).size(24.dp),
+                MaterialTheme.colorScheme.primary
+            )
             Text(
                 stringResource(R.string.app_name),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
-                letterSpacing = MaterialTheme.typography.titleLarge.letterSpacing,
-                modifier = Modifier
-                    .padding(16.dp)
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(6.dp)
             )
         }
 
@@ -115,43 +148,128 @@ fun MainModalDrawerSheet(
         Column(
             Modifier.windowInsetsPadding(
                 WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
-            )
+            ),
+            Arrangement.spacedBy(16.dp)
         ) {
-            OptionTile(
-                title = stringResource(R.string.ram_usage),
-                description = Util.readableFileSize(context, viewModel.systemInfo?.sys ?: 0),
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null
-            )
-            OptionTile(
-                title = stringResource(R.string.download_title),
-                description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.inBits ?: 0),
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null
-            )
-            OptionTile(
-                title = stringResource(R.string.upload_title),
-                description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.outBits ?: 0),
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null
-            )
-            OptionTile(
+            val density = LocalDensity.current
+            var tileHeight by remember { mutableStateOf(0.dp) }
+            val shape = RectangleShape//RoundedCornerShape(10.dp)
+            val modifier = Modifier//.padding(horizontal = 16.dp)
+
+            val descriptionWeight = FontWeight.Normal
+            val titleWeight = FontWeight.Normal
+
+            StatTile(
+                modifier = modifier
+                    .onSizeChanged { with(density) { tileHeight = it.height.toDp() } },
                 title = stringResource(R.string.announce_server),
+                titleWeight = titleWeight,
                 description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
+                descriptionWeight = descriptionWeight,
                 descriptionColor = if (viewModel.announceConnected > 0) green else red,
+                color = color,
                 noIconPadding = true,
                 contentColor = contentColor,
-                enabled = viewModel.api != null
+                enabled = viewModel.api != null,
+                shape = shape,
+                chart = {
+                    ComposeBasicLineChart(
+                        values = viewModel.announceConnectedHistory
+                            .let { if (it.size < 2) listOf(0L, 0L) else it }
+                            .toList(),
+                        modifier = Modifier.height(tileHeight)
+                    )
+                }
             )
-            OptionTile(
-                title = stringResource(R.string.syncthing_version_title),
-                description = viewModel.systemVersion?.version ?: "null",
+            StatTile(
+                modifier = modifier,
+                title = stringResource(R.string.ram_usage),
+                titleWeight = titleWeight,
+                description = Util.readableFileSize(context, viewModel.systemInfo?.sys ?: 0),
+                descriptionWeight = descriptionWeight,
+                color = color,
                 noIconPadding = true,
                 contentColor = contentColor,
-                enabled = viewModel.api != null
+                enabled = viewModel.api != null,
+                shape = shape,
+                chart = {
+                    ComposeBasicLineChart(
+                        values = viewModel.systemInfoHistory
+                            .map { info -> info?.sys ?: 0L }
+                            .let { if (it.size < 2) listOf(0L, 0L) else it },
+                        modifier = Modifier.weight(0.3f).height(tileHeight)
+                    )
+                }
+            )
+            /*
+            val max: Long? = viewModel.systemInfoHistory.maxOfOrNull {
+                        it?.sys ?: 0L
+                    } // Test this with detekt (:Long? and 0L)
+                    Column(
+                        Modifier.height(tileHeight),
+                        verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
+                    ) {
+                        Text(
+                            Util.readableFileSize(context, max ?: 0L),
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }*/
+
+            StatTile(
+                modifier = modifier,
+                title = stringResource(R.string.download_title),
+                titleWeight = titleWeight,
+                description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.inBits ?: 0),
+                descriptionWeight = descriptionWeight,
+                color = color,
+                noIconPadding = true,
+                contentColor = contentColor,
+                enabled = viewModel.api != null,
+                shape = shape,
+                chart = {
+                    ComposeBasicLineChart(
+                        values = viewModel.deviceStatusesHistory
+                            .map { status -> status.total?.inBits ?: 0L }
+                            .let { if (it.size < 2) listOf(0L, 0L) else it },
+                        modifier = Modifier.weight(0.3f).height(tileHeight)
+                    )
+                }
+            )
+            /*
+            val max: Long? =
+                        viewModel.deviceStatusesHistory.maxOfOrNull { it.total?.inBits ?: 0 }
+                    Column(
+                        Modifier.height(tileHeight),
+                        verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
+                    ) {
+                        Text(
+                            Util.readableTransferRate(
+                                context,
+                                viewModel.deviceStatuses.total?.inBits ?: 0
+                            ), style = MaterialTheme.typography.labelSmall
+                        )
+                    }
+             */
+
+            StatTile(
+                modifier = modifier,
+                title = stringResource(R.string.upload_title),
+                titleWeight = titleWeight,
+                description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.outBits ?: 0),
+                descriptionWeight = descriptionWeight,
+                color = color,
+                noIconPadding = true,
+                contentColor = contentColor,
+                enabled = viewModel.api != null,
+                shape = shape,
+                chart = {
+                    ComposeBasicLineChart(
+                        values = viewModel.deviceStatusesHistory
+                            .map { status -> status.total?.outBits ?: 0L }
+                            .let { if (it.size < 2) listOf(0L, 0L) else it },
+                        modifier = Modifier.weight(0.3f).height(tileHeight)
+                    )
+                }
             )
         }
 
@@ -163,11 +281,13 @@ fun MainModalDrawerSheet(
         Surface(
             shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
             color = Color.Transparent,
-            modifier = Modifier.topBorderWithCorners(
-                1.dp,
-                MaterialTheme.colorScheme.outlineVariant,
-                16.dp
-            )
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .topBorderWithCorners(
+                    1.dp,
+                    MaterialTheme.colorScheme.outlineVariant,
+                    16.dp
+                )
         ) {
             Column(
                 Modifier.windowInsetsPadding(
@@ -212,8 +332,9 @@ fun MainModalDrawerSheet(
         ) {
             Column(
                 Modifier
-                    .navigationBarsPadding()
-                    .windowInsetsPadding(WindowInsets.displayCutout)
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start + WindowInsetsSides.Bottom)
+                    )
             ) {
                 OptionTile(
                     title = stringResource(R.string.restart),
@@ -241,6 +362,9 @@ fun MainModalDrawerSheet(
     }
 }
 
+val drawerWidth = 360.dp // M3 spec
+val smallDrawerWidth = 240.dp
+var actualDrawerWidth by mutableStateOf(drawerWidth)
 
 
 @Preview(uiMode = ThemeControls.UI_MODE)
