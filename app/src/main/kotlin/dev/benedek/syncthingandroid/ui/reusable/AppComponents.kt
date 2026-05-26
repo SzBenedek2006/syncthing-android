@@ -1,6 +1,7 @@
 package dev.benedek.syncthingandroid.ui.reusable
 
 import android.annotation.SuppressLint
+import android.view.Surface
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -58,18 +60,28 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
@@ -77,6 +89,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -85,9 +99,27 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
+import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.CartesianDrawingContext
+import com.patrykandpatrick.vico.compose.cartesian.CartesianMeasuringContext
+import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis.ItemPlacer.Companion.step
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.compose.cartesian.layer.CartesianLayerDimensions
+import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.compose.common.Fill
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+import kotlinx.coroutines.runBlocking
 
 val dialogTonalElevation = 6.dp
 
@@ -242,7 +274,11 @@ fun OptionTile(
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     titleColor: Color = contentColor,
     descriptionColor: Color = contentColor,
-    iconColor: Color = contentColor
+    iconColor: Color = contentColor,
+    titleStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    descriptionStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    titleWeight: FontWeight? = titleStyle.fontWeight,
+    descriptionWeight: FontWeight? = descriptionStyle.fontWeight
 ) {
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
     val isSwitch = checked != null && onCheckedChange != null
@@ -327,7 +363,8 @@ fun OptionTile(
                     Text(
                         title,
                         textAlign = TextAlign.Left,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = titleStyle,
+                        fontWeight = titleWeight,
                         color = titleColor
                     )
                 }
@@ -341,7 +378,8 @@ fun OptionTile(
                         Text(
                             description!!,
                             textAlign = TextAlign.Left,
-                            style = MaterialTheme.typography.bodySmall,
+                            style = descriptionStyle,
+                            fontWeight = descriptionWeight,
                             color = descriptionColor
                         )
                     }
@@ -368,6 +406,161 @@ fun OptionTile(
             }
 
 
+        }
+    }
+}
+
+
+@Composable
+fun StatTile(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    description: String? = null,
+    chart: @Composable (() -> Unit)? = null,
+    enabled: Boolean = true,
+    shape: Shape = RectangleShape,
+    interactionSource: MutableInteractionSource? = null,
+    leftIcon: @Composable (() -> Unit)? = null,
+    rightIcon: @Composable (() -> Unit)? = null,
+    noIconPadding: Boolean = false,
+    onClick: (() -> Unit)? = null,
+    onCheckedChange: ((Boolean) -> Unit)? = null,
+    checked: Boolean? = null,
+    tonalElevation: Dp = 0.dp,
+    color: Color = Color.Transparent,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    titleColor: Color = contentColor,
+    descriptionColor: Color = contentColor,
+    titleStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    descriptionStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    titleWeight: FontWeight? = titleStyle.fontWeight,
+    descriptionWeight: FontWeight? = descriptionStyle.fontWeight
+) {
+    val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val isSwitch = checked != null && onCheckedChange != null
+    val isButton = onClick != null
+
+    val illegalState = isButton && isSwitch
+
+    val color = if (illegalState) MaterialTheme.colorScheme.errorContainer else color
+    val contentColor = if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else contentColor
+    val titleColor = if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else titleColor
+    val descriptionColor = if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else descriptionColor
+
+
+
+    val behaviorModifier = if(illegalState) {
+        Modifier
+    } else if (isSwitch) {
+        Modifier.toggleable(
+            value = checked,
+            onValueChange = onCheckedChange,
+            enabled = enabled,
+            role = Role.Switch,
+            interactionSource = interactionSource,
+            //indication = LocalIndication.current // TODO: What happens with the default value?
+        )
+    } else if (isButton) {
+        Modifier.clickable(
+            onClick = onClick,
+            enabled = enabled,
+            role = Role.Button,
+            interactionSource = interactionSource,
+            //indication = LocalIndication.current
+        )
+    } else {
+        Modifier
+    }
+
+    Surface(
+        modifier = modifier
+            .then(behaviorModifier)
+            .heightIn(min = 56.dp),
+        shape = shape,
+        color = color,
+        contentColor = contentColor,
+        tonalElevation = tonalElevation
+        //interactionSource = interactionSource
+
+    ) {
+        Box {
+            if (chart != null) {
+                Box(
+                    Modifier.matchParentSize()
+                        .graphicsLayer {
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        }
+                        .drawWithContent {
+                            drawContent()
+                            drawRect(
+                                brush = Brush.horizontalGradient(
+                                    0.0f to Color.Transparent,
+                                    0.3f to Color.Black.copy(0.2f),
+                                    1.0f to Color.Black // fully opaque
+                                ),
+                                blendMode = BlendMode.DstIn
+                            )
+                        }
+                ) {
+                    chart()
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(),
+            ) {
+                if (leftIcon != null) {
+                    leftIcon()
+                } else if (!noIconPadding) {
+                    Box(
+                        modifier = Modifier
+                            .padding(14.dp)
+                            .size(24.dp)
+                    )
+                } else {
+                    Box(Modifier.padding(start = 14.dp))
+                }
+                Column(modifier = Modifier.weight(1f).padding(4.dp)) {
+                    if (title != null) {
+                        Text(
+                            title,
+                            textAlign = TextAlign.Left,
+                            style = titleStyle,
+                            fontWeight = titleWeight,
+                            color = titleColor
+                        )
+                    }
+                    if (description != null || illegalState) {
+                        if (illegalState) {
+                            Text(
+                                "This tile is in illegal state,\n" +
+                                        "please report this to the developer."
+                            )
+                        } else {
+                            Text(
+                                description!!,
+                                textAlign = TextAlign.Left,
+                                style = descriptionStyle,
+                                fontWeight = descriptionWeight,
+                                color = descriptionColor
+                            )
+                        }
+                    }
+                }
+
+
+                if (checked != null) {
+                    Switch(
+                        checked = checked,
+                        onCheckedChange = null,
+                        Modifier.padding(14.dp)
+                    )
+                } else {
+                    rightIcon?.invoke()
+                }
+
+
+            }
         }
     }
 }
@@ -689,8 +882,67 @@ fun CustomDialog(
     }
 }
 
-// PREVIEWS
 
+// CHARTS
+
+
+@Composable
+fun ComposeBasicLineChart(values: List<Number>, modifier: Modifier = Modifier) {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(values) {
+        modelProducer.runTransaction {
+            // Learn more: https://patrykandpatrick.com/z5ah6v.
+            lineSeries { series(values) }
+        }
+    }
+    ComposeBasicLineChart(modelProducer, modifier)
+}
+@Composable
+private fun ComposeBasicLineChart(
+    modelProducer: CartesianChartModelProducer,
+    modifier: Modifier = Modifier,
+) {
+    val color = MaterialTheme.colorScheme.primary
+
+    CartesianChartHost(
+        chart =
+            rememberCartesianChart(
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        LineCartesianLayer.rememberLine(
+                            fill = LineCartesianLayer.LineFill.single(
+                                Fill(color)
+                            ),
+                            stroke = LineCartesianLayer.LineStroke.Continuous(3.dp),
+                            areaFill = LineCartesianLayer.AreaFill.single(
+                                Fill(
+                                    Brush.verticalGradient(
+                                        listOf(
+                                            color.copy(alpha = 0.4f),
+                                            Color.Transparent
+                                        )
+                                    )
+                                )
+                            ),
+                            interpolator = LineCartesianLayer.Interpolator.cubic(0.7f)
+                        )
+                    )
+                ),
+                startAxis = null, //VerticalAxis.rememberStart(guideline = null, tick = null, line = null, itemPlacer = VerticalAxis.ItemPlacer.count({ 3 })),
+                bottomAxis = null,
+            ),
+        modelProducer = modelProducer,
+        scrollState = rememberVicoScrollState(scrollEnabled = false),
+        animationSpec = null,
+        modifier = modifier,
+    )
+}
+
+
+
+
+
+// PREVIEWS
 @Preview(uiMode = ThemeControls.UI_MODE)
 @Composable
 fun AppScaffoldPreview() {
@@ -722,6 +974,20 @@ fun OptionTilePreview() {
     }
 }
 
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
+@Composable
+fun StatTilePreview() {
+    SyncthingandroidTheme {
+        var checked = true
+        StatTile(
+            leftIcon = { Icon(painterResource(R.drawable.ic_label_outline_24dp), null, Modifier.padding(14.dp)) },
+            title = "Content",
+            checked = checked,
+            onCheckedChange = {checked = !checked}
+        )
+    }
+}
+
 @Preview(uiMode = ThemeControls.UI_MODE)
 @Composable
 fun SingleSelectDialogPreview() {
@@ -740,6 +1006,25 @@ fun CustomDialogPreview() {
     SyncthingandroidTheme {
         CustomDialog("Title", "Description", {}, {}) {
             Text("Content")
+        }
+    }
+}
+
+@Composable
+@Preview(uiMode = ThemeControls.UI_MODE)
+private fun ComposeBasicLineChartPreview() {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    // Use `runBlocking` only for previews, which don’t support asynchronous execution.
+    runBlocking {
+        modelProducer.runTransaction {
+            // Learn more: https://patrykandpatrick.com/z5ah6v.
+            //lineSeries { series(13, 14, 15, 12, 10, 9, 9, 8, 5, 11, 6, 12, 11, 12, 11) }
+            lineSeries { series(13, 8, 7, 12, 1, 15, 14, 0, 11, 6, 12, 0, 11, 12, 11) }
+        }
+    }
+    SyncthingandroidTheme(ThemeControls.useDarkMode, ThemeControls.isMonetEnabled) {
+        Surface {
+            ComposeBasicLineChart(modelProducer)
         }
     }
 }
