@@ -3,9 +3,13 @@
 package dev.benedek.syncthingandroid.ui
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toLong
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -20,6 +24,7 @@ import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.model.SystemVersion
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,7 +32,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
-
+const val HISTORY_MAX_SIZE = 120
 class MainViewModel : ViewModel() {
     val mainVisibilityObserver = MainVisibilityObserver()
 
@@ -36,12 +41,15 @@ class MainViewModel : ViewModel() {
     var isApiReady by mutableStateOf(false)
         private set
 
+    var fetchSystemDataJob: Job? = null
 
     var systemInfo by mutableStateOf<SystemInfo?>(null)
-    var systemVersion by mutableStateOf<SystemVersion?>(null)
+    val systemInfoHistory = mutableStateListOf<SystemInfo?>()
 
-    var announceTotal: Int = 0
-    var announceConnected: Int = 0
+    var announceTotal: Int by mutableIntStateOf(0)
+    var announceConnected: Int by mutableIntStateOf(0)
+
+    val announceConnectedHistory = mutableStateListOf<Int>()
 
     // DIALOGS
     var showDeviceIdDialog by mutableStateOf(false)
@@ -60,44 +68,43 @@ class MainViewModel : ViewModel() {
      * We get all the "connections" or "statuses" at once.
      */
     var deviceStatuses by mutableStateOf(DeviceStatuses())
+    val deviceStatusesHistory = mutableStateListOf<DeviceStatuses>()
 
     private val DEVICES_COMPARATOR =
         Comparator { lhs: Device?, rhs: Device? -> lhs!!.name.compareTo(rhs!!.name) }
+
+    var apiCallDelay: Long = 100L
+    val apiCallCount: Int = 3
+    var apiRefreshDelay: Long = (1000 - apiCallDelay * apiCallCount)
 
     fun setService(service: SyncthingService) {
         serviceReference = WeakReference(service)
     }
 
-    class MainVisibilityObserver : DefaultLifecycleObserver {
-        var isVisible: Boolean = true
-            private set
-        var apiRefreshDelay: Long = 10L
-        var apiCallDelay: Long = 100L
-        var refreshInterval: Long = 2000L
+    inner class MainVisibilityObserver : DefaultLifecycleObserver {
+
+
+
+        override fun onStart(owner: LifecycleOwner) {
+            super.onStart(owner)
+            startFetchSystemData()
+        }
 
         override fun onResume(owner: LifecycleOwner) {
             super.onResume(owner)
 
-            apiRefreshDelay = 10L
-            apiCallDelay = 100L
-            refreshInterval = 1000L
-
-            isVisible = true
         }
 
         override fun onPause(owner: LifecycleOwner) {
             super.onPause(owner)
 
-            apiRefreshDelay = 100L
-            apiCallDelay = 1000L
-            refreshInterval = 10000L
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
-
-            isVisible = false
+            stopFetchSystemData()
         }
+
     }
 
 
@@ -108,63 +115,66 @@ class MainViewModel : ViewModel() {
                 val _isApiReady = (api != null)
 
                 if (isApiReady != _isApiReady) {
-                    if (!isApiReady) delay(mainVisibilityObserver.apiCallDelay*4) // UPDATE for the number of api calls each cycle to avoid empty list error
+                    if (!isApiReady) delay(apiCallDelay * apiCallCount)
                     isApiReady = _isApiReady
                 }
 
                 delay(if (_isApiReady) 333L else 33L)
             }
         }
-        fetchSystemData()
     }
 
 
-    fun fetchSystemData() {
-        viewModelScope.launch {
+    fun startFetchSystemData() {
+        fetchSystemDataJob = viewModelScope.launch {
             while (isActive) {
-                while (!isApiReady) {
-                    delay(mainVisibilityObserver.apiRefreshDelay)
-                }
-                api?.getSystemInfo { info ->
+
+                delay(apiRefreshDelay)
+
+                api?.getSystemInfo { info -> // api call 1
                     if (info != null) {
                         systemInfo = info
+                        systemInfoHistory.add(info)
                         announceTotal = systemInfo?.discoveryMethods ?: 0
                         announceConnected = announceTotal - (systemInfo?.discoveryErrors?.size ?: 0)
+                        announceConnectedHistory.add(announceConnected)
+                        Log.d(this.toString(), announceConnectedHistory.size.toString())
+                        while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
+                            announceConnectedHistory.remove(announceConnectedHistory.first())
+                        }
                     }
                 }
-                delay(mainVisibilityObserver.apiCallDelay)
+                delay(apiCallDelay)
 
                 updateFolderStatuses()
-                delay(mainVisibilityObserver.apiCallDelay)
+                delay(apiCallDelay)
 
-                val _devices = api?.getDevices(false)
+                val _devices = api?.getDevices(false) // api call 2
                 _devices?.sortWith(DEVICES_COMPARATOR)
                 devices = _devices
-                delay(mainVisibilityObserver.apiCallDelay)
 
-                api?.getSystemVersion { version ->
-                    version?.let { systemVersion = it }
-                } ?: {
-                    systemVersion = SystemVersion()
-                    systemVersion!!.version = "Syncthing is not running."
-                }
-                delay(mainVisibilityObserver.apiCallDelay)
+                delay(apiCallDelay)
 
-                api?.getConnections { conn ->
+                api?.getConnections { conn -> // api call 3
                     if (conn != null) {
                         deviceStatuses = conn
+                        deviceStatusesHistory.add(conn)
+                        while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
+                            announceConnectedHistory.remove(announceConnectedHistory.first())
+                        }
                     }
                 }
-                do {
-                    delay(mainVisibilityObserver.refreshInterval)
-                } while (!mainVisibilityObserver.isVisible)
-
 
             }
         }
     }
 
-    fun generateQrBitmap(text: String?, size: Int = 328): Bitmap? {
+    fun stopFetchSystemData() {
+        fetchSystemDataJob?.cancel()
+        fetchSystemDataJob = null
+    }
+
+        fun generateQrBitmap(text: String?, size: Int = 328): Bitmap? {
         if (text.isNullOrEmpty()) return null
 
         return try {
