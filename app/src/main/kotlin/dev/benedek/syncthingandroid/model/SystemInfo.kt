@@ -5,7 +5,7 @@ class SystemInfo {
     var cpuPercent: Double = 0.0
     var goroutines: Int = 0
     var myID: String? = null
-    // sys = ram?
+    // sys = ram
     var sys: Long = 0
     var discoveryEnabled: Boolean = false
     var discoveryMethods: Int = 0
