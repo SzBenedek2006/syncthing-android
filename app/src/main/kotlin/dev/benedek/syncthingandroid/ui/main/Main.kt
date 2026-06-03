@@ -12,46 +12,30 @@ import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.displayCutout
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.PowerSettingsNew
-import androidx.compose.material.icons.outlined.QrCode2
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Web
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
@@ -59,21 +43,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -86,18 +67,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.activities.FolderActivity
-import dev.benedek.syncthingandroid.activities.SettingsActivity
-import dev.benedek.syncthingandroid.activities.WebGuiActivity
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
-import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
-import dev.benedek.syncthingandroid.ui.reusable.OptionTile
-import dev.benedek.syncthingandroid.ui.reusable.topBorderWithCorners
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
-import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
-import dev.benedek.syncthingandroid.util.Util
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
@@ -113,20 +87,11 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val contentColor = MaterialTheme.colorScheme.onSurface
-    val red = MaterialTheme.extendedColorScheme.red.color
-    val green = MaterialTheme.extendedColorScheme.green.color
-    val blue = MaterialTheme.extendedColorScheme.blue.color
-    val yellow = MaterialTheme.extendedColorScheme.yellow.color
-
-
-
-
 
     val density = LocalDensity.current
-    val containerWidth = LocalWindowInfo.current.containerSize.width
 
     val pagerState = rememberPagerState(pageCount = { 2 })
+    var pagerScrollEnabled by remember { mutableStateOf(true) }
 
     val drawerBlurAmount by remember {
         derivedStateOf {
@@ -135,16 +100,14 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                 0.dp
             } else if (drawerState.currentOffset.isNaN()) {
                 // Fallback before the drawer's layout has been measured
-                if (drawerState.currentValue == DrawerValue.Closed) ThemeControls.blurRadius.dp else 0.dp
+                if (drawerState.currentValue == DrawerValue.Open) ThemeControls.blurRadius.dp else 0.dp
             } else {
                 // ModalDrawerSheet max width: 360.dp, or screen width if screen width < 360.dp
-                val maxDrawerWidthPx = with(density) { 360.dp.toPx() }
-                val screenWidthPx = with(density) { containerWidth.dp.toPx() }
-                val actualDrawerWidthPx = minOf(maxDrawerWidthPx, screenWidthPx)
-
+                val actualDrawerWidthPx = with(density) { actualDrawerWidth.toPx() }
 
                 val openFraction = 1f - (abs(drawerState.currentOffset) / actualDrawerWidthPx).coerceIn(0f, 1f)
 
+                Log.d("DRAWER", "actualDrawerWidthPx: $actualDrawerWidthPx, drawerState.currentOffset: ${drawerState.currentOffset}")
                 (openFraction * ThemeControls.blurRadius).dp
             }
         }
@@ -232,7 +195,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                     }
                 },
                 bottomBar = {
-                    NavigationBar() {
+                    NavigationBar {
                         NavigationBarItem(
                             selected = pagerState.currentPage == 0,
                             onClick = {
@@ -261,9 +224,31 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
                 HorizontalPager(
                     state = pagerState,
+                    userScrollEnabled = pagerScrollEnabled,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
+                        .pointerInput(Unit) {
+                            awaitEachGesture {
+                                awaitFirstDown(requireUnconsumed = false)
+
+                                // HACK: Make the swipe on the first page open the drawer
+                                do {
+                                    val event = awaitPointerEvent()
+                                    val change = event.changes.firstOrNull()
+
+                                    if (change != null) {
+                                        val dragX = change.position.x - change.previousPosition.x
+
+                                        if (!pagerState.canScrollBackward && dragX > 0f && pagerState.currentPageOffsetFraction == 0f) {
+                                            pagerScrollEnabled = false
+                                        }
+                                    }
+                                } while (event.changes.any { it.pressed })
+
+                                pagerScrollEnabled = true
+                            }
+                        }
                 ) { page ->
                     when (page) {
                         0 -> FolderList(viewModel.folders, folderStatusesMap, viewModel.isApiReady)
@@ -463,7 +448,7 @@ fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
 @Composable
 fun MainPreview() {
     SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        Main(viewModel<MainViewModel>(), {})
+        Main(viewModel<MainViewModel>()) {}
     }
 }
 
@@ -502,7 +487,7 @@ fun ExitDialogPreview() {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            ExitDialog(viewModel(), LocalContext.current, {})
+            ExitDialog(viewModel(), LocalContext.current) {}
         }
     }
 }
