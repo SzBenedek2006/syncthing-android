@@ -22,3 +22,4 @@ include(
     ":app",
     ":syncthing"
 )
+include(":baselineprofile")

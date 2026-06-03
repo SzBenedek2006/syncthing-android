@@ -14,6 +14,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        classpath("androidx.benchmark:benchmark-baseline-profile-gradle-plugin:1.5.0-alpha06")
         classpath("com.android.tools.build:gradle:9.2.1")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.36.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.21")

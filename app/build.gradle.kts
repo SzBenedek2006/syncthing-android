@@ -5,10 +5,12 @@ plugins {
     id("com.github.ben-manes.versions")
     id("com.github.triplet.play") version "4.0.0"
     id("org.jetbrains.kotlin.plugin.compose")
+    id("androidx.baselineprofile")
 }
 
 dependencies {
 
+    implementation("androidx.profileinstaller:profileinstaller:1.4.1")
     implementation("eu.chainfire:libsuperuser:1.1.1")
     implementation("com.google.android.material:material:1.14.0")
     implementation("com.google.code.gson:gson:2.14.0")
@@ -34,6 +36,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.9.8")
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.preference:preference:1.2.1")
+    "baselineProfile"(project(":baselineprofile"))
 
     val workVersion = "2.11.2"
     implementation("androidx.work:work-runtime:${workVersion}") // Java only
