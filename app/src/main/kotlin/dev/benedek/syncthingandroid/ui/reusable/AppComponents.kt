@@ -108,8 +108,11 @@ import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis.ItemPlacer.Companion.step
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianLayerRangeProvider
+import com.patrykandpatrick.vico.compose.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.compose.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.compose.cartesian.layer.CartesianLayerDimensions
+import com.patrykandpatrick.vico.compose.cartesian.layer.ColumnCartesianLayer.ColumnProvider.Companion.series
 import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
@@ -486,7 +489,8 @@ fun StatTile(
         Box {
             if (chart != null) {
                 Box(
-                    Modifier.matchParentSize()
+                    Modifier
+                        .matchParentSize()
                         .graphicsLayer {
                             compositingStrategy = CompositingStrategy.Offscreen
                         }
@@ -520,7 +524,9 @@ fun StatTile(
                 } else {
                     Box(Modifier.padding(start = 14.dp))
                 }
-                Column(modifier = Modifier.weight(1f).padding(4.dp)) {
+                Column(modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp)) {
                     if (title != null) {
                         Text(
                             title,
@@ -608,7 +614,7 @@ fun AppScaffold(
                                 enabled = topNavigationActive
                             ) {
 
-                                Icon(topNavigationIcon ?: Icons.AutoMirrored.Outlined.ArrowBack, null)
+                                Icon(topNavigationIcon ?: Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.menu))
                             }
                         }
                     },
@@ -834,7 +840,7 @@ fun CustomDialog(
                     detectTapGestures(onPress = {
                         focusManager.clearFocus()
                     })
-            },
+                },
             shape = MaterialTheme.shapes.extraLarge,
             tonalElevation = dialogTonalElevation
         ) {
@@ -887,19 +893,20 @@ fun CustomDialog(
 
 
 @Composable
-fun ComposeBasicLineChart(values: List<Number>, modifier: Modifier = Modifier) {
+fun ComposeBasicLineChart(values: List<Number>, modifier: Modifier = Modifier, maxValue: Number = values.maxOf { it.toDouble() }) {
     val modelProducer = remember { CartesianChartModelProducer() }
-    LaunchedEffect(values) {
+    LaunchedEffect(values, maxValue) {
         modelProducer.runTransaction {
             // Learn more: https://patrykandpatrick.com/z5ah6v.
             lineSeries { series(values) }
         }
     }
-    ComposeBasicLineChart(modelProducer, modifier)
+    ComposeBasicLineChart(modelProducer, maxValue, modifier)
 }
 @Composable
 private fun ComposeBasicLineChart(
     modelProducer: CartesianChartModelProducer,
+    maxValue: Number,
     modifier: Modifier = Modifier,
 ) {
     val color = MaterialTheme.colorScheme.primary
@@ -908,6 +915,7 @@ private fun ComposeBasicLineChart(
         chart =
             rememberCartesianChart(
                 rememberLineCartesianLayer(
+                    rangeProvider = CartesianLayerRangeProvider.fixed(minY = 0.0, maxY = if (maxValue.toDouble() == 0.0) 1.0 else maxValue.toDouble()),
                     lineProvider = LineCartesianLayer.LineProvider.series(
                         LineCartesianLayer.rememberLine(
                             fill = LineCartesianLayer.LineFill.single(
@@ -1024,7 +1032,7 @@ private fun ComposeBasicLineChartPreview() {
     }
     SyncthingandroidTheme(ThemeControls.useDarkMode, ThemeControls.isMonetEnabled) {
         Surface {
-            ComposeBasicLineChart(modelProducer)
+            ComposeBasicLineChart(modelProducer, 25)
         }
     }
 }
