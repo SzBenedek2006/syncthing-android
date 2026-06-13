@@ -177,6 +177,7 @@ fun MainModalDrawerSheet(
                         values = viewModel.announceConnectedHistory
                             .let { if (it.size < 2) listOf(0L, 0L) else it }
                             .toList(),
+                        maxValue = viewModel.announceTotal,
                         modifier = Modifier.height(tileHeight)
                     )
                 }
@@ -317,6 +318,7 @@ fun MainModalDrawerSheet(
                 OptionTile(
                     title = stringResource(R.string.settings_title),
                     leftIconPainter = rememberVectorPainter(Icons.Outlined.Settings),
+                    leftIconContentDescription = stringResource(R.string.settings_title),
                     onClick = {
                         scope.launch {
                             drawerState().close()

@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.BackEventCompat
 import androidx.activity.compose.PredictiveBackHandler
+import androidx.activity.compose.ReportDrawn
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -254,6 +255,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
                         0 -> FolderList(viewModel.folders, folderStatusesMap, viewModel.isApiReady)
                         1 -> DeviceList(viewModel.devices ?: emptyList(), viewModel.deviceStatuses, viewModel.isApiReady)
                     }
+                    if (viewModel.isApiReady) ReportDrawn() // Maybe there's a better place to put this.
                 }
 
                 // Dialogs
