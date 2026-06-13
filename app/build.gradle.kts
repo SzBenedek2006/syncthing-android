@@ -48,6 +48,18 @@ dependencies {
     implementation("com.patrykandpatrick.vico:compose-m3:$vicoVersion")
 }
 
+/* For testing only
+android {
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+}
+*/
+
+
+
 configure<ApplicationExtension> {
     // Changes to these values need to be reflected in `../docker/Dockerfile`
     //noinspection GradleDependency
@@ -153,5 +165,23 @@ androidComponents {
             val taskName = "merge${variant.name.replaceFirstChar { it.titlecase() }}JniLibFolders"
             project.tasks.findByName(taskName)?.dependsOn(":syncthing:buildNative")
         }
+
+        // Get the path to ADB from the SDK components
+        val adbPath = sdkComponents.adb.get().asFile.absolutePath
+        val appId = variant.applicationId.get()
+        val capitalizedVariant = variant.name.replaceFirstChar { it.uppercase() }
+
+        tasks.register<Exec>("grantSpecialPermissions$capitalizedVariant") {
+            group = "verification"
+            description = "Grants MANAGE_EXTERNAL_STORAGE and whitelists battery for $appId"
+
+            commandLine(
+                adbPath, "shell",
+                "appops set $appId MANAGE_EXTERNAL_STORAGE allow; " +
+                        "dumpsys deviceidle whitelist +$appId"
+            )
+
+        }
     }
 }
+
