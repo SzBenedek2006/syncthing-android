@@ -1,15 +1,22 @@
 package dev.benedek.syncthingandroid.ui.settings.categories
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Badge
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.reusable.SettingsAlertDialog
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
@@ -31,7 +38,16 @@ fun Backup(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 		preference(
 			key = "export_config",
 			title = {
-				Text(stringResource(R.string.export_config))
+				Row {
+					Text(stringResource(R.string.export_config))
+					Badge(
+						containerColor = MaterialTheme.colorScheme.primaryContainer,
+						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+						modifier = Modifier.padding(start = 4.dp)
+					) {
+						Text(stringResource(R.string.beta))
+					}
+				}
 			},
 			onClick = { showExportDialog.value = true },
 			enabled = viewModel.isApiAvailable
@@ -39,7 +55,16 @@ fun Backup(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 		preference(
 			key = "import_config",
 			title = {
-				Text(stringResource(R.string.import_config))
+				Row {
+					Text(stringResource(R.string.import_config))
+					Badge(
+						containerColor = MaterialTheme.colorScheme.primaryContainer,
+						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+						modifier = Modifier.padding(start = 4.dp)
+					) {
+						Text(stringResource(R.string.beta))
+					}
+				}
 			},
 			onClick = { showImportDialog.value = true },
 			enabled = viewModel.isApiAvailable
