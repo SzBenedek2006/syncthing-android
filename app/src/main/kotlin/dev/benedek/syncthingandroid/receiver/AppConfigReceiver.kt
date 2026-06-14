@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.preference.PreferenceManager
-import dev.benedek.syncthingandroid.receiver.BootReceiver.Companion.startServiceCompat
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.NotificationHandler
 import dev.benedek.syncthingandroid.service.SyncthingService
@@ -17,7 +16,7 @@ class AppConfigReceiver : BroadcastReceiver() {
 	override fun onReceive(context: Context, intent: Intent) {
 		val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
 		when (intent.action) {
-			ACTION_START -> startServiceCompat(context)
+			ACTION_START -> SyncthingService.startServiceCompat(context)
 			ACTION_STOP -> if (startServiceOnBoot(context)) {
 				notificationHandler.showStopSyncthingWarningNotification()
 			} else {
