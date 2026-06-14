@@ -15,29 +15,29 @@ import me.zhanghai.compose.preference.multiSelectListPreference
 import androidx.compose.runtime.State
 
 data class SttraceState(
-    val facilities: List<String> = emptyList()
+	val facilities: List<String> = emptyList()
 )
 
 @Composable
 fun rememberSttraceState(): State<SttraceState> {
-    val context = LocalContext.current
-    val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
+	val context = LocalContext.current
+	val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
 
-    return produceState(initialValue = SttraceState()) {
-        val facilities = SttraceUtil.getDebugFacilities(prefs)
-        value = SttraceState(facilities)
-    }
+	return produceState(initialValue = SttraceState()) {
+		val facilities = SttraceUtil.getDebugFacilities(prefs)
+		value = SttraceState(facilities)
+	}
 }
 
 fun LazyListScope.sttracePreference(
-    state: SttraceState,
-    key: String
+	state: SttraceState,
+	key: String
 ) {
-    multiSelectListPreference(
-        key = key,
-        defaultValue = emptySet(),
-        values = state.facilities,
-        title = { Text(stringResource(R.string.sttrace_title)) },
-        valueToText = { value -> AnnotatedString(value) }
-    )
+	multiSelectListPreference(
+		key = key,
+		defaultValue = emptySet(),
+		values = state.facilities,
+		title = { Text(stringResource(R.string.sttrace_title)) },
+		valueToText = { value -> AnnotatedString(value) }
+	)
 }

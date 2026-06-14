@@ -29,45 +29,45 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
 fun NotificationSlide(
-    onButtonClick: () -> Unit,
-    isPermissionGranted: Boolean
+	onButtonClick: () -> Unit,
+	isPermissionGranted: Boolean
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.verticalScroll(rememberScrollState())
+			.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center
 
-    ) {
-        val context = LocalContext.current
+	) {
+		val context = LocalContext.current
 
-        //SlideWelcomeTitle(stringResource(R.string.welcome_title))
-        SlideImage(painterResource(R.drawable.baseline_notifications_active_24))
-        Spacer(modifier = Modifier.height(16.dp))
-        SlideTitle(stringResource(R.string.notification_permission_title))
-        SlideDescription(stringResource(R.string.require_notification_permission_desc))
-        Button(
-            onClick = onButtonClick,
-            enabled = !isPermissionGranted
-        ) {
-            Text(
-                if (!isPermissionGranted) {
-                    stringResource(R.string.grant_permission)
-                } else {
-                    stringResource(R.string.permission_granted)
-                }
-            )
-        }
-    }
+		//SlideWelcomeTitle(stringResource(R.string.welcome_title))
+		SlideImage(painterResource(R.drawable.baseline_notifications_active_24))
+		Spacer(modifier = Modifier.height(16.dp))
+		SlideTitle(stringResource(R.string.notification_permission_title))
+		SlideDescription(stringResource(R.string.require_notification_permission_desc))
+		Button(
+			onClick = onButtonClick,
+			enabled = !isPermissionGranted
+		) {
+			Text(
+				if (!isPermissionGranted) {
+					stringResource(R.string.grant_permission)
+				} else {
+					stringResource(R.string.permission_granted)
+				}
+			)
+		}
+	}
 
 }
 
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun NotificationSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        NotificationSlide({}, false)
-    }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		NotificationSlide({}, false)
+	}
 }

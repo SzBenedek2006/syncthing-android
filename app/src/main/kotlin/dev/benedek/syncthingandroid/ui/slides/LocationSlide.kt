@@ -29,44 +29,44 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
 fun LocationSlide(
-    onButtonClick: () -> Unit,
-    isPermissionGranted: Boolean
+	onButtonClick: () -> Unit,
+	isPermissionGranted: Boolean
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.verticalScroll(rememberScrollState())
+			.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center
 
-    ) {
-        val context = LocalContext.current
+	) {
+		val context = LocalContext.current
 
-        //SlideWelcomeTitle(stringResource(R.string.welcome_title))
-        SlideImage(painterResource(R.drawable.ic_location))
-        Spacer(modifier = Modifier.height(16.dp))
-        SlideTitle(stringResource(R.string.location_permission_title))
-        SlideDescription(stringResource(R.string.location_permission_desc))
-        Button(
-            onClick = onButtonClick,
-            enabled = !isPermissionGranted
-        ) {
-            Text(
-                if (!isPermissionGranted) {
-                    stringResource(R.string.grant_permission)
-                } else {
-                    stringResource(R.string.permission_granted)
-                }
-            )
-        }
-    }
+		//SlideWelcomeTitle(stringResource(R.string.welcome_title))
+		SlideImage(painterResource(R.drawable.ic_location))
+		Spacer(modifier = Modifier.height(16.dp))
+		SlideTitle(stringResource(R.string.location_permission_title))
+		SlideDescription(stringResource(R.string.location_permission_desc))
+		Button(
+			onClick = onButtonClick,
+			enabled = !isPermissionGranted
+		) {
+			Text(
+				if (!isPermissionGranted) {
+					stringResource(R.string.grant_permission)
+				} else {
+					stringResource(R.string.permission_granted)
+				}
+			)
+		}
+	}
 }
 
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun LocationSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        LocationSlide({}, false)
-    }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		LocationSlide({}, false)
+	}
 }

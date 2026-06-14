@@ -27,114 +27,112 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
 fun SettingEntry(
-    onClick: @Composable () -> Unit = {},
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
+	onClick: @Composable () -> Unit = {},
+	@SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        onClick()
-    }
-    // TODO
+	Box(
+		modifier = modifier
+			.fillMaxWidth()
+			.padding(10.dp)
+	) {
+		onClick()
+	}
+	// TODO
 }
 
 @Composable
 fun SettingCategory() {
-    // TODO
+	// TODO
 }
 
 @Composable
 fun SelectionSetting() {
-    // TODO
+	// TODO
 }
 
 @Composable
 fun MultiSelectionSetting() {
-    // TODO
+	// TODO
 }
 
 @Composable
 fun TextInputSetting() {
-    // TODO
+	// TODO
 }
 
 @Composable
 fun DummyComposable() {
-    Text("Test")
+	Text("Test")
 }
 
 @Composable
 fun SettingsAlertDialog(
-    modifier: Modifier = Modifier,
-    title: String? = null,
-    text: String? = null,
-    confirmAction: () -> Unit,
-    showDialog: MutableState<Boolean>,
-    @StringRes confirmText: Int = android.R.string.ok,
-    @StringRes dismissText: Int = android.R.string.cancel,
-    ) {
+	modifier: Modifier = Modifier,
+	title: String? = null,
+	text: String? = null,
+	confirmAction: () -> Unit,
+	showDialog: MutableState<Boolean>,
+	@StringRes confirmText: Int = android.R.string.ok,
+	@StringRes dismissText: Int = android.R.string.cancel,
+) {
 
-    if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = {
-                showDialog.value = false
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        confirmAction()
-                        showDialog.value = false
-                    }
-                ) {
+	if (showDialog.value) {
+		AlertDialog(
+			onDismissRequest = {
+				showDialog.value = false
+			},
+			confirmButton = {
+				TextButton(
+					onClick = {
+						confirmAction()
+						showDialog.value = false
+					}
+				) {
 
-                    Text(stringResource(confirmText))
-                }
+					Text(stringResource(confirmText))
+				}
 
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showDialog.value = false
-                    }
-                ) {
-                    Text(stringResource(dismissText))
-                }
-            },
-            title = {
-                if (title != null) {
-                    Text(title)
-                }
-            },
-            text = {
-                if (text != null) {
-                    Text(text)
-                }
-            }
-        )
-    }
+			},
+			dismissButton = {
+				TextButton(
+					onClick = {
+						showDialog.value = false
+					}
+				) {
+					Text(stringResource(dismissText))
+				}
+			},
+			title = {
+				if (title != null) {
+					Text(title)
+				}
+			},
+			text = {
+				if (text != null) {
+					Text(text)
+				}
+			}
+		)
+	}
 }
-
-
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SettingsComponentsPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        Column() {
-            Spacer(Modifier.size(200.dp))
-            SelectionSetting()
-            MultiSelectionSetting()
-            TextInputSetting()
-            SettingEntry(
-                onClick = {
-                    DummyComposable()
-                }
-            )
-            SettingCategory()
-        }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		Column() {
+			Spacer(Modifier.size(200.dp))
+			SelectionSetting()
+			MultiSelectionSetting()
+			TextInputSetting()
+			SettingEntry(
+				onClick = {
+					DummyComposable()
+				}
+			)
+			SettingCategory()
+		}
 
-    }
+	}
 }

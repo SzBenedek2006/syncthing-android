@@ -7,13 +7,13 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 
 @Composable
 fun DeviceIdDialog() {
-    Text("Empty")
+	Text("Empty")
 }
 
 @Preview
 @Composable
 fun DeviceIdDialogPreview() {
-    SyncthingandroidTheme() {
-        DeviceIdDialog()
-    }
+	SyncthingandroidTheme() {
+		DeviceIdDialog()
+	}
 }

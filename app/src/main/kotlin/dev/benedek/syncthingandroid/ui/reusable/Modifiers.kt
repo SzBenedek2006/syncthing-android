@@ -19,74 +19,74 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 fun Modifier.preventClicksWhenExiting(): Modifier = composed {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+	val lifecycleOwner = LocalLifecycleOwner.current
+	val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
-    this.pointerInput(Unit) {
-        awaitPointerEventScope {
-            while (true) {
-                val event = awaitPointerEvent(PointerEventPass.Initial)
-                // https://developer.android.com/guide/components/activities/activity-lifecycle#onresume
-                if (!lifecycleState.isAtLeast(Lifecycle.State.RESUMED)) {
-                    event.changes.forEach { it.consume() }
-                }
-            }
-        }
-    }
+	this.pointerInput(Unit) {
+		awaitPointerEventScope {
+			while (true) {
+				val event = awaitPointerEvent(PointerEventPass.Initial)
+				// https://developer.android.com/guide/components/activities/activity-lifecycle#onresume
+				if (!lifecycleState.isAtLeast(Lifecycle.State.RESUMED)) {
+					event.changes.forEach { it.consume() }
+				}
+			}
+		}
+	}
 }
 
 fun Modifier.topBorder(strokeWidth: Dp, color: Color) = this.drawBehind {
-    val strokeWidthPx = strokeWidth.toPx()
-    // Offset by half the stroke width so it draws perfectly inside the bounds
-    val y = strokeWidthPx / 2f
+	val strokeWidthPx = strokeWidth.toPx()
+	// Offset by half the stroke width so it draws perfectly inside the bounds
+	val y = strokeWidthPx / 2f
 
-    drawLine(
-        color = color,
-        start = Offset(x = 0f, y = y),
-        end = Offset(x = size.width, y = y),
-        strokeWidth = strokeWidthPx
-    )
+	drawLine(
+		color = color,
+		start = Offset(x = 0f, y = y),
+		end = Offset(x = size.width, y = y),
+		strokeWidth = strokeWidthPx
+	)
 }
 
 /**
  * For the ModalNavigationDrawer()
  * */
 fun Modifier.topBorderWithCorners(
-    strokeWidth: Dp,
-    color: Color,
-    cornerRadius: Dp
+	strokeWidth: Dp,
+	color: Color,
+	cornerRadius: Dp
 ) = this.drawWithContent {
-    drawContent() // Draw the Surface background first
+	drawContent() // Draw the Surface background first
 
-    val strokePx = strokeWidth.toPx()
-    val radiusPx = cornerRadius.toPx()
+	val strokePx = strokeWidth.toPx()
+	val radiusPx = cornerRadius.toPx()
 
-    val path = Path().apply {
-        // 1. Start at the top-left (which is square/0.dp in your shape)
-        moveTo(0f, strokePx / 2)
+	val path = Path().apply {
+		// 1. Start at the top-left (which is square/0.dp in your shape)
+		moveTo(0f, strokePx / 2)
 
-        // 2. Draw the straight line across the top until the curve starts
-        // We stop short of the right edge by the amount of the radius
-        lineTo(size.width - radiusPx, strokePx / 2)
+		// 2. Draw the straight line across the top until the curve starts
+		// We stop short of the right edge by the amount of the radius
+		lineTo(size.width - radiusPx, strokePx / 2)
 
-        // 3. Draw the arc for the top-right rounded corner
-        // This draws 90 degrees of a circle to follow your 16.dp radius
-        arcTo(
-            rect = Rect(
-                left = size.width - (radiusPx * 2),
-                top = strokePx / 2,
-                right = size.width,
-                bottom = (radiusPx * 2)
-            ),
-            startAngleDegrees = 270f,
-            sweepAngleDegrees = 90f,
-            forceMoveTo = false
-        )
-    }
+		// 3. Draw the arc for the top-right rounded corner
+		// This draws 90 degrees of a circle to follow your 16.dp radius
+		arcTo(
+			rect = Rect(
+				left = size.width - (radiusPx * 2),
+				top = strokePx / 2,
+				right = size.width,
+				bottom = (radiusPx * 2)
+			),
+			startAngleDegrees = 270f,
+			sweepAngleDegrees = 90f,
+			forceMoveTo = false
+		)
+	}
 
-    drawPath(
-        path = path,
-        color = color,
-        style = Stroke(width = strokePx, cap = StrokeCap.Round)
-    )
+	drawPath(
+		path = path,
+		color = color,
+		style = Stroke(width = strokePx, cap = StrokeCap.Round)
+	)
 }

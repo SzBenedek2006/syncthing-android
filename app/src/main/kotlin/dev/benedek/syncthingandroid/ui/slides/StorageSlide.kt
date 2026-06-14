@@ -29,47 +29,47 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
 fun StorageSlide(
-    onButtonClick: () -> Unit,
-    isPermissionGranted: Boolean
+	onButtonClick: () -> Unit,
+	isPermissionGranted: Boolean
 ) {
-    val context = LocalContext.current
+	val context = LocalContext.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        //SlideWelcomeTitle(stringResource(R.string.welcome_title))
-        SlideImage(painterResource(R.drawable.ic_storage))
-        Spacer(modifier = Modifier.height(16.dp))
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.verticalScroll(rememberScrollState())
+			.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center
+	) {
+		//SlideWelcomeTitle(stringResource(R.string.welcome_title))
+		SlideImage(painterResource(R.drawable.ic_storage))
+		Spacer(modifier = Modifier.height(16.dp))
 
-        SlideTitle(stringResource(R.string.storage_permission_title))
-        SlideDescription(stringResource(R.string.storage_permission_desc))
-        //Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = onButtonClick,
-            // Hacky solution, but seems to work.
-            enabled = !isPermissionGranted
-        ) {
-            Text(
-                if (!isPermissionGranted) {
-                    stringResource(R.string.grant_permission)
-                } else {
-                    stringResource(R.string.permission_granted)
-                }
-            )
-        }
-    }
+		SlideTitle(stringResource(R.string.storage_permission_title))
+		SlideDescription(stringResource(R.string.storage_permission_desc))
+		//Spacer(modifier = Modifier.height(16.dp))
+		Button(
+			onClick = onButtonClick,
+			// Hacky solution, but seems to work.
+			enabled = !isPermissionGranted
+		) {
+			Text(
+				if (!isPermissionGranted) {
+					stringResource(R.string.grant_permission)
+				} else {
+					stringResource(R.string.permission_granted)
+				}
+			)
+		}
+	}
 }
 
 
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun StorageSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        StorageSlide({}, false)
-    }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		StorageSlide({}, false)
+	}
 }

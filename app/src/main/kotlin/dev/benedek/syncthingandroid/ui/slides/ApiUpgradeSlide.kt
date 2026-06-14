@@ -26,41 +26,41 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
 fun ApiUpgradeSlide(
-    onButtonClick: () -> Unit,
-    isApiUpgraded: Boolean
+	onButtonClick: () -> Unit,
+	isApiUpgraded: Boolean
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.verticalScroll(rememberScrollState())
+			.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center
 
-    ) {
-        val context = LocalContext.current
+	) {
+		val context = LocalContext.current
 
-        SlideTitle(stringResource(R.string.api_level_30_title))
-        SlideDescription(stringResource(R.string.api_level_30_desc))
-        Button(
-            onClick = onButtonClick,
-            enabled = !isApiUpgraded
-        ) {
-            Text(
-                if (!isApiUpgraded) {
-                    stringResource(R.string.api_level_30_button)
-                } else {
-                    stringResource(R.string.api_level_30_button)
-                }
-            )
-        }
-    }
+		SlideTitle(stringResource(R.string.api_level_30_title))
+		SlideDescription(stringResource(R.string.api_level_30_desc))
+		Button(
+			onClick = onButtonClick,
+			enabled = !isApiUpgraded
+		) {
+			Text(
+				if (!isApiUpgraded) {
+					stringResource(R.string.api_level_30_button)
+				} else {
+					stringResource(R.string.api_level_30_button)
+				}
+			)
+		}
+	}
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ApiUpgradeSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        ApiUpgradeSlide({}, true)
-    }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		ApiUpgradeSlide({}, true)
+	}
 }

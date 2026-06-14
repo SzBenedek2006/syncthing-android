@@ -219,8 +219,6 @@ val surfaceContainerHighDarkHighContrast = Color(0xFF25292D) // 0xFF3C3B3B
 val surfaceContainerHighestDarkHighContrast = Color(0xFF303438) // 0xFF474646
 
 
-
-
 val blueLight = Color(0xFF555992)
 val onBlueLight = Color(0xFFFFFFFF)
 val blueContainerLight = Color(0xFFE0E0FF)

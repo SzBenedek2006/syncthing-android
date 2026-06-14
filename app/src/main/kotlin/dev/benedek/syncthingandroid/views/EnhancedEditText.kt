@@ -17,32 +17,32 @@ import androidx.appcompat.widget.AppCompatEditText
  * line input.
  */
 class EnhancedEditText : AppCompatEditText {
-    constructor(context: Context) : super(context)
+	constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+	constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
+	constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+		context,
+		attrs,
+		defStyleAttr
+	)
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (!isEnabled) return false
-        if (event.action == MotionEvent.ACTION_UP) super.performClick()
-        return super.onTouchEvent(event)
-    }
+	override fun onTouchEvent(event: MotionEvent): Boolean {
+		if (!isEnabled) return false
+		if (event.action == MotionEvent.ACTION_UP) super.performClick()
+		return super.onTouchEvent(event)
+	}
 
-    override fun performClick(): Boolean {
-        return if (isEnabled)
-            super.performClick()
-        else
-            false
-    }
+	override fun performClick(): Boolean {
+		return if (isEnabled)
+			super.performClick()
+		else
+			false
+	}
 
-    override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
-        val conn = super.onCreateInputConnection(outAttrs)
-        outAttrs.imeOptions = outAttrs.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION.inv()
-        return conn
-    }
+	override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
+		val conn = super.onCreateInputConnection(outAttrs)
+		outAttrs.imeOptions = outAttrs.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION.inv()
+		return conn
+	}
 }

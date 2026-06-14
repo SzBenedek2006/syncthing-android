@@ -2,102 +2,102 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:descendantFocusability="blocksDescendants">
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:descendantFocusability="blocksDescendants">
 
-        <RelativeLayout
-            android:id="@+id/inner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/abc_action_bar_content_inset_material"
-            android:paddingRight="@dimen/abc_action_bar_content_inset_material"
-            android:paddingTop="8dp">
+		<RelativeLayout
+			android:id="@+id/inner"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingBottom="8dp"
+			android:paddingLeft="@dimen/abc_action_bar_content_inset_material"
+			android:paddingRight="@dimen/abc_action_bar_content_inset_material"
+			android:paddingTop="8dp">
 
-            <TextView
-                android:id="@+id/label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/state"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="?textAppearanceListItemPrimary" />
+			<TextView
+				android:id="@+id/label"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentStart="true"
+				android:layout_toStartOf="@+id/state"
+				android:ellipsize="end"
+				android:maxLines="1"
+				android:textAppearance="?textAppearanceListItemPrimary" />
 
-            <TextView
-                android:id="@+id/state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:textAppearance="?textAppearanceListItemSmall" />
+			<TextView
+				android:id="@+id/state"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentEnd="true"
+				android:layout_alignParentRight="true"
+				android:textAppearance="?textAppearanceListItemSmall" />
 
-            <TextView
-                android:id="@+id/directory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/state"
-                android:ellipsize="end"
-                android:textAppearance="?textAppearanceListItemSecondary" />
+			<TextView
+				android:id="@+id/directory"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/state"
+				android:ellipsize="end"
+				android:textAppearance="?textAppearanceListItemSecondary" />
 
-            <Button
-                android:id="@+id/override"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/directory"
-                android:contentDescription="@string/override_changes"
-                android:paddingEnd="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingStart="20dp"
-                android:text="@string/override_changes"
-                android:drawableLeft="@android:drawable/ic_menu_upload"
-                android:drawableStart="@android:drawable/ic_menu_upload"
-                android:textSize="12sp" />
+			<Button
+				android:id="@+id/override"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/directory"
+				android:contentDescription="@string/override_changes"
+				android:paddingEnd="20dp"
+				android:paddingLeft="20dp"
+				android:paddingRight="20dp"
+				android:paddingStart="20dp"
+				android:text="@string/override_changes"
+				android:drawableLeft="@android:drawable/ic_menu_upload"
+				android:drawableStart="@android:drawable/ic_menu_upload"
+				android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/items"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/override"
-                android:textAppearance="?textAppearanceListItemSecondary" />
+			<TextView
+				android:id="@+id/items"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/override"
+				android:textAppearance="?textAppearanceListItemSecondary" />
 
-            <TextView
-                android:id="@+id/size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/items"
-                android:textAppearance="?textAppearanceListItemSecondary" />
+			<TextView
+				android:id="@+id/size"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/items"
+				android:textAppearance="?textAppearanceListItemSecondary" />
 
-            <TextView
-                android:id="@+id/invalid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/size"
-                android:textAppearance="?textAppearanceListItemSecondary" />
+			<TextView
+				android:id="@+id/invalid"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/size"
+				android:textAppearance="?textAppearanceListItemSecondary" />
 
-        </RelativeLayout>
+		</RelativeLayout>
 
-        <ImageButton
-            android:id="@+id/open_folder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/inner"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/inner"
-            android:background="@null"
-            android:contentDescription="@string/open_file_manager"
-            android:paddingBottom="5dp"
-            android:paddingEnd="20dp"
-            android:paddingLeft="25dp"
-            android:paddingRight="20dp"
-            android:paddingStart="30dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/ic_folder_24dp" />
+		<ImageButton
+			android:id="@+id/open_folder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@+id/inner"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignTop="@+id/inner"
+			android:background="@null"
+			android:contentDescription="@string/open_file_manager"
+			android:paddingBottom="5dp"
+			android:paddingEnd="20dp"
+			android:paddingLeft="25dp"
+			android:paddingRight="20dp"
+			android:paddingStart="30dp"
+			android:paddingTop="5dp"
+			android:src="@drawable/ic_folder_24dp" />
 
-    </RelativeLayout>
+	</RelativeLayout>
 
 </layout>

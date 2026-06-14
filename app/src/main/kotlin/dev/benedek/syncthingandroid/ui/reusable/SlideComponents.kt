@@ -28,88 +28,88 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 @SuppressLint("ModifierParameter")
 @Composable
 fun SlideWelcomeTitle(
-    text: String,
-    modifier: Modifier = Modifier.padding(30.dp),
-    fontSize: TextUnit = 30.sp,
-    textAlign: TextAlign? = TextAlign.Center,
-    lineHeight: TextUnit = 30.sp
+	text: String,
+	modifier: Modifier = Modifier.padding(30.dp),
+	fontSize: TextUnit = 30.sp,
+	textAlign: TextAlign? = TextAlign.Center,
+	lineHeight: TextUnit = 30.sp
 ) {
-    Text(
-        text = text,
-        fontSize = fontSize,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
-        modifier = modifier
+	Text(
+		text = text,
+		fontSize = fontSize,
+		textAlign = textAlign,
+		lineHeight = lineHeight,
+		modifier = modifier
 
-    )
+	)
 }
 
 @SuppressLint("ModifierParameter")
 @Composable
 fun SlideTitle(
-    text: String,
-    modifier: Modifier = Modifier,
-    fontSize: TextUnit = dimensionResource(R.dimen.slide_title).value.sp,
-    fontWeight: FontWeight = FontWeight.Bold,
-    textAlign: TextAlign? = TextAlign.Center
+	text: String,
+	modifier: Modifier = Modifier,
+	fontSize: TextUnit = dimensionResource(R.dimen.slide_title).value.sp,
+	fontWeight: FontWeight = FontWeight.Bold,
+	textAlign: TextAlign? = TextAlign.Center
 ) {
-    Text(
-        text = text,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        textAlign = textAlign
-    )
+	Text(
+		text = text,
+		fontSize = fontSize,
+		fontWeight = fontWeight,
+		textAlign = textAlign
+	)
 }
 
 @SuppressLint("ModifierParameter")
 @Composable
 fun SlideDescription(
-    text: String,
-     modifier: Modifier = Modifier
-        .padding(
-            top = dimensionResource(R.dimen.desc_marginTop),
-            bottom = dimensionResource(R.dimen.desc_paddingBottom),
-            start = dimensionResource(R.dimen.desc_padding),
-            end = dimensionResource(R.dimen.desc_padding)
-        ),
-    textAlign: TextAlign = TextAlign.Center,
-    fontSize: TextUnit = dimensionResource(R.dimen.slide_desc).value.sp,
-    lineHeight: TextUnit = 16.sp,
+	text: String,
+	modifier: Modifier = Modifier
+		.padding(
+			top = dimensionResource(R.dimen.desc_marginTop),
+			bottom = dimensionResource(R.dimen.desc_paddingBottom),
+			start = dimensionResource(R.dimen.desc_padding),
+			end = dimensionResource(R.dimen.desc_padding)
+		),
+	textAlign: TextAlign = TextAlign.Center,
+	fontSize: TextUnit = dimensionResource(R.dimen.slide_desc).value.sp,
+	lineHeight: TextUnit = 16.sp,
 
-    ) {
-    Text(
-        text = text,
-        textAlign = textAlign,
-        fontSize = fontSize,
-        lineHeight = lineHeight,
-        modifier = modifier
-    )
+	) {
+	Text(
+		text = text,
+		textAlign = textAlign,
+		fontSize = fontSize,
+		lineHeight = lineHeight,
+		modifier = modifier
+	)
 }
 
 @SuppressLint("ModifierParameter")
 @Composable
-fun SlideImage (
-    painter: Painter,
-    modifier: Modifier = Modifier,
-    contentDescription: String? = null,
-    colorFilter: ColorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+fun SlideImage(
+	painter: Painter,
+	modifier: Modifier = Modifier,
+	contentDescription: String? = null,
+	colorFilter: ColorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
 ) {
-    Image(
-        painter = painter,
-        contentDescription = contentDescription,
-        modifier = Modifier
-            .size(dimensionResource(R.dimen.img_width_height))
-            .then(modifier),
-        contentScale = ContentScale.Fit,
-        colorFilter = colorFilter
-    )
+	Image(
+		painter = painter,
+		contentDescription = contentDescription,
+		modifier = Modifier
+			.size(dimensionResource(R.dimen.img_width_height))
+			.then(modifier),
+		contentScale = ContentScale.Fit,
+		colorFilter = colorFilter
+	)
 }
 
 
 @Preview
 @Composable
 fun SlideImagePreview() {
-    SyncthingandroidTheme() {
-        SlideImage(painterResource(R.drawable.ic_launcher_monochrome))
-    }
+	SyncthingandroidTheme() {
+		SlideImage(painterResource(R.drawable.ic_launcher_monochrome))
+	}
 }

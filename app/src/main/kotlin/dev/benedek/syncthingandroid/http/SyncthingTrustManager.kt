@@ -24,50 +24,50 @@ import javax.net.ssl.X509TrustManager
 @SuppressLint("TrustAllX509TrustManager")
 internal class SyncthingTrustManager(private val httpsCertPath: File?) : X509TrustManager {
 
-    @Throws(CertificateException::class)
-    override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
-    }
+	@Throws(CertificateException::class)
+	override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+	}
 
-    /**
-     * Verifies certs against public key of the local syncthing instance
-     */
-    @Throws(CertificateException::class)
-    override fun checkServerTrusted(
-        certs: Array<X509Certificate>,
-        authType: String?
-    ) {
-        var inputStream: InputStream? = null
-        try {
-            inputStream = FileInputStream(httpsCertPath)
-            val cf = CertificateFactory.getInstance("X.509")
-            val ca = cf.generateCertificate(inputStream) as X509Certificate
-            for (cert in certs) {
-                cert.verify(ca.publicKey)
-            }
-        } catch (e: FileNotFoundException) {
-            throw CertificateException("Untrusted Certificate!", e)
-        } catch (e: NoSuchAlgorithmException) {
-            throw CertificateException("Untrusted Certificate!", e)
-        } catch (e: InvalidKeyException) {
-            throw CertificateException("Untrusted Certificate!", e)
-        } catch (e: NoSuchProviderException) {
-            throw CertificateException("Untrusted Certificate!", e)
-        } catch (e: SignatureException) {
-            throw CertificateException("Untrusted Certificate!", e)
-        } finally {
-            try {
-                inputStream?.close()
-            } catch (e: IOException) {
-                Log.w(TAG, e)
-            }
-        }
-    }
+	/**
+	 * Verifies certs against public key of the local syncthing instance
+	 */
+	@Throws(CertificateException::class)
+	override fun checkServerTrusted(
+		certs: Array<X509Certificate>,
+		authType: String?
+	) {
+		var inputStream: InputStream? = null
+		try {
+			inputStream = FileInputStream(httpsCertPath)
+			val cf = CertificateFactory.getInstance("X.509")
+			val ca = cf.generateCertificate(inputStream) as X509Certificate
+			for (cert in certs) {
+				cert.verify(ca.publicKey)
+			}
+		} catch (e: FileNotFoundException) {
+			throw CertificateException("Untrusted Certificate!", e)
+		} catch (e: NoSuchAlgorithmException) {
+			throw CertificateException("Untrusted Certificate!", e)
+		} catch (e: InvalidKeyException) {
+			throw CertificateException("Untrusted Certificate!", e)
+		} catch (e: NoSuchProviderException) {
+			throw CertificateException("Untrusted Certificate!", e)
+		} catch (e: SignatureException) {
+			throw CertificateException("Untrusted Certificate!", e)
+		} finally {
+			try {
+				inputStream?.close()
+			} catch (e: IOException) {
+				Log.w(TAG, e)
+			}
+		}
+	}
 
-    override fun getAcceptedIssuers(): Array<X509Certificate?>? {
-        return null
-    }
+	override fun getAcceptedIssuers(): Array<X509Certificate?>? {
+		return null
+	}
 
-    companion object {
-        private const val TAG = "SyncthingTrustManager"
-    }
+	companion object {
+		private const val TAG = "SyncthingTrustManager"
+	}
 }

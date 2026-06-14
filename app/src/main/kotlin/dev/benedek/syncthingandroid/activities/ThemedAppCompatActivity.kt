@@ -11,21 +11,22 @@ import androidx.preference.PreferenceManager
  */
 open class ThemedAppCompatActivity : AppCompatActivity() {
 
-    val sharedPreferences: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(this)
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        // Load theme.
-        //For api level below 28, Follow system fall backs to light mode
-        val prefAppTheme = sharedPreferences.getString(
-            dev.benedek.syncthingandroid.service.Constants.PREF_APP_THEME,
-            FOLLOW_SYSTEM
-        )!!.toInt()
-        AppCompatDelegate.setDefaultNightMode(prefAppTheme)
-        super.onCreate(savedInstanceState)
-    }
+	val sharedPreferences: SharedPreferences by lazy {
+		PreferenceManager.getDefaultSharedPreferences(this)
+	}
 
-    companion object {
-        private const val FOLLOW_SYSTEM = "-1"
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		// Load theme.
+		//For api level below 28, Follow system fall backs to light mode
+		val prefAppTheme = sharedPreferences.getString(
+			dev.benedek.syncthingandroid.service.Constants.PREF_APP_THEME,
+			FOLLOW_SYSTEM
+		)!!.toInt()
+		AppCompatDelegate.setDefaultNightMode(prefAppTheme)
+		super.onCreate(savedInstanceState)
+	}
+
+	companion object {
+		private const val FOLLOW_SYSTEM = "-1"
+	}
 }

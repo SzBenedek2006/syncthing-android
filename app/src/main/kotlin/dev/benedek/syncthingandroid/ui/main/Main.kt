@@ -85,203 +85,231 @@ import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable
 fun Main(viewModel: MainViewModel, exit: () -> Unit) {
-    val context = LocalContext.current
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
+	val context = LocalContext.current
+	val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+	val scope = rememberCoroutineScope()
 
-    val density = LocalDensity.current
+	val density = LocalDensity.current
 
-    val pagerState = rememberPagerState(pageCount = { 2 })
-    var pagerScrollEnabled by remember { mutableStateOf(true) }
+	val pagerState = rememberPagerState(pageCount = { 2 })
+	var pagerScrollEnabled by remember { mutableStateOf(true) }
 
-    val drawerBlurAmount by remember {
-        derivedStateOf {
+	val drawerBlurAmount by remember {
+		derivedStateOf {
 
-            if (!isBlurEnabled) {
-                0.dp
-            } else if (drawerState.currentOffset.isNaN()) {
-                // Fallback before the drawer's layout has been measured
-                if (drawerState.currentValue == DrawerValue.Open) ThemeControls.blurRadius.dp else 0.dp
-            } else {
-                // ModalDrawerSheet max width: 360.dp, or screen width if screen width < 360.dp
-                val actualDrawerWidthPx = with(density) { actualDrawerWidth.toPx() }
+			if (!isBlurEnabled) {
+				0.dp
+			} else if (drawerState.currentOffset.isNaN()) {
+				// Fallback before the drawer's layout has been measured
+				if (drawerState.currentValue == DrawerValue.Open) ThemeControls.blurRadius.dp else 0.dp
+			} else {
+				// ModalDrawerSheet max width: 360.dp, or screen width if screen width < 360.dp
+				val actualDrawerWidthPx = with(density) { actualDrawerWidth.toPx() }
 
-                val openFraction = 1f - (abs(drawerState.currentOffset) / actualDrawerWidthPx).coerceIn(0f, 1f)
+				val openFraction =
+					1f - (abs(drawerState.currentOffset) / actualDrawerWidthPx).coerceIn(0f, 1f)
 
-                Log.d("DRAWER", "actualDrawerWidthPx: $actualDrawerWidthPx, drawerState.currentOffset: ${drawerState.currentOffset}")
-                (openFraction * ThemeControls.blurRadius).dp
-            }
-        }
-    }
+				Log.d(
+					"DRAWER",
+					"actualDrawerWidthPx: $actualDrawerWidthPx, drawerState.currentOffset: ${drawerState.currentOffset}"
+				)
+				(openFraction * ThemeControls.blurRadius).dp
+			}
+		}
+	}
 
-    var predictiveBackProgress by remember { mutableFloatStateOf(0f) }
+	var predictiveBackProgress by remember { mutableFloatStateOf(0f) }
 
-    PredictiveBackHandler(drawerState.isOpen) { progress: Flow<BackEventCompat> ->
-        try {
-            progress.collect { backEvent ->
-                predictiveBackProgress = backEvent.progress
-            }
-            // This block is executed only if the gesture completes successfully.
-            scope.launch {
-                drawerState.close()
-                animate(predictiveBackProgress, 0f) { value, _ ->
-                    predictiveBackProgress = value
-                }
-            }
-        } catch (_: CancellationException) {
-            predictiveBackProgress = 0f
-        } finally {
+	PredictiveBackHandler(drawerState.isOpen) { progress: Flow<BackEventCompat> ->
+		try {
+			progress.collect { backEvent ->
+				predictiveBackProgress = backEvent.progress
+			}
+			// This block is executed only if the gesture completes successfully.
+			scope.launch {
+				drawerState.close()
+				animate(predictiveBackProgress, 0f) { value, _ ->
+					predictiveBackProgress = value
+				}
+			}
+		} catch (_: CancellationException) {
+			predictiveBackProgress = 0f
+		} finally {
 
-        }
-    }
-
-
-    val dialogBlurAmount by animateFloatAsState(
-        targetValue = if (isBlurEnabled &&
-            (viewModel.showDeviceIdDialog || viewModel.showExitDialog || viewModel.showRestartDialog)
-            ) ThemeControls.blurRadius.toFloat() else 0f,
-        label = "DialogBlurAnimation"
-    )
+		}
+	}
 
 
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            // DrawerDefaults.modalContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
-            MainModalDrawerSheet(
-                { predictiveBackProgress },
-                { drawerState },
-                viewModel
-            )
-        }
-    ) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .blur(max(drawerBlurAmount, dialogBlurAmount.dp))
-        ) {
-            AppScaffold(
-                topAppBarTitle = stringResource(R.string.app_name),
-                topNavigationIcon = Icons.Outlined.Menu,
-                topNavigationOnClick = {
-                    scope.launch {
-                        drawerState.apply {
-                            if (isClosed) open() else close()
-                        }
-                    }
-                },
-                floatingActionButton = {
-                    FloatingActionButton(onClick = {
-                        when (pagerState.currentPage) {
-                            0 -> {
-                                val intent = Intent(context, FolderActivity::class.java)
-                                    .putExtra(FolderViewModel.EXTRA_IS_CREATE, true)
-                                context.startActivity(intent)
-                            }
-                            1 -> {
-                                val intent = Intent(context, DeviceActivity::class.java)
-                                    .putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
-                                context.startActivity(intent)
-                            }
-                            else -> {
-                                Toast.makeText(context, "Invalid page, this should never happen!", Toast.LENGTH_SHORT)
-                                    .show()
-                                Log.wtf("FAB onClick", "Invalid page, this should never happen!")
-                            }
-                        }
-
-                    }) {
-                        Icon(Icons.Outlined.Add, contentDescription = "Add")
-                    }
-                },
-                bottomBar = {
-                    NavigationBar {
-                        NavigationBarItem(
-                            selected = pagerState.currentPage == 0,
-                            onClick = {
-                                scope.launch {
-                                    pagerState.animateScrollToPage(0)
-                                }
-                            },
-                            icon = { Icon(Icons.Outlined.Folder, stringResource(R.string.folders_fragment_title)) },
-                            label = { Text(stringResource(R.string.folders_fragment_title)) }
-                        )
-                        NavigationBarItem(
-                            selected = pagerState.currentPage == 1,
-                            onClick = {
-                                scope.launch {
-                                    pagerState.animateScrollToPage(1)
-                                }
-                            },
-                            icon = { Icon(Icons.Outlined.Devices, stringResource(R.string.devices_fragment_title)) },
-                            label = { Text(stringResource(R.string.devices_fragment_title)) }
-                        )
-                    }
-                }
-            ) { paddingValues ->
-
-                val folderStatusesMap by viewModel.folderStatuses.collectAsStateWithLifecycle()
-
-                HorizontalPager(
-                    state = pagerState,
-                    userScrollEnabled = pagerScrollEnabled,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .pointerInput(Unit) {
-                            awaitEachGesture {
-                                awaitFirstDown(requireUnconsumed = false)
-
-                                // HACK: Make the swipe on the first page open the drawer
-                                do {
-                                    val event = awaitPointerEvent()
-                                    val change = event.changes.firstOrNull()
-
-                                    if (change != null) {
-                                        val dragX = change.position.x - change.previousPosition.x
-
-                                        if (!pagerState.canScrollBackward && dragX > 0f && pagerState.currentPageOffsetFraction == 0f) {
-                                            pagerScrollEnabled = false
-                                        }
-                                    }
-                                } while (event.changes.any { it.pressed })
-
-                                pagerScrollEnabled = true
-                            }
-                        }
-                ) { page ->
-                    when (page) {
-                        0 -> FolderList(viewModel.folders, folderStatusesMap, viewModel.isApiReady)
-                        1 -> DeviceList(viewModel.devices ?: emptyList(), viewModel.deviceStatuses, viewModel.isApiReady)
-                    }
-                    if (viewModel.isApiReady) ReportDrawn() // Maybe there's a better place to put this.
-                }
-
-                // Dialogs
-                if (viewModel.showDeviceIdDialog) {
-                    if (viewModel.systemInfo?.myID != null) {
-                        QrCodeDialog(
-                            viewModel.systemInfo!!.myID!!,
-                            { viewModel.showDeviceIdDialog = false },
-                            remember { viewModel.generateQrBitmap(viewModel.systemInfo!!.myID)!! }
-                        )
-                    } else {
-                        viewModel.showDeviceIdDialog = false
-                        Toast.makeText(context, R.string.could_not_access_deviceid, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-
-                if (viewModel.showRestartDialog)
-                    RestartDialog(viewModel, context)
-                if (viewModel.showExitDialog)
-                    ExitDialog(viewModel, context, exit)
+	val dialogBlurAmount by animateFloatAsState(
+		targetValue = if (isBlurEnabled &&
+			(viewModel.showDeviceIdDialog || viewModel.showExitDialog || viewModel.showRestartDialog)
+		) ThemeControls.blurRadius.toFloat() else 0f,
+		label = "DialogBlurAnimation"
+	)
 
 
-            }
-        }
-    }
+
+	ModalNavigationDrawer(
+		drawerState = drawerState,
+		drawerContent = {
+			// DrawerDefaults.modalContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
+			MainModalDrawerSheet(
+				{ predictiveBackProgress },
+				{ drawerState },
+				viewModel
+			)
+		}
+	) {
+		Box(
+			Modifier
+				.fillMaxSize()
+				.blur(max(drawerBlurAmount, dialogBlurAmount.dp))
+		) {
+			AppScaffold(
+				topAppBarTitle = stringResource(R.string.app_name),
+				topNavigationIcon = Icons.Outlined.Menu,
+				topNavigationOnClick = {
+					scope.launch {
+						drawerState.apply {
+							if (isClosed) open() else close()
+						}
+					}
+				},
+				floatingActionButton = {
+					FloatingActionButton(onClick = {
+						when (pagerState.currentPage) {
+							0 -> {
+								val intent = Intent(context, FolderActivity::class.java)
+									.putExtra(FolderViewModel.EXTRA_IS_CREATE, true)
+								context.startActivity(intent)
+							}
+
+							1 -> {
+								val intent = Intent(context, DeviceActivity::class.java)
+									.putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
+								context.startActivity(intent)
+							}
+
+							else -> {
+								Toast.makeText(
+									context,
+									"Invalid page, this should never happen!",
+									Toast.LENGTH_SHORT
+								)
+									.show()
+								Log.wtf("FAB onClick", "Invalid page, this should never happen!")
+							}
+						}
+
+					}) {
+						Icon(Icons.Outlined.Add, contentDescription = "Add")
+					}
+				},
+				bottomBar = {
+					NavigationBar {
+						NavigationBarItem(
+							selected = pagerState.currentPage == 0,
+							onClick = {
+								scope.launch {
+									pagerState.animateScrollToPage(0)
+								}
+							},
+							icon = {
+								Icon(
+									Icons.Outlined.Folder,
+									stringResource(R.string.folders_fragment_title)
+								)
+							},
+							label = { Text(stringResource(R.string.folders_fragment_title)) }
+						)
+						NavigationBarItem(
+							selected = pagerState.currentPage == 1,
+							onClick = {
+								scope.launch {
+									pagerState.animateScrollToPage(1)
+								}
+							},
+							icon = {
+								Icon(
+									Icons.Outlined.Devices,
+									stringResource(R.string.devices_fragment_title)
+								)
+							},
+							label = { Text(stringResource(R.string.devices_fragment_title)) }
+						)
+					}
+				}
+			) { paddingValues ->
+
+				val folderStatusesMap by viewModel.folderStatuses.collectAsStateWithLifecycle()
+
+				HorizontalPager(
+					state = pagerState,
+					userScrollEnabled = pagerScrollEnabled,
+					modifier = Modifier
+						.fillMaxSize()
+						.padding(paddingValues)
+						.pointerInput(Unit) {
+							awaitEachGesture {
+								awaitFirstDown(requireUnconsumed = false)
+
+								// HACK: Make the swipe on the first page open the drawer
+								do {
+									val event = awaitPointerEvent()
+									val change = event.changes.firstOrNull()
+
+									if (change != null) {
+										val dragX = change.position.x - change.previousPosition.x
+
+										if (!pagerState.canScrollBackward && dragX > 0f && pagerState.currentPageOffsetFraction == 0f) {
+											pagerScrollEnabled = false
+										}
+									}
+								} while (event.changes.any { it.pressed })
+
+								pagerScrollEnabled = true
+							}
+						}
+				) { page ->
+					when (page) {
+						0 -> FolderList(viewModel.folders, folderStatusesMap, viewModel.isApiReady)
+						1 -> DeviceList(
+							viewModel.devices ?: emptyList(),
+							viewModel.deviceStatuses,
+							viewModel.isApiReady
+						)
+					}
+					if (viewModel.isApiReady) ReportDrawn() // Maybe there's a better place to put this.
+				}
+
+				// Dialogs
+				if (viewModel.showDeviceIdDialog) {
+					if (viewModel.systemInfo?.myID != null) {
+						QrCodeDialog(
+							viewModel.systemInfo!!.myID!!,
+							{ viewModel.showDeviceIdDialog = false },
+							remember { viewModel.generateQrBitmap(viewModel.systemInfo!!.myID)!! }
+						)
+					} else {
+						viewModel.showDeviceIdDialog = false
+						Toast.makeText(
+							context,
+							R.string.could_not_access_deviceid,
+							Toast.LENGTH_SHORT
+						)
+							.show()
+					}
+				}
+
+				if (viewModel.showRestartDialog)
+					RestartDialog(viewModel, context)
+				if (viewModel.showExitDialog)
+					ExitDialog(viewModel, context, exit)
+
+
+			}
+		}
+	}
 }
 
 
@@ -290,158 +318,157 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 @SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun QrCodeDialog(
-    deviceId: String,
-    onDismissRequest: () -> Unit,
-    qrCode: Bitmap
+	deviceId: String,
+	onDismissRequest: () -> Unit,
+	qrCode: Bitmap
 ) {
-    CustomDialog(
-        stringResource(R.string.device_id),
-        null,
-        onDismissRequest,
-        null,
-        "",
-        stringResource(R.string.finish)
-    ) {
-        val clipboard = LocalClipboard.current
-        val scope = rememberCoroutineScope()
-        val context = LocalContext.current
+	CustomDialog(
+		stringResource(R.string.device_id),
+		null,
+		onDismissRequest,
+		null,
+		"",
+		stringResource(R.string.finish)
+	) {
+		val clipboard = LocalClipboard.current
+		val scope = rememberCoroutineScope()
+		val context = LocalContext.current
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(Modifier.fillMaxWidth()) {
-                Text(
-                    deviceId,
-                    Modifier
-                        .weight(1f)
-                        .padding(vertical = 6.dp),
-                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                    fontFamily = FontFamily.Monospace,
-                    lineHeight = 15.sp,
-                    letterSpacing = 0.25.sp
-                )
-                IconButton(
-                    onClick = {
-                        val clipData = ClipData.newPlainText(
-                            context.getString(R.string.device_id),
-                            deviceId
-                        )
-                        val clipEntry = ClipEntry(clipData)
-                        scope.launch {
-                            clipboard.setClipEntry(clipEntry)
-                        }
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_content_copy_24dp),
-                        contentDescription =  stringResource(android.R.string.copy)
-                    )
-                }
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, deviceId)
-                    type = "text/plain"
-                }
-                val shareIntent = Intent.createChooser(sendIntent, null)
-                IconButton(
-                    onClick = { context.startActivity(shareIntent) }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_share_24dp),
-                        contentDescription =  stringResource(R.string.share_title)
-                    )
-                }
-            }
+		Column(
+			horizontalAlignment = Alignment.CenterHorizontally
+		) {
+			Row(Modifier.fillMaxWidth()) {
+				Text(
+					deviceId,
+					Modifier
+						.weight(1f)
+						.padding(vertical = 6.dp),
+					fontSize = MaterialTheme.typography.bodySmall.fontSize,
+					fontFamily = FontFamily.Monospace,
+					lineHeight = 15.sp,
+					letterSpacing = 0.25.sp
+				)
+				IconButton(
+					onClick = {
+						val clipData = ClipData.newPlainText(
+							context.getString(R.string.device_id),
+							deviceId
+						)
+						val clipEntry = ClipEntry(clipData)
+						scope.launch {
+							clipboard.setClipEntry(clipEntry)
+						}
+					}
+				) {
+					Icon(
+						painter = painterResource(R.drawable.ic_content_copy_24dp),
+						contentDescription = stringResource(android.R.string.copy)
+					)
+				}
+				val sendIntent: Intent = Intent().apply {
+					action = Intent.ACTION_SEND
+					putExtra(Intent.EXTRA_TEXT, deviceId)
+					type = "text/plain"
+				}
+				val shareIntent = Intent.createChooser(sendIntent, null)
+				IconButton(
+					onClick = { context.startActivity(shareIntent) }
+				) {
+					Icon(
+						painter = painterResource(R.drawable.ic_share_24dp),
+						contentDescription = stringResource(R.string.share_title)
+					)
+				}
+			}
 
-            Image(
-                qrCode.asImageBitmap(),
-                null,
-                Modifier
-                    .padding(vertical = 10.dp)
-                    .fillMaxWidth(0.8f),
-                contentScale = ContentScale.FillWidth
-            )
-        }
-    }
+			Image(
+				qrCode.asImageBitmap(),
+				null,
+				Modifier
+					.padding(vertical = 10.dp)
+					.fillMaxWidth(0.8f),
+				contentScale = ContentScale.FillWidth
+			)
+		}
+	}
 }
 
 @Composable
 fun RestartDialog(viewModel: MainViewModel, context: Context) {
-    val onDismissRequest = { viewModel.showRestartDialog = false }
-    AlertDialog(
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    val intent = Intent(context, SyncthingService::class.java).apply {
-                        action = SyncthingService.ACTION_RESTART
-                    }
-                    context.startService(intent)
-                    onDismissRequest()
-                }
-            ) {
-                Text(stringResource(android.R.string.ok))
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismissRequest
-            ) {
-                Text(stringResource(android.R.string.cancel))
-            }
-        },
-        title = {
-            Text(
-                stringResource(R.string.restart_question),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize
-            )
-        },
-        text = {
-            Text(
-                stringResource(R.string.restart_description),
-                fontSize = MaterialTheme.typography.labelLarge.fontSize
-            )
-        },
-        onDismissRequest = onDismissRequest,
-        modifier = Modifier,
-    )
+	val onDismissRequest = { viewModel.showRestartDialog = false }
+	AlertDialog(
+		confirmButton = {
+			TextButton(
+				onClick = {
+					val intent = Intent(context, SyncthingService::class.java).apply {
+						action = SyncthingService.ACTION_RESTART
+					}
+					context.startService(intent)
+					onDismissRequest()
+				}
+			) {
+				Text(stringResource(android.R.string.ok))
+			}
+		},
+		dismissButton = {
+			TextButton(
+				onClick = onDismissRequest
+			) {
+				Text(stringResource(android.R.string.cancel))
+			}
+		},
+		title = {
+			Text(
+				stringResource(R.string.restart_question),
+				fontSize = MaterialTheme.typography.titleLarge.fontSize
+			)
+		},
+		text = {
+			Text(
+				stringResource(R.string.restart_description),
+				fontSize = MaterialTheme.typography.labelLarge.fontSize
+			)
+		},
+		onDismissRequest = onDismissRequest,
+		modifier = Modifier,
+	)
 }
 
 @Composable
 fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
-    val onDismissRequest = { viewModel.showExitDialog = false }
-    AlertDialog(
-        confirmButton = {
-            TextButton(
-                onClick = exit
-            ) {
-                Text(stringResource(android.R.string.ok))
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onDismissRequest
-            ) {
-                Text(stringResource(android.R.string.cancel))
+	val onDismissRequest = { viewModel.showExitDialog = false }
+	AlertDialog(
+		confirmButton = {
+			TextButton(
+				onClick = exit
+			) {
+				Text(stringResource(android.R.string.ok))
+			}
+		},
+		dismissButton = {
+			TextButton(
+				onClick = onDismissRequest
+			) {
+				Text(stringResource(android.R.string.cancel))
 
-            }
-        },
-        title = {
-            Text(
-                stringResource(R.string.exit_question),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize
-            )
-        },
-        text = {
-            Text(
-                stringResource(R.string.exit_description),
-                fontSize = MaterialTheme.typography.labelLarge.fontSize
-            )
-        },
-        onDismissRequest = onDismissRequest,
-        modifier = Modifier,
-    )}
-
-
+			}
+		},
+		title = {
+			Text(
+				stringResource(R.string.exit_question),
+				fontSize = MaterialTheme.typography.titleLarge.fontSize
+			)
+		},
+		text = {
+			Text(
+				stringResource(R.string.exit_description),
+				fontSize = MaterialTheme.typography.labelLarge.fontSize
+			)
+		},
+		onDismissRequest = onDismissRequest,
+		modifier = Modifier,
+	)
+}
 
 
 // PREVIEWS
@@ -449,47 +476,56 @@ fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
 @Preview
 @Composable
 fun MainPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        Main(viewModel<MainViewModel>()) {}
-    }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		Main(viewModel<MainViewModel>()) {}
+	}
 }
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun QrCodeDialogPreview() {
-    SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            QrCodeDialog(
-                "SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE",
-                {  },
-                remember { MainViewModel().generateQrBitmap("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE")!! }
-            )
-        }
-    }
+	SyncthingandroidTheme(
+		darkTheme = ThemeControls.useDarkMode,
+		dynamicColor = ThemeControls.isMonetEnabled
+	) {
+		Box(
+			modifier = Modifier.fillMaxSize()
+		) {
+			QrCodeDialog(
+				"SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE",
+				{ },
+				remember { MainViewModel().generateQrBitmap("SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE")!! }
+			)
+		}
+	}
 }
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun RestartDialogPreview() {
-    SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            RestartDialog(viewModel(), LocalContext.current)
-        }
-    }
+	SyncthingandroidTheme(
+		darkTheme = ThemeControls.useDarkMode,
+		dynamicColor = ThemeControls.isMonetEnabled
+	) {
+		Box(
+			modifier = Modifier.fillMaxSize()
+		) {
+			RestartDialog(viewModel(), LocalContext.current)
+		}
+	}
 }
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun ExitDialogPreview() {
-    SyncthingandroidTheme(darkTheme = ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            ExitDialog(viewModel(), LocalContext.current) {}
-        }
-    }
+	SyncthingandroidTheme(
+		darkTheme = ThemeControls.useDarkMode,
+		dynamicColor = ThemeControls.isMonetEnabled
+	) {
+		Box(
+			modifier = Modifier.fillMaxSize()
+		) {
+			ExitDialog(viewModel(), LocalContext.current) {}
+		}
+	}
 }

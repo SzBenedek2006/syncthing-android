@@ -27,25 +27,25 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 // Reimplementation of the activity_firststart_slide_intro.xml
 @Composable
 fun IntroSlide() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        SlideImage(painterResource(id = R.drawable.ic_monochrome))
-        Spacer(modifier = Modifier.height(16.dp))
-        SlideTitle(stringResource(R.string.introduction))
-        SlideDescription(stringResource(R.string.welcome_text))
-    }
+	Column(
+		modifier = Modifier
+			.fillMaxSize()
+			.verticalScroll(rememberScrollState())
+			.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center
+	) {
+		SlideImage(painterResource(id = R.drawable.ic_monochrome))
+		Spacer(modifier = Modifier.height(16.dp))
+		SlideTitle(stringResource(R.string.introduction))
+		SlideDescription(stringResource(R.string.welcome_text))
+	}
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun IntroSlidePreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-        IntroSlide()
-    }
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		IntroSlide()
+	}
 }

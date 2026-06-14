@@ -52,264 +52,278 @@ import kotlin.math.roundToInt
 
 @Composable
 fun FolderList(
-    folders: List<Folder> = emptyList(),
-    folderStatuses: Map<String, FolderStatus> = emptyMap(),
-    isLoaded: Boolean
+	folders: List<Folder> = emptyList(),
+	folderStatuses: Map<String, FolderStatus> = emptyMap(),
+	isLoaded: Boolean
 ) {
-    if (!isLoaded) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    } else if (folders.isEmpty()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = stringResource(id = R.string.folder_list_empty))
-        }
-    } else {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(
-                items = folders,
-                key = { folder -> folder.id ?: folder.hashCode() } // Maybe it helps performance? TODO: test
-            ) { folder ->
-                folderStatuses[folder.id]?.let {
-                    FolderListItem(
-                        folder,
-                        it
-                    )
-                }
-            }
-        }
-    }
+	if (!isLoaded) {
+		Box(
+			modifier = Modifier
+				.fillMaxSize(),
+			contentAlignment = Alignment.Center
+		) {
+			CircularProgressIndicator()
+		}
+	} else if (folders.isEmpty()) {
+		Box(
+			modifier = Modifier
+				.fillMaxSize(),
+			contentAlignment = Alignment.Center
+		) {
+			Text(text = stringResource(id = R.string.folder_list_empty))
+		}
+	} else {
+		LazyColumn(modifier = Modifier.fillMaxSize()) {
+			items(
+				items = folders,
+				key = { folder ->
+					folder.id ?: folder.hashCode()
+				} // Maybe it helps performance? TODO: test
+			) { folder ->
+				folderStatuses[folder.id]?.let {
+					FolderListItem(
+						folder,
+						it
+					)
+				}
+			}
+		}
+	}
 
 }
 
 
 @Composable
 fun FolderListItem(
-    folder: Folder,
-    folderStatus: FolderStatus
+	folder: Folder,
+	folderStatus: FolderStatus
 ) {
-    val context = LocalContext.current
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                onClickLabel = folder.label,
-                onClick = {
-                    val intent = Intent(context, FolderActivity::class.java)
-                        .putExtra(FolderViewModel.EXTRA_IS_CREATE, false)
-                        .putExtra(FolderViewModel.EXTRA_FOLDER_ID, folder.id)
-                    context.startActivity(intent)
-                }
-            )
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = folder.label?.ifEmpty { folder.id } ?: "",
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    modifier = Modifier.weight(1f)
-                )
-            }
+	val context = LocalContext.current
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.clickable(
+				onClickLabel = folder.label,
+				onClick = {
+					val intent = Intent(context, FolderActivity::class.java)
+						.putExtra(FolderViewModel.EXTRA_IS_CREATE, false)
+						.putExtra(FolderViewModel.EXTRA_FOLDER_ID, folder.id)
+					context.startActivity(intent)
+				}
+			)
+			.padding(horizontal = 16.dp, vertical = 8.dp),
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		Column(
+			modifier = Modifier.weight(1f)
+		) {
+			Row(
+				modifier = Modifier.fillMaxWidth(),
+				horizontalArrangement = Arrangement.SpaceBetween,
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Text(
+					text = folder.label?.ifEmpty { folder.id } ?: "",
+					style = MaterialTheme.typography.titleMedium,
+					maxLines = 1,
+					modifier = Modifier.weight(1f)
+				)
+			}
 
-            Text(
-                text = folder.path.orEmpty(),
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+			Text(
+				text = folder.path.orEmpty(),
+				style = MaterialTheme.typography.bodySmall,
+				modifier = Modifier.padding(top = 4.dp)
+			)
 
-            val neededItems = folderStatus.needFiles + folderStatus.needDirectories +
-                    folderStatus.needSymlinks + folderStatus.needDeletes
-            val outOfSync = folderStatus.state == "idle" && neededItems > 0
-            val showOverride = folder.type == Constants.FOLDER_TYPE_SEND_ONLY && outOfSync
-            val context = LocalContext.current
-            if (showOverride) {
-                Button(
-                    onClick = {
+			val neededItems = folderStatus.needFiles + folderStatus.needDirectories +
+					folderStatus.needSymlinks + folderStatus.needDeletes
+			val outOfSync = folderStatus.state == "idle" && neededItems > 0
+			val showOverride = folder.type == Constants.FOLDER_TYPE_SEND_ONLY && outOfSync
+			val context = LocalContext.current
+			if (showOverride) {
+				Button(
+					onClick = {
 
-                        val intent = Intent(context, SyncthingService::class.java)
-                            .putExtra(SyncthingService.EXTRA_FOLDER_ID, folder.id)
-                        intent.setAction(SyncthingService.ACTION_OVERRIDE_CHANGES)
-                        context.startService(intent)
-                    },
-                    modifier = Modifier.padding(top = 8.dp)
-                ) {
-                    Text(stringResource(R.string.override_changes))
-                }
-            }
+						val intent = Intent(context, SyncthingService::class.java)
+							.putExtra(SyncthingService.EXTRA_FOLDER_ID, folder.id)
+						intent.setAction(SyncthingService.ACTION_OVERRIDE_CHANGES)
+						context.startService(intent)
+					},
+					modifier = Modifier.padding(top = 8.dp)
+				) {
+					Text(stringResource(R.string.override_changes))
+				}
+			}
 
-            Text(
-                text = LocalResources.current
-                    .getQuantityString(
-                        R.plurals.files,
-                        folderStatus.inSyncFiles.toInt(),
-                        folderStatus.inSyncFiles,
-                        folderStatus.globalFiles
-                    ),
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-            Text(
-                text = LocalResources.current.getString(
-                    R.string.folder_size_format,
-                    readableFileSize(LocalContext.current, folderStatus.inSyncBytes),
-                    readableFileSize(LocalContext.current, folderStatus.globalBytes)),
-                style = MaterialTheme.typography.bodySmall
-            )
+			Text(
+				text = LocalResources.current
+					.getQuantityString(
+						R.plurals.files,
+						folderStatus.inSyncFiles.toInt(),
+						folderStatus.inSyncFiles,
+						folderStatus.globalFiles
+					),
+				style = MaterialTheme.typography.bodySmall,
+				modifier = Modifier.padding(top = 4.dp)
+			)
+			Text(
+				text = LocalResources.current.getString(
+					R.string.folder_size_format,
+					readableFileSize(LocalContext.current, folderStatus.inSyncBytes),
+					readableFileSize(LocalContext.current, folderStatus.globalBytes)
+				),
+				style = MaterialTheme.typography.bodySmall
+			)
 
-            Column {
-                val state = getLocalizedState(context, folderStatus)
-                val color = getStatusColor(folderStatus)
-                Text(
-                    text = state,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = color
-                )
-                // Invalid state
-                val invalidMsg = folderStatus.invalid ?: folder.invalid
-                if (!invalidMsg.isNullOrEmpty()) {
-                    Text(
-                        text = invalidMsg,
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
+			Column {
+				val state = getLocalizedState(context, folderStatus)
+				val color = getStatusColor(folderStatus)
+				Text(
+					text = state,
+					style = MaterialTheme.typography.labelMedium,
+					color = color
+				)
+				// Invalid state
+				val invalidMsg = folderStatus.invalid ?: folder.invalid
+				if (!invalidMsg.isNullOrEmpty()) {
+					Text(
+						text = invalidMsg,
+						color = Color.Red,
+						style = MaterialTheme.typography.bodySmall
+					)
+				}
+			}
 
-        }
-        val openFileManager = stringResource(R.string.open_file_manager)
+		}
+		val openFileManager = stringResource(R.string.open_file_manager)
 
-        IconButton(
-            onClick = {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setDataAndType(Uri.fromFile(File(folder.path!!)), "resource/folder")
-                intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", folder.path)
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (intent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(intent)
-                } else {
-                    Log.v("FolderListItem", "openFolder: Fallback to application chooser to open folder.")
-                    intent.setDataAndType(folder.path!!.toUri(), "application/*")
-                    val chooserIntent =
-                        Intent.createChooser(intent, openFileManager)
-                    if (chooserIntent != null) {
-                        context.startActivity(chooserIntent)
-                    } else {
-                        Toast.makeText(context, R.string.toast_no_file_manager, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-            }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_folder_24dp),
-                contentDescription = stringResource(R.string.open_file_manager)
-            )
-        }
-    }
+		IconButton(
+			onClick = {
+				val intent = Intent(Intent.ACTION_VIEW)
+				intent.setDataAndType(Uri.fromFile(File(folder.path!!)), "resource/folder")
+				intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", folder.path)
+				intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+				if (intent.resolveActivity(context.packageManager) != null) {
+					context.startActivity(intent)
+				} else {
+					Log.v(
+						"FolderListItem",
+						"openFolder: Fallback to application chooser to open folder."
+					)
+					intent.setDataAndType(folder.path!!.toUri(), "application/*")
+					val chooserIntent =
+						Intent.createChooser(intent, openFileManager)
+					if (chooserIntent != null) {
+						context.startActivity(chooserIntent)
+					} else {
+						Toast.makeText(context, R.string.toast_no_file_manager, Toast.LENGTH_SHORT)
+							.show()
+					}
+				}
+			}
+		) {
+			Icon(
+				painter = painterResource(id = R.drawable.ic_folder_24dp),
+				contentDescription = stringResource(R.string.open_file_manager)
+			)
+		}
+	}
 }
 
 @Composable
 fun getStatusColor(folderStatus: FolderStatus): Color {
-    val blue = MaterialTheme.extendedColorScheme.blue.color
-    val green = MaterialTheme.extendedColorScheme.green.color
-    val red = MaterialTheme.extendedColorScheme.red.color
-    val yellow = MaterialTheme.extendedColorScheme.yellow.color
+	val blue = MaterialTheme.extendedColorScheme.blue.color
+	val green = MaterialTheme.extendedColorScheme.green.color
+	val red = MaterialTheme.extendedColorScheme.red.color
+	val yellow = MaterialTheme.extendedColorScheme.yellow.color
 
 
 
-    return remember(folderStatus) {
-        val neededItems =
-            folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
-        val outOfSync = folderStatus.state == "idle" && neededItems > 0
+	return remember(folderStatus) {
+		val neededItems =
+			folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
+		val outOfSync = folderStatus.state == "idle" && neededItems > 0
 
-        if (outOfSync) Color.Red else
-            when (folderStatus.state) {
-                "idle" -> green
-                "scanning", "syncing" -> blue
-                "error" -> red
-                else -> yellow
-            }
-    }
+		if (outOfSync) Color.Red else
+			when (folderStatus.state) {
+				"idle" -> green
+				"scanning", "syncing" -> blue
+				"error" -> red
+				else -> yellow
+			}
+	}
 }
+
 @Composable
 fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
-    return remember(folderStatus, context) {
-        val neededItems =
-            folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
-        val outOfSync = folderStatus.state == "idle" && neededItems > 0
+	return remember(folderStatus, context) {
+		val neededItems =
+			folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
+		val outOfSync = folderStatus.state == "idle" && neededItems > 0
 
-        when (folderStatus.state) {
-            "idle" -> {
-                if (outOfSync) context.getString(R.string.status_outofsync)
-                else context.getString(R.string.state_idle)
-            }
-            "scanning" -> context.getString(R.string.state_scanning)
-            "syncing" -> {
-                val percentage = if (folderStatus.globalBytes != 0L)
-                    (100f * folderStatus.inSyncBytes / folderStatus.globalBytes).roundToInt()
-                else
-                    100
-                context.getString(R.string.state_syncing, percentage)
-            }
+		when (folderStatus.state) {
+			"idle" -> {
+				if (outOfSync) context.getString(R.string.status_outofsync)
+				else context.getString(R.string.state_idle)
+			}
 
-            "error" -> {
-                if (TextUtils.isEmpty(folderStatus.error)) {
-                    context.getString(R.string.state_error)
-                }
-                context.getString(R.string.state_error) + " (" + folderStatus.error + ")"
-            }
+			"scanning" -> context.getString(R.string.state_scanning)
+			"syncing" -> {
+				val percentage = if (folderStatus.globalBytes != 0L)
+					(100f * folderStatus.inSyncBytes / folderStatus.globalBytes).roundToInt()
+				else
+					100
+				context.getString(R.string.state_syncing, percentage)
+			}
 
-            "unknown" -> context.getString(R.string.state_unknown)
-            else -> folderStatus.state.toString()
-        }
-    }
+			"error" -> {
+				if (TextUtils.isEmpty(folderStatus.error)) {
+					context.getString(R.string.state_error)
+				}
+				context.getString(R.string.state_error) + " (" + folderStatus.error + ")"
+			}
+
+			"unknown" -> context.getString(R.string.state_unknown)
+			else -> folderStatus.state.toString()
+		}
+	}
 }
 
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun FolderListPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.PREVIEW_DARK_THEME) {
-        Surface {
-            FolderList(emptyList(), emptyMap(), true)
-        }
-    }
+	SyncthingandroidTheme(
+		dynamicColor = ThemeControls.isMonetEnabled,
+		darkTheme = ThemeControls.PREVIEW_DARK_THEME
+	) {
+		Surface {
+			FolderList(emptyList(), emptyMap(), true)
+		}
+	}
 }
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun FolderListItemPreview() {
-    SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled, darkTheme = ThemeControls.PREVIEW_DARK_THEME) {
-        Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
-            FolderListItem(
-                Folder(
-                    id = "fjdlaf-jfdlaf",
-                    label = "Mao",
-                    path = "storage/emulated/0"
-                ),
-                folderStatus = FolderStatus(
-                    state = "scanning",
-                    invalid = "Message here"
-                )
-            )
-        }
-    }
+	SyncthingandroidTheme(
+		dynamicColor = ThemeControls.isMonetEnabled,
+		darkTheme = ThemeControls.PREVIEW_DARK_THEME
+	) {
+		Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
+			FolderListItem(
+				Folder(
+					id = "fjdlaf-jfdlaf",
+					label = "Mao",
+					path = "storage/emulated/0"
+				),
+				folderStatus = FolderStatus(
+					state = "scanning",
+					invalid = "Message here"
+				)
+			)
+		}
+	}
 }
 

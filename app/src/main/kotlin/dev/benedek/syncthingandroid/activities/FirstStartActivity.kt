@@ -23,108 +23,109 @@ import dev.benedek.syncthingandroid.ui.FirstStartScreen
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 class FirstStartActivity : ComponentActivity() {
-    enum class Slide {
-        INTRO,
-        STORAGE,
-        LOCATION,
-        API_LEVEL_30,
-        NOTIFICATION
-    }
+	enum class Slide {
+		INTRO,
+		STORAGE,
+		LOCATION,
+		API_LEVEL_30,
+		NOTIFICATION
+	}
 
 
-    private val preferences: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(this)
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-        super.onCreate(savedInstanceState)
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+	private val preferences: SharedPreferences by lazy {
+		PreferenceManager.getDefaultSharedPreferences(this)
+	}
 
-        enableEdgeToEdge(
-            navigationBarStyle = if (
-                ThemeControls.useDarkMode == true ||
-                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
-            ) {
-                SystemBarStyle.dark("#00000000".toColorInt())
-            } else {
-                SystemBarStyle.light(
-                    "#00000000".toColorInt(),
-                    "#801b1b1b".toColorInt()
-                )
-            }
-        )
-        /**
-         * Recheck storage permission. If it has been revoked after the user
-         * completed the welcome slides, displays the slides again.
-         */
-        if (!isFirstStart() && PermissionUtil.haveStoragePermission(this) && upgradedToApiLevel30()) {
-            startApp()
-            return
-        } else {
-            preferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
-        }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		val splashScreen = installSplashScreen()
+		super.onCreate(savedInstanceState)
+		val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
-        setContent {
-            SyncthingandroidTheme(
-                dynamicColor = ThemeControls.isMonetEnabled
-            ) {
-                FirstStartScreen(
-                    onFinish = {
-                        preferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
-                        startApp()
-                    },
-                    prefs = preferences,
-                    activity = this
-                )
-            }
-        }
-    }
+		enableEdgeToEdge(
+			navigationBarStyle = if (
+				ThemeControls.useDarkMode == true ||
+				(ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+			) {
+				SystemBarStyle.dark("#00000000".toColorInt())
+			} else {
+				SystemBarStyle.light(
+					"#00000000".toColorInt(),
+					"#801b1b1b".toColorInt()
+				)
+			}
+		)
+		/**
+		 * Recheck storage permission. If it has been revoked after the user
+		 * completed the welcome slides, displays the slides again.
+		 */
+		if (!isFirstStart() && PermissionUtil.haveStoragePermission(this) && upgradedToApiLevel30()) {
+			startApp()
+			return
+		} else {
+			preferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
+		}
 
-    fun isFirstStart(): Boolean {
-        return preferences.getBoolean(Constants.PREF_FIRST_START, true)
-    }
+		setContent {
+			SyncthingandroidTheme(
+				dynamicColor = ThemeControls.isMonetEnabled
+			) {
+				FirstStartScreen(
+					onFinish = {
+						preferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
+						startApp()
+					},
+					prefs = preferences,
+					activity = this
+				)
+			}
+		}
+	}
 
-    fun upgradedToApiLevel30(): Boolean {
-        if (preferences.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false)) {
-            return true
-        }
-        if (isFirstStart()) {
-            return true
-        }
-        return false
-    }
+	fun isFirstStart(): Boolean {
+		return preferences.getBoolean(Constants.PREF_FIRST_START, true)
+	}
 
-
-    private fun startApp() {
-        val doInitialKeyGeneration = !Constants.getConfigFile(this).exists()
-        val mainIntent = Intent(this, MainActivity::class.java)
-        mainIntent.putExtra(MainActivity.EXTRA_KEY_GENERATION_IN_PROGRESS, doInitialKeyGeneration)
-        /**
-         * In case start_into_web_gui option is enabled, start both activities
-         * so that back navigation works as expected.
-         */
-        if (preferences.getBoolean(Constants.PREF_START_INTO_WEB_GUI, false)) {
-            startActivities(arrayOf(mainIntent, Intent(this, WebGuiActivity::class.java)))
-        } else {
-            startActivity(mainIntent)
-        }
-        finish()
-    }
+	fun upgradedToApiLevel30(): Boolean {
+		if (preferences.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false)) {
+			return true
+		}
+		if (isFirstStart()) {
+			return true
+		}
+		return false
+	}
 
 
-    fun performApi30Upgrade() {
-        val dbDir = File(filesDir, "index-v0.14.0.db")
-        if (dbDir.exists()) {
-            try {
-                dbDir.deleteRecursively()
-            } catch (e: Throwable) {
-                Log.w("FirstStart", "Deleting database with Kotlin failed", e)
-                Util.runShellCommand("rm -r " + dbDir.absolutePath, false)
-                if (dbDir.exists()) {
-                    throw RuntimeException("Failed to delete existing database")
-                }
-            }
-        }
-        preferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
-    }
+	private fun startApp() {
+		val doInitialKeyGeneration = !Constants.getConfigFile(this).exists()
+		val mainIntent = Intent(this, MainActivity::class.java)
+		mainIntent.putExtra(MainActivity.EXTRA_KEY_GENERATION_IN_PROGRESS, doInitialKeyGeneration)
+		/**
+		 * In case start_into_web_gui option is enabled, start both activities
+		 * so that back navigation works as expected.
+		 */
+		if (preferences.getBoolean(Constants.PREF_START_INTO_WEB_GUI, false)) {
+			startActivities(arrayOf(mainIntent, Intent(this, WebGuiActivity::class.java)))
+		} else {
+			startActivity(mainIntent)
+		}
+		finish()
+	}
+
+
+	fun performApi30Upgrade() {
+		val dbDir = File(filesDir, "index-v0.14.0.db")
+		if (dbDir.exists()) {
+			try {
+				dbDir.deleteRecursively()
+			} catch (e: Throwable) {
+				Log.w("FirstStart", "Deleting database with Kotlin failed", e)
+				Util.runShellCommand("rm -r " + dbDir.absolutePath, false)
+				if (dbDir.exists()) {
+					throw RuntimeException("Failed to delete existing database")
+				}
+			}
+		}
+		preferences.edit { putBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, true) }
+	}
 }

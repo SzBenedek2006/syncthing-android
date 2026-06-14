@@ -36,41 +36,41 @@ import org.junit.runner.RunWith
 @LargeTest
 class StartupBenchmarks {
 
-    @get:Rule
-    val rule = MacrobenchmarkRule()
+	@get:Rule
+	val rule = MacrobenchmarkRule()
 
-    @Test
-    fun startupCompilationNone() =
-        benchmark(CompilationMode.None())
+	@Test
+	fun startupCompilationNone() =
+		benchmark(CompilationMode.None())
 
-    @Test
-    fun startupCompilationBaselineProfiles() =
-        benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
+	@Test
+	fun startupCompilationBaselineProfiles() =
+		benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
 
-    private fun benchmark(compilationMode: CompilationMode) {
-        // The application id for the running build variant is read from the instrumentation arguments.
-        rule.measureRepeated(
-            packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
-                ?: throw Exception("targetAppId not passed as instrumentation runner arg"),
-            metrics = listOf(StartupTimingMetric()),
-            compilationMode = compilationMode,
-            startupMode = StartupMode.COLD,
-            iterations = 10,
-            setupBlock = {
-                pressHome()
-            },
-            measureBlock = {
-                startActivityAndWait()
+	private fun benchmark(compilationMode: CompilationMode) {
+		// The application id for the running build variant is read from the instrumentation arguments.
+		rule.measureRepeated(
+			packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
+				?: throw Exception("targetAppId not passed as instrumentation runner arg"),
+			metrics = listOf(StartupTimingMetric()),
+			compilationMode = compilationMode,
+			startupMode = StartupMode.COLD,
+			iterations = 10,
+			setupBlock = {
+				pressHome()
+			},
+			measureBlock = {
+				startActivityAndWait()
 
-                // TODO Add interactions to wait for when your app is fully drawn.
-                // The app is fully drawn when Activity.reportFullyDrawn is called.
-                // For Jetpack Compose, you can use ReportDrawn, ReportDrawnWhen and ReportDrawnAfter
-                // from the AndroidX Activity library.
+				// TODO Add interactions to wait for when your app is fully drawn.
+				// The app is fully drawn when Activity.reportFullyDrawn is called.
+				// For Jetpack Compose, you can use ReportDrawn, ReportDrawnWhen and ReportDrawnAfter
+				// from the AndroidX Activity library.
 
-                // Check the UiAutomator documentation for more information on how to
-                // interact with the app.
-                // https://d.android.com/training/testing/other-components/ui-automator
-            }
-        )
-    }
+				// Check the UiAutomator documentation for more information on how to
+				// interact with the app.
+				// https://d.android.com/training/testing/other-components/ui-automator
+			}
+		)
+	}
 }

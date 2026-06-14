@@ -37,14 +37,14 @@ import java.util.regex.Pattern
 @LargeTest
 class BaselineProfileGenerator {
 
-    @get:Rule
-    val rule = BaselineProfileRule()
+	@get:Rule
+	val rule = BaselineProfileRule()
 
-    @Test
-    fun generate() {
-        // The application id for the running build variant is read from the instrumentation arguments.
+	@Test
+	fun generate() {
+		// The application id for the running build variant is read from the instrumentation arguments.
 
-        // Minimal
+		// Minimal
 //        rule.collect(
 //            packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
 //                ?: throw Exception("targetAppId not passed as instrumentation runner arg"),
@@ -58,70 +58,69 @@ class BaselineProfileGenerator {
 //        }
 
 
-        rule.collect(
-            packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
-                ?: throw Exception("targetAppId not passed as instrumentation runner arg"),
+		rule.collect(
+			packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
+				?: throw Exception("targetAppId not passed as instrumentation runner arg"),
 
-            // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
-            includeInStartupProfile = false
-        ) {
-            // This block defines the app's critical user journey. Here we are interested in
-            // optimizing for app startup. But you can also navigate and scroll through your most important UI.
+			// See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
+			includeInStartupProfile = false
+		) {
+			// This block defines the app's critical user journey. Here we are interested in
+			// optimizing for app startup. But you can also navigate and scroll through your most important UI.
 
-            // PERMISSIONS
-            // Notifications (Android 13+)
-            device.executeShellCommand("pm grant $packageName android.permission.POST_NOTIFICATIONS")
+			// PERMISSIONS
+			// Notifications (Android 13+)
+			device.executeShellCommand("pm grant $packageName android.permission.POST_NOTIFICATIONS")
 
-            // Location
-            device.executeShellCommand("pm grant $packageName android.permission.ACCESS_COARSE_LOCATION")
-            device.executeShellCommand("pm grant $packageName android.permission.ACCESS_FINE_LOCATION")
+			// Location
+			device.executeShellCommand("pm grant $packageName android.permission.ACCESS_COARSE_LOCATION")
+			device.executeShellCommand("pm grant $packageName android.permission.ACCESS_FINE_LOCATION")
 
-            // Location
-            device.executeShellCommand("pm grant $packageName android.permission.ACCESS_BACKGROUND_LOCATION")
+			// Location
+			device.executeShellCommand("pm grant $packageName android.permission.ACCESS_BACKGROUND_LOCATION")
 
-            // Standard Storage
-            device.executeShellCommand("pm grant $packageName android.permission.READ_EXTERNAL_STORAGE")
-            device.executeShellCommand("pm grant $packageName android.permission.WRITE_EXTERNAL_STORAGE")
+			// Standard Storage
+			device.executeShellCommand("pm grant $packageName android.permission.READ_EXTERNAL_STORAGE")
+			device.executeShellCommand("pm grant $packageName android.permission.WRITE_EXTERNAL_STORAGE")
 
-            // All Files Access (Android 11+)
-            device.executeShellCommand("appops set $packageName MANAGE_EXTERNAL_STORAGE allow")
+			// All Files Access (Android 11+)
+			device.executeShellCommand("appops set $packageName MANAGE_EXTERNAL_STORAGE allow")
 
-            // Disable battery optimizations
-            device.executeShellCommand("dumpsys deviceidle whitelist +$packageName")
+			// Disable battery optimizations
+			device.executeShellCommand("dumpsys deviceidle whitelist +$packageName")
 
-            // Start default activity for your app
-            pressHome()
-            startActivityAndWait()
+			// Start default activity for your app
+			pressHome()
+			startActivityAndWait()
 
 
+			val continueButton = device.findObject(By.text(Pattern.compile("Continue|Finish")))
+			if (continueButton != null) {
+				continueButton.click()
+				device.waitForIdle()
+			}
 
-            val continueButton = device.findObject(By.text(Pattern.compile("Continue|Finish")))
-            if (continueButton != null) {
-                continueButton.click()
-                device.waitForIdle()
-            }
+			val menuButton = device.findObject(By.desc("Menu"))
+			if (menuButton != null) {
+				menuButton.click()
+				device.waitForIdle()
+			}
 
-            val menuButton = device.findObject(By.desc("Menu"))
-            if (menuButton != null) {
-                menuButton.click()
-                device.waitForIdle()
-            }
+			val settingsButton = device.findObject(By.desc("Settings"))
+			if (settingsButton != null) {
+				settingsButton.click()
+				device.waitForIdle()
+			}
 
-            val settingsButton = device.findObject(By.desc("Settings"))
-            if (settingsButton != null) {
-                settingsButton.click()
-                device.waitForIdle()
-            }
+			val themeButton = device.findObject(By.text("Theme"))
+			if (themeButton != null) {
+				themeButton.click()
+				device.waitForIdle()
+			}
 
-            val themeButton = device.findObject(By.text("Theme"))
-            if (themeButton != null) {
-                themeButton.click()
-                device.waitForIdle()
-            }
+			// Check UiAutomator documentation for more information how to interact with the app.
+			// https://d.android.com/training/testing/other-components/ui-automator
+		}
 
-            // Check UiAutomator documentation for more information how to interact with the app.
-            // https://d.android.com/training/testing/other-components/ui-automator
-        }
-
-    }
+	}
 }

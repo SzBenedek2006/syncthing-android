@@ -71,356 +71,386 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun FirstStartScreen(
-    onFinish: () -> Unit,
-    prefs: SharedPreferences,
-    activity: FirstStartActivity
+	onFinish: () -> Unit,
+	prefs: SharedPreferences,
+	activity: FirstStartActivity
 ) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val slides = FirstStartActivity.Slide.entries.toTypedArray()
-    val lifecycleOwner = LocalLifecycleOwner.current
+	val context = LocalContext.current
+	val scope = rememberCoroutineScope()
+	val slides = FirstStartActivity.Slide.entries.toTypedArray()
+	val lifecycleOwner = LocalLifecycleOwner.current
 
-    // Setup Pager
-    val pagerState = rememberPagerState(pageCount = { slides.size })
-
-
-    var isStorageGranted by remember { mutableStateOf(PermissionUtil.haveStoragePermission(context)) }
-    var isLocationGranted by remember { mutableStateOf(PermissionUtil.hasLocationPermissions(context)) }
-    var isNotificationGranted by remember { mutableStateOf(PermissionUtil.hasNotificationPermission(context)) }
-
-    var isApiUpgraded by remember {
-        mutableStateOf(
-            prefs.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false) ||
-                    prefs.getBoolean(Constants.PREF_FIRST_START, true)
-        )
-    }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                isStorageGranted = PermissionUtil.haveStoragePermission(context)
-                isLocationGranted = PermissionUtil.hasLocationPermissions(context)
-                isNotificationGranted = PermissionUtil.hasNotificationPermission(context)
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
+	// Setup Pager
+	val pagerState = rememberPagerState(pageCount = { slides.size })
 
 
-    // Launchers
-    val storageLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions(),
-        ) {
-        isStorageGranted = PermissionUtil.haveStoragePermission(context)
-    }
+	var isStorageGranted by remember { mutableStateOf(PermissionUtil.haveStoragePermission(context)) }
+	var isLocationGranted by remember { mutableStateOf(PermissionUtil.hasLocationPermissions(context)) }
+	var isNotificationGranted by remember {
+		mutableStateOf(
+			PermissionUtil.hasNotificationPermission(
+				context
+			)
+		)
+	}
 
-    val locationLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { result ->
-            isLocationGranted = result.values.all { it }
-        }
+	var isApiUpgraded by remember {
+		mutableStateOf(
+			prefs.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false) ||
+					prefs.getBoolean(Constants.PREF_FIRST_START, true)
+		)
+	}
 
-    val notificationLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            isNotificationGranted = isGranted
-        }
+	DisposableEffect(lifecycleOwner) {
+		val observer = LifecycleEventObserver { _, event ->
+			if (event == Lifecycle.Event.ON_RESUME) {
+				isStorageGranted = PermissionUtil.haveStoragePermission(context)
+				isLocationGranted = PermissionUtil.hasLocationPermissions(context)
+				isNotificationGranted = PermissionUtil.hasNotificationPermission(context)
+			}
+		}
+		lifecycleOwner.lifecycle.addObserver(observer)
+		onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+	}
 
-    val currentSlide = slides[pagerState.currentPage]
 
-    // Navigation Logic
-    fun canAdvance(noToast: Boolean = false): Boolean {
-        return when (currentSlide) {
-            FirstStartActivity.Slide.STORAGE -> {
-                if (!isStorageGranted && !noToast) {
-                    Toast.makeText(context, R.string.toast_write_storage_permission_required, Toast.LENGTH_LONG).show()
-                }
-                isStorageGranted
-            }
-            FirstStartActivity.Slide.API_LEVEL_30 -> {
-                if (!isApiUpgraded && !noToast) {
-                    Toast.makeText(context, R.string.toast_api_level_30_must_reset, Toast.LENGTH_LONG).show()
-                }
-                isApiUpgraded
-            }
-            else -> true
-        }
-    }
+	// Launchers
+	val storageLauncher = rememberLauncherForActivityResult(
+		ActivityResultContracts.RequestMultiplePermissions(),
+	) {
+		isStorageGranted = PermissionUtil.haveStoragePermission(context)
+	}
 
-    // Skip Logic
-    fun shouldSkip(slide: FirstStartActivity.Slide): Boolean {
-        return when (slide) {
-            FirstStartActivity.Slide.INTRO -> !prefs.getBoolean(Constants.PREF_FIRST_START, true)
-            FirstStartActivity.Slide.STORAGE -> isStorageGranted
-            FirstStartActivity.Slide.LOCATION -> isLocationGranted
-            FirstStartActivity.Slide.API_LEVEL_30 -> {
-                val isRoot = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
-                isApiUpgraded || isRoot
-            }
-            FirstStartActivity.Slide.NOTIFICATION -> {
-                if (Build.VERSION.SDK_INT < 33) true
-                else ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-            }
-        }
-    }
+	val locationLauncher =
+		rememberLauncherForActivityResult(
+			ActivityResultContracts.RequestMultiplePermissions()
+		) { result ->
+			isLocationGranted = result.values.all { it }
+		}
 
-    fun onNext() {
-        if (!canAdvance()) return
+	val notificationLauncher =
+		rememberLauncherForActivityResult(
+			ActivityResultContracts.RequestPermission()
+		) { isGranted ->
+			isNotificationGranted = isGranted
+		}
 
-        scope.launch {
-            var nextIndex = pagerState.currentPage + 1
-            // Loop until we find a slide we shouldn't skip or we run out of slides
-            while (nextIndex < slides.size && shouldSkip(slides[nextIndex])) {
-                nextIndex++
-            }
+	val currentSlide = slides[pagerState.currentPage]
 
-            if (nextIndex >= slides.size) {
-                onFinish()
-            } else {
-                pagerState.animateScrollToPage(nextIndex)
-            }
-        }
-    }
+	// Navigation Logic
+	fun canAdvance(noToast: Boolean = false): Boolean {
+		return when (currentSlide) {
+			FirstStartActivity.Slide.STORAGE -> {
+				if (!isStorageGranted && !noToast) {
+					Toast.makeText(
+						context,
+						R.string.toast_write_storage_permission_required,
+						Toast.LENGTH_LONG
+					).show()
+				}
+				isStorageGranted
+			}
 
-    fun onBack() {
-        val prevIndex = pagerState.currentPage - 1
-        if (prevIndex >= 0) {
-            scope.launch { pagerState.animateScrollToPage(prevIndex) }
-        }
-    }
+			FirstStartActivity.Slide.API_LEVEL_30 -> {
+				if (!isApiUpgraded && !noToast) {
+					Toast.makeText(
+						context,
+						R.string.toast_api_level_30_must_reset,
+						Toast.LENGTH_LONG
+					).show()
+				}
+				isApiUpgraded
+			}
 
-    // Auto-skip Intro if needed on first load
-    LaunchedEffect(Unit) {
-        if (shouldSkip(FirstStartActivity.Slide.INTRO)) {
-            onNext()
-        }
-    }
+			else -> true
+		}
+	}
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize().safeDrawingPadding(), // Handle insets
-        bottomBar = {
-            BottomControls(
-                pagerState = pagerState,
-                slideCount = slides.size,
-                onBack = ::onBack,
-                onNext = ::onNext,
-                canAdvance = ::canAdvance
-            )
-        }
-    ) { innerPadding ->
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            userScrollEnabled = false // Disable swipe
-        ) { page ->
-            SlideContent(
-                slide = slides[page],
-                activity = activity,
-                storageLauncher = storageLauncher,
-                locationLauncher = locationLauncher,
-                notificationLauncher = notificationLauncher,
-                onUpgradeDatabase = {
-                    activity.performApi30Upgrade()
-                    isApiUpgraded = true
-                                    },
-                isStorageGranted = isStorageGranted,
-                isLocationGranted = isLocationGranted,
-                isNotificationGranted = isNotificationGranted,
-                isApiUpgraded = isApiUpgraded
-            )
-        }
-    }
+	// Skip Logic
+	fun shouldSkip(slide: FirstStartActivity.Slide): Boolean {
+		return when (slide) {
+			FirstStartActivity.Slide.INTRO -> !prefs.getBoolean(Constants.PREF_FIRST_START, true)
+			FirstStartActivity.Slide.STORAGE -> isStorageGranted
+			FirstStartActivity.Slide.LOCATION -> isLocationGranted
+			FirstStartActivity.Slide.API_LEVEL_30 -> {
+				val isRoot = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
+				isApiUpgraded || isRoot
+			}
+
+			FirstStartActivity.Slide.NOTIFICATION -> {
+				if (Build.VERSION.SDK_INT < 33) true
+				else ContextCompat.checkSelfPermission(
+					context,
+					Manifest.permission.POST_NOTIFICATIONS
+				) == PackageManager.PERMISSION_GRANTED
+			}
+		}
+	}
+
+	fun onNext() {
+		if (!canAdvance()) return
+
+		scope.launch {
+			var nextIndex = pagerState.currentPage + 1
+			// Loop until we find a slide we shouldn't skip or we run out of slides
+			while (nextIndex < slides.size && shouldSkip(slides[nextIndex])) {
+				nextIndex++
+			}
+
+			if (nextIndex >= slides.size) {
+				onFinish()
+			} else {
+				pagerState.animateScrollToPage(nextIndex)
+			}
+		}
+	}
+
+	fun onBack() {
+		val prevIndex = pagerState.currentPage - 1
+		if (prevIndex >= 0) {
+			scope.launch { pagerState.animateScrollToPage(prevIndex) }
+		}
+	}
+
+	// Auto-skip Intro if needed on first load
+	LaunchedEffect(Unit) {
+		if (shouldSkip(FirstStartActivity.Slide.INTRO)) {
+			onNext()
+		}
+	}
+
+	Scaffold(
+		modifier = Modifier
+			.fillMaxSize()
+			.safeDrawingPadding(), // Handle insets
+		bottomBar = {
+			BottomControls(
+				pagerState = pagerState,
+				slideCount = slides.size,
+				onBack = ::onBack,
+				onNext = ::onNext,
+				canAdvance = ::canAdvance
+			)
+		}
+	) { innerPadding ->
+		HorizontalPager(
+			state = pagerState,
+			modifier = Modifier
+				.padding(innerPadding)
+				.fillMaxSize(),
+			userScrollEnabled = false // Disable swipe
+		) { page ->
+			SlideContent(
+				slide = slides[page],
+				activity = activity,
+				storageLauncher = storageLauncher,
+				locationLauncher = locationLauncher,
+				notificationLauncher = notificationLauncher,
+				onUpgradeDatabase = {
+					activity.performApi30Upgrade()
+					isApiUpgraded = true
+				},
+				isStorageGranted = isStorageGranted,
+				isLocationGranted = isLocationGranted,
+				isNotificationGranted = isNotificationGranted,
+				isApiUpgraded = isApiUpgraded
+			)
+		}
+	}
 }
 
 @Composable
 fun BottomControls(
-    pagerState: PagerState,
-    slideCount: Int,
-    onBack: () -> Unit,
-    onNext: () -> Unit,
-    canAdvance: (noToast: Boolean) -> Boolean
+	pagerState: PagerState,
+	slideCount: Int,
+	onBack: () -> Unit,
+	onNext: () -> Unit,
+	canAdvance: (noToast: Boolean) -> Boolean
 ) {
-    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+	val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
 
-    // TODO: Low priority: move this into function, then use that in every composable that needs it.
-    // Detect small screen
-    val config = LocalWindowInfo.current.containerDpSize
-    val isSmallScreen = config.width < 360.dp
+	// TODO: Low priority: move this into function, then use that in every composable that needs it.
+	// Detect small screen
+	val config = LocalWindowInfo.current.containerDpSize
+	val isSmallScreen = config.width < 360.dp
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(if (isSmallScreen) 4.dp else 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Back Button
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.CenterStart
-        ) {
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(if (isSmallScreen) 4.dp else 16.dp),
+		horizontalArrangement = Arrangement.SpaceBetween,
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		// Back Button
+		Box(
+			modifier = Modifier.weight(1f),
+			contentAlignment = Alignment.CenterStart
+		) {
 
-            TextButton(
-                onClick = onBack,
-                enabled = pagerState.currentPage > 0,
-            ) {
-                if (isSmallScreen) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
-                    )
-                } else {
-                    Text(
-                        text = stringResource(R.string.back),
-                        color = if (pagerState.currentPage == 0) Color.Transparent else MaterialTheme.colorScheme.primary,
-                    )
-                }
+			TextButton(
+				onClick = onBack,
+				enabled = pagerState.currentPage > 0,
+			) {
+				if (isSmallScreen) {
+					Icon(
+						Icons.AutoMirrored.Filled.ArrowBack,
+						contentDescription = stringResource(R.string.back)
+					)
+				} else {
+					Text(
+						text = stringResource(R.string.back),
+						color = if (pagerState.currentPage == 0) Color.Transparent else MaterialTheme.colorScheme.primary,
+					)
+				}
 
-            }
-        }
+			}
+		}
 
 
-        // Dots
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            repeat(slideCount) { iteration ->
-                val color = if (pagerState.currentPage == iteration)
-                    MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+		// Dots
+		Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+			repeat(slideCount) { iteration ->
+				val color = if (pagerState.currentPage == iteration)
+					MaterialTheme.colorScheme.primary
+				else
+					MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
 
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(color, CircleShape)
-                )
-            }
-        }
+				Box(
+					modifier = Modifier
+						.size(10.dp)
+						.background(color, CircleShape)
+				)
+			}
+		}
 
-        // Next/Finish Button
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            Button(
-                onClick = onNext,
-                // TODO: Look into if this could be done without lifecycleState checking
-                //This is to update the composable state
-                enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true),
-            ) {
-                if (isSmallScreen) {
-                    Icon(
-                        imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = stringResource(
-                            if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
-                        )
-                    )
-                } else {
-                    Text(
-                        text = stringResource(
-                            if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
-                        )
-                    )
-                }
+		// Next/Finish Button
+		Box(
+			modifier = Modifier.weight(1f),
+			contentAlignment = Alignment.CenterEnd
+		) {
+			Button(
+				onClick = onNext,
+				// TODO: Look into if this could be done without lifecycleState checking
+				//This is to update the composable state
+				enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true),
+			) {
+				if (isSmallScreen) {
+					Icon(
+						imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
+						contentDescription = stringResource(
+							if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+						)
+					)
+				} else {
+					Text(
+						text = stringResource(
+							if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+						)
+					)
+				}
 
-            }
-        }
+			}
+		}
 
-    }
+	}
 }
 
 
 @Composable
 fun SlideContent(
-    slide: FirstStartActivity.Slide,
-    activity: FirstStartActivity,
-    storageLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
-    locationLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
-    notificationLauncher: ManagedActivityResultLauncher<String, Boolean>,
-    onUpgradeDatabase: () -> Unit,
-    isStorageGranted: Boolean,
-    isLocationGranted: Boolean,
-    isNotificationGranted: Boolean,
-    isApiUpgraded: Boolean
+	slide: FirstStartActivity.Slide,
+	activity: FirstStartActivity,
+	storageLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
+	locationLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
+	notificationLauncher: ManagedActivityResultLauncher<String, Boolean>,
+	onUpgradeDatabase: () -> Unit,
+	isStorageGranted: Boolean,
+	isLocationGranted: Boolean,
+	isNotificationGranted: Boolean,
+	isApiUpgraded: Boolean
 
 ) {
-    val context = LocalContext.current
+	val context = LocalContext.current
 
-    fun askForStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // Android 11+ All Files Access
-            try {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.data = "package:${context.packageName}".toUri()
-                activity.startActivity(intent)
-            } catch (_: Exception) {
-                Toast.makeText(context, R.string.dialog_all_files_access_not_supported, Toast.LENGTH_LONG).show()
+	fun askForStoragePermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			// Android 11+ All Files Access
+			try {
+				val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+				intent.data = "package:${context.packageName}".toUri()
+				activity.startActivity(intent)
+			} catch (_: Exception) {
+				Toast.makeText(
+					context,
+					R.string.dialog_all_files_access_not_supported,
+					Toast.LENGTH_LONG
+				).show()
 
-                // TODO: Low priority: Test this
-                Toast.makeText(context, "EXPERIMENTAL: Launching old write external storage permission instead.", Toast.LENGTH_LONG).show()
-                storageLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            }
-        } else {
-            // Android 10 and below
-            storageLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-        }
-    }
+				// TODO: Low priority: Test this
+				Toast.makeText(
+					context,
+					"EXPERIMENTAL: Launching old write external storage permission instead.",
+					Toast.LENGTH_LONG
+				).show()
+				storageLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+			}
+		} else {
+			// Android 10 and below
+			storageLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+		}
+	}
 
-    fun askForLocationPermission() {
-        // TODO: Implement one click background location permission logic, similar to askForStoragePermission() if needed
-        locationLauncher.launch(PermissionUtil.locationPermissions)
-    }
+	fun askForLocationPermission() {
+		// TODO: Implement one click background location permission logic, similar to askForStoragePermission() if needed
+		locationLauncher.launch(PermissionUtil.locationPermissions)
+	}
 
-    fun askForNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // SDK 33
-            notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
+	fun askForNotificationPermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // SDK 33
+			notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+		}
+	}
 
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        when (slide) {
-            FirstStartActivity.Slide.INTRO -> {
-                IntroSlide()
-            }
+	Column(
+		modifier = Modifier
+			.fillMaxSize(),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.Center
+	) {
+		when (slide) {
+			FirstStartActivity.Slide.INTRO -> {
+				IntroSlide()
+			}
 
-            FirstStartActivity.Slide.STORAGE -> {
-                StorageSlide(
-                    ::askForStoragePermission,
-                    isStorageGranted
-                )
-            }
+			FirstStartActivity.Slide.STORAGE -> {
+				StorageSlide(
+					::askForStoragePermission,
+					isStorageGranted
+				)
+			}
 
-            FirstStartActivity.Slide.LOCATION -> {
-                LocationSlide(
-                    ::askForLocationPermission,
-                    isLocationGranted
-                )
-            }
+			FirstStartActivity.Slide.LOCATION -> {
+				LocationSlide(
+					::askForLocationPermission,
+					isLocationGranted
+				)
+			}
 
-            FirstStartActivity.Slide.API_LEVEL_30 -> {
-                ApiUpgradeSlide(
-                    onUpgradeDatabase,
-                    isApiUpgraded
-                )
-            }
+			FirstStartActivity.Slide.API_LEVEL_30 -> {
+				ApiUpgradeSlide(
+					onUpgradeDatabase,
+					isApiUpgraded
+				)
+			}
 
-            FirstStartActivity.Slide.NOTIFICATION -> {
-                NotificationSlide(
-                    ::askForNotificationPermission,
-                    isNotificationGranted
-                )
-            }
-        }
-    }
+			FirstStartActivity.Slide.NOTIFICATION -> {
+				NotificationSlide(
+					::askForNotificationPermission,
+					isNotificationGranted
+				)
+			}
+		}
+	}
 }

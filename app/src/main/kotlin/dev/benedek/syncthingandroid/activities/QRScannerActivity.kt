@@ -22,131 +22,131 @@ import dev.benedek.syncthingandroid.databinding.ActivityQrScannerBinding
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 class QRScannerActivity : ThemedAppCompatActivity(), BarcodeCallback {
-    // endregion
-    private val RC_HANDLE_CAMERA_PERM = 888
+	// endregion
+	private val RC_HANDLE_CAMERA_PERM = 888
 
-    private var binding: ActivityQrScannerBinding? = null
+	private var binding: ActivityQrScannerBinding? = null
 
-    // region === Activity Lifecycle ===
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	// region === Activity Lifecycle ===
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+		val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
-        enableEdgeToEdge(
-            navigationBarStyle = if (
-                ThemeControls.useDarkMode == true ||
-                (ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
-            ) {
-                SystemBarStyle.dark("#00000000".toColorInt())
-            } else {
-                SystemBarStyle.light(
-                    "#00000000".toColorInt(),
-                    "#801b1b1b".toColorInt()
-                )
-            }
-        )
+		enableEdgeToEdge(
+			navigationBarStyle = if (
+				ThemeControls.useDarkMode == true ||
+				(ThemeControls.useDarkMode == null && currentNightMode == Configuration.UI_MODE_NIGHT_YES)
+			) {
+				SystemBarStyle.dark("#00000000".toColorInt())
+			} else {
+				SystemBarStyle.light(
+					"#00000000".toColorInt(),
+					"#801b1b1b".toColorInt()
+				)
+			}
+		)
 
-        binding = ActivityQrScannerBinding.inflate(layoutInflater)
-        setContentView(binding!!.getRoot())
+		binding = ActivityQrScannerBinding.inflate(layoutInflater)
+		setContentView(binding!!.getRoot())
 
-        // Targeting android 15 enables and 16 forces edge-to-edge,
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding!!.getRoot()
-        ) { v: View?, windowInsets: WindowInsetsCompat? ->
-            val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
-            val mlp = v!!.layoutParams as MarginLayoutParams
-            mlp.leftMargin = insets.left
-            mlp.bottomMargin = insets.bottom
-            mlp.rightMargin = insets.right
-            v.setLayoutParams(mlp)
-            WindowInsetsCompat.CONSUMED
-        }
+		// Targeting android 15 enables and 16 forces edge-to-edge,
+		ViewCompat.setOnApplyWindowInsetsListener(
+			binding!!.getRoot()
+		) { v: View?, windowInsets: WindowInsetsCompat? ->
+			val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+			val mlp = v!!.layoutParams as MarginLayoutParams
+			mlp.leftMargin = insets.left
+			mlp.bottomMargin = insets.bottom
+			mlp.rightMargin = insets.right
+			v.setLayoutParams(mlp)
+			WindowInsetsCompat.CONSUMED
+		}
 
-        ViewCompat.setOnApplyWindowInsetsListener(
-            binding!!.getRoot()
-        ) { v: View?, insets: WindowInsetsCompat? ->
-            val bars = insets!!.getInsets(
-                WindowInsetsCompat.Type.systemBars()
-                        or WindowInsetsCompat.Type.displayCutout()
-            )
-            v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-            WindowInsetsCompat.CONSUMED
-        }
+		ViewCompat.setOnApplyWindowInsetsListener(
+			binding!!.getRoot()
+		) { v: View?, insets: WindowInsetsCompat? ->
+			val bars = insets!!.getInsets(
+				WindowInsetsCompat.Type.systemBars()
+						or WindowInsetsCompat.Type.displayCutout()
+			)
+			v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+			WindowInsetsCompat.CONSUMED
+		}
 
-        binding!!.cancelButton.setOnClickListener { _: View? ->
-            finishScanning()
-        }
+		binding!!.cancelButton.setOnClickListener { _: View? ->
+			finishScanning()
+		}
 
-        checkPermissionAndStartScanner()
-    }
+		checkPermissionAndStartScanner()
+	}
 
-    override fun onStop() {
-        super.onStop()
-        finishScanning()
-    }
+	override fun onStop() {
+		super.onStop()
+		finishScanning()
+	}
 
-    // endregion
-    // region === Permissions Callback ===
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == RC_HANDLE_CAMERA_PERM) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startScanner()
-            } else {
-                finish()
-            }
-        }
-    }
+	// endregion
+	// region === Permissions Callback ===
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<String>,
+		grantResults: IntArray
+	) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+		if (requestCode == RC_HANDLE_CAMERA_PERM) {
+			if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				startScanner()
+			} else {
+				finish()
+			}
+		}
+	}
 
-    // endregion
-    // region === BarcodeCallback ===
-    override fun barcodeResult(result: BarcodeResult) {
-        val code = result.text
-        val intent = Intent()
-        intent.putExtra(QR_RESULT_ARG, code)
-        setResult(RESULT_OK, intent)
-        finishScanning()
-    }
+	// endregion
+	// region === BarcodeCallback ===
+	override fun barcodeResult(result: BarcodeResult) {
+		val code = result.text
+		val intent = Intent()
+		intent.putExtra(QR_RESULT_ARG, code)
+		setResult(RESULT_OK, intent)
+		finishScanning()
+	}
 
-    override fun possibleResultPoints(resultPoints: MutableList<ResultPoint?>?) {
-        // Unused
-    }
+	override fun possibleResultPoints(resultPoints: MutableList<ResultPoint?>?) {
+		// Unused
+	}
 
-    // endregion
-    // region === Private Methods ===
-    private fun checkPermissionAndStartScanner() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val permissions = arrayOf<String?>(Manifest.permission.CAMERA)
-            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM)
-        } else {
-            startScanner()
-        }
-    }
+	// endregion
+	// region === Private Methods ===
+	private fun checkPermissionAndStartScanner() {
+		if (ContextCompat.checkSelfPermission(
+				this,
+				Manifest.permission.CAMERA
+			) != PackageManager.PERMISSION_GRANTED
+		) {
+			val permissions = arrayOf<String?>(Manifest.permission.CAMERA)
+			ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM)
+		} else {
+			startScanner()
+		}
+	}
 
-    private fun startScanner() {
-        binding!!.barCodeScannerView.resume()
-        binding!!.barCodeScannerView.decodeSingle(this)
-    }
+	private fun startScanner() {
+		binding!!.barCodeScannerView.resume()
+		binding!!.barCodeScannerView.decodeSingle(this)
+	}
 
-    private fun finishScanning() {
-        binding!!.barCodeScannerView.pause()
-        finish()
-    } // endregion
+	private fun finishScanning() {
+		binding!!.barCodeScannerView.pause()
+		finish()
+	} // endregion
 
-    companion object {
-        // region === Static ===
-        const val QR_RESULT_ARG: String = "QR_CODE"
-        fun intent(context: Context?): Intent {
-            return Intent(context, QRScannerActivity::class.java)
-        }
-    }
+	companion object {
+		// region === Static ===
+		const val QR_RESULT_ARG: String = "QR_CODE"
+		fun intent(context: Context?): Intent {
+			return Intent(context, QRScannerActivity::class.java)
+		}
+	}
 }

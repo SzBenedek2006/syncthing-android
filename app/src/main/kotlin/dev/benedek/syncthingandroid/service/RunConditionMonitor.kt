@@ -28,364 +28,370 @@ import dev.benedek.syncthingandroid.service.ReceiverManager.registerReceiver
  * that are passed with [.ACTION_DEVICE_STATE_CHANGED].
  */
 class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListener?) {
-    private var syncStatusObserverHandle: Any? = null
-    private val syncStatusObserver: SyncStatusObserver = SyncStatusObserver { updateShouldRunDecision() }
+	private var syncStatusObserverHandle: Any? = null
+	private val syncStatusObserver: SyncStatusObserver =
+		SyncStatusObserver { updateShouldRunDecision() }
 
-    fun interface OnRunConditionChangedListener {
-        fun onRunConditionChanged(result: RunConditionCheckResult?)
-    }
+	fun interface OnRunConditionChangedListener {
+		fun onRunConditionChanged(result: RunConditionCheckResult?)
+	}
 
-    private val context: Context
+	private val context: Context
 
-    private val preferences: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
-    /**
-     * Sending callback notifications through [OnRunConditionChangedListener] is enabled if not null.
-     */
-    private var onRunConditionChangedListener: OnRunConditionChangedListener? = null
+	private val preferences: SharedPreferences by lazy {
+		PreferenceManager.getDefaultSharedPreferences(
+			context
+		)
+	}
 
-    /**
-     * Stores the result of the last call to [.decideShouldRun].
-     */
-    private var lastRunConditionCheckResult: RunConditionCheckResult? = null
+	/**
+	 * Sending callback notifications through [OnRunConditionChangedListener] is enabled if not null.
+	 */
+	private var onRunConditionChangedListener: OnRunConditionChangedListener? = null
 
-    init {
-        Log.v(TAG, "Created new instance")
-        this@RunConditionMonitor.context = context
-        onRunConditionChangedListener = listener
+	/**
+	 * Stores the result of the last call to [.decideShouldRun].
+	 */
+	private var lastRunConditionCheckResult: RunConditionCheckResult? = null
 
-        /**
-         * Register broadcast receivers.
-         */
-        // NetworkReceiver
-        registerReceiver(
-            this@RunConditionMonitor.context,
-            NetworkReceiver(),
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
+	init {
+		Log.v(TAG, "Created new instance")
+		this@RunConditionMonitor.context = context
+		onRunConditionChangedListener = listener
 
-        // BatteryReceiver
-        val filter = IntentFilter()
-        filter.addAction(Intent.ACTION_POWER_CONNECTED)
-        filter.addAction(Intent.ACTION_POWER_DISCONNECTED)
-        registerReceiver(this@RunConditionMonitor.context, this.BatteryReceiver(), filter)
+		/**
+		 * Register broadcast receivers.
+		 */
+		// NetworkReceiver
+		registerReceiver(
+			this@RunConditionMonitor.context,
+			NetworkReceiver(),
+			IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+		)
 
-        // PowerSaveModeChangedReceiver
-        registerReceiver(
-            this@RunConditionMonitor.context,
-            PowerSaveModeChangedReceiver(),
-            IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
-        )
+		// BatteryReceiver
+		val filter = IntentFilter()
+		filter.addAction(Intent.ACTION_POWER_CONNECTED)
+		filter.addAction(Intent.ACTION_POWER_DISCONNECTED)
+		registerReceiver(this@RunConditionMonitor.context, this.BatteryReceiver(), filter)
 
-        // SyncStatusObserver to monitor android's "AutoSync" quick toggle.
-        syncStatusObserverHandle = ContentResolver.addStatusChangeListener(
-            ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS, syncStatusObserver
-        )
+		// PowerSaveModeChangedReceiver
+		registerReceiver(
+			this@RunConditionMonitor.context,
+			PowerSaveModeChangedReceiver(),
+			IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
+		)
 
-        // Initially determine if syncthing should run under current circumstances.
-        updateShouldRunDecision()
-    }
+		// SyncStatusObserver to monitor android's "AutoSync" quick toggle.
+		syncStatusObserverHandle = ContentResolver.addStatusChangeListener(
+			ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS, syncStatusObserver
+		)
 
-    fun shutdown() {
-        Log.v(TAG, "Shutting down")
-        if (syncStatusObserverHandle != null) {
-            ContentResolver.removeStatusChangeListener(syncStatusObserverHandle)
-            syncStatusObserverHandle = null
-        }
-        ReceiverManager.unregisterAllReceivers(context)
-    }
+		// Initially determine if syncthing should run under current circumstances.
+		updateShouldRunDecision()
+	}
 
-    private inner class BatteryReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            if (Intent.ACTION_POWER_CONNECTED == intent.action
-                || Intent.ACTION_POWER_DISCONNECTED == intent.action
-            ) {
-                val handler = Handler()
-                handler.postDelayed({ updateShouldRunDecision() }, 5000)
-            }
-        }
-    }
+	fun shutdown() {
+		Log.v(TAG, "Shutting down")
+		if (syncStatusObserverHandle != null) {
+			ContentResolver.removeStatusChangeListener(syncStatusObserverHandle)
+			syncStatusObserverHandle = null
+		}
+		ReceiverManager.unregisterAllReceivers(context)
+	}
 
-    private inner class NetworkReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            if (ConnectivityManager.CONNECTIVITY_ACTION == intent.action) {
-                updateShouldRunDecision()
-            }
-        }
-    }
+	private inner class BatteryReceiver : BroadcastReceiver() {
+		override fun onReceive(context: Context?, intent: Intent) {
+			if (Intent.ACTION_POWER_CONNECTED == intent.action
+				|| Intent.ACTION_POWER_DISCONNECTED == intent.action
+			) {
+				val handler = Handler()
+				handler.postDelayed({ updateShouldRunDecision() }, 5000)
+			}
+		}
+	}
 
-    private inner class PowerSaveModeChangedReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            if (PowerManager.ACTION_POWER_SAVE_MODE_CHANGED == intent.action) {
-                updateShouldRunDecision()
-            }
-        }
-    }
+	private inner class NetworkReceiver : BroadcastReceiver() {
+		override fun onReceive(context: Context?, intent: Intent) {
+			if (ConnectivityManager.CONNECTIVITY_ACTION == intent.action) {
+				updateShouldRunDecision()
+			}
+		}
+	}
 
-    fun updateShouldRunDecision() {
-        // Reason if the current conditions changed the result of decideShouldRun()
-        // compared to the last determined result.
-        val result = decideShouldRun()
-        val change: Boolean
-        synchronized(this) {
-            change = lastRunConditionCheckResult == null || lastRunConditionCheckResult != result
-            lastRunConditionCheckResult = result
-        }
-        if (change) {
-            if (onRunConditionChangedListener != null) {
-                onRunConditionChangedListener!!.onRunConditionChanged(result)
-            }
-        }
-    }
+	private inner class PowerSaveModeChangedReceiver : BroadcastReceiver() {
+		override fun onReceive(context: Context?, intent: Intent) {
+			if (PowerManager.ACTION_POWER_SAVE_MODE_CHANGED == intent.action) {
+				updateShouldRunDecision()
+			}
+		}
+	}
 
-    /**
-     * Determines if Syncthing should currently run.
-     */
-    private fun decideShouldRun(): RunConditionCheckResult {
-        // Get run conditions preferences.
-        val prefRunConditions = preferences!!.getBoolean(Constants.PREF_RUN_CONDITIONS, true)
-        val prefRunOnMobileData =
-            preferences!!.getBoolean(Constants.PREF_RUN_ON_MOBILE_DATA, false)
-        val prefRunOnWifi = preferences!!.getBoolean(Constants.PREF_RUN_ON_WIFI, true)
-        val prefRunOnMeteredWifi =
-            preferences!!.getBoolean(Constants.PREF_RUN_ON_METERED_WIFI, false)
-        val whitelistedWifiSsids: MutableSet<String?> = preferences!!.getStringSet(
-            Constants.PREF_WIFI_SSID_WHITELIST,
-            java.util.HashSet()
-        )!!
-        val prefWifiWhitelistEnabled = !whitelistedWifiSsids.isEmpty()
-        val prefRunInFlightMode =
-            preferences!!.getBoolean(Constants.PREF_RUN_IN_FLIGHT_MODE, false)
-        val prefPowerSource: String = preferences!!.getString(
-            Constants.PREF_POWER_SOURCE,
-            POWER_SOURCE_CHARGER_BATTERY
-        )!!
-        val prefRespectPowerSaving =
-            preferences!!.getBoolean(Constants.PREF_RESPECT_BATTERY_SAVING, true)
-        val prefRespectMasterSync =
-            preferences!!.getBoolean(Constants.PREF_RESPECT_MASTER_SYNC, false)
+	fun updateShouldRunDecision() {
+		// Reason if the current conditions changed the result of decideShouldRun()
+		// compared to the last determined result.
+		val result = decideShouldRun()
+		val change: Boolean
+		synchronized(this) {
+			change = lastRunConditionCheckResult == null || lastRunConditionCheckResult != result
+			lastRunConditionCheckResult = result
+		}
+		if (change) {
+			if (onRunConditionChangedListener != null) {
+				onRunConditionChangedListener!!.onRunConditionChanged(result)
+			}
+		}
+	}
 
-        if (!prefRunConditions) {
-            Log.v(TAG, "decideShouldRun: !runConditions")
-            return RunConditionCheckResult.SHOULD_RUN
-        }
+	/**
+	 * Determines if Syncthing should currently run.
+	 */
+	private fun decideShouldRun(): RunConditionCheckResult {
+		// Get run conditions preferences.
+		val prefRunConditions = preferences!!.getBoolean(Constants.PREF_RUN_CONDITIONS, true)
+		val prefRunOnMobileData =
+			preferences!!.getBoolean(Constants.PREF_RUN_ON_MOBILE_DATA, false)
+		val prefRunOnWifi = preferences!!.getBoolean(Constants.PREF_RUN_ON_WIFI, true)
+		val prefRunOnMeteredWifi =
+			preferences!!.getBoolean(Constants.PREF_RUN_ON_METERED_WIFI, false)
+		val whitelistedWifiSsids: MutableSet<String?> = preferences!!.getStringSet(
+			Constants.PREF_WIFI_SSID_WHITELIST,
+			java.util.HashSet()
+		)!!
+		val prefWifiWhitelistEnabled = !whitelistedWifiSsids.isEmpty()
+		val prefRunInFlightMode =
+			preferences!!.getBoolean(Constants.PREF_RUN_IN_FLIGHT_MODE, false)
+		val prefPowerSource: String = preferences!!.getString(
+			Constants.PREF_POWER_SOURCE,
+			POWER_SOURCE_CHARGER_BATTERY
+		)!!
+		val prefRespectPowerSaving =
+			preferences!!.getBoolean(Constants.PREF_RESPECT_BATTERY_SAVING, true)
+		val prefRespectMasterSync =
+			preferences!!.getBoolean(Constants.PREF_RESPECT_MASTER_SYNC, false)
 
-        val blockerReasons: MutableList<BlockerReason?> = ArrayList()
+		if (!prefRunConditions) {
+			Log.v(TAG, "decideShouldRun: !runConditions")
+			return RunConditionCheckResult.SHOULD_RUN
+		}
 
-        // PREF_POWER_SOURCE
-        when (prefPowerSource) {
-            POWER_SOURCE_CHARGER -> if (!this.isCharging) {
-                Log.v(TAG, "decideShouldRun: POWER_SOURCE_AC && !isCharging")
-                blockerReasons.add(BlockerReason.ON_BATTERY)
-            }
+		val blockerReasons: MutableList<BlockerReason?> = ArrayList()
 
-            POWER_SOURCE_BATTERY -> if (this.isCharging) {
-                Log.v(TAG, "decideShouldRun: POWER_SOURCE_BATTERY && isCharging")
-                blockerReasons.add(BlockerReason.ON_CHARGER)
-            }
+		// PREF_POWER_SOURCE
+		when (prefPowerSource) {
+			POWER_SOURCE_CHARGER -> if (!this.isCharging) {
+				Log.v(TAG, "decideShouldRun: POWER_SOURCE_AC && !isCharging")
+				blockerReasons.add(BlockerReason.ON_BATTERY)
+			}
 
-            POWER_SOURCE_CHARGER_BATTERY -> {}
-            else -> {}
-        }
+			POWER_SOURCE_BATTERY -> if (this.isCharging) {
+				Log.v(TAG, "decideShouldRun: POWER_SOURCE_BATTERY && isCharging")
+				blockerReasons.add(BlockerReason.ON_CHARGER)
+			}
 
-        // Power saving
-        if (prefRespectPowerSaving && this.isPowerSaving) {
-            Log.v(TAG, "decideShouldRun: prefRespectPowerSaving && isPowerSaving")
-            blockerReasons.add(BlockerReason.POWERSAVING_ENABLED)
-        }
+			POWER_SOURCE_CHARGER_BATTERY -> {}
+			else -> {}
+		}
 
-        // Android global AutoSync setting.
-        if (prefRespectMasterSync && !ContentResolver.getMasterSyncAutomatically()) {
-            Log.v(TAG, "decideShouldRun: prefRespectMasterSync && !getMasterSyncAutomatically")
-            blockerReasons.add(BlockerReason.GLOBAL_SYNC_DISABLED)
-        }
+		// Power saving
+		if (prefRespectPowerSaving && this.isPowerSaving) {
+			Log.v(TAG, "decideShouldRun: prefRespectPowerSaving && isPowerSaving")
+			blockerReasons.add(BlockerReason.POWERSAVING_ENABLED)
+		}
 
-        // Run on mobile data.
-        if (blockerReasons.isEmpty() && prefRunOnMobileData && this.isMobileDataConnection) {
-            Log.v(TAG, "decideShouldRun: prefRunOnMobileData && isMobileDataConnection")
-            return RunConditionCheckResult.SHOULD_RUN
-        }
+		// Android global AutoSync setting.
+		if (prefRespectMasterSync && !ContentResolver.getMasterSyncAutomatically()) {
+			Log.v(TAG, "decideShouldRun: prefRespectMasterSync && !getMasterSyncAutomatically")
+			blockerReasons.add(BlockerReason.GLOBAL_SYNC_DISABLED)
+		}
 
-        // Run on wifi.
-        if (prefRunOnWifi && this.isWifiOrEthernetConnection) {
-            if (prefRunOnMeteredWifi) {
-                // We are on non-metered or metered wifi. Reason if wifi whitelist run condition is met.
-                if (wifiWhitelistConditionMet(prefWifiWhitelistEnabled, whitelistedWifiSsids)) {
-                    Log.v(
-                        TAG,
-                        "decideShouldRun: prefRunOnWifi && isWifiOrEthernetConnection && prefRunOnMeteredWifi && wifiWhitelistConditionMet"
-                    )
-                    if (blockerReasons.isEmpty()) return RunConditionCheckResult.SHOULD_RUN
-                } else {
-                    blockerReasons.add(BlockerReason.WIFI_SSID_NOT_WHITELISTED)
-                }
-            } else {
-                // Reason if we are on a non-metered wifi and if wifi whitelist run condition is met.
-                if (!this.isMeteredNetworkConnection) {
-                    if (wifiWhitelistConditionMet(prefWifiWhitelistEnabled, whitelistedWifiSsids)) {
-                        Log.v(
-                            TAG,
-                            "decideShouldRun: prefRunOnWifi && isWifiOrEthernetConnection && !prefRunOnMeteredWifi && !isMeteredNetworkConnection && wifiWhitelistConditionMet"
-                        )
-                        if (blockerReasons.isEmpty()) return RunConditionCheckResult.SHOULD_RUN
-                    } else {
-                        blockerReasons.add(BlockerReason.WIFI_SSID_NOT_WHITELISTED)
-                    }
-                } else {
-                    blockerReasons.add(BlockerReason.WIFI_WIFI_IS_METERED)
-                }
-            }
-        }
+		// Run on mobile data.
+		if (blockerReasons.isEmpty() && prefRunOnMobileData && this.isMobileDataConnection) {
+			Log.v(TAG, "decideShouldRun: prefRunOnMobileData && isMobileDataConnection")
+			return RunConditionCheckResult.SHOULD_RUN
+		}
 
-        // Run in flight mode.
-        if (prefRunInFlightMode && this.isFlightMode) {
-            Log.v(TAG, "decideShouldRun: prefRunInFlightMode && isFlightMode")
-            if (blockerReasons.isEmpty()) return RunConditionCheckResult.SHOULD_RUN
-        }
+		// Run on wifi.
+		if (prefRunOnWifi && this.isWifiOrEthernetConnection) {
+			if (prefRunOnMeteredWifi) {
+				// We are on non-metered or metered wifi. Reason if wifi whitelist run condition is met.
+				if (wifiWhitelistConditionMet(prefWifiWhitelistEnabled, whitelistedWifiSsids)) {
+					Log.v(
+						TAG,
+						"decideShouldRun: prefRunOnWifi && isWifiOrEthernetConnection && prefRunOnMeteredWifi && wifiWhitelistConditionMet"
+					)
+					if (blockerReasons.isEmpty()) return RunConditionCheckResult.SHOULD_RUN
+				} else {
+					blockerReasons.add(BlockerReason.WIFI_SSID_NOT_WHITELISTED)
+				}
+			} else {
+				// Reason if we are on a non-metered wifi and if wifi whitelist run condition is met.
+				if (!this.isMeteredNetworkConnection) {
+					if (wifiWhitelistConditionMet(prefWifiWhitelistEnabled, whitelistedWifiSsids)) {
+						Log.v(
+							TAG,
+							"decideShouldRun: prefRunOnWifi && isWifiOrEthernetConnection && !prefRunOnMeteredWifi && !isMeteredNetworkConnection && wifiWhitelistConditionMet"
+						)
+						if (blockerReasons.isEmpty()) return RunConditionCheckResult.SHOULD_RUN
+					} else {
+						blockerReasons.add(BlockerReason.WIFI_SSID_NOT_WHITELISTED)
+					}
+				} else {
+					blockerReasons.add(BlockerReason.WIFI_WIFI_IS_METERED)
+				}
+			}
+		}
 
-        /**
-         * If none of the above run conditions matched, don't run.
-         */
-        Log.v(TAG, "decideShouldRun: return false")
-        if (blockerReasons.isEmpty()) {
-            if (this.isFlightMode) {
-                blockerReasons.add(BlockerReason.NO_NETWORK_OR_FLIGHTMODE)
-            } else if (!prefRunOnWifi && !prefRunOnMobileData) {
-                blockerReasons.add(BlockerReason.NO_ALLOWED_NETWORK)
-            } else if (prefRunOnMobileData) {
-                blockerReasons.add(BlockerReason.NO_MOBILE_CONNECTION)
-            } else if (prefRunOnWifi) { // FIXME
-                blockerReasons.add(BlockerReason.NO_WIFI_CONNECTION)
-            } else {
-                blockerReasons.add(BlockerReason.NO_NETWORK_OR_FLIGHTMODE)
-            }
-        }
-        return RunConditionCheckResult(blockerReasons)
-    }
+		// Run in flight mode.
+		if (prefRunInFlightMode && this.isFlightMode) {
+			Log.v(TAG, "decideShouldRun: prefRunInFlightMode && isFlightMode")
+			if (blockerReasons.isEmpty()) return RunConditionCheckResult.SHOULD_RUN
+		}
 
-    /**
-     * Return whether the wifi whitelist run condition is met.
-     * Precondition: An active wifi connection has been detected.
-     */
-    private fun wifiWhitelistConditionMet(
-        prefWifiWhitelistEnabled: Boolean,
-        whitelistedWifiSsids: MutableSet<String?>
-    ): Boolean {
-        if (!prefWifiWhitelistEnabled) {
-            Log.v(TAG, "handleWifiWhitelist: !prefWifiWhitelistEnabled")
-            return true
-        }
-        if (isWifiConnectionWhitelisted(whitelistedWifiSsids)) {
-            Log.v(TAG, "handleWifiWhitelist: isWifiConnectionWhitelisted")
-            return true
-        }
-        return false
-    }
+		/**
+		 * If none of the above run conditions matched, don't run.
+		 */
+		Log.v(TAG, "decideShouldRun: return false")
+		if (blockerReasons.isEmpty()) {
+			if (this.isFlightMode) {
+				blockerReasons.add(BlockerReason.NO_NETWORK_OR_FLIGHTMODE)
+			} else if (!prefRunOnWifi && !prefRunOnMobileData) {
+				blockerReasons.add(BlockerReason.NO_ALLOWED_NETWORK)
+			} else if (prefRunOnMobileData) {
+				blockerReasons.add(BlockerReason.NO_MOBILE_CONNECTION)
+			} else if (prefRunOnWifi) { // FIXME
+				blockerReasons.add(BlockerReason.NO_WIFI_CONNECTION)
+			} else {
+				blockerReasons.add(BlockerReason.NO_NETWORK_OR_FLIGHTMODE)
+			}
+		}
+		return RunConditionCheckResult(blockerReasons)
+	}
 
-    private val isCharging: Boolean
-        /**
-         * Functions for run condition information retrieval.
-         */
-        get() {
-            val intent = context.registerReceiver(
-                null,
-                IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-            )
-            val plugged = intent!!.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
-            return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS
-        }
+	/**
+	 * Return whether the wifi whitelist run condition is met.
+	 * Precondition: An active wifi connection has been detected.
+	 */
+	private fun wifiWhitelistConditionMet(
+		prefWifiWhitelistEnabled: Boolean,
+		whitelistedWifiSsids: MutableSet<String?>
+	): Boolean {
+		if (!prefWifiWhitelistEnabled) {
+			Log.v(TAG, "handleWifiWhitelist: !prefWifiWhitelistEnabled")
+			return true
+		}
+		if (isWifiConnectionWhitelisted(whitelistedWifiSsids)) {
+			Log.v(TAG, "handleWifiWhitelist: isWifiConnectionWhitelisted")
+			return true
+		}
+		return false
+	}
 
-    private val isPowerSaving: Boolean
-        get() {
-            val powerManager =
-                context.getSystemService(Context.POWER_SERVICE) as PowerManager?
-            if (powerManager == null) {
-                Log.e(
-                    TAG,
-                    "getSystemService(POWER_SERVICE) unexpectedly returned NULL."
-                )
-                return false
-            }
-            return powerManager.isPowerSaveMode
-        }
+	private val isCharging: Boolean
+		/**
+		 * Functions for run condition information retrieval.
+		 */
+		get() {
+			val intent = context.registerReceiver(
+				null,
+				IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+			)
+			val plugged = intent!!.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+			return plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged == BatteryManager.BATTERY_PLUGGED_USB || plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS
+		}
 
-    private val isFlightMode: Boolean
-        get() {
-            val cm =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val ni = cm.activeNetworkInfo
-            return ni == null
-        }
+	private val isPowerSaving: Boolean
+		get() {
+			val powerManager =
+				context.getSystemService(Context.POWER_SERVICE) as PowerManager?
+			if (powerManager == null) {
+				Log.e(
+					TAG,
+					"getSystemService(POWER_SERVICE) unexpectedly returned NULL."
+				)
+				return false
+			}
+			return powerManager.isPowerSaveMode
+		}
 
-    private val isMeteredNetworkConnection: Boolean
-        get() {
-            val cm =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val ni = cm.activeNetworkInfo ?: // In flight mode.
-            return false
-            if (!ni.isConnected) {
-                // No network connection.
-                return false
-            }
-            return cm.isActiveNetworkMetered
-        }
+	private val isFlightMode: Boolean
+		get() {
+			val cm =
+				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+			val ni = cm.activeNetworkInfo
+			return ni == null
+		}
 
-    private val isMobileDataConnection: Boolean
-        get() {
-            val cm =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val ni = cm.activeNetworkInfo ?: // In flight mode.
-            return false
-            if (!ni.isConnected) {
-                // No network connection.
-                return false
-            }
-            return when (ni.type) {
-                ConnectivityManager.TYPE_BLUETOOTH, ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI -> true
-                else -> false
-            }
-        }
+	private val isMeteredNetworkConnection: Boolean
+		get() {
+			val cm =
+				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+			val ni = cm.activeNetworkInfo ?: // In flight mode.
+			return false
+			if (!ni.isConnected) {
+				// No network connection.
+				return false
+			}
+			return cm.isActiveNetworkMetered
+		}
 
-    private val isWifiOrEthernetConnection: Boolean
-        get() {
-            val cm =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val ni = cm.activeNetworkInfo ?: // In flight mode.
-            return false
-            if (!ni.isConnected) {
-                // No network connection.
-                return false
-            }
-            return when (ni.type) {
-                ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_WIMAX, ConnectivityManager.TYPE_ETHERNET -> true
-                else -> false
-            }
-        }
+	private val isMobileDataConnection: Boolean
+		get() {
+			val cm =
+				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+			val ni = cm.activeNetworkInfo ?: // In flight mode.
+			return false
+			if (!ni.isConnected) {
+				// No network connection.
+				return false
+			}
+			return when (ni.type) {
+				ConnectivityManager.TYPE_BLUETOOTH, ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI -> true
+				else -> false
+			}
+		}
 
-    private fun isWifiConnectionWhitelisted(whitelistedSsids: MutableSet<String?>): Boolean {
-        val wifiManager = context.applicationContext
-            .getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val wifiInfo = wifiManager.connectionInfo
-        if (wifiInfo == null) {
-            // May be null, if wifi has been turned off in the meantime.
-            Log.d(TAG, "isWifiConnectionWhitelisted: SSID unknown due to wifiInfo == null")
-            return false
-        }
-        val wifiSsid = wifiInfo.getSSID()
-        if (wifiSsid == null) {
-            Log.w(
-                TAG,
-                "isWifiConnectionWhitelisted: Got null SSID. Try to enable android location service."
-            )
-            return false
-        }
-        return whitelistedSsids.contains(wifiSsid)
-    }
+	private val isWifiOrEthernetConnection: Boolean
+		get() {
+			val cm =
+				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+			val ni = cm.activeNetworkInfo ?: // In flight mode.
+			return false
+			if (!ni.isConnected) {
+				// No network connection.
+				return false
+			}
+			return when (ni.type) {
+				ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_WIMAX, ConnectivityManager.TYPE_ETHERNET -> true
+				else -> false
+			}
+		}
 
-    companion object {
-        private const val TAG = "RunConditionMonitor"
+	private fun isWifiConnectionWhitelisted(whitelistedSsids: MutableSet<String?>): Boolean {
+		val wifiManager = context.applicationContext
+			.getSystemService(Context.WIFI_SERVICE) as WifiManager
+		val wifiInfo = wifiManager.connectionInfo
+		if (wifiInfo == null) {
+			// May be null, if wifi has been turned off in the meantime.
+			Log.d(TAG, "isWifiConnectionWhitelisted: SSID unknown due to wifiInfo == null")
+			return false
+		}
+		val wifiSsid = wifiInfo.getSSID()
+		if (wifiSsid == null) {
+			Log.w(
+				TAG,
+				"isWifiConnectionWhitelisted: Got null SSID. Try to enable android location service."
+			)
+			return false
+		}
+		return whitelistedSsids.contains(wifiSsid)
+	}
 
-        private const val POWER_SOURCE_CHARGER_BATTERY = "ac_and_battery_power"
-        private const val POWER_SOURCE_CHARGER = "ac_power"
-        private const val POWER_SOURCE_BATTERY = "battery_power"
-    }
+	companion object {
+		private const val TAG = "RunConditionMonitor"
+
+		private const val POWER_SOURCE_CHARGER_BATTERY = "ac_and_battery_power"
+		private const val POWER_SOURCE_CHARGER = "ac_power"
+		private const val POWER_SOURCE_BATTERY = "battery_power"
+	}
 }

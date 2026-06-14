@@ -71,297 +71,316 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainModalDrawerSheet(
-    predictiveBackProgress: () -> Float,
-    drawerState: () -> DrawerState,
-    viewModel: MainViewModel
-    ) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val density = LocalDensity.current
-    val containerWidth = LocalWindowInfo.current.containerSize.width
+	predictiveBackProgress: () -> Float,
+	drawerState: () -> DrawerState,
+	viewModel: MainViewModel
+) {
+	val context = LocalContext.current
+	val scope = rememberCoroutineScope()
+	val density = LocalDensity.current
+	val containerWidth = LocalWindowInfo.current.containerSize.width
 
 
-    val contentColor = MaterialTheme.colorScheme.onSurface
-    val color = Color.Transparent
-    val red = MaterialTheme.extendedColorScheme.red.color
-    val green = MaterialTheme.extendedColorScheme.green.color
-    val blue = MaterialTheme.extendedColorScheme.blue.color
-    val yellow = MaterialTheme.extendedColorScheme.yellow.color
+	val contentColor = MaterialTheme.colorScheme.onSurface
+	val color = Color.Transparent
+	val red = MaterialTheme.extendedColorScheme.red.color
+	val green = MaterialTheme.extendedColorScheme.green.color
+	val blue = MaterialTheme.extendedColorScheme.blue.color
+	val yellow = MaterialTheme.extendedColorScheme.yellow.color
 
 
-    LaunchedEffect(containerWidth) {
-        actualDrawerWidth = if (containerWidth.dp * 0.8f < drawerWidth) {
-            if (containerWidth.dp < smallDrawerWidth) containerWidth.dp else maxOf(containerWidth.dp * 0.8f, smallDrawerWidth)
-        } else {
-            drawerWidth
-        }
-        Log.d(this.toString(), actualDrawerWidth.toString())
-    }
+	LaunchedEffect(containerWidth) {
+		actualDrawerWidth = if (containerWidth.dp * 0.8f < drawerWidth) {
+			if (containerWidth.dp < smallDrawerWidth) containerWidth.dp else maxOf(
+				containerWidth.dp * 0.8f,
+				smallDrawerWidth
+			)
+		} else {
+			drawerWidth
+		}
+		Log.d(this.toString(), actualDrawerWidth.toString())
+	}
 
-    ModalDrawerSheet(
-        windowInsets = WindowInsets(),
-        modifier = Modifier
-            .fillMaxHeight()
-            .verticalScroll(rememberScrollState())
-            .widthIn(max = actualDrawerWidth)
-            .graphicsLayer {
-                // 1. Slide it away slightly
-                translationX = -predictiveBackProgress() * 200f
+	ModalDrawerSheet(
+		windowInsets = WindowInsets(),
+		modifier = Modifier
+			.fillMaxHeight()
+			.verticalScroll(rememberScrollState())
+			.widthIn(max = actualDrawerWidth)
+			.graphicsLayer {
+				// 1. Slide it away slightly
+				translationX = -predictiveBackProgress() * 200f
 
-                // 2. Shrink it slightly (Modern Android look)
-                val scale = 1f - (predictiveBackProgress() * 0.05f)
-                scaleX = scale
-                scaleY = scale
+				// 2. Shrink it slightly (Modern Android look)
+				val scale = 1f - (predictiveBackProgress() * 0.05f)
+				scaleX = scale
+				scaleY = scale
 
-                // 3. Smoothly round the corners more as it pulls away
-                shape = RoundedCornerShape(
-                    topEnd = 16.dp + (predictiveBackProgress() * 16).dp,
-                    bottomEnd = 16.dp + (predictiveBackProgress() * 16).dp
-                )
-                clip = true
-            }
-    ) {
-        Row(
-            Modifier
-                .windowInsetsPadding(WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Top + WindowInsetsSides.Start
-                ))
-                .padding(horizontal = 10.dp, vertical = 12.dp),
-            Arrangement.Start,
-            Alignment.CenterVertically
-        ) {
-            Icon(
-                painterResource(R.drawable.ic_monochrome),
-                null, Modifier.padding(8.dp).size(24.dp),
-                MaterialTheme.colorScheme.primary
-            )
-            Text(
-                stringResource(R.string.app_name),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(6.dp)
-            )
-        }
+				// 3. Smoothly round the corners more as it pulls away
+				shape = RoundedCornerShape(
+					topEnd = 16.dp + (predictiveBackProgress() * 16).dp,
+					bottomEnd = 16.dp + (predictiveBackProgress() * 16).dp
+				)
+				clip = true
+			}
+	) {
+		Row(
+			Modifier
+				.windowInsetsPadding(
+					WindowInsets.safeDrawing.only(
+						WindowInsetsSides.Top + WindowInsetsSides.Start
+					)
+				)
+				.padding(horizontal = 10.dp, vertical = 12.dp),
+			Arrangement.Start,
+			Alignment.CenterVertically
+		) {
+			Icon(
+				painterResource(R.drawable.ic_monochrome),
+				null, Modifier
+					.padding(8.dp)
+					.size(24.dp),
+				MaterialTheme.colorScheme.primary
+			)
+			Text(
+				stringResource(R.string.app_name),
+				style = MaterialTheme.typography.titleLarge,
+				modifier = Modifier.padding(6.dp)
+			)
+		}
 
-        HorizontalDivider()
-
-
-        Column(
-            Modifier.windowInsetsPadding(
-                WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
-            ),
-            Arrangement.spacedBy(16.dp)
-        ) {
-            val density = LocalDensity.current
-            var tileHeight by remember { mutableStateOf(0.dp) }
-            val shape = RectangleShape//RoundedCornerShape(10.dp)
-            val modifier = Modifier//.padding(horizontal = 16.dp)
-
-            val descriptionWeight = FontWeight.Normal
-            val titleWeight = FontWeight.Normal
-
-            StatTile(
-                modifier = modifier
-                    .onSizeChanged { with(density) { tileHeight = it.height.toDp() } },
-                title = stringResource(R.string.announce_server),
-                titleWeight = titleWeight,
-                description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
-                descriptionWeight = descriptionWeight,
-                descriptionColor = if (viewModel.announceConnected > 0) green else red,
-                color = color,
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null,
-                shape = shape,
-                chart = {
-                    ComposeBasicLineChart(
-                        values = viewModel.announceConnectedHistory
-                            .let { if (it.size < 2) listOf(0L, 0L) else it }
-                            .toList(),
-                        maxValue = viewModel.announceTotal,
-                        modifier = Modifier.height(tileHeight)
-                    )
-                }
-            )
-            StatTile(
-                modifier = modifier,
-                title = stringResource(R.string.ram_usage),
-                titleWeight = titleWeight,
-                description = Util.readableFileSize(context, viewModel.systemInfo?.sys ?: 0),
-                descriptionWeight = descriptionWeight,
-                color = color,
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null,
-                shape = shape,
-                chart = {
-                    ComposeBasicLineChart(
-                        values = viewModel.systemInfoHistory
-                            .map { info -> info?.sys ?: 0L }
-                            .let { if (it.size < 2) listOf(0L, 0L) else it },
-                        modifier = Modifier.weight(0.3f).height(tileHeight)
-                    )
-                }
-            )
-            /*
-            val max: Long? = viewModel.systemInfoHistory.maxOfOrNull {
-                        it?.sys ?: 0L
-                    } // Test this with detekt (:Long? and 0L)
-                    Column(
-                        Modifier.height(tileHeight),
-                        verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
-                    ) {
-                        Text(
-                            Util.readableFileSize(context, max ?: 0L),
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }*/
-
-            StatTile(
-                modifier = modifier,
-                title = stringResource(R.string.download_title),
-                titleWeight = titleWeight,
-                description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.inBits ?: 0),
-                descriptionWeight = descriptionWeight,
-                color = color,
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null,
-                shape = shape,
-                chart = {
-                    ComposeBasicLineChart(
-                        values = viewModel.deviceStatusesHistory
-                            .map { status -> status.total?.inBits ?: 0L }
-                            .let { if (it.size < 2) listOf(0L, 0L) else it },
-                        modifier = Modifier.weight(0.3f).height(tileHeight)
-                    )
-                }
-            )
-            /*
-            val max: Long? =
-                        viewModel.deviceStatusesHistory.maxOfOrNull { it.total?.inBits ?: 0 }
-                    Column(
-                        Modifier.height(tileHeight),
-                        verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
-                    ) {
-                        Text(
-                            Util.readableTransferRate(
-                                context,
-                                viewModel.deviceStatuses.total?.inBits ?: 0
-                            ), style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-             */
-
-            StatTile(
-                modifier = modifier,
-                title = stringResource(R.string.upload_title),
-                titleWeight = titleWeight,
-                description = Util.readableTransferRate(context, viewModel.deviceStatuses.total?.outBits ?: 0),
-                descriptionWeight = descriptionWeight,
-                color = color,
-                noIconPadding = true,
-                contentColor = contentColor,
-                enabled = viewModel.api != null,
-                shape = shape,
-                chart = {
-                    ComposeBasicLineChart(
-                        values = viewModel.deviceStatusesHistory
-                            .map { status -> status.total?.outBits ?: 0L }
-                            .let { if (it.size < 2) listOf(0L, 0L) else it },
-                        modifier = Modifier.weight(0.3f).height(tileHeight)
-                    )
-                }
-            )
-        }
+		HorizontalDivider()
 
 
-        HorizontalDivider()
-        Spacer(Modifier.weight(1f))
+		Column(
+			Modifier.windowInsetsPadding(
+				WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+			),
+			Arrangement.spacedBy(16.dp)
+		) {
+			val density = LocalDensity.current
+			var tileHeight by remember { mutableStateOf(0.dp) }
+			val shape = RectangleShape//RoundedCornerShape(10.dp)
+			val modifier = Modifier//.padding(horizontal = 16.dp)
+
+			val descriptionWeight = FontWeight.Normal
+			val titleWeight = FontWeight.Normal
+
+			StatTile(
+				modifier = modifier
+					.onSizeChanged { with(density) { tileHeight = it.height.toDp() } },
+				title = stringResource(R.string.announce_server),
+				titleWeight = titleWeight,
+				description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
+				descriptionWeight = descriptionWeight,
+				descriptionColor = if (viewModel.announceConnected > 0) green else red,
+				color = color,
+				noIconPadding = true,
+				contentColor = contentColor,
+				enabled = viewModel.api != null,
+				shape = shape,
+				chart = {
+					ComposeBasicLineChart(
+						values = viewModel.announceConnectedHistory
+							.let { if (it.size < 2) listOf(0L, 0L) else it }
+							.toList(),
+						maxValue = viewModel.announceTotal,
+						modifier = Modifier.height(tileHeight)
+					)
+				}
+			)
+			StatTile(
+				modifier = modifier,
+				title = stringResource(R.string.ram_usage),
+				titleWeight = titleWeight,
+				description = Util.readableFileSize(context, viewModel.systemInfo?.sys ?: 0),
+				descriptionWeight = descriptionWeight,
+				color = color,
+				noIconPadding = true,
+				contentColor = contentColor,
+				enabled = viewModel.api != null,
+				shape = shape,
+				chart = {
+					ComposeBasicLineChart(
+						values = viewModel.systemInfoHistory
+							.map { info -> info?.sys ?: 0L }
+							.let { if (it.size < 2) listOf(0L, 0L) else it },
+						modifier = Modifier
+							.weight(0.3f)
+							.height(tileHeight)
+					)
+				}
+			)
+			/*
+			val max: Long? = viewModel.systemInfoHistory.maxOfOrNull {
+						it?.sys ?: 0L
+					} // Test this with detekt (:Long? and 0L)
+					Column(
+						Modifier.height(tileHeight),
+						verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
+					) {
+						Text(
+							Util.readableFileSize(context, max ?: 0L),
+							style = MaterialTheme.typography.labelSmall
+						)
+					}*/
+
+			StatTile(
+				modifier = modifier,
+				title = stringResource(R.string.download_title),
+				titleWeight = titleWeight,
+				description = Util.readableTransferRate(
+					context,
+					viewModel.deviceStatuses.total?.inBits ?: 0
+				),
+				descriptionWeight = descriptionWeight,
+				color = color,
+				noIconPadding = true,
+				contentColor = contentColor,
+				enabled = viewModel.api != null,
+				shape = shape,
+				chart = {
+					ComposeBasicLineChart(
+						values = viewModel.deviceStatusesHistory
+							.map { status -> status.total?.inBits ?: 0L }
+							.let { if (it.size < 2) listOf(0L, 0L) else it },
+						modifier = Modifier
+							.weight(0.3f)
+							.height(tileHeight)
+					)
+				}
+			)
+			/*
+			val max: Long? =
+						viewModel.deviceStatusesHistory.maxOfOrNull { it.total?.inBits ?: 0 }
+					Column(
+						Modifier.height(tileHeight),
+						verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
+					) {
+						Text(
+							Util.readableTransferRate(
+								context,
+								viewModel.deviceStatuses.total?.inBits ?: 0
+							), style = MaterialTheme.typography.labelSmall
+						)
+					}
+			 */
+
+			StatTile(
+				modifier = modifier,
+				title = stringResource(R.string.upload_title),
+				titleWeight = titleWeight,
+				description = Util.readableTransferRate(
+					context,
+					viewModel.deviceStatuses.total?.outBits ?: 0
+				),
+				descriptionWeight = descriptionWeight,
+				color = color,
+				noIconPadding = true,
+				contentColor = contentColor,
+				enabled = viewModel.api != null,
+				shape = shape,
+				chart = {
+					ComposeBasicLineChart(
+						values = viewModel.deviceStatusesHistory
+							.map { status -> status.total?.outBits ?: 0L }
+							.let { if (it.size < 2) listOf(0L, 0L) else it },
+						modifier = Modifier
+							.weight(0.3f)
+							.height(tileHeight)
+					)
+				}
+			)
+		}
 
 
-        Surface(
-            shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
-            color = Color.Transparent,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .topBorderWithCorners(
-                    1.dp,
-                    MaterialTheme.colorScheme.outlineVariant,
-                    16.dp
-                )
-        ) {
-            Column(
-                Modifier.windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
-                )
-            ) {
-                OptionTile(
-                    title = stringResource(R.string.web_gui_title),
-                    leftIconPainter = rememberVectorPainter(Icons.Outlined.Web),
-                    onClick = {
-                        scope.launch {
-                            drawerState().close()
-                        }
-                        context.startActivity(Intent(context, WebGuiActivity::class.java))
-                    }
-                )
-                OptionTile(
-                    title = stringResource(R.string.show_device_id),
-                    leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
-                    onClick = {
-                        scope.launch {
-                            drawerState().close()
-                        }
-                        viewModel.showDeviceIdDialog = true
-                    }
-                )
-                OptionTile(
-                    title = stringResource(R.string.settings_title),
-                    leftIconPainter = rememberVectorPainter(Icons.Outlined.Settings),
-                    leftIconContentDescription = stringResource(R.string.settings_title),
-                    onClick = {
-                        scope.launch {
-                            drawerState().close()
-                        }
-                        context.startActivity(Intent(context, SettingsActivity::class.java))
-                    }
-                )
-            }
-        }
+		HorizontalDivider()
+		Spacer(Modifier.weight(1f))
 
-        Surface(
-            shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
-        ) {
-            Column(
-                Modifier
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start + WindowInsetsSides.Bottom)
-                    )
-            ) {
-                OptionTile(
-                    title = stringResource(R.string.restart),
-                    leftIconPainter = painterResource(R.drawable.ic_autorenew_24dp),
-                    onClick = {
-                        scope.launch {
-                            drawerState().close()
-                        }
-                        viewModel.showRestartDialog = true
-                    }
-                )
-                OptionTile(
-                    title = stringResource(R.string.exit),
-                    leftIconPainter = rememberVectorPainter(Icons.Outlined.PowerSettingsNew),
-                    onClick = {
-                        scope.launch {
-                            drawerState().close()
-                        }
-                        viewModel.showExitDialog = true
-                    }
-                )
-            }
-        }
 
-    }
+		Surface(
+			shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
+			color = Color.Transparent,
+			modifier = Modifier
+				.padding(top = 16.dp)
+				.topBorderWithCorners(
+					1.dp,
+					MaterialTheme.colorScheme.outlineVariant,
+					16.dp
+				)
+		) {
+			Column(
+				Modifier.windowInsetsPadding(
+					WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+				)
+			) {
+				OptionTile(
+					title = stringResource(R.string.web_gui_title),
+					leftIconPainter = rememberVectorPainter(Icons.Outlined.Web),
+					onClick = {
+						scope.launch {
+							drawerState().close()
+						}
+						context.startActivity(Intent(context, WebGuiActivity::class.java))
+					}
+				)
+				OptionTile(
+					title = stringResource(R.string.show_device_id),
+					leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
+					onClick = {
+						scope.launch {
+							drawerState().close()
+						}
+						viewModel.showDeviceIdDialog = true
+					}
+				)
+				OptionTile(
+					title = stringResource(R.string.settings_title),
+					leftIconPainter = rememberVectorPainter(Icons.Outlined.Settings),
+					leftIconContentDescription = stringResource(R.string.settings_title),
+					onClick = {
+						scope.launch {
+							drawerState().close()
+						}
+						context.startActivity(Intent(context, SettingsActivity::class.java))
+					}
+				)
+			}
+		}
+
+		Surface(
+			shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
+		) {
+			Column(
+				Modifier
+					.windowInsetsPadding(
+						WindowInsets.safeDrawing.only(WindowInsetsSides.Start + WindowInsetsSides.Bottom)
+					)
+			) {
+				OptionTile(
+					title = stringResource(R.string.restart),
+					leftIconPainter = painterResource(R.drawable.ic_autorenew_24dp),
+					onClick = {
+						scope.launch {
+							drawerState().close()
+						}
+						viewModel.showRestartDialog = true
+					}
+				)
+				OptionTile(
+					title = stringResource(R.string.exit),
+					leftIconPainter = rememberVectorPainter(Icons.Outlined.PowerSettingsNew),
+					onClick = {
+						scope.launch {
+							drawerState().close()
+						}
+						viewModel.showExitDialog = true
+					}
+				)
+			}
+		}
+
+	}
 }
 
 val drawerWidth = 360.dp // M3 spec
@@ -372,7 +391,7 @@ var actualDrawerWidth by mutableStateOf(drawerWidth)
 @Preview(uiMode = ThemeControls.UI_MODE)
 @Composable
 fun MainModalDrawerSheetPreview() {
-    SyncthingandroidTheme(ThemeControls.useDarkMode, ThemeControls.isMonetEnabled) {
-        MainModalDrawerSheet({ 0f }, { DrawerState(DrawerValue.Open) }, viewModel<MainViewModel>())
-    }
+	SyncthingandroidTheme(ThemeControls.useDarkMode, ThemeControls.isMonetEnabled) {
+		MainModalDrawerSheet({ 0f }, { DrawerState(DrawerValue.Open) }, viewModel<MainViewModel>())
+	}
 }
