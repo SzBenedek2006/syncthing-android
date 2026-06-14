@@ -1,6 +1,7 @@
 package dev.benedek.syncthingandroid.service
 
 import android.app.Service // TODO: Move to androidx
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -11,22 +12,14 @@ import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.google.common.io.Files
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.http.PollWebGuiAvailableTask
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
-import dev.benedek.syncthingandroid.service.Constants.getConfigFile
-import dev.benedek.syncthingandroid.service.Constants.getHttpsCertFile
-import dev.benedek.syncthingandroid.service.Constants.getHttpsKeyFile
-import dev.benedek.syncthingandroid.service.Constants.getPrivateKeyFile
-import dev.benedek.syncthingandroid.service.Constants.getPublicKeyFile
 import dev.benedek.syncthingandroid.service.SyncthingRunnable.OnSyncthingKilled
 import dev.benedek.syncthingandroid.util.ConfigXml
 import dev.benedek.syncthingandroid.util.ConfigXml.OpenConfigException
 import dev.benedek.syncthingandroid.util.PermissionUtil.haveStoragePermission
-import java.io.File
-import java.io.IOException
 import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -577,73 +570,38 @@ class SyncthingService : Service() {
 	val currentRunConditionCheckResult: RunConditionCheckResult?
 		get() = currentCheckResult.get()
 
-	/**
-	 * Exports the local config and keys to [Constants.EXPORT_PATH].
-	 */
-	fun exportConfig() {
-		if (!Constants.EXPORT_PATH.mkdirs()) {
-			Log.w(this.toString(), "Couldn't create export directory!")
-		}
-		try {
-			Files.copy(
-				getConfigFile(this),
-				File(Constants.EXPORT_PATH, Constants.CONFIG_FILE)
-			)
-			Files.copy(
-				getPrivateKeyFile(this),
-				File(Constants.EXPORT_PATH, Constants.PRIVATE_KEY_FILE)
-			)
-			Files.copy(
-				getPublicKeyFile(this),
-				File(Constants.EXPORT_PATH, Constants.PUBLIC_KEY_FILE)
-			)
-			Files.copy(
-				getHttpsCertFile(this),
-				File(Constants.EXPORT_PATH, Constants.HTTPS_CERT_FILE)
-			)
-			Files.copy(
-				getHttpsKeyFile(this),
-				File(Constants.EXPORT_PATH, Constants.HTTPS_KEY_FILE)
-			)
-		} catch (e: IOException) {
-			Log.w(TAG, "Failed to export config", e)
-		}
-	}
 
 	/**
-	 * Imports config and keys from [Constants.EXPORT_PATH].
-	 *
-	 * @return True if the import was successful, false otherwise (e.g. if files aren't found).
+	 * This is a stable wrapper function that runs `action` while the service
+	 * is safely stopped during it's execution, then restarted afterward.
+	 * @param action the function to run.
 	 */
-	fun importConfig(): Boolean {
-		val config = File(Constants.EXPORT_PATH, Constants.CONFIG_FILE)
-		val privateKey = File(Constants.EXPORT_PATH, Constants.PRIVATE_KEY_FILE)
-		val publicKey = File(Constants.EXPORT_PATH, Constants.PUBLIC_KEY_FILE)
-		val httpsCert = File(Constants.EXPORT_PATH, Constants.HTTPS_CERT_FILE)
-		val httpsKey = File(Constants.EXPORT_PATH, Constants.HTTPS_KEY_FILE)
-		if (!config.exists() || !privateKey.exists() || !publicKey.exists()) return false
+	fun <T> runWhileShutdown(action: () -> T): T {
+		var result: T? = null
 		shutdown(State.INIT) {
-			try {
-				Files.copy(config, getConfigFile(this))
-				Files.copy(privateKey, getPrivateKeyFile(this))
-				Files.copy(publicKey, getPublicKeyFile(this))
-			} catch (e: IOException) {
-				Log.w(TAG, "Failed to import config", e)
-			}
-			if (httpsCert.exists() && httpsKey.exists()) {
-				try {
-					Files.copy(httpsCert, getHttpsCertFile(this))
-					Files.copy(httpsKey, getHttpsKeyFile(this))
-				} catch (e: IOException) {
-					Log.w(TAG, "Failed to import HTTPS config files", e)
-				}
-			}
+			result = action()
 			launchStartupTask()
 		}
-		return true
+
+		return result as T
 	}
 
 	companion object {
+
+		/**
+		 * Workaround for starting service from background on Android 8+.
+		 *
+		 * https://stackoverflow.com/a/44505719/1837158
+		 */
+		@JvmStatic
+		fun startServiceCompat(context: Context) {
+			val intent = Intent(context, SyncthingService::class.java)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				context.startForegroundService(intent)
+			} else {
+				context.startService(intent)
+			}
+		}
 		private const val TAG = "SyncthingService"
 
 		/**
