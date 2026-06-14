@@ -1,11 +1,10 @@
-package dev.benedek.syncthingandroid.logic.util
+package dev.benedek.syncthingandroid.util
 
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import dev.benedek.syncthingandroid.service.Constants
 import java.util.ArrayList
-import java.util.HashSet
 
 object SttraceUtil {
 

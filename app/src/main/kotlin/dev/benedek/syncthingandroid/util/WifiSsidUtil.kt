@@ -1,12 +1,14 @@
-package dev.benedek.syncthingandroid.logic.util
+package dev.benedek.syncthingandroid.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.util.Log
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.util.PermissionUtil
 import java.util.HashSet
 
 /**
@@ -83,21 +85,21 @@ object WifiSsidUtil {
 			context.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
 		var wifiInfo: WifiInfo? = null
 
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 			// Android 12+ (API 31+): Use ConnectivityManager
 			val connManager =
-				context.getSystemService(Context.CONNECTIVITY_SERVICE) as? android.net.ConnectivityManager
+				context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
 					?: return null
 
 			val activeNetwork = connManager.activeNetwork ?: return null
 			val capabilities = connManager.getNetworkCapabilities(activeNetwork) ?: return null
 
 			// Check if this network is actually Wifi
-			if (!capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI)) {
+			if (!capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
 				return null
 			}
 
-			wifiInfo = capabilities.transportInfo as? android.net.wifi.WifiInfo
+			wifiInfo = capabilities.transportInfo as? WifiInfo
 
 		}
 
