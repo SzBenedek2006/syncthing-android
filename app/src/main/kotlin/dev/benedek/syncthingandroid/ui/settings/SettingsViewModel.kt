@@ -13,10 +13,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Options
+import dev.benedek.syncthingandroid.receiver.BootReceiver
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.util.importConfig as importConfigImpl
+import dev.benedek.syncthingandroid.util.exportConfig as exportConfigImpl
 import eu.chainfire.libsuperuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -361,15 +364,9 @@ class SettingsViewModel : ViewModel() {
 	fun importConfig(context: Context) {
 		val currentService = serviceReference?.get()
 		viewModelScope.launch(Dispatchers.IO) {
-			val result = currentService?.importConfig() == true
+			val result = importConfigImpl(context, currentService)
 			withContext(Dispatchers.Main) {
-				if (currentService == null) {
-					Toast.makeText(
-						context,
-						context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-						Toast.LENGTH_SHORT
-					).show()
-				} else if (result) {
+				if (result) {
 					Toast.makeText(
 						context,
 						context.getString(R.string.config_imported_successful),
@@ -378,7 +375,7 @@ class SettingsViewModel : ViewModel() {
 				} else {
 					Toast.makeText(
 						context,
-						context.getString(R.string.config_import_failed),
+						context.getString(R.string.config_import_failed, Constants.EXPORT_PATH),
 						Toast.LENGTH_SHORT
 					).show()
 				}
@@ -389,23 +386,13 @@ class SettingsViewModel : ViewModel() {
 	fun exportConfig(context: Context) {
 		val currentService = serviceReference?.get()
 		viewModelScope.launch(Dispatchers.IO) {
-			if (currentService == null) {
-				withContext(Dispatchers.Main) {
-					Toast.makeText(
-						context,
-						context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
-						Toast.LENGTH_SHORT
-					).show()
-				}
-			} else {
-				currentService.exportConfig()
-				withContext(Dispatchers.Main) {
-					Toast.makeText(
-						context,
-						context.getString(R.string.config_export_successful, Constants.EXPORT_PATH),
-						Toast.LENGTH_SHORT
-					).show()
-				}
+			exportConfigImpl(context, currentService)
+			withContext(Dispatchers.Main) {
+				Toast.makeText(
+					context,
+					context.getString(R.string.config_export_successful, Constants.EXPORT_PATH),
+					Toast.LENGTH_SHORT
+				).show()
 			}
 		}
 	}
