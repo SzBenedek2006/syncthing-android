@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.logic.util.SttraceUtil
+import dev.benedek.syncthingandroid.util.SttraceUtil
 import me.zhanghai.compose.preference.multiSelectListPreference
 import androidx.compose.runtime.State
 

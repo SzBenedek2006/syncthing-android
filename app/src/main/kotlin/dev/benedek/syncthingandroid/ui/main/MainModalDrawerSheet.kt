@@ -98,7 +98,6 @@ fun MainModalDrawerSheet(
 		} else {
 			drawerWidth
 		}
-		Log.d(this.toString(), actualDrawerWidth.toString())
 	}
 
 	ModalDrawerSheet(

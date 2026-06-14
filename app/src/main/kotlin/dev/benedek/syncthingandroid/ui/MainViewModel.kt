@@ -138,7 +138,6 @@ class MainViewModel : ViewModel() {
 						announceTotal = systemInfo?.discoveryMethods ?: 0
 						announceConnected = announceTotal - (systemInfo?.discoveryErrors?.size ?: 0)
 						announceConnectedHistory.add(announceConnected)
-						Log.d(this.toString(), announceConnectedHistory.size.toString())
 						while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
 							announceConnectedHistory.remove(announceConnectedHistory.first())
 						}
