@@ -49,14 +49,12 @@ fun Theme(contentPadding: PaddingValues) {
 		switchPreference(
 			key = Constants.PREF_ENABLE_BLUR,
 			title = {
-				Row(
-					verticalAlignment = Alignment.CenterVertically
-				) {
+				Row {
 					Text(stringResource(R.string.blur_title))
 					Badge(
 						containerColor = MaterialTheme.colorScheme.primaryContainer,
 						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-						modifier = Modifier.padding(4.dp)
+						modifier = Modifier.padding(start = 4.dp)
 					) {
 						Text(stringResource(R.string.beta))
 					}
@@ -74,14 +72,12 @@ fun Theme(contentPadding: PaddingValues) {
 		switchPreference(
 			key = Constants.PREF_ENABLE_MONET,
 			title = {
-				Row(
-					verticalAlignment = Alignment.CenterVertically
-				) {
+				Row {
 					Text(stringResource(R.string.dynamic_colors_title))
 					Badge(
 						containerColor = MaterialTheme.colorScheme.primaryContainer,
 						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-						modifier = Modifier.padding(4.dp)
+						modifier = Modifier.padding(start = 4.dp)
 					) {
 						Text(stringResource(R.string.beta))
 					}
@@ -99,14 +95,12 @@ fun Theme(contentPadding: PaddingValues) {
 		switchPreference(
 			key = Constants.PREF_PURE_BLACK,
 			title = {
-				Row(
-					verticalAlignment = Alignment.CenterVertically
-				) {
+				Row {
 					Text(stringResource(R.string.pure_black))
 					Badge(
 						containerColor = MaterialTheme.colorScheme.primaryContainer,
 						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-						modifier = Modifier.padding(4.dp)
+						modifier = Modifier.padding(start = 4.dp)
 					) {
 						Text(stringResource(R.string.beta))
 					}
