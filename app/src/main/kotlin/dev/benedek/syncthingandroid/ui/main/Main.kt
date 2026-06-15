@@ -150,15 +150,14 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 
 	ModalNavigationDrawer(
-		drawerState = drawerState,
 		drawerContent = {
-			// DrawerDefaults.modalContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
 			MainModalDrawerSheet(
 				{ predictiveBackProgress },
 				{ drawerState },
 				viewModel
 			)
-		}
+		},
+		drawerState = drawerState
 	) {
 		Box(
 			Modifier
@@ -166,30 +165,27 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 				.blur(max(drawerBlurAmount, dialogBlurAmount.dp))
 		) {
 			AppScaffold(
-				topAppBarTitle = stringResource(R.string.app_name),
+				Modifier,
+				stringResource(R.string.app_name),
 				topNavigationIcon = Icons.Outlined.Menu,
 				topNavigationOnClick = {
 					scope.launch {
-						drawerState.apply {
-							if (isClosed) open() else close()
-						}
+						drawerState.apply { if (isClosed) open() else close() }
 					}
 				},
 				floatingActionButton = {
-					FloatingActionButton(onClick = {
+					FloatingActionButton({
 						when (pagerState.currentPage) {
 							0 -> {
 								val intent = Intent(context, FolderActivity::class.java)
 									.putExtra(FolderViewModel.EXTRA_IS_CREATE, true)
 								context.startActivity(intent)
 							}
-
 							1 -> {
 								val intent = Intent(context, DeviceActivity::class.java)
 									.putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
 								context.startActivity(intent)
 							}
-
 							else -> {
 								Toast.makeText(
 									context,
@@ -200,41 +196,22 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 								Log.wtf("FAB onClick", "Invalid page, this should never happen!")
 							}
 						}
-
 					}) {
-						Icon(Icons.Outlined.Add, contentDescription = "Add")
+						Icon(Icons.Outlined.Add, "Add")
 					}
 				},
 				bottomBar = {
 					NavigationBar {
 						NavigationBarItem(
-							selected = pagerState.currentPage == 0,
-							onClick = {
-								scope.launch {
-									pagerState.animateScrollToPage(0)
-								}
-							},
-							icon = {
-								Icon(
-									Icons.Outlined.Folder,
-									stringResource(R.string.folders_fragment_title)
-								)
-							},
+							pagerState.currentPage == 0,
+							{ scope.launch { pagerState.animateScrollToPage(0) } },
+							{ Icon(Icons.Outlined.Folder, stringResource(R.string.folders_fragment_title)) },
 							label = { Text(stringResource(R.string.folders_fragment_title)) }
 						)
 						NavigationBarItem(
-							selected = pagerState.currentPage == 1,
-							onClick = {
-								scope.launch {
-									pagerState.animateScrollToPage(1)
-								}
-							},
-							icon = {
-								Icon(
-									Icons.Outlined.Devices,
-									stringResource(R.string.devices_fragment_title)
-								)
-							},
+							pagerState.currentPage == 1,
+							{ scope.launch { pagerState.animateScrollToPage(1) } },
+							{ Icon(Icons.Outlined.Devices, stringResource(R.string.devices_fragment_title)) },
 							label = { Text(stringResource(R.string.devices_fragment_title)) }
 						)
 					}
@@ -334,35 +311,24 @@ fun QrCodeDialog(
 		val scope = rememberCoroutineScope()
 		val context = LocalContext.current
 
-		Column(
-			horizontalAlignment = Alignment.CenterHorizontally
-		) {
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
 			Row(Modifier.fillMaxWidth()) {
 				Text(
 					deviceId,
-					Modifier
-						.weight(1f)
-						.padding(vertical = 6.dp),
+					Modifier.weight(1f).padding(vertical = 6.dp),
 					fontSize = MaterialTheme.typography.bodySmall.fontSize,
 					fontFamily = FontFamily.Monospace,
 					lineHeight = 15.sp,
 					letterSpacing = 0.25.sp
 				)
-				IconButton(
-					onClick = {
-						val clipData = ClipData.newPlainText(
-							context.getString(R.string.device_id),
-							deviceId
-						)
-						val clipEntry = ClipEntry(clipData)
-						scope.launch {
-							clipboard.setClipEntry(clipEntry)
-						}
-					}
-				) {
+				IconButton({
+					val clipData = ClipData.newPlainText(context.getString(R.string.device_id), deviceId)
+					val clipEntry = ClipEntry(clipData)
+					scope.launch { clipboard.setClipEntry(clipEntry) }
+				}) {
 					Icon(
-						painter = painterResource(R.drawable.ic_content_copy_24dp),
-						contentDescription = stringResource(android.R.string.copy)
+						painterResource(R.drawable.ic_content_copy_24dp),
+						stringResource(android.R.string.copy)
 					)
 				}
 				val sendIntent: Intent = Intent().apply {
@@ -371,12 +337,10 @@ fun QrCodeDialog(
 					type = "text/plain"
 				}
 				val shareIntent = Intent.createChooser(sendIntent, null)
-				IconButton(
-					onClick = { context.startActivity(shareIntent) }
-				) {
+				IconButton({ context.startActivity(shareIntent) }) {
 					Icon(
-						painter = painterResource(R.drawable.ic_share_24dp),
-						contentDescription = stringResource(R.string.share_title)
+						painterResource(R.drawable.ic_share_24dp),
+						stringResource(R.string.share_title)
 					)
 				}
 			}
@@ -384,9 +348,7 @@ fun QrCodeDialog(
 			Image(
 				qrCode.asImageBitmap(),
 				null,
-				Modifier
-					.padding(vertical = 10.dp)
-					.fillMaxWidth(0.8f),
+				Modifier.padding(vertical = 10.dp).fillMaxWidth(0.8f),
 				contentScale = ContentScale.FillWidth
 			)
 		}
@@ -476,7 +438,7 @@ fun ExitDialog(viewModel: MainViewModel, context: Context, exit: () -> Unit) {
 @Preview
 @Composable
 fun MainPreview() {
-	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
 		Main(viewModel<MainViewModel>()) {}
 	}
 }
@@ -484,13 +446,8 @@ fun MainPreview() {
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun QrCodeDialogPreview() {
-	SyncthingandroidTheme(
-		darkTheme = ThemeControls.useDarkMode,
-		dynamicColor = ThemeControls.isMonetEnabled
-	) {
-		Box(
-			modifier = Modifier.fillMaxSize()
-		) {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		Box(Modifier.fillMaxSize()) {
 			QrCodeDialog(
 				"SAKD75B-GZGOLNW-G5MFIJU-24GFFJG-SES7W7L-KQKKSFJ-TUT4FVA-GTZMDAE",
 				{ },
@@ -503,29 +460,15 @@ fun QrCodeDialogPreview() {
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun RestartDialogPreview() {
-	SyncthingandroidTheme(
-		darkTheme = ThemeControls.useDarkMode,
-		dynamicColor = ThemeControls.isMonetEnabled
-	) {
-		Box(
-			modifier = Modifier.fillMaxSize()
-		) {
-			RestartDialog(viewModel(), LocalContext.current)
-		}
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		Box(Modifier.fillMaxSize()) { RestartDialog(viewModel(), LocalContext.current) }
 	}
 }
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun ExitDialogPreview() {
-	SyncthingandroidTheme(
-		darkTheme = ThemeControls.useDarkMode,
-		dynamicColor = ThemeControls.isMonetEnabled
-	) {
-		Box(
-			modifier = Modifier.fillMaxSize()
-		) {
-			ExitDialog(viewModel(), LocalContext.current) {}
-		}
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		Box(Modifier.fillMaxSize()) { ExitDialog(viewModel(), LocalContext.current) {} }
 	}
 }

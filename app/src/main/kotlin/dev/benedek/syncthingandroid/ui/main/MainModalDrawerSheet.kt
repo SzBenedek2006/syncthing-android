@@ -130,26 +130,24 @@ fun MainModalDrawerSheet(
 						WindowInsetsSides.Top + WindowInsetsSides.Start
 					)
 				)
-				.padding(horizontal = 10.dp, vertical = 12.dp),
+				.padding(10.dp, 12.dp),
 			Arrangement.Start,
 			Alignment.CenterVertically
 		) {
 			Icon(
 				painterResource(R.drawable.ic_monochrome),
-				null, Modifier
-					.padding(8.dp)
-					.size(24.dp),
+				null,
+				Modifier.padding(8.dp).size(24.dp),
 				MaterialTheme.colorScheme.primary
 			)
 			Text(
 				stringResource(R.string.app_name),
-				style = MaterialTheme.typography.titleLarge,
-				modifier = Modifier.padding(6.dp)
+				modifier = Modifier.padding(6.dp),
+				style = MaterialTheme.typography.titleLarge
 			)
 		}
 
 		HorizontalDivider()
-
 
 		Column(
 			Modifier.windowInsetsPadding(
@@ -157,17 +155,14 @@ fun MainModalDrawerSheet(
 			),
 			Arrangement.spacedBy(16.dp)
 		) {
-			val density = LocalDensity.current
 			var tileHeight by remember { mutableStateOf(0.dp) }
-			val shape = RectangleShape//RoundedCornerShape(10.dp)
-			val modifier = Modifier//.padding(horizontal = 16.dp)
-
+			val shape = RectangleShape
+			val modifier = Modifier
 			val descriptionWeight = FontWeight.Normal
 			val titleWeight = FontWeight.Normal
 
 			StatTile(
-				modifier = modifier
-					.onSizeChanged { with(density) { tileHeight = it.height.toDp() } },
+				modifier = modifier.onSizeChanged { with(density) { tileHeight = it.height.toDp() } },
 				title = stringResource(R.string.announce_server),
 				titleWeight = titleWeight,
 				description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
@@ -202,27 +197,12 @@ fun MainModalDrawerSheet(
 				chart = {
 					ComposeBasicLineChart(
 						values = viewModel.systemInfoHistory
-							.map { info -> info?.sys ?: 0L }
+							.map { it?.sys ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
-						modifier = Modifier
-							.weight(0.3f)
-							.height(tileHeight)
+						modifier = Modifier.weight(0.3f).height(tileHeight)
 					)
 				}
 			)
-			/*
-			val max: Long? = viewModel.systemInfoHistory.maxOfOrNull {
-						it?.sys ?: 0L
-					} // Test this with detekt (:Long? and 0L)
-					Column(
-						Modifier.height(tileHeight),
-						verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
-					) {
-						Text(
-							Util.readableFileSize(context, max ?: 0L),
-							style = MaterialTheme.typography.labelSmall
-						)
-					}*/
 
 			StatTile(
 				modifier = modifier,
@@ -241,29 +221,12 @@ fun MainModalDrawerSheet(
 				chart = {
 					ComposeBasicLineChart(
 						values = viewModel.deviceStatusesHistory
-							.map { status -> status.total?.inBits ?: 0L }
+							.map { it.total?.inBits ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
-						modifier = Modifier
-							.weight(0.3f)
-							.height(tileHeight)
+						modifier = Modifier.weight(0.3f).height(tileHeight)
 					)
 				}
 			)
-			/*
-			val max: Long? =
-						viewModel.deviceStatusesHistory.maxOfOrNull { it.total?.inBits ?: 0 }
-					Column(
-						Modifier.height(tileHeight),
-						verticalArrangement = if (max == 0L || max == null) Arrangement.Bottom else Arrangement.Top
-					) {
-						Text(
-							Util.readableTransferRate(
-								context,
-								viewModel.deviceStatuses.total?.inBits ?: 0
-							), style = MaterialTheme.typography.labelSmall
-						)
-					}
-			 */
 
 			StatTile(
 				modifier = modifier,
@@ -282,31 +245,27 @@ fun MainModalDrawerSheet(
 				chart = {
 					ComposeBasicLineChart(
 						values = viewModel.deviceStatusesHistory
-							.map { status -> status.total?.outBits ?: 0L }
+							.map { it.total?.outBits ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
-						modifier = Modifier
-							.weight(0.3f)
-							.height(tileHeight)
+						modifier = Modifier.weight(0.3f).height(tileHeight)
 					)
 				}
 			)
 		}
 
-
 		HorizontalDivider()
 		Spacer(Modifier.weight(1f))
 
-
 		Surface(
-			shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
-			color = Color.Transparent,
-			modifier = Modifier
+			Modifier
 				.padding(top = 16.dp)
 				.topBorderWithCorners(
 					1.dp,
 					MaterialTheme.colorScheme.outlineVariant,
 					16.dp
-				)
+				),
+			RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
+			Color.Transparent
 		) {
 			Column(
 				Modifier.windowInsetsPadding(
@@ -317,9 +276,7 @@ fun MainModalDrawerSheet(
 					title = stringResource(R.string.web_gui_title),
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Web),
 					onClick = {
-						scope.launch {
-							drawerState().close()
-						}
+						scope.launch { drawerState().close() }
 						context.startActivity(Intent(context, WebGuiActivity::class.java))
 					}
 				)
@@ -327,9 +284,7 @@ fun MainModalDrawerSheet(
 					title = stringResource(R.string.show_device_id),
 					leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
 					onClick = {
-						scope.launch {
-							drawerState().close()
-						}
+						scope.launch { drawerState().close() }
 						viewModel.showDeviceIdDialog = true
 					}
 				)
@@ -338,9 +293,7 @@ fun MainModalDrawerSheet(
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Settings),
 					leftIconContentDescription = stringResource(R.string.settings_title),
 					onClick = {
-						scope.launch {
-							drawerState().close()
-						}
+						scope.launch { drawerState().close() }
 						context.startActivity(Intent(context, SettingsActivity::class.java))
 					}
 				)
@@ -351,18 +304,15 @@ fun MainModalDrawerSheet(
 			shape = RoundedCornerShape(0.dp, 16.dp, 16.dp, 0.dp),
 		) {
 			Column(
-				Modifier
-					.windowInsetsPadding(
-						WindowInsets.safeDrawing.only(WindowInsetsSides.Start + WindowInsetsSides.Bottom)
-					)
+				Modifier.windowInsetsPadding(
+					WindowInsets.safeDrawing.only(WindowInsetsSides.Start + WindowInsetsSides.Bottom)
+				)
 			) {
 				OptionTile(
 					title = stringResource(R.string.restart),
 					leftIconPainter = painterResource(R.drawable.ic_autorenew_24dp),
 					onClick = {
-						scope.launch {
-							drawerState().close()
-						}
+						scope.launch { drawerState().close() }
 						viewModel.showRestartDialog = true
 					}
 				)
@@ -370,15 +320,12 @@ fun MainModalDrawerSheet(
 					title = stringResource(R.string.exit),
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.PowerSettingsNew),
 					onClick = {
-						scope.launch {
-							drawerState().close()
-						}
+						scope.launch { drawerState().close() }
 						viewModel.showExitDialog = true
 					}
 				)
 			}
 		}
-
 	}
 }
 

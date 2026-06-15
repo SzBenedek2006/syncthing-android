@@ -42,33 +42,20 @@ fun DeviceList(
 	isLoaded: Boolean
 ) {
 	if (!isLoaded) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.Center
-		) {
-			CircularProgressIndicator()
-		}
+		Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
 	} else if (devices.isEmpty()) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.Center
-		) {
-			Text(text = stringResource(id = R.string.devices_list_empty))
+		Box(Modifier.fillMaxSize(), Alignment.Center) {
+			Text(text = stringResource(R.string.devices_list_empty))
 		}
 	} else {
-		LazyColumn(modifier = Modifier.fillMaxSize()) {
+		LazyColumn(Modifier.fillMaxSize()) {
 			items(
-				items = devices,
-				key = { device ->
-					device.deviceID ?: device.hashCode()
-				} // Maybe it helps performance? TODO: test
+				devices,
+				key = { it.deviceID ?: it.hashCode() } // TODO: Test performance
 			) { device ->
-				deviceStatuses.connectionsMap?.get(device.deviceID)
 				DeviceListItem(
-					device = device,
-					deviceStatus = deviceStatuses.connectionsMap?.get(device.deviceID)
+					device,
+					deviceStatuses.connectionsMap?.get(device.deviceID)
 				)
 			}
 		}
@@ -85,7 +72,7 @@ fun DeviceListItem(
 	val localizedDeviceStatus = getLocalizedDeviceStatus(deviceStatus, context)
 
 	Row(
-		modifier = Modifier
+		Modifier
 			.fillMaxWidth()
 			.clickable(
 				onClickLabel = device.displayName ?: device.name,
@@ -96,39 +83,35 @@ fun DeviceListItem(
 					context.startActivity(intent)
 				}
 			)
-			.padding(horizontal = 16.dp, vertical = 8.dp),
+			.padding(16.dp, 8.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
-		Column(
-			modifier = Modifier.fillMaxWidth()
-		) {
+		Column(Modifier.fillMaxWidth()) {
 			Row(
-				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.SpaceBetween,
-				verticalAlignment = Alignment.Bottom
+				Modifier.fillMaxWidth(),
+				Arrangement.SpaceBetween,
+				Alignment.Bottom
 			) {
 				Text(
 					text = device.displayName ?: device.name ?: device.deviceID ?: "",
+					modifier = Modifier.weight(1f).padding(end = 8.dp),
 					style = MaterialTheme.typography.titleMedium,
-					maxLines = 1,
 					overflow = TextOverflow.Ellipsis,
-					modifier = Modifier
-						.weight(1f)
-						.padding(end = 8.dp)
+					maxLines = 1
 				)
 
 				Text(
 					text = localizedDeviceStatus.status,
-					style = MaterialTheme.typography.labelMedium,
-					color = localizedDeviceStatus.color
+					color = localizedDeviceStatus.color,
+					style = MaterialTheme.typography.labelMedium
 				)
 			}
 
 			Row {
 				Text(
 					text = stringResource(R.string.download_title_colon) + " ",
-					style = MaterialTheme.typography.bodySmall,
-					color = MaterialTheme.colorScheme.onSurfaceVariant
+					color = MaterialTheme.colorScheme.onSurfaceVariant,
+					style = MaterialTheme.typography.bodySmall
 				)
 				Text(
 					text = readableTransferRate(context, deviceStatus?.inBits ?: 0L),
@@ -139,8 +122,8 @@ fun DeviceListItem(
 			Row {
 				Text(
 					text = stringResource(R.string.upload_title_colon) + " ",
-					style = MaterialTheme.typography.bodySmall,
-					color = MaterialTheme.colorScheme.onSurfaceVariant
+					color = MaterialTheme.colorScheme.onSurfaceVariant,
+					style = MaterialTheme.typography.bodySmall
 				)
 				Text(
 					text = readableTransferRate(context, deviceStatus?.outBits ?: 0L),

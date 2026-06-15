@@ -57,39 +57,21 @@ fun FolderList(
 	isLoaded: Boolean
 ) {
 	if (!isLoaded) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.Center
-		) {
-			CircularProgressIndicator()
-		}
+		Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
 	} else if (folders.isEmpty()) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize(),
-			contentAlignment = Alignment.Center
-		) {
-			Text(text = stringResource(id = R.string.folder_list_empty))
+		Box(Modifier.fillMaxSize(), Alignment.Center) {
+			Text(text = stringResource(R.string.folder_list_empty))
 		}
 	} else {
-		LazyColumn(modifier = Modifier.fillMaxSize()) {
+		LazyColumn(Modifier.fillMaxSize()) {
 			items(
-				items = folders,
-				key = { folder ->
-					folder.id ?: folder.hashCode()
-				} // Maybe it helps performance? TODO: test
+				folders,
+				key = { it.id ?: it.hashCode() } // TODO: Test perf.
 			) { folder ->
-				folderStatuses[folder.id]?.let {
-					FolderListItem(
-						folder,
-						it
-					)
-				}
+				folderStatuses[folder.id]?.let { FolderListItem(folder, it) }
 			}
 		}
 	}
-
 }
 
 
@@ -100,7 +82,7 @@ fun FolderListItem(
 ) {
 	val context = LocalContext.current
 	Row(
-		modifier = Modifier
+		Modifier
 			.fillMaxWidth()
 			.clickable(
 				onClickLabel = folder.label,
@@ -111,29 +93,27 @@ fun FolderListItem(
 					context.startActivity(intent)
 				}
 			)
-			.padding(horizontal = 16.dp, vertical = 8.dp),
+			.padding(16.dp, 8.dp),
 		verticalAlignment = Alignment.CenterVertically
 	) {
-		Column(
-			modifier = Modifier.weight(1f)
-		) {
+		Column(Modifier.weight(1f)) {
 			Row(
-				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.SpaceBetween,
-				verticalAlignment = Alignment.CenterVertically
+				Modifier.fillMaxWidth(),
+				Arrangement.SpaceBetween,
+				Alignment.CenterVertically
 			) {
 				Text(
 					text = folder.label?.ifEmpty { folder.id } ?: "",
+					modifier = Modifier.weight(1f),
 					style = MaterialTheme.typography.titleMedium,
-					maxLines = 1,
-					modifier = Modifier.weight(1f)
+					maxLines = 1
 				)
 			}
 
 			Text(
 				text = folder.path.orEmpty(),
-				style = MaterialTheme.typography.bodySmall,
-				modifier = Modifier.padding(top = 4.dp)
+				modifier = Modifier.padding(top = 4.dp),
+				style = MaterialTheme.typography.bodySmall
 			)
 
 			val neededItems = folderStatus.needFiles + folderStatus.needDirectories +
@@ -144,7 +124,6 @@ fun FolderListItem(
 			if (showOverride) {
 				Button(
 					onClick = {
-
 						val intent = Intent(context, SyncthingService::class.java)
 							.putExtra(SyncthingService.EXTRA_FOLDER_ID, folder.id)
 						intent.setAction(SyncthingService.ACTION_OVERRIDE_CHANGES)
@@ -157,15 +136,14 @@ fun FolderListItem(
 			}
 
 			Text(
-				text = LocalResources.current
-					.getQuantityString(
-						R.plurals.files,
-						folderStatus.inSyncFiles.toInt(),
-						folderStatus.inSyncFiles,
-						folderStatus.globalFiles
-					),
-				style = MaterialTheme.typography.bodySmall,
-				modifier = Modifier.padding(top = 4.dp)
+				text = LocalResources.current.getQuantityString(
+					R.plurals.files,
+					folderStatus.inSyncFiles.toInt(),
+					folderStatus.inSyncFiles,
+					folderStatus.globalFiles
+				),
+				modifier = Modifier.padding(top = 4.dp),
+				style = MaterialTheme.typography.bodySmall
 			)
 			Text(
 				text = LocalResources.current.getString(
@@ -181,8 +159,8 @@ fun FolderListItem(
 				val color = getStatusColor(folderStatus)
 				Text(
 					text = state,
-					style = MaterialTheme.typography.labelMedium,
-					color = color
+					color = color,
+					style = MaterialTheme.typography.labelMedium
 				)
 				// Invalid state
 				val invalidMsg = folderStatus.invalid ?: folder.invalid
@@ -212,20 +190,18 @@ fun FolderListItem(
 						"openFolder: Fallback to application chooser to open folder."
 					)
 					intent.setDataAndType(folder.path!!.toUri(), "application/*")
-					val chooserIntent =
-						Intent.createChooser(intent, openFileManager)
+					val chooserIntent = Intent.createChooser(intent, openFileManager)
 					if (chooserIntent != null) {
 						context.startActivity(chooserIntent)
 					} else {
-						Toast.makeText(context, R.string.toast_no_file_manager, Toast.LENGTH_SHORT)
-							.show()
+						Toast.makeText(context, R.string.toast_no_file_manager, Toast.LENGTH_SHORT).show()
 					}
 				}
 			}
 		) {
 			Icon(
-				painter = painterResource(id = R.drawable.ic_folder_24dp),
-				contentDescription = stringResource(R.string.open_file_manager)
+				painterResource(R.drawable.ic_folder_24dp),
+				stringResource(R.string.open_file_manager)
 			)
 		}
 	}
@@ -294,23 +270,15 @@ fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun FolderListPreview() {
-	SyncthingandroidTheme(
-		dynamicColor = ThemeControls.isMonetEnabled,
-		darkTheme = ThemeControls.PREVIEW_DARK_THEME
-	) {
-		Surface {
-			FolderList(emptyList(), emptyMap(), true)
-		}
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		Surface { FolderList(emptyList(), emptyMap(), true) }
 	}
 }
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun FolderListItemPreview() {
-	SyncthingandroidTheme(
-		dynamicColor = ThemeControls.isMonetEnabled,
-		darkTheme = ThemeControls.PREVIEW_DARK_THEME
-	) {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
 		Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
 			FolderListItem(
 				Folder(
