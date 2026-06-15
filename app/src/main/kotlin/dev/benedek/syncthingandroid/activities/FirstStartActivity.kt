@@ -9,6 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalWindowInfo
 
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -20,6 +22,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
+import dev.benedek.syncthingandroid.ui.LocalIsLandscape
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 class FirstStartActivity : ComponentActivity() {
@@ -66,17 +69,24 @@ class FirstStartActivity : ComponentActivity() {
 		}
 
 		setContent {
+			val windowInfo = LocalWindowInfo.current
+			val isLandscape = windowInfo.containerSize.width > windowInfo.containerSize.height
+
 			SyncthingandroidTheme(
 				dynamicColor = ThemeControls.isMonetEnabled
 			) {
-				FirstStartScreen(
-					onFinish = {
-						preferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
-						startApp()
-					},
-					prefs = preferences,
-					activity = this
-				)
+				CompositionLocalProvider(
+					LocalIsLandscape provides isLandscape
+				) {
+					FirstStartScreen(
+						onFinish = {
+							preferences.edit { putBoolean(Constants.PREF_FIRST_START, false) }
+							startApp()
+						},
+						prefs = preferences,
+						activity = this
+					)
+				}
 			}
 		}
 	}

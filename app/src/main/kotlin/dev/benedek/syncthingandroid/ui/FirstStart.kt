@@ -41,6 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,6 +69,8 @@ import dev.benedek.syncthingandroid.ui.slides.NotificationSlide
 import dev.benedek.syncthingandroid.ui.slides.StorageSlide
 import dev.benedek.syncthingandroid.util.PermissionUtil
 import kotlinx.coroutines.launch
+
+val LocalIsLandscape = compositionLocalOf { false }
 
 @Composable
 fun FirstStartScreen(
@@ -221,15 +224,15 @@ fun FirstStartScreen(
 
 	Scaffold(
 		modifier = Modifier
-			.fillMaxSize()
-			.safeDrawingPadding(), // Handle insets
+			.fillMaxSize(),
 		bottomBar = {
 			BottomControls(
 				pagerState = pagerState,
 				slideCount = slides.size,
 				onBack = ::onBack,
 				onNext = ::onNext,
-				canAdvance = ::canAdvance
+				canAdvance = ::canAdvance,
+				modifier = Modifier.safeDrawingPadding()
 			)
 		}
 	) { innerPadding ->
@@ -265,7 +268,8 @@ fun BottomControls(
 	slideCount: Int,
 	onBack: () -> Unit,
 	onNext: () -> Unit,
-	canAdvance: (noToast: Boolean) -> Boolean
+	canAdvance: (noToast: Boolean) -> Boolean,
+	modifier: Modifier = Modifier
 ) {
 	val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
 
@@ -275,9 +279,9 @@ fun BottomControls(
 	val isSmallScreen = config.width < 360.dp
 
 	Row(
-		modifier = Modifier
+		modifier = modifier
 			.fillMaxWidth()
-			.padding(if (isSmallScreen) 4.dp else 16.dp),
+			.padding(horizontal = if (isSmallScreen) 4.dp else 16.dp, vertical = if (isSmallScreen) 4.dp else 8.dp),
 		horizontalArrangement = Arrangement.SpaceBetween,
 		verticalAlignment = Alignment.CenterVertically
 	) {
