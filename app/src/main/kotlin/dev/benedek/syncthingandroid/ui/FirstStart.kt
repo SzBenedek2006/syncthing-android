@@ -1,18 +1,14 @@
 package dev.benedek.syncthingandroid.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,10 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,14 +47,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
-import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.slides.ApiUpgradeSlide
 import dev.benedek.syncthingandroid.ui.slides.IntroSlide
 import dev.benedek.syncthingandroid.ui.slides.LocationSlide
@@ -76,40 +68,30 @@ val LocalIsLandscape = compositionLocalOf { false }
 fun FirstStartScreen(
 	onFinish: () -> Unit,
 	prefs: SharedPreferences,
-	activity: FirstStartActivity
+	activity: FirstStartActivity,
+	viewModel: FirstStartViewModel = viewModel()
 ) {
 	val context = LocalContext.current
 	val scope = rememberCoroutineScope()
-	val slides = FirstStartActivity.Slide.entries.toTypedArray()
+	val slides = viewModel.slides
 	val lifecycleOwner = LocalLifecycleOwner.current
+
+	// Initialize VM
+	LaunchedEffect(Unit) {
+		viewModel.initialize(context, prefs)
+		if (viewModel.slides.isEmpty()) {
+			onFinish()
+		}
+	}
 
 	// Setup Pager
 	val pagerState = rememberPagerState(pageCount = { slides.size })
 
 
-	var isStorageGranted by remember { mutableStateOf(PermissionUtil.haveStoragePermission(context)) }
-	var isLocationGranted by remember { mutableStateOf(PermissionUtil.hasLocationPermissions(context)) }
-	var isNotificationGranted by remember {
-		mutableStateOf(
-			PermissionUtil.hasNotificationPermission(
-				context
-			)
-		)
-	}
-
-	var isApiUpgraded by remember {
-		mutableStateOf(
-			prefs.getBoolean(Constants.PREF_UPGRADED_TO_API_LEVEL_30, false) ||
-					prefs.getBoolean(Constants.PREF_FIRST_START, true)
-		)
-	}
-
 	DisposableEffect(lifecycleOwner) {
 		val observer = LifecycleEventObserver { _, event ->
 			if (event == Lifecycle.Event.ON_RESUME) {
-				isStorageGranted = PermissionUtil.haveStoragePermission(context)
-				isLocationGranted = PermissionUtil.hasLocationPermissions(context)
-				isNotificationGranted = PermissionUtil.hasNotificationPermission(context)
+				viewModel.updatePermissions(context)
 			}
 		}
 		lifecycleOwner.lifecycle.addObserver(observer)
@@ -117,88 +99,20 @@ fun FirstStartScreen(
 	}
 
 
-	// Launchers
-	val storageLauncher = rememberLauncherForActivityResult(
+	// Launcher
+	val permissionLauncher = rememberLauncherForActivityResult(
 		ActivityResultContracts.RequestMultiplePermissions(),
 	) {
-		isStorageGranted = PermissionUtil.haveStoragePermission(context)
+		viewModel.updatePermissions(context)
 	}
 
-	val locationLauncher =
-		rememberLauncherForActivityResult(
-			ActivityResultContracts.RequestMultiplePermissions()
-		) { result ->
-			isLocationGranted = result.values.all { it }
-		}
-
-	val notificationLauncher =
-		rememberLauncherForActivityResult(
-			ActivityResultContracts.RequestPermission()
-		) { isGranted ->
-			isNotificationGranted = isGranted
-		}
-
-	val currentSlide = slides[pagerState.currentPage]
-
-	// Navigation Logic
-	fun canAdvance(noToast: Boolean = false): Boolean {
-		return when (currentSlide) {
-			FirstStartActivity.Slide.STORAGE -> {
-				if (!isStorageGranted && !noToast) {
-					Toast.makeText(
-						context,
-						R.string.toast_write_storage_permission_required,
-						Toast.LENGTH_LONG
-					).show()
-				}
-				isStorageGranted
-			}
-
-			FirstStartActivity.Slide.API_LEVEL_30 -> {
-				if (!isApiUpgraded && !noToast) {
-					Toast.makeText(
-						context,
-						R.string.toast_api_level_30_must_reset,
-						Toast.LENGTH_LONG
-					).show()
-				}
-				isApiUpgraded
-			}
-
-			else -> true
-		}
-	}
-
-	// Skip Logic
-	fun shouldSkip(slide: FirstStartActivity.Slide): Boolean {
-		return when (slide) {
-			FirstStartActivity.Slide.INTRO -> !prefs.getBoolean(Constants.PREF_FIRST_START, true)
-			FirstStartActivity.Slide.STORAGE -> isStorageGranted
-			FirstStartActivity.Slide.LOCATION -> isLocationGranted
-			FirstStartActivity.Slide.API_LEVEL_30 -> {
-				val isRoot = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
-				isApiUpgraded || isRoot
-			}
-
-			FirstStartActivity.Slide.NOTIFICATION -> {
-				if (Build.VERSION.SDK_INT < 33) true
-				else ContextCompat.checkSelfPermission(
-					context,
-					Manifest.permission.POST_NOTIFICATIONS
-				) == PackageManager.PERMISSION_GRANTED
-			}
-		}
-	}
 
 	fun onNext() {
-		if (!canAdvance()) return
+		if (pagerState.currentPage >= slides.size) return
+		if (!viewModel.canAdvance(slides[pagerState.currentPage], context)) return
 
 		scope.launch {
-			var nextIndex = pagerState.currentPage + 1
-			// Loop until we find a slide we shouldn't skip or we run out of slides
-			while (nextIndex < slides.size && shouldSkip(slides[nextIndex])) {
-				nextIndex++
-			}
+			val nextIndex = pagerState.currentPage + 1
 
 			if (nextIndex >= slides.size) {
 				onFinish()
@@ -216,11 +130,7 @@ fun FirstStartScreen(
 	}
 
 	// Auto-skip Intro if needed on first load
-	LaunchedEffect(Unit) {
-		if (shouldSkip(FirstStartActivity.Slide.INTRO)) {
-			onNext()
-		}
-	}
+	// No longer needed as we filter slides at init
 
 	Scaffold(
 		modifier = Modifier
@@ -231,7 +141,13 @@ fun FirstStartScreen(
 				slideCount = slides.size,
 				onBack = ::onBack,
 				onNext = ::onNext,
-				canAdvance = ::canAdvance,
+				canAdvance = { noToast ->
+					if (pagerState.currentPage < slides.size) {
+						viewModel.canAdvance(slides[pagerState.currentPage], context, noToast)
+					} else {
+						false
+					}
+				},
 				modifier = Modifier.safeDrawingPadding()
 			)
 		}
@@ -246,17 +162,14 @@ fun FirstStartScreen(
 			SlideContent(
 				slide = slides[page],
 				activity = activity,
-				storageLauncher = storageLauncher,
-				locationLauncher = locationLauncher,
-				notificationLauncher = notificationLauncher,
+				permissionLauncher = permissionLauncher,
 				onUpgradeDatabase = {
-					activity.performApi30Upgrade()
-					isApiUpgraded = true
+					viewModel.onUpgradeDatabase(activity)
 				},
-				isStorageGranted = isStorageGranted,
-				isLocationGranted = isLocationGranted,
-				isNotificationGranted = isNotificationGranted,
-				isApiUpgraded = isApiUpgraded
+				isStorageGranted = viewModel.isStorageGranted,
+				isLocationGranted = viewModel.isLocationGranted,
+				isNotificationGranted = viewModel.isNotificationGranted,
+				isApiUpgraded = viewModel.isApiUpgraded
 			)
 		}
 	}
@@ -364,9 +277,7 @@ fun BottomControls(
 fun SlideContent(
 	slide: FirstStartActivity.Slide,
 	activity: FirstStartActivity,
-	storageLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
-	locationLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
-	notificationLauncher: ManagedActivityResultLauncher<String, Boolean>,
+	permissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
 	onUpgradeDatabase: () -> Unit,
 	isStorageGranted: Boolean,
 	isLocationGranted: Boolean,
@@ -396,22 +307,22 @@ fun SlideContent(
 					"EXPERIMENTAL: Launching old write external storage permission instead.",
 					Toast.LENGTH_LONG
 				).show()
-				storageLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+				permissionLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
 			}
 		} else {
 			// Android 10 and below
-			storageLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+			permissionLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
 		}
 	}
 
 	fun askForLocationPermission() {
 		// TODO: Implement one click background location permission logic, similar to askForStoragePermission() if needed
-		locationLauncher.launch(PermissionUtil.locationPermissions)
+		permissionLauncher.launch(PermissionUtil.locationPermissions)
 	}
 
 	fun askForNotificationPermission() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // SDK 33
-			notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+			permissionLauncher.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
 		}
 	}
 
