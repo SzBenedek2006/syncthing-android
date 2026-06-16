@@ -13,19 +13,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Options
-import dev.benedek.syncthingandroid.receiver.BootReceiver
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util
-import dev.benedek.syncthingandroid.util.importConfig as importConfigImpl
-import dev.benedek.syncthingandroid.util.exportConfig as exportConfigImpl
 import eu.chainfire.libsuperuser.Shell
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
+import dev.benedek.syncthingandroid.util.exportConfig as exportConfigImpl
+import dev.benedek.syncthingandroid.util.importConfig as importConfigImpl
 
 class SettingsViewModel : ViewModel() {
 

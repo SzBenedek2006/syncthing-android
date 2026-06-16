@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.core.net.toUri
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.NetworkResponse
 import com.android.volley.RequestQueue
@@ -15,14 +16,12 @@ import com.android.volley.toolbox.HurlStack
 import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.common.base.Function
-import com.google.common.base.Optional
-import com.google.common.collect.ImmutableMap
 import dev.benedek.syncthingandroid.service.Constants.getHttpsCertFile
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.security.KeyManagementException
 import java.security.NoSuchAlgorithmException
@@ -32,8 +31,6 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
-import androidx.core.net.toUri
-import java.nio.charset.Charset
 
 
 abstract class ApiRequest internal constructor(

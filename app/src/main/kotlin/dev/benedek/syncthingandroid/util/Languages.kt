@@ -6,12 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.text.TextUtils
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import java.util.Collections
 import java.util.Locale
 import java.util.TreeMap
-import androidx.core.content.edit
 
 /**
  * Based on https://gitlab.com/fdroid/fdroidclient/blob/master/app/src/main/java/org/fdroid/fdroid/Languages.java

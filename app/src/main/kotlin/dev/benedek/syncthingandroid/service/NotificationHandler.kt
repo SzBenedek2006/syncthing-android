@@ -2,8 +2,6 @@ package dev.benedek.syncthingandroid.service
 
 import android.Manifest
 import android.app.Notification
-import androidx.core.app.NotificationChannelCompat
-import androidx.core.app.NotificationManagerCompat
 import android.app.PendingIntent
 import android.app.Service.STOP_FOREGROUND_DETACH
 import android.content.Context
@@ -14,7 +12,9 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.annotation.StringRes
+import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity

@@ -3,6 +3,7 @@ package dev.benedek.syncthingandroid.ui.reusable
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -12,7 +13,6 @@ import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.util.SttraceUtil
 import me.zhanghai.compose.preference.multiSelectListPreference
-import androidx.compose.runtime.State
 
 data class SttraceState(
 	val facilities: List<String> = emptyList()

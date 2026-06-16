@@ -6,15 +6,15 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.graphics.toColorInt
 import dev.benedek.syncthingandroid.ui.Folder
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel.Companion.EXTRA_DEVICE_ID
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel.Companion.EXTRA_FOLDER_ID
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel.Companion.EXTRA_FOLDER_LABEL
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel.Companion.EXTRA_IS_CREATE
-import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
-import dev.benedek.syncthingandroid.util.ThemeControls
-import androidx.core.graphics.toColorInt
 
 
 class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnectedListener {

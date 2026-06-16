@@ -54,6 +54,8 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -73,15 +75,13 @@ import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
+import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
+import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
-import androidx.compose.ui.platform.ClipEntry
-import androidx.compose.ui.platform.LocalClipboard
-import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
-import dev.benedek.syncthingandroid.viewmodel.MainViewModel
-import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable
 fun Main(viewModel: MainViewModel, exit: () -> Unit) {

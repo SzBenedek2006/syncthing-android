@@ -31,9 +31,9 @@ import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util.readableTransferRate
-import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 
 @Composable
 fun DeviceList(

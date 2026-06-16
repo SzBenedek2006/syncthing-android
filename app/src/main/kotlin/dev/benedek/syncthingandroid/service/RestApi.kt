@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import dev.benedek.syncthingandroid.BuildConfig
+import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.activities.ShareActivity
 import dev.benedek.syncthingandroid.http.GetRequest
 import dev.benedek.syncthingandroid.http.PostConfigRequest
@@ -18,8 +20,8 @@ import dev.benedek.syncthingandroid.model.Completion
 import dev.benedek.syncthingandroid.model.CompletionInfo
 import dev.benedek.syncthingandroid.model.Config
 import dev.benedek.syncthingandroid.model.Config.Gui
-import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Device
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderStatus
@@ -33,8 +35,6 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import androidx.core.content.edit
-import dev.benedek.syncthingandroid.activities.FolderActivity
 
 /**
  * Provides functions to interact with the syncthing REST API.

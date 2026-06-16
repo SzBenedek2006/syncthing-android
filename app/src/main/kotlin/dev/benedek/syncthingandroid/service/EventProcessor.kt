@@ -10,10 +10,11 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.content.edit
 import androidx.core.util.Consumer
+import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.SyncthingApp
 import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.model.CompletionInfo
@@ -24,8 +25,6 @@ import java.io.File
 import java.util.Objects
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.Volatile
-import androidx.core.content.edit
-import androidx.preference.PreferenceManager
 
 
 // FIXME: Fix the nullability errors

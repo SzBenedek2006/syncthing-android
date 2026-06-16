@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.util.Log
 import dev.benedek.syncthingandroid.R
-import java.util.HashSet
 
 /**
  * Logic based on the old WifiSsidPreference.

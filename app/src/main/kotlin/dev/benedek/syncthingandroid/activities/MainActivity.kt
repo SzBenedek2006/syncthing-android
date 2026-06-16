@@ -23,20 +23,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.service.RestApi
-import dev.benedek.syncthingandroid.service.SyncthingService
-import dev.benedek.syncthingandroid.util.PermissionUtil
-import dev.benedek.syncthingandroid.util.Util
-import java.util.Date
-import java.util.concurrent.TimeUnit
 import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
+import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.service.RestApi
+import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.main.Main
-import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.viewmodel.MainViewModel
+import java.util.Date
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : StateDialogActivity() {

@@ -81,7 +81,6 @@ import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
-import kotlin.collections.forEachIndexed
 
 
 @Composable

@@ -11,19 +11,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalWindowInfo
-
-import dev.benedek.syncthingandroid.service.Constants
-import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
-import dev.benedek.syncthingandroid.util.PermissionUtil
-import dev.benedek.syncthingandroid.util.Util
-import java.io.File
 import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.preference.PreferenceManager
+import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.Util
+import java.io.File
 
 class FirstStartActivity : ComponentActivity() {
 	enum class Slide {

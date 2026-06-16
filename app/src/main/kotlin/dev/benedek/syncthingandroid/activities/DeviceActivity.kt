@@ -27,8 +27,8 @@ import com.google.gson.Gson
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding
-import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Device
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Compression
 import dev.benedek.syncthingandroid.util.TextWatcherAdapter

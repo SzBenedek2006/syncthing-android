@@ -3,13 +3,11 @@
 package dev.benedek.syncthingandroid.viewmodel
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toLong
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -21,7 +19,6 @@ import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderStatus
 import dev.benedek.syncthingandroid.model.SystemInfo
-import dev.benedek.syncthingandroid.model.SystemVersion
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import kotlinx.coroutines.Job

@@ -1,7 +1,6 @@
 package dev.benedek.syncthingandroid.ui.main
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,12 +51,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
-import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import dev.benedek.syncthingandroid.ui.reusable.ComposeBasicLineChart
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
@@ -67,6 +64,7 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
 @Composable

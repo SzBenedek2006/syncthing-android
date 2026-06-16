@@ -11,8 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.util.WifiSsidUtil
 import dev.benedek.syncthingandroid.service.Constants
+import dev.benedek.syncthingandroid.util.WifiSsidUtil
 import me.zhanghai.compose.preference.multiSelectListPreference
 
 @Composable

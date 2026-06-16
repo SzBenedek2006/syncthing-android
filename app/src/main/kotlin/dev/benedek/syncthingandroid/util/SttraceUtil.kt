@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import dev.benedek.syncthingandroid.service.Constants
-import java.util.ArrayList
 
 object SttraceUtil {
 

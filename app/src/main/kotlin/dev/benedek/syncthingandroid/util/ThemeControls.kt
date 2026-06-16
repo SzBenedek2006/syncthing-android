@@ -3,7 +3,6 @@ package dev.benedek.syncthingandroid.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.color.MaterialColors
 import dev.benedek.syncthingandroid.R
@@ -25,7 +26,6 @@ import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util
 import java.io.File
 import kotlin.math.roundToInt
-import androidx.core.net.toUri
 
 /**
  * Generates item views for folder items.

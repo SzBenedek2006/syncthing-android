@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.color.MaterialColors
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.model.Device
+import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.util.Util
 
