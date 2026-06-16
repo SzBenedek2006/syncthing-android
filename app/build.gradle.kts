@@ -72,6 +72,7 @@ configure<ApplicationExtension> {
 		viewBinding = true
 		buildConfig = true
 		compose = true
+		resValues = true
 	}
 
 	defaultConfig {
@@ -82,6 +83,7 @@ configure<ApplicationExtension> {
 		versionName = "2.0.15.7"
 		testApplicationId = "dev.benedek.syncthingandroid.test"
 		//testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+		resValue("string", "app_package_id", applicationId!!)
 	}
 
 	signingConfigs {
@@ -116,7 +118,6 @@ configure<ApplicationExtension> {
 			signingConfig = signingConfigs.runCatching { getByName("release") }
 				.getOrNull()
 				.takeIf { it?.storeFile != null }
-			resValue("string", "app_package_id", "${defaultConfig.applicationId}")
 		}
 		create("beta") {
 			initWith(getByName("release"))
