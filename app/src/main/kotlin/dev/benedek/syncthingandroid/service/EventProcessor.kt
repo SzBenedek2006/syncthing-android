@@ -19,7 +19,7 @@ import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.model.CompletionInfo
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.service.RestApi.OnReceiveEventListener
-import dev.benedek.syncthingandroid.ui.FolderViewModel
+import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
 import java.util.Objects
 import java.util.concurrent.TimeUnit

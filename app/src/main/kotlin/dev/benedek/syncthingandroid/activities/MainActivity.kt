@@ -34,7 +34,7 @@ import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import dev.benedek.syncthingandroid.ui.main.Main
-import dev.benedek.syncthingandroid.ui.MainViewModel
+import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 

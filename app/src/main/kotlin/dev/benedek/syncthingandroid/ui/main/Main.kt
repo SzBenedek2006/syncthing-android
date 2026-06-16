@@ -79,8 +79,8 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.abs
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
-import dev.benedek.syncthingandroid.ui.FolderViewModel
-import dev.benedek.syncthingandroid.ui.MainViewModel
+import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
+import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import dev.benedek.syncthingandroid.util.ThemeControls.isBlurEnabled
 
 @Composable

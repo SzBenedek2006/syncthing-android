@@ -20,7 +20,7 @@ import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
-import dev.benedek.syncthingandroid.ui.settings.SettingsViewModel
+import dev.benedek.syncthingandroid.viewmodel.SettingsViewModel
 import me.zhanghai.compose.preference.switchPreference
 import me.zhanghai.compose.preference.textFieldPreference
 

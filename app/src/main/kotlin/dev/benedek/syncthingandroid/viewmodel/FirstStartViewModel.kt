@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.viewmodel
 
 import android.Manifest
 import android.content.Context

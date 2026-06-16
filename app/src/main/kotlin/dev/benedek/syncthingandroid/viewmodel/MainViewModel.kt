@@ -1,6 +1,6 @@
 @file:Suppress("LocalVariableName", "PrivatePropertyName")
 
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.viewmodel
 
 import android.graphics.Bitmap
 import android.util.Log

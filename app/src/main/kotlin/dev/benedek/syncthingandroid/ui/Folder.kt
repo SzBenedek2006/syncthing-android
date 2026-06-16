@@ -79,6 +79,7 @@ import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
 import kotlin.collections.forEachIndexed
 

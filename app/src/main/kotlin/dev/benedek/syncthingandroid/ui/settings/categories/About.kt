@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
-import dev.benedek.syncthingandroid.ui.settings.SettingsViewModel
+import dev.benedek.syncthingandroid.viewmodel.SettingsViewModel
 import me.zhanghai.compose.preference.preference
 
 @Composable

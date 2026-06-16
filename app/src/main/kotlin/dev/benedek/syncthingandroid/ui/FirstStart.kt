@@ -60,6 +60,7 @@ import dev.benedek.syncthingandroid.ui.slides.LocationSlide
 import dev.benedek.syncthingandroid.ui.slides.NotificationSlide
 import dev.benedek.syncthingandroid.ui.slides.StorageSlide
 import dev.benedek.syncthingandroid.util.PermissionUtil
+import dev.benedek.syncthingandroid.viewmodel.FirstStartViewModel
 import kotlinx.coroutines.launch
 
 val LocalIsLandscape = compositionLocalOf { false }

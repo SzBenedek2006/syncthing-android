@@ -57,7 +57,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
-import dev.benedek.syncthingandroid.ui.MainViewModel
+import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import dev.benedek.syncthingandroid.ui.reusable.ComposeBasicLineChart
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile

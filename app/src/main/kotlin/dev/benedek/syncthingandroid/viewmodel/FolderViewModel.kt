@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package dev.benedek.syncthingandroid.ui
+package dev.benedek.syncthingandroid.viewmodel
 
 import android.app.Dialog
 import android.content.ActivityNotFoundException
