@@ -1,5 +1,6 @@
 package dev.benedek.syncthingandroid.service
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -10,8 +11,8 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import androidx.annotation.RequiresPermission
 import androidx.core.content.edit
-import androidx.core.util.Consumer
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
@@ -35,7 +36,7 @@ import kotlin.concurrent.Volatile
  *
  * It uses [RestApi.getEvents] to read the pending events and wait for new events.
  */
-class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEventListener {
+class EventProcessor(private val context: Context, private val api: RestApi?) : Runnable, OnReceiveEventListener {
 	/**
 	 * Use the MainThread for all callbacks and message handling,
 	 * or we have to track down nasty threading problems.
@@ -48,26 +49,16 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 	@Volatile
 	private var shutdown = true
 
-	private val context: Context
-	private val api: RestApi?
-
 
 	private val preferences: SharedPreferences by lazy {
-		PreferenceManager.getDefaultSharedPreferences(
-			context
-		)
+		PreferenceManager.getDefaultSharedPreferences(context)
 	}
 	val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
-
-	init {
-		this.context = context
-		this.api = api
-	}
 
 	override fun run() {
 		// Restore the last event id if the event processor may have been restarted.
 		if (lastEventId == 0L) {
-			lastEventId = preferences!!.getLong(PREF_LAST_SYNC_ID, 0)
+			lastEventId = preferences.getLong(PREF_LAST_SYNC_ID, 0)
 		}
 
 		// First check if the event number ran backwards.
@@ -89,10 +80,12 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 	/**
 	 * Performs the actual event handling.
 	 */
+	@Suppress("UNCHECKED_CAST")
+	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
 	override fun onEvent(event: Event?) {
-		var mapData: MutableMap<String?, Any?>? = null
+		var mapData: Map<String, Any?>? = null
 		try {
-			mapData = event?.data as MutableMap<String?, Any?>?
+			mapData = event?.data as Map<String, Any?>?
 		} catch (e: ClassCastException) {
 			Log.e(this.toString(), "", e)
 		}
@@ -103,10 +96,9 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 			}
 
 			"PendingDevicesChanged" -> {
-				mapNullable<MutableMap<String?, String?>?>(
-					mapData!!["added"] as MutableList<MutableMap<String?, String?>?>? // FIXME
-				) { added: MutableMap<String?, String?>? ->
-					this.onPendingDevicesChanged(added!!)
+
+				(mapData?.get("added") as? List<Map<String, String>>)?.forEach {
+					this.onPendingDevicesChanged(it)
 				}
 			}
 
@@ -121,28 +113,24 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 			}
 
 			"PendingFoldersChanged" -> {
-				mapNullable<MutableMap<String?, String?>?>(
-					mapData!!["added"] as MutableList<MutableMap<String?, String?>?>?
-				) { added: MutableMap<String?, String?>? ->
-					this.onPendingFoldersChanged(added!!)
+				(mapData?.get("added") as? List<Map<String, String>>)?.forEach {
+					this.onPendingFoldersChanged(it)
 				}
 			}
 
 			"ItemFinished" -> {
-				val folder = mapData!!["folder"] as String?
-				var folderPath: String? = null
-				for (f in Objects.requireNonNull(api!!.folders)!!) { // FIXME
-					if (Objects.requireNonNull<String?>(f?.id) == folder) {
-						folderPath = f?.path
-					}
-				}
-				val updatedFile =
-					File(folderPath, Objects.requireNonNull<Any?>(mapData["item"]) as String)
-				if ("delete" != mapData["action"]) {
+				val folder = mapData?.get("folder") as String?
+				val folderPath: String? = api?.folders?.firstOrNull { it?.id == folder }?.path
+				val item = mapData?.get("item") as? String?
+
+				val updatedFile: File? = item?.let { File(folderPath, it) }
+				if ("delete" != mapData?.get("action") && updatedFile != null) { // FIXME
 					Log.i(TAG, "Rescanned file via MediaScanner: $updatedFile")
 					MediaScannerConnection.scanFile(
-						context, arrayOf<String>(updatedFile.path),
-						null, null
+						context,
+						arrayOf<String>(updatedFile.path),
+						null,
+						null
 					)
 				} else {
 					// Starting with Android 10/Q and targeting API level 29/removing legacy storage flag,
@@ -182,7 +170,7 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 			lastEventId = lastId
 
 			// Store the last EventId in case we get killed
-			preferences!!.edit { putLong(PREF_LAST_SYNC_ID, lastEventId) }
+			preferences.edit { putLong(PREF_LAST_SYNC_ID, lastEventId) }
 		}
 
 		synchronized(mainThreadHandler) {
@@ -213,7 +201,8 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 		}
 	}
 
-	private fun onPendingDevicesChanged(added: MutableMap<String?, String?>) {
+	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+	private fun onPendingDevicesChanged(added: Map<String, String>) {
 		val deviceId = added["deviceID"]
 		val deviceName = added["name"]
 		val deviceAddress = added["address"]
@@ -229,7 +218,7 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 				7
 			) else deviceName
 		)
-		val notificationId = notificationHandler!!.getNotificationIdFromText(title)
+		val notificationId = notificationHandler.getNotificationIdFromText(title)
 
 		// Prepare "accept" action.
 		val intentAccept = Intent(context, DeviceActivity::class.java)
@@ -255,10 +244,11 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 		)
 
 		// Show notification.
-		notificationHandler!!.showConsentNotification(notificationId, title, piAccept, piIgnore)
+		notificationHandler.showConsentNotification(notificationId, title, piAccept, piIgnore)
 	}
 
-	private fun onPendingFoldersChanged(added: MutableMap<String?, String?>) {
+	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+	private fun onPendingFoldersChanged(added: Map<String, String>) {
 		val deviceId = added["deviceID"]
 		val folderId = added["folderID"]
 		val folderLabel = added["folderLabel"]
@@ -271,23 +261,18 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 		)
 
 		// Find the deviceName corresponding to the deviceId
-		var deviceName: String? = null
-		for (d in Objects.requireNonNull(api!!.getDevices(false))!!) {
-			if (d.deviceID == deviceId) {
-				deviceName = d.displayName
-				break
-			}
-		}
+		val deviceName: String? = api?.getDevices(false)?.firstOrNull { it.deviceID == deviceId }?.displayName
+
 		val title = context.getString(
 			R.string.folder_rejected, deviceName,
 			if (Objects.requireNonNull<String>(folderLabel)
 					.isEmpty()
 			) folderId else "$folderLabel ($folderId)"
 		)
-		val notificationId = notificationHandler!!.getNotificationIdFromText(title)
+		val notificationId = notificationHandler.getNotificationIdFromText(title)
 
 		// Prepare "accept" action.
-		val isNewFolder = api.folders?.none { it?.id == folderId } ?: true
+		val isNewFolder = api?.folders?.none { it?.id == folderId } ?: true
 		val intentAccept = Intent(context, FolderActivity::class.java)
 			.putExtra(FolderViewModel.EXTRA_NOTIFICATION_ID, notificationId)
 			.putExtra(FolderViewModel.EXTRA_IS_CREATE, isNewFolder)
@@ -312,15 +297,7 @@ class EventProcessor(context: Context, api: RestApi?) : Runnable, OnReceiveEvent
 		)
 
 		// Show notification.
-		notificationHandler!!.showConsentNotification(notificationId, title, piAccept, piIgnore)
-	}
-
-	private fun <T> mapNullable(l: MutableList<T?>?, c: Consumer<T?>) {
-		if (l != null) {
-			for (m in l) {
-				c.accept(m)
-			}
-		}
+		notificationHandler.showConsentNotification(notificationId, title, piAccept, piIgnore)
 	}
 
 	companion object {
