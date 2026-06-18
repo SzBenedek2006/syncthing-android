@@ -1,26 +1,18 @@
 package dev.benedek.syncthingandroid.ui.slides
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.ui.LocalIsLandscape
+import dev.benedek.syncthingandroid.ui.reusable.AdaptiveSlideLayout
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideImage
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
@@ -32,42 +24,54 @@ fun NotificationSlide(
 	onButtonClick: () -> Unit,
 	isPermissionGranted: Boolean
 ) {
-	Column(
-		modifier = Modifier
-			.fillMaxSize()
-			.verticalScroll(rememberScrollState())
-			.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-		horizontalAlignment = Alignment.CenterHorizontally,
-		verticalArrangement = Arrangement.Center
-
-	) {
-		val context = LocalContext.current
-
-		//SlideWelcomeTitle(stringResource(R.string.welcome_title))
-		SlideImage(painterResource(R.drawable.baseline_notifications_active_24))
-		Spacer(modifier = Modifier.height(16.dp))
-		SlideTitle(stringResource(R.string.notification_permission_title))
-		SlideDescription(stringResource(R.string.require_notification_permission_desc))
-		Button(
-			onClick = onButtonClick,
-			enabled = !isPermissionGranted
-		) {
-			Text(
-				if (!isPermissionGranted) {
-					stringResource(R.string.grant_permission)
-				} else {
-					stringResource(R.string.permission_granted)
-				}
+	AdaptiveSlideLayout(
+		{
+			SlideTitle(stringResource(R.string.notification_permission_title))
+		},
+		{
+			SlideDescription(
+				stringResource(R.string.require_notification_permission_desc)
 			)
+		},
+		Modifier,
+		{
+			SlideImage(painterResource(R.drawable.baseline_notifications_active_24))
+		},
+		{
+			Button(
+				onClick = onButtonClick,
+				enabled = !isPermissionGranted
+			) {
+				Text(
+					if (!isPermissionGranted) {
+						stringResource(R.string.grant_permission)
+					} else {
+						stringResource(R.string.permission_granted)
+					}
+				)
+			}
 		}
-	}
-
+	)
 }
 
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
 fun NotificationSlidePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-		NotificationSlide({}, false)
+		Surface {
+			NotificationSlide({}, false)
+		}
+	}
+}
+
+@Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
+@Composable
+fun NotificationSlideLandscapePreview() {
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		CompositionLocalProvider(LocalIsLandscape provides true) {
+			Surface {
+				NotificationSlide({}, false)
+			}
+		}
 	}
 }

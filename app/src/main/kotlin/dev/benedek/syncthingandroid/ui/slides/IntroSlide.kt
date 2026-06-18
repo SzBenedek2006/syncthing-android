@@ -1,25 +1,16 @@
 package dev.benedek.syncthingandroid.ui.slides
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
+import dev.benedek.syncthingandroid.ui.reusable.AdaptiveSlideLayout
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideImage
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
@@ -29,51 +20,40 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 // Reimplementation of the activity_firststart_slide_intro.xml
 @Composable
 fun IntroSlide() {
-	val isLandscape = LocalIsLandscape.current
-
-	if (isLandscape) {
-		Row(
-			modifier = Modifier
-				.fillMaxSize(),
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.Center
-		) {
-			SlideImage(painterResource(id = R.drawable.ic_monochrome), Modifier.weight(0.5f))
-			Column(
-				modifier = Modifier
-					.fillMaxSize()
-					.weight(1f)
-					.verticalScroll(rememberScrollState()),
-				horizontalAlignment = Alignment.CenterHorizontally,
-				verticalArrangement = Arrangement.Center
-			) {
-				SlideTitle(stringResource(R.string.introduction))
-				SlideDescription(stringResource(R.string.welcome_text))
-			}
-		}
-	} else {
-		Column(
-			modifier = Modifier
-				.fillMaxSize()
-				.verticalScroll(rememberScrollState())
-				.padding(bottom = dimensionResource(R.dimen.dots_full_height)),
-			horizontalAlignment = Alignment.CenterHorizontally,
-			verticalArrangement = Arrangement.Center
-		) {
-			SlideImage(painterResource(id = R.drawable.ic_monochrome))
-			Spacer(modifier = Modifier.height(16.dp))
+	AdaptiveSlideLayout(
+		{
 			SlideTitle(stringResource(R.string.introduction))
-			SlideDescription(stringResource(R.string.welcome_text))
+		},
+		{
+			SlideDescription(
+				stringResource(R.string.welcome_text)
+			)
+		},
+		Modifier,
+		{
+			SlideImage(painterResource(R.drawable.ic_monochrome))
 		}
-	}
-
-
+	)
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun IntroSlidePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-		IntroSlide()
+		Surface {
+			IntroSlide()
+		}
+	}
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
+@Composable
+fun IntroSlideLandscapePreview() {
+	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+		CompositionLocalProvider(LocalIsLandscape provides true) {
+			Surface {
+				IntroSlide()
+			}
+		}
 	}
 }
