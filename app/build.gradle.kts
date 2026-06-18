@@ -82,6 +82,7 @@ configure<ApplicationExtension> {
 		versionCode = 4507
 		versionName = "2.0.15.7"
 		testApplicationId = "dev.benedek.syncthingandroid.test"
+		manifestPlaceholders["appName"] = "@string/app_name"
 		//testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		resValue("string", "app_package_id", applicationId!!)
 	}
@@ -101,6 +102,8 @@ configure<ApplicationExtension> {
 			isDebuggable = true
 			isJniDebuggable = true
 			isMinifyEnabled = false
+
+			manifestPlaceholders["appName"] = "Syncthing Debug"
 
 			resValue(
 				"string",
@@ -122,6 +125,9 @@ configure<ApplicationExtension> {
 		create("beta") {
 			initWith(getByName("release"))
 			applicationIdSuffix = ".beta"
+
+			manifestPlaceholders["appName"] = "Syncthing Beta"
+
 			resValue(
 				"string",
 				"app_package_id",
