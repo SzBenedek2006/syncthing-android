@@ -23,8 +23,8 @@ import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.service.RestApi.OnReceiveEventListener
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
-import java.util.concurrent.TimeUnit
 import kotlin.concurrent.Volatile
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Run by the syncthing service to convert syncthing events into local broadcasts.
@@ -290,8 +290,8 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 
 		/**
 		 * Minimum interval in seconds at which the events are polled from syncthing and processed.
-		 * This intervall will not wake up the device to save battery power.
+		 * This interval will not wake up the device to save battery power.
 		 */
-		private val EVENT_UPDATE_INTERVAL = TimeUnit.SECONDS.toMillis(15)
+		private val EVENT_UPDATE_INTERVAL = 15.seconds.inWholeMilliseconds
 	}
 }
