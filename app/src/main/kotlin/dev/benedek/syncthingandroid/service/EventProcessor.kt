@@ -23,13 +23,8 @@ import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.service.RestApi.OnReceiveEventListener
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
-import java.util.Objects
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.Volatile
-
-
-// FIXME: Fix the nullability errors
-
 
 /**
  * Run by the syncthing service to convert syncthing events into local broadcasts.
@@ -63,7 +58,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 
 		// First check if the event number ran backwards.
 		// If that's the case we've to start at zero because syncthing was restarted.
-		api!!.getEvents(0, 1, object : OnReceiveEventListener {
+		api?.getEvents(0, 1, object : OnReceiveEventListener {
 			override fun onEvent(event: Event?) {
 			}
 
@@ -83,56 +78,57 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 	@Suppress("UNCHECKED_CAST")
 	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
 	override fun onEvent(event: Event?) {
-		var mapData: Map<String, Any?>? = null
-		try {
-			mapData = event?.data as Map<String, Any?>?
-		} catch (e: ClassCastException) {
-			Log.e(this.toString(), "", e)
-		}
-		when (event?.type) {
+		if (event == null) return
+		val mapData = event.data as? Map<String, Any?>
+		val type = event.type ?: return
+
+		when (type) {
 			"ConfigSaved" -> if (api != null) {
 				Log.v(TAG, "Forwarding ConfigSaved event to RestApi to get the updated config.")
 				api.reloadConfig()
 			}
 
 			"PendingDevicesChanged" -> {
-
 				(mapData?.get("added") as? List<Map<String, String>>)?.forEach {
-					this.onPendingDevicesChanged(it)
+					onPendingDevicesChanged(it)
 				}
 			}
 
 			"FolderCompletion" -> {
-				val completionInfo = CompletionInfo()
-				completionInfo.completion = (mapData?.get("completion") as Double?)!!
-				api!!.setCompletionInfo(
-					mapData["device"] as String?,  // deviceId
-					mapData["folder"] as String?,  // folderId
-					completionInfo
-				)
+				if (mapData != null) {
+					val completionInfo = CompletionInfo().apply {
+						completion = mapData["completion"] as? Double ?: 0.0
+					}
+					api?.setCompletionInfo(
+						mapData["device"] as String?,  // deviceId
+						mapData["folder"] as String?,  // folderId
+						completionInfo
+					)
+				}
 			}
 
 			"PendingFoldersChanged" -> {
 				(mapData?.get("added") as? List<Map<String, String>>)?.forEach {
-					this.onPendingFoldersChanged(it)
+					onPendingFoldersChanged(it)
 				}
 			}
 
 			"ItemFinished" -> {
-				val folder = mapData?.get("folder") as String?
-				val folderPath: String? = api?.folders?.firstOrNull { it?.id == folder }?.path
-				val item = mapData?.get("item") as? String?
+				if (mapData == null) return
+				val folder = mapData["folder"] as String?
+				val folderPath = api?.folders?.firstOrNull { it?.id == folder }?.path
+				val item = mapData["item"] as? String ?: return
 
-				val updatedFile: File? = item?.let { File(folderPath, it) }
-				if ("delete" != mapData?.get("action") && updatedFile != null) { // FIXME
+				val updatedFile = File(folderPath, item)
+				if (mapData["action"] != "delete") { // FIXME
 					Log.i(TAG, "Rescanned file via MediaScanner: $updatedFile")
 					MediaScannerConnection.scanFile(
 						context,
-						arrayOf<String>(updatedFile.path),
+						arrayOf(updatedFile.path),
 						null,
 						null
 					)
-				} else {
+				} else { // TODO: handle delete better
 					// Starting with Android 10/Q and targeting API level 29/removing legacy storage flag,
 					// reports of files being spuriously deleted came up.
 					// Best guess is that Syncthing directly interacted with the filesystem before,
@@ -150,18 +146,18 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 					val contentUri = MediaStore.Files.getContentUri("external")
 					val resolver = context.contentResolver
 					resolver.delete(
-						contentUri, MediaStore.Images.ImageColumns.DATA + " = ?",
-						arrayOf<String>(updatedFile.path)
+						contentUri, "${MediaStore.Images.ImageColumns.DATA} = ?",
+						arrayOf(updatedFile.path)
 					)
 				}
 			}
 
 			"Ping" -> {}
 			"DeviceConnected", "DeviceDisconnected", "DeviceDiscovered", "DownloadProgress", "FolderPaused", "FolderScanProgress", "FolderSummary", "ItemStarted", "LocalIndexUpdated", "LoginAttempt", "RemoteDownloadProgress", "RemoteIndexUpdated", "Starting", "StartupComplete", "StateChanged" -> if (BuildConfig.DEBUG) {
-				Log.v(TAG, "Ignored event " + event.type + ", data " + event.data)
+				Log.v(TAG, "Ignored event $type, data ${event.data}")
 			}
 
-			else -> Log.v(TAG, "Unhandled event " + event?.type)
+			else -> Log.v(TAG, "Unhandled event $type")
 		}
 	}
 
@@ -203,41 +199,36 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 
 	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
 	private fun onPendingDevicesChanged(added: Map<String, String>) {
-		val deviceId = added["deviceID"]
+		val deviceId = added["deviceID"] ?: return
 		val deviceName = added["name"]
 		val deviceAddress = added["address"]
-		if (deviceId == null) {
-			return
-		}
+		
 		Log.d(TAG, "Unknown device $deviceName($deviceId) wants to connect")
 
-		val title = context.getString(
-			R.string.device_rejected,
-			if (Objects.requireNonNull<String>(deviceName).isEmpty()) deviceId.substring(
-				0,
-				7
-			) else deviceName
-		)
+		val shortName = if (deviceName.isNullOrEmpty()) deviceId.take(7) else deviceName
+		val title = context.getString(R.string.device_rejected, shortName)
 		val notificationId = notificationHandler.getNotificationIdFromText(title)
 
 		// Prepare "accept" action.
-		val intentAccept = Intent(context, DeviceActivity::class.java)
-			.putExtra(DeviceActivity.EXTRA_NOTIFICATION_ID, notificationId)
-			.putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
-			.putExtra(DeviceActivity.EXTRA_DEVICE_ID, deviceId)
-			.putExtra(DeviceActivity.EXTRA_DEVICE_NAME, deviceName)
+		val intentAccept = Intent(context, DeviceActivity::class.java).apply {
+			putExtra(DeviceActivity.EXTRA_NOTIFICATION_ID, notificationId)
+			putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
+			putExtra(DeviceActivity.EXTRA_DEVICE_ID, deviceId)
+			putExtra(DeviceActivity.EXTRA_DEVICE_NAME, deviceName)
+		}
 		val piAccept = PendingIntent.getActivity(
 			context, notificationId,
 			intentAccept, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 		)
 
 		// Prepare "ignore" action.
-		val intentIgnore = Intent(context, SyncthingService::class.java)
-			.putExtra(SyncthingService.EXTRA_NOTIFICATION_ID, notificationId)
-			.putExtra(SyncthingService.EXTRA_DEVICE_ID, deviceId)
-			.putExtra(SyncthingService.EXTRA_DEVICE_NAME, deviceName)
-			.putExtra(SyncthingService.EXTRA_DEVICE_ADDRESS, deviceAddress)
-		intentIgnore.setAction(SyncthingService.ACTION_IGNORE_DEVICE)
+		val intentIgnore = Intent(context, SyncthingService::class.java).apply {
+			putExtra(SyncthingService.EXTRA_NOTIFICATION_ID, notificationId)
+			putExtra(SyncthingService.EXTRA_DEVICE_ID, deviceId)
+			putExtra(SyncthingService.EXTRA_DEVICE_NAME, deviceName)
+			putExtra(SyncthingService.EXTRA_DEVICE_ADDRESS, deviceAddress)
+			action = SyncthingService.ACTION_IGNORE_DEVICE
+		}
 		val piIgnore = PendingIntent.getService(
 			context, 0,
 			intentIgnore, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -249,48 +240,41 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 
 	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
 	private fun onPendingFoldersChanged(added: Map<String, String>) {
-		val deviceId = added["deviceID"]
-		val folderId = added["folderID"]
+		val deviceId = added["deviceID"] ?: return
+		val folderId = added["folderID"] ?: return
 		val folderLabel = added["folderLabel"]
-		if (deviceId == null || folderId == null) {
-			return
-		}
-		Log.d(
-			TAG, "Device " + deviceId + " wants to share folder " +
-					folderLabel + " (" + folderId + ")"
-		)
+		
+		Log.d(TAG, "Device $deviceId wants to share folder $folderLabel ($folderId)")
 
 		// Find the deviceName corresponding to the deviceId
-		val deviceName: String? = api?.getDevices(false)?.firstOrNull { it.deviceID == deviceId }?.displayName
+		val deviceName = api?.getDevices(false)?.firstOrNull { it.deviceID == deviceId }?.displayName
 
-		val title = context.getString(
-			R.string.folder_rejected, deviceName,
-			if (Objects.requireNonNull<String>(folderLabel)
-					.isEmpty()
-			) folderId else "$folderLabel ($folderId)"
-		)
+		val folderDisplayName = if (folderLabel.isNullOrEmpty()) folderId else "$folderLabel ($folderId)"
+		val title = context.getString(R.string.folder_rejected, deviceName, folderDisplayName)
 		val notificationId = notificationHandler.getNotificationIdFromText(title)
 
 		// Prepare "accept" action.
 		val isNewFolder = api?.folders?.none { it?.id == folderId } ?: true
-		val intentAccept = Intent(context, FolderActivity::class.java)
-			.putExtra(FolderViewModel.EXTRA_NOTIFICATION_ID, notificationId)
-			.putExtra(FolderViewModel.EXTRA_IS_CREATE, isNewFolder)
-			.putExtra(FolderViewModel.EXTRA_DEVICE_ID, deviceId)
-			.putExtra(FolderViewModel.EXTRA_FOLDER_ID, folderId)
-			.putExtra(FolderViewModel.EXTRA_FOLDER_LABEL, folderLabel)
+		val intentAccept = Intent(context, FolderActivity::class.java).apply {
+			putExtra(FolderViewModel.EXTRA_NOTIFICATION_ID, notificationId)
+			putExtra(FolderViewModel.EXTRA_IS_CREATE, isNewFolder)
+			putExtra(FolderViewModel.EXTRA_DEVICE_ID, deviceId)
+			putExtra(FolderViewModel.EXTRA_FOLDER_ID, folderId)
+			putExtra(FolderViewModel.EXTRA_FOLDER_LABEL, folderLabel)
+		}
 		val piAccept = PendingIntent.getActivity(
 			context, notificationId,
 			intentAccept, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 		)
 
 		// Prepare "ignore" action.
-		val intentIgnore = Intent(context, SyncthingService::class.java)
-			.putExtra(SyncthingService.EXTRA_NOTIFICATION_ID, notificationId)
-			.putExtra(SyncthingService.EXTRA_DEVICE_ID, deviceId)
-			.putExtra(SyncthingService.EXTRA_FOLDER_ID, folderId)
-			.putExtra(SyncthingService.EXTRA_FOLDER_LABEL, folderLabel)
-		intentIgnore.setAction(SyncthingService.ACTION_IGNORE_FOLDER)
+		val intentIgnore = Intent(context, SyncthingService::class.java).apply {
+			putExtra(SyncthingService.EXTRA_NOTIFICATION_ID, notificationId)
+			putExtra(SyncthingService.EXTRA_DEVICE_ID, deviceId)
+			putExtra(SyncthingService.EXTRA_FOLDER_ID, folderId)
+			putExtra(FolderViewModel.EXTRA_FOLDER_LABEL, folderLabel)
+			action = SyncthingService.ACTION_IGNORE_FOLDER
+		}
 		val piIgnore = PendingIntent.getService(
 			context, 0,
 			intentIgnore, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
