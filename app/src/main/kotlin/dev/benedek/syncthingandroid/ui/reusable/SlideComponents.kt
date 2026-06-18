@@ -3,14 +3,21 @@ package dev.benedek.syncthingandroid.ui.reusable
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -26,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.ui.LocalIsLandscape
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
@@ -57,19 +65,20 @@ fun SlideTitle(
 	fontWeight: FontWeight = FontWeight.Bold,
 	textAlign: TextAlign? = TextAlign.Center
 ) {
-	Text(text = text, fontSize = fontSize, fontWeight = fontWeight, textAlign = textAlign)
+	Text(
+		text = text,
+		modifier = modifier,
+		fontSize = fontSize,
+		fontWeight = fontWeight,
+		textAlign = textAlign
+	)
 }
 
 @SuppressLint("ModifierParameter")
 @Composable
 fun SlideDescription(
 	text: String,
-	modifier: Modifier = Modifier.padding(
-		dimensionResource(R.dimen.desc_padding),
-		dimensionResource(R.dimen.desc_marginTop),
-		dimensionResource(R.dimen.desc_padding),
-		dimensionResource(R.dimen.desc_paddingBottom)
-	),
+	modifier: Modifier = Modifier,
 	textAlign: TextAlign = TextAlign.Center,
 	fontSize: TextUnit = dimensionResource(R.dimen.slide_desc).value.sp,
 	lineHeight: TextUnit = 16.sp,
@@ -95,12 +104,82 @@ fun SlideImage(
 	Image(
 		painter,
 		contentDescription,
-		Modifier
-			.size(dimensionResource(R.dimen.img_width_height))
-			.then(modifier),
+		modifier
+			.size(dimensionResource(R.dimen.img_width_height)),
 		contentScale = ContentScale.Fit,
 		colorFilter = colorFilter
 	)
+}
+
+@Composable
+fun AdaptiveSlideLayout(
+	title: @Composable () -> Unit,
+	description: @Composable () -> Unit,
+	modifier: Modifier = Modifier,
+	image: (@Composable () -> Unit)? = null,
+	action: (@Composable () -> Unit)? = null,
+) {
+	val isLandscape = LocalIsLandscape.current
+	val scrollState = rememberScrollState()
+
+	if (isLandscape) {
+		Row(
+			modifier = modifier
+				.fillMaxSize()
+				.padding(horizontal = 32.dp, vertical = 8.dp),
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.Center
+		) {
+			if (image != null) {
+				Box(
+					modifier = Modifier
+						.weight(0.8f)
+						.padding(16.dp),
+					contentAlignment = Alignment.Center
+				) {
+					image()
+				}
+			}
+			Column(
+				modifier = Modifier
+					.weight(1.2f)
+					.fillMaxSize()
+					.verticalScroll(scrollState)
+					.padding(horizontal = 16.dp),
+				horizontalAlignment = Alignment.CenterHorizontally,
+				verticalArrangement = Arrangement.Center
+			) {
+				title()
+				Spacer(modifier = Modifier.height(8.dp))
+				description()
+				if (action != null) {
+					Spacer(modifier = Modifier.height(16.dp))
+					action()
+				}
+			}
+		}
+	} else {
+		Column(
+			modifier = modifier
+				.fillMaxSize()
+				.verticalScroll(scrollState)
+				.padding(horizontal = 24.dp),
+			horizontalAlignment = Alignment.CenterHorizontally,
+			verticalArrangement = Arrangement.Center
+		) {
+			if (image != null) {
+				image()
+				Spacer(modifier = Modifier.height(32.dp))
+			}
+			title()
+			Spacer(modifier = Modifier.height(4.dp))
+			description()
+			if (action != null) {
+				Spacer(modifier = Modifier.height(24.dp))
+				action()
+			}
+		}
+	}
 }
 
 
@@ -138,20 +217,31 @@ fun SlideImagePreview() {
 	}
 }
 
-@Preview(uiMode = ThemeControls.UI_MODE)
+@Preview(uiMode = ThemeControls.UI_MODE, name = "Portrait")
 @Composable
-fun SlideComponentsFullPreview() {
+fun AdaptiveSlideLayoutPortraitPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
 		Surface {
-			Column(
-				Modifier.padding(16.dp),
-				Arrangement.Center,
-				Alignment.CenterHorizontally
-			) {
-				SlideImage(painterResource(R.drawable.ic_launcher_monochrome))
-				Spacer(Modifier.size(16.dp))
-				SlideTitle("Introduction")
-				SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.")
+			AdaptiveSlideLayout(
+				title = { SlideTitle("Introduction") },
+				description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.") },
+				image = { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
+			)
+		}
+	}
+}
+
+@Preview(uiMode = ThemeControls.UI_MODE, name = "Landscape", widthDp = 800, heightDp = 400)
+@Composable
+fun AdaptiveSlideLayoutLandscapePreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		CompositionLocalProvider(LocalIsLandscape provides true) {
+			Surface {
+				AdaptiveSlideLayout(
+					title = { SlideTitle("Introduction") },
+					description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.") },
+					image = { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
+				)
 			}
 		}
 	}
