@@ -16,11 +16,11 @@
 		Vă rugăm să raportați orice problemă întâlniți prin intermediul <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Permisiune acces stocare</string>
-	<string name="storage_permission_desc">Syncthing are nevoie să acceseze stocarea pentru a face sincronizarea fișierelor.</string>
+	<string name="storage_permission_description">Syncthing are nevoie să acceseze stocarea pentru a face sincronizarea fișierelor.</string>
 	<string name="dialog_all_files_access_not_supported">Dispozitivul dvs. nu acceptă accesul la toate fișierele</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Permisiune locație (fundal)</string>
-	<string name="location_permission_desc">Syncthing poate fi configurat pentru a sincroniza numai pe rețelele Wi-Fi selectate. Pentru a face acest lucru, trebuie să caute SSID-ul Wi-Fi-ului conectat în prezent, chiar și atunci când aplicația este închisă. Prin urmare, necesită permisiunea de a accesa locația din fundal. Aceste informații nu sunt utilizate pentru a vă căuta locația. Și singurele informații stocate sunt Wi-Fi-ul pe care îl alegeți manual să îl adăugați la listă - nu sunt stocate alte date de utilizator.
+	<string name="location_permission_description">Syncthing poate fi configurat pentru a sincroniza numai pe rețelele Wi-Fi selectate. Pentru a face acest lucru, trebuie să caute SSID-ul Wi-Fi-ului conectat în prezent, chiar și atunci când aplicația este închisă. Prin urmare, necesită permisiunea de a accesa locația din fundal. Aceste informații nu sunt utilizate pentru a vă căuta locația. Și singurele informații stocate sunt Wi-Fi-ul pe care îl alegeți manual să îl adăugați la listă - nu sunt stocate alte date de utilizator.
 \n
 \nDacă doriți să utilizați această caracteristică, apăsați butonul de mai sus pentru a acorda permisiunile necesare pentru Syncthing. În caz contrar, puteți sări peste acest pas.</string>
 	<!--Slide 4-->

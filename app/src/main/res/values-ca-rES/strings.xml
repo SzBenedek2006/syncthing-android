@@ -16,10 +16,10 @@
 		Ens podeu informar dels problemes que trobeu a través de <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Permís d\'emmagatzematge</string>
-	<string name="storage_permission_desc">El Syncthing necessita accés a l\'emmagatzematge per poder sincronitzar els arxius</string>
+	<string name="storage_permission_description">El Syncthing necessita accés a l\'emmagatzematge per poder sincronitzar els arxius</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Permís d\'ubicació (de fons)</string>
-	<string name="location_permission_desc">La sincronització es pot configurar per sincronitzar només a les xarxes Wi-Fi seleccionades. Per fer-ho, ha de buscar el SSID de la xarxa Wi-Fi connectada actualment, també quan l\'aplicació està tancada. Per tant, requereix permís per accedir a la ubicació en segon pla. Aquesta informació no s\'utilitza per cercar la vostra ubicació. I l\'única informació emmagatzemada és la Wi-Fi que trieu afegir manualment a la llista; no s\'emmagatzemen altres dades d\'usuari.
+	<string name="location_permission_description">La sincronització es pot configurar per sincronitzar només a les xarxes Wi-Fi seleccionades. Per fer-ho, ha de buscar el SSID de la xarxa Wi-Fi connectada actualment, també quan l\'aplicació està tancada. Per tant, requereix permís per accedir a la ubicació en segon pla. Aquesta informació no s\'utilitza per cercar la vostra ubicació. I l\'única informació emmagatzemada és la Wi-Fi que trieu afegir manualment a la llista; no s\'emmagatzemen altres dades d\'usuari.
 \n
 \nSi voleu utilitzar aquesta funció, premeu el botó de dalt per concedir els permisos necessaris per a la sincronització. En cas contrari, podeu ometre aquest pas.</string>
 	<!--Slide 4-->

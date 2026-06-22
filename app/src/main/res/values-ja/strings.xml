@@ -16,7 +16,7 @@
 		問題が発生した場合は、<a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> 経由で報告してください。]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">ストレージアクセス許可</string>
-	<string name="storage_permission_desc">Syncthing はファイル同期を行うためにストレージのアクセス許可が必要です。</string>
+	<string name="storage_permission_description">Syncthing はファイル同期を行うためにストレージのアクセス許可が必要です。</string>
 	<!--Slide 3-->
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->

@@ -16,11 +16,11 @@
 		Mesedez, adierazi aurkitzen duzun edozein arazoren berri <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> bidez.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Biltegiratzeko baimena</string>
-	<string name="storage_permission_desc">Syncthing-ek zure biltegira sartu behar du fitxategiak sinkronizatzeko.</string>
+	<string name="storage_permission_description">Syncthing-ek zure biltegira sartu behar du fitxategiak sinkronizatzeko.</string>
 	<string name="dialog_all_files_access_not_supported">Zure gailuak ez du fitxategi guztiak atzitzea onartzen</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Kokapen baimena (atzeko planoa)</string>
-	<string name="location_permission_desc">Sintetizazioa hautatutako Wi-Fi sareetan soilik sinkronizatzeko konfigura daiteke. Horretarako, unean konektatutako Wi-Fi SSIDa bilatu behar du, aplikazioa itxita dagoenean ere. Hori dela eta, atzealdeko kokapenera sartzeko baimena behar da. Informazio hau ez da zure kokapena bilatzeko erabiltzen. Biltegiratutako informazio bakarra zerrendan eskuz gehitzea aukeratu duzun Wi-Fi da. Ez da beste erabiltzaile daturik gordetzen.
+	<string name="location_permission_description">Sintetizazioa hautatutako Wi-Fi sareetan soilik sinkronizatzeko konfigura daiteke. Horretarako, unean konektatutako Wi-Fi SSIDa bilatu behar du, aplikazioa itxita dagoenean ere. Hori dela eta, atzealdeko kokapenera sartzeko baimena behar da. Informazio hau ez da zure kokapena bilatzeko erabiltzen. Biltegiratutako informazio bakarra zerrendan eskuz gehitzea aukeratu duzun Wi-Fi da. Ez da beste erabiltzaile daturik gordetzen.
 \n
 \nFuntzio hau erabili nahi baduzu, sakatu goiko botoia Syncthing-i beharrezko baimenak emateko. Bestela, urrats hau salta dezakezu.</string>
 	<!--Slide 4-->

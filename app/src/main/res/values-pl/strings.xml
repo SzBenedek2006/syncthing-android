@@ -16,11 +16,11 @@
 		Wszelkie problemy, które napotkasz, prosimy zgłaszać za pośrednictwem serwisu <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Dostęp do plików</string>
-	<string name="storage_permission_desc">Syncthing wymaga dostępu do pamięci urządzenia, aby móc synchronizować pliki.</string>
+	<string name="storage_permission_description">Syncthing wymaga dostępu do pamięci urządzenia, aby móc synchronizować pliki.</string>
 	<string name="dialog_all_files_access_not_supported">Twoje urządzenie nie wspiera dostępu do wszystkich plików</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Uprawnienie dostępu do lokalizacji (w tle)</string>
-	<string name="location_permission_desc">Syncthing może być ustawiony tak, aby synchronizować pliki jedynie na wybranych sieciach Wi-Fi. W tym celu musi mieć możliwość sprawdzania identyfikatora SSID obecnej sieci Wi-Fi, również gdy aplikacja jest zamknięta. W związku z tym potrzebuje on uprawnień do używania lokalizacji w tle. Informacje te nie są wykorzystywane do wykrywania Twojej lokalizacji. Jedyną przechowywaną informacją jest sieć Wi-Fi, którą sam zdecydujesz się dodać ręcznie do listy - żadne inne dane użytkownika nie są przechowywane.
+	<string name="location_permission_description">Syncthing może być ustawiony tak, aby synchronizować pliki jedynie na wybranych sieciach Wi-Fi. W tym celu musi mieć możliwość sprawdzania identyfikatora SSID obecnej sieci Wi-Fi, również gdy aplikacja jest zamknięta. W związku z tym potrzebuje on uprawnień do używania lokalizacji w tle. Informacje te nie są wykorzystywane do wykrywania Twojej lokalizacji. Jedyną przechowywaną informacją jest sieć Wi-Fi, którą sam zdecydujesz się dodać ręcznie do listy - żadne inne dane użytkownika nie są przechowywane.
 \n
 \nJeżeli chcesz używać tej funkcji, naciśnij przycisk powyżej, aby udzielić aplikacji Syncthing dostępu do wymaganych uprawnień. W przeciwnym razie możesz pominąć ten krok.</string>
 	<!--Slide 4-->

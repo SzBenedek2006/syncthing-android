@@ -16,11 +16,11 @@
 		Lütfen karşılaştığınız sorunları <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> üzerinden bildirin.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Depolama İzni</string>
-	<string name="storage_permission_desc">Dosya eşitlemesi yapmak için Syncthing\'in depolama alanınıza erişmesi gerekiyor.</string>
+	<string name="storage_permission_description">Dosya eşitlemesi yapmak için Syncthing\'in depolama alanınıza erişmesi gerekiyor.</string>
 	<string name="dialog_all_files_access_not_supported">Cihazınız tüm dosyalara erişimi desteklemiyor</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Konum İzni (arka plan)</string>
-	<string name="location_permission_desc">Syncthing, yalnızca seçilen kablosuz (Wi-Fi) ağlarda eşitlemek için yapılandırılabilir. Bunu yapmak için uygulama kapalıyken de o anda bağlı olan kablosuzun (Wi-Fi) SSID\'sine bakması gerekir. Bu nedenle, arka planda konuma erişmek için izin gerektirir. Bu bilgiler konumunuzu aramak için kullanılmaz. Ve depolanan tek bilgi, listeye el ile eklemeyi seçtiğiniz kablosuz (Wi-Fi) bağlantıdır - başka hiçbir kullanıcı verisi depolanmaz.
+	<string name="location_permission_description">Syncthing, yalnızca seçilen kablosuz (Wi-Fi) ağlarda eşitlemek için yapılandırılabilir. Bunu yapmak için uygulama kapalıyken de o anda bağlı olan kablosuzun (Wi-Fi) SSID\'sine bakması gerekir. Bu nedenle, arka planda konuma erişmek için izin gerektirir. Bu bilgiler konumunuzu aramak için kullanılmaz. Ve depolanan tek bilgi, listeye el ile eklemeyi seçtiğiniz kablosuz (Wi-Fi) bağlantıdır - başka hiçbir kullanıcı verisi depolanmaz.
 \n
 \nEğer bu özelliği kullanmak istiyorsanız, Syncthing\'e gerekli izinleri vermek için yukarıdaki düğmeye basın. Aksi takdirde bu adımı atlayabilirsiniz.</string>
 	<!--Slide 4-->
