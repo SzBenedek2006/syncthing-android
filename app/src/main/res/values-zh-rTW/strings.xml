@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">介紹</string>
+	<string name="welcome_subtitle">Syncthing 以開放、值得信賴且去中心化的方式取代了專有的雲端與數據服務。\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing 以開放、可靠且去中心化的方式取代了封閉的雲端與數據服務。<br/><br/>
+		<![CDATA[若要與其他裝置共享數據，您需要將其唯一的裝置 ID 新增到裝置清單中。之後，您可以選擇要與哪些裝置共享哪些資料夾。<br/><br/>
 
-		要與其他裝置共享數據，您需要將它們的唯一裝置 ID 添加到裝置清單中。之後，您可以選擇與哪些裝置共享哪些資料夾。<br/><br/>
-
-		請通過 <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> 報告您遇到的任何問題。]]></string>
+		請透過 <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> 報告您遇到的任何問題。]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">檔案和媒體權限</string>
 	<string name="storage_permission_description">Syncthing 需要取得您的裝置上「管理所有檔案的權限」以進行檔案同步。</string>

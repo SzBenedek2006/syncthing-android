@@ -309,12 +309,11 @@
 	<string name="ignore">Ignorer</string>
 	<string name="no_sub_folder_is_selected">Ingen undermappe er valgt</string>
 	<string name="introduction">Introduksjon</string>
+	<string name="welcome_subtitle">Syncthing erstatter proprietære sky- og datatjenester med noe åpent, pålitelig og desentralisert.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing erstatter lukkede sky- og datatjenester med noe åpent, pålitelig og desentralisert.<br/><br/>
+		<![CDATA[For å dele data med andre enheter, må du legge til deres unike enhets-ID-er i enhetslisten. Etterpå kan du velge hvilke mapper som skal deles med hvilke enheter.<br/><br/>
 
-		For å dele data med andre enheter må du legge til deres unike enhets-ID-er i enhetslisten. Etterpå kan du velge hvilke mapper som skal deles med hvilke enheter.<br/><br/>
-
-		Rapporter eventuelle problemer du støter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+		Vennligst rapporter eventuelle problemer du støter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<string name="storage_permission_title">Lagringstillatelse</string>
 	<string name="storage_permission_description">Syncthing må få tilgang til lagringsplassen din for å gjøre filsynkronisering.</string>
 	<string name="api_level_30_title">Oppgraderingsinformasjon</string>

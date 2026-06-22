@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Sarrera</string>
+	<string name="welcome_subtitle">Syncthing-ek hodei eta datu-zerbitzu jabedunak ordezkatzen ditu zerbait ireki, fidagarri eta deszentralizatuarekin.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing-ek hodei eta datu zerbitzu itxiak zerbait ireki, fidagarri eta deszentralizatu batekin ordezkatzen ditu.<br/><br/>
+		<![CDATA[Beste gailu batzuekin datuak partekatzeko, haien gailu-ID esklusiboak gehitu behar duzu gailuen zerrendara. Ondoren, zein karpeta zein gailuarekin partekatu nahi duzun hauta dezakezu.<br/><br/>
 
-		Datuak beste gailu batzuekin partekatzeko, gailuen zerrendari gailuen identifikatzaile bakarrak gehitu behar dizkiozu. Ondoren, aukeratu zer karpeta partekatuko dituzun zein gailurekin.<br/><br/>
-
-		Mesedez, adierazi aurkitzen duzun edozein arazoren berri <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> bidez.]]></string>
+		Mesedez, eman aurkitzen duzun edozein arazoren berri <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> bidez.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Biltegiratzeko baimena</string>
 	<string name="storage_permission_description">Syncthing-ek zure biltegira sartu behar du fitxategiak sinkronizatzeko.</string>

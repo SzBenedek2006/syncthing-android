@@ -4,12 +4,11 @@
 	<!--FirstStartActivity-->
 	<!--Title for dialog displayed on first start-->
 	<string name="introduction">හැඳින්වීම</string>
+	<string name="welcome_subtitle">Syncthing හිමිකාර ක්ලවුඩ් සහ දත්ත සේවා විවෘත, විශ්වාසදායක සහ විමධ්‍යගත දෙයක් සමඟ ප්‍රතිස්ථාපනය කරයි.\n</string>
 	<string name="welcome_text">
-		<![CDATA[සයින්තින් (Syncthing) විසින් වසා ඇති වලාකුළු සහ දත්ත සේවාවන් විවෘත, විශ්වාසදායක සහ විමධ්‍යගත දෙයකින් ප්‍රතිස්ථාපනය කරයි.<br/><br/>
+		<![CDATA[වෙනත් උපාංග සමඟ දත්ත බෙදා ගැනීමට, ඔබ ඒවායේ අනන්‍ය උපාංග හැඳුනුම්පත් උපාංග ලැයිස්තුවට එක් කළ යුතුය. පසුව ඔබට කුමන ෆෝල්ඩර කුමන උපාංග සමඟ බෙදා ගත යුතුද යන්න තෝරාගත හැක.<br/><br/>
 
-		වෙනත් උපාංග සමඟ දත්ත බෙදා ගැනීමට, ඔබ ඒවායේ අනන්‍ය උපාංග හැඳුනුම්පත් (IDs) උපාංග ලැයිස්තුවට එක් කළ යුතුය. පසුව ඔබට කුමන බහාලුම් කුමන උපාංග සමඟ බෙදා ගන්නේද යන්න තෝරා ගත හැකිය.<br/><br/>
-
-		ඔබට කිසියම් ගැටළුවක් ඇති වුවහොත් කරුණාකර <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> හරහා වාර්තා කරන්න.]]></string>
+		ඔබට මුහුණ දීමට සිදු වන ඕනෑම ගැටළුවක් <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> හරහා වාර්තා කරන්න.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">ආචයන අවසරය</string>
 	<!--Slide 3-->

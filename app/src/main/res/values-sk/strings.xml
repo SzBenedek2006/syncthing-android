@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Úvod</string>
+	<string name="welcome_subtitle">Syncthing nahrádza proprietárne cloudové a dátové služby niečím otvoreným, dôveryhodným a decentralizovaným.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing nahrádza uzavreté cloudové a dátové služby niečím otvoreným, dôveryhodným a decentralizovaným.<br/><br/>
+		<![CDATA[Ak chcete zdieľať údaje s inými zariadeniami, musíte pridať ich jedinečné ID zariadení do zoznamu zariadení. Potom si môžete vybrať, ktoré priečinky chcete zdieľať s ktorými zariadeniami.<br/><br/>
 
-		Na zdieľanie údajov s inými zariadeniami musíte pridať ich jedinečné ID zariadenia do zoznamu zariadení. Potom si môžete vybrať, ktoré priečinky chcete zdieľať s ktorými zariadeniami.<br/><br/>
-
-		Akékoľvek problémy, s ktorými sa stretnete, nahláste prostredníctvom <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubu</a>.]]></string>
+		Akékoľvek problémy, na ktoré narazíte, nahláste prostredníctvom <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubu</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Povolenie prístupu k úložisku</string>
 	<string name="storage_permission_description">Syncthing potrebuje prístup k úložisku súborov aby mohol súbory synchronizovať.</string>

@@ -8,10 +8,9 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Giới thiệu</string>
+	<string name="welcome_subtitle">Syncthing thay thế các dịch vụ dữ liệu và đám mây độc quyền bằng một thứ gì đó cởi mở, đáng tin cậy và phi tập trung.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing thay thế các dịch vụ đám mây và dữ liệu đóng bằng một thứ gì đó mở, đáng tin cậy và phi tập trung.<br/><br/>
-
-		Để chia sẻ dữ liệu với các thiết bị khác, bạn cần thêm ID thiết bị duy nhất của họ vào danh sách thiết bị. Sau đó, bạn có thể chọn thư mục nào sẽ chia sẻ với thiết bị nào.<br/><br/>
+		<![CDATA[Để chia sẻ dữ liệu với các thiết bị khác, bạn cần thêm ID thiết bị duy nhất của chúng vào danh sách thiết bị. Sau đó, bạn có thể chọn thư mục nào sẽ chia sẻ với thiết bị nào.<br/><br/>
 
 		Vui lòng báo cáo bất kỳ vấn đề nào bạn gặp phải qua <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->

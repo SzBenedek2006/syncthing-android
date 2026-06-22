@@ -7,12 +7,11 @@
 	<string name="welcome_title">Tervetuloa Syncthingiin Androidille</string>
 	<!--Welcome wizard-->
 	<!--Slide 1-->
+	<string name="welcome_subtitle">Syncthing korvaa suljetut pilvi- ja tietopalvelut jollakin avoimella, luotettavalla ja hajautetulla.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing korvaa suljetut pilvi- ja tietopalvelut jollakin avoimella, luotettavalla ja hajautetulla.<br/><br/>
+		<![CDATA[Jotta voit jakaa tietoja muiden laitteiden kanssa, sinun on lisättävä niiden yksilölliset laitetunnukset laiteluetteloon. Sen jälkeen voit valita, mitkä kansiot jaetaan minkäkin laitteiden kanssa.<br/><br/>
 
-		Jakaaksesi tietoa muiden laitteiden kanssa, sinun on lisättävä niiden yksilölliset laitetunnukset laiteluetteloon. Myöhemmin voit valita, mitkä kansiot jaetaan minkä laitteiden kanssa.<br/><br/>
-
-		Ilmoita kaikista havaitsemistasi ongelmista osoitteessa <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+		Ilmoita mahdollisista ongelmista <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubin</a> kautta.]]></string>
 	<!--Slide 2-->
 	<!--Slide 3-->
 	<!--Slide 4-->

@@ -8,10 +8,9 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introduktion</string>
+	<string name="welcome_subtitle">Syncthing erstatter proprietære sky- og datatjenester med noget åbent, troværdigt og decentraliseret.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing erstatter lukkede cloud- og datatjenester med noget åbent, troværdigt og decentraliseret.<br/><br/>
-
-		For at dele data med andre enheder skal du tilføje deres unikke enheds-ID\'er til enhedslisten. Bagefter kan du vælge, hvilke mapper der skal deles med hvilke enheder.<br/><br/>
+		<![CDATA[For at dele data med andre enheder skal du tilføje deres unikke enheds-id\'er til enhedslisten. Bagefter kan du vælge, hvilke mapper der skal deles med hvilke enheder.<br/><br/>
 
 		Rapporter venligst eventuelle problemer, du støder på, via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->

@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introductie</string>
+	<string name="welcome_subtitle">Syncthing vervangt propriëtaire cloud- en datadiensten door iets open, betrouwbaars en gedecentraliseerds.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing vervangt gesloten cloud- en datadiensten door iets open, betrouwbaar en gedecentraliseerd.<br/><br/>
+		<![CDATA[Om gegevens met andere apparaten te delen, moet u hun unieke apparaat-ID\'s toevoegen aan de apparatenlijst. Daarna kunt u selecteren welke mappen u met welke apparaten wilt delen.<br/><br/>
 
-		Om gegevens met andere apparaten te delen, moet je hun unieke apparaat-id\'s aan de apparatenlijst toevoegen. Daarna kun je selecteren welke mappen je met welke apparaten wilt delen.<br/><br/>
-
-		Meld eventuele problemen die je tegenkomt via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+		Meld eventuele problemen die u tegenkomt via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Opslagmachtiging</string>
 	<string name="storage_permission_description">Syncthing heeft toegang nodig tot jouw opslag om bestandssynchronisatie uit te voeren.</string>

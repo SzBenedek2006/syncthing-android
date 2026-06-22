@@ -8,10 +8,9 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Tanıtım</string>
+	<string name="welcome_subtitle">Syncthing, tescilli bulut ve veri hizmetlerini açık, güvenilir ve merkezi olmayan bir şeyle değiştirir.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing, kapalı bulut ve veri hizmetlerini açık, güvenilir ve merkezi olmayan bir şeyle değiştirir.<br/><br/>
-
-		Diğer cihazlarla veri paylaşmak için, benzersiz cihaz kimliklerini cihaz listesine eklemeniz gerekir. Daha sonra hangi klasörlerin hangi cihazlarla paylaşılacağını seçebilirsiniz.<br/><br/>
+		<![CDATA[Verileri diğer cihazlarla paylaşmak için benzersiz cihaz kimliklerini cihaz listesine eklemeniz gerekir. Ardından hangi klasörleri hangi cihazlarla paylaşacağınızı seçebilirsiniz.<br/><br/>
 
 		Lütfen karşılaştığınız sorunları <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> üzerinden bildirin.]]></string>
 	<!--Slide 2-->

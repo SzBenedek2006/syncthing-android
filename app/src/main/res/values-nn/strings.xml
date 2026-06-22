@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Innleiing</string>
+	<string name="welcome_subtitle">Syncthing erstattar proprietære sky- og datatenester med noko ope, påliteleg og desentralisert.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing erstattar lukka sky- og datatenester med noko ope, påliteleg og desentralisert.<br/><br/>
+		<![CDATA[For å dela data med andre einingar, må du leggja til dei unike einings-ID-ane deira i einingslista. Etterpå kan du velja kva mapper som skal delast med kva einingar.<br/><br/>
 
-		For å dela data med andre einingar, må du leggja inn den unike einings-ID-en i einingslista. Etter dette kan du velja kva mapper du vil dele og med kva slags einingar.<br/><br/>
-
-		Ver venleg å rapporter problem som måtte oppstå via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+		Ver venleg og rapporter eventuelle problem du støter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Lagringsløyve</string>
 	<string name="storage_permission_description">For å få gjort filsynkronisering treng Syncthing løyve til å få tilgang til lagring.</string>

@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Pendahuluan</string>
+	<string name="welcome_subtitle">Syncthing menggantikan layanan cloud dan data eksklusif dengan sesuatu yang terbuka, tepercaya, dan terdesentralisasi.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing mengganti layanan cloud dan data tertutup dengan sesuatu yang terbuka, tepercaya, dan terdesentralisasi.<br/><br/>
+		<![CDATA[Untuk berbagi data dengan perangkat lain, Anda perlu menambahkan ID perangkat unik mereka ke daftar perangkat. Setelah itu, Anda dapat memilih folder mana yang akan dibagikan dengan perangkat mana.<br/><br/>
 
-		Untuk berbagi data dengan perangkat lain, Anda perlu menambahkan ID perangkat unik mereka ke daftar perangkat. Setelah itu, Anda dapat memilih folder mana yang akan dibagikan dengan perangkat mana.<br/><br/>
-
-		Silakan laporkan masalah apa pun yang Anda temui melalui <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+		Harap laporkan masalah apa pun yang Anda temui melalui <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Izin Penyimpanan</string>
 	<string name="storage_permission_description">Syncthing perlu mengakses penyimpanan Anda untuk melakukan sinkronisasi file.</string>

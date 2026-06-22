@@ -8,12 +8,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introduzione</string>
+	<string name="welcome_subtitle">Syncthing sostituisce i servizi cloud e dati proprietari con qualcosa di aperto, affidabile e decentralizzato.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing sostituisce i servizi cloud e dati chiusi con qualcosa di aperto, affidabile e decentralizzato.<br/><br/>
+		<![CDATA[Per condividere dati con altri dispositivi, è necessario aggiungere i loro ID dispositivo univoci all\'elenco dei dispositivi. Successivamente è possibile selezionare quali cartelle condividere con quali dispositivi.<br/><br/>
 
-		Per condividere i dati con altri dispositivi, è necessario aggiungere i loro ID dispositivo univoci all\'elenco dei dispositivi. Successivamente è possibile selezionare quali cartelle condividere con quali dispositivi.<br/><br/>
-
-		Si prega di segnalare eventuali problemi riscontrati tramite <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+		Segnala eventuali problemi riscontrati tramite <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Autorizzazione di archiviazione</string>
 	<string name="storage_permission_description">Syncthing deve accedere allo spazio di archiviazione per eseguire la sincronizzazione dei file.</string>

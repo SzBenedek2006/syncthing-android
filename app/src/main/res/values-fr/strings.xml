@@ -8,10 +8,9 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introduction</string>
+	<string name="welcome_subtitle">Syncthing remplace les services cloud et de données propriétaires par quelque chose d\'ouvert, de fiable et de décentralisé.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing remplace les services de cloud et de données fermés par quelque chose d\'ouvert, de fiable et de décentralisé.<br/><br/>
-
-		Pour partager des données avec d\'autres appareils, vous devez ajouter leur identifiant unique à la liste des appareils. Ensuite, vous pouvez sélectionner quels dossiers partager avec quels appareils.<br/><br/>
+		<![CDATA[Pour partager des données avec d\'autres appareils, vous devez ajouter leurs identifiants d\'appareil uniques à la liste des appareils. Ensuite, vous pouvez sélectionner les dossiers à partager avec quels appareils.<br/><br/>
 
 		Veuillez signaler tout problème que vous rencontrez via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->

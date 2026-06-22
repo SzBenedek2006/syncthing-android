@@ -8,10 +8,9 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">介绍</string>
+	<string name="welcome_subtitle">Syncthing 用开放、值得信赖和去中心化的方式取代了专有的云和数据服务。\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing 用开放、值得信赖且去中心化的方式取代了封闭的云和数据服务。<br/><br/>
-
-		要与其他设备共享数据，您需要将它们的唯一设备 ID 添加到设备列表中。之后，您可以选择与哪些设备共享哪些文件夹。<br/><br/>
+		<![CDATA[要与其他设备共享数据，您需要将其唯一的设备 ID 添加到设备列表中。之后，您可以选择要与哪些设备共享哪些文件夹。<br/><br/>
 
 		请通过 <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> 报告您遇到的任何问题。]]></string>
 	<!--Slide 2-->

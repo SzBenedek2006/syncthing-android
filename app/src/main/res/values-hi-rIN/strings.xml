@@ -7,12 +7,11 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">परिचय</string>
+	<string name="welcome_subtitle">Syncthing मालिकाना क्लाउड और डेटा सेवाओं को कुछ खुले, भरोसेमंद और विकेंद्रीकृत के साथ बदल देता है।\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing बंद क्लाउड और डेटा सेवाओं को कुछ खुले, भरोसेमंद और विकेंद्रीकृत के साथ बदल देता है।<br/><br/>
+		<![CDATA[अन्य उपकरणों के साथ डेटा साझा करने के लिए, आपको उनकी विशिष्ट डिवाइस आईडी को डिवाइस सूची में जोड़ना होगा। बाद में आप चुन सकते हैं कि कौन से फ़ोल्डर किन उपकरणों के साथ साझा करने हैं।<br/><br/>
 
-		अन्य उपकरणों के साथ डेटा साझा करने के लिए, आपको डिवाइस सूची में उनकी अद्वितीय डिवाइस ID जोड़ने की आवश्यकता है। बाद में आप चुन सकते हैं कि कौन से फोल्डर को किन उपकरणों के साथ साझा करना है।<br/><br/>
-
-		कृपया <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> के माध्यम से आपके सामने आने वाली किसी भी समस्या की रिपोर्ट करें।]]></string>
+		कृपया किसी भी समस्या की रिपोर्ट <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> के माध्यम से करें।]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">स्टोरेज की अनुमति</string>
 	<string name="storage_permission_description">फाइल सिंक्रनाइज़ेशन करने के लिए Syncthing को आपके स्टोरेज तक पहुंचने की आवश्यकता है।</string>
