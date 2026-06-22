@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introducció</string>
-	<string name="welcome_text">El Syncthing és una aplicació de sincronització de fitxers de codi obert.
-\nPer compartir dades amb altres dispositius, cal que afegiu els seus identificadors únics a la llista de dispositius. Un cop fet això podreu triar quines carpetes voleu compartir i amb quins dispositius.
-\nEns podeu informar dels problemes que trobeu a través de GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[El Syncthing substitueix els serveis de dades i de núvol tancats per quelcom obert, confiable i descentralitzat.<br/><br/>
+
+		Per compartir dades amb altres dispositius, cal que afegiu els seus identificadors únics a la llista de dispositius. Un cop fet això podreu triar quines carpetes voleu compartir i amb quins dispositius.<br/><br/>
+
+		Ens podeu informar dels problemes que trobeu a través de <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Permís d\'emmagatzematge</string>
 	<string name="storage_permission_desc">El Syncthing necessita accés a l\'emmagatzematge per poder sincronitzar els arxius</string>

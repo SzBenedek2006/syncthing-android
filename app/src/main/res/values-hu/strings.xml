@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Bevezetés</string>
-	<string name="welcome_text">A Syncthing egy nyílt forráskódú fájlszinkronizáló alkalmazás.
-\nAz adatok más eszközökkel való megosztásához hozzá kell adnod egyedi eszközazonosítójukat az eszközlistához. Utána kiválaszthatod, hogy mely mappákat mely eszközökkel osztasz meg.
-\nKérjük, hogy a felmerülő hibákat jelentsd be a GitHub-on.</string>
+	<string name="welcome_text">
+        <![CDATA[A Syncthing a zárt felhő- és adatszolgáltatásokat valami nyitottra, megbízhatóra és decentralizáltra cseréli.<br/><br/>
+
+        Az adatok más eszközökkel való megosztásához hozzá kell adnod azok egyedi eszközazonosítóját az eszközlistához. Ezután kiválaszthatod, hogy mely mappákat mely eszközökkel osztod meg.<br/><br/>
+
+        Ha programhibát vagy egyéb problémát találsz, kérlek <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubon</a> keresztül jelentsd.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Tárhely jogosultság</string>
 	<string name="storage_permission_desc">A szinkronizáláshoz a Syncthingnek hozzáférésre van szüksége a tárhelyhez.</string>

@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Úvod</string>
-	<string name="welcome_text">Syncthing je open-source aplikácia na synchronizáciu súborov.
-\nNa zdieľanie súborov medzi zariadeniami, pridajte si ich ID do zoznamu. Potom si vyberiete, ktoré priečinky chcete synchronizovať.
-\nPrípadné problémy nahláste cez GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing nahrádza uzavreté cloudové a dátové služby niečím otvoreným, dôveryhodným a decentralizovaným.<br/><br/>
+
+		Na zdieľanie údajov s inými zariadeniami musíte pridať ich jedinečné ID zariadenia do zoznamu zariadení. Potom si môžete vybrať, ktoré priečinky chcete zdieľať s ktorými zariadeniami.<br/><br/>
+
+		Akékoľvek problémy, s ktorými sa stretnete, nahláste prostredníctvom <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubu</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Povolenie prístupu k úložisku</string>
 	<string name="storage_permission_desc">Syncthing potrebuje prístup k úložisku súborov aby mohol súbory synchronizovať.</string>

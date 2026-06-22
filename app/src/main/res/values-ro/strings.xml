@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introducere</string>
-	<string name="welcome_text">Syncthing este o aplicație, cu sursă deschisă, de sincronizare a fișierelor.
-\nPentru a partaja date cu alte dispozitive, trebuie să le adăugați ID-ul unic de dispozitiv la lista dumneavoastră de dispozitive. După aceea puteți selecta care directoare le veți partaja cu care dispozitive.
-\nVă rugăm să raportați orice problemă întâlniți, prin intermediul GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing înlocuiește serviciile de cloud și date închise cu ceva deschis, de încredere și descentralizat.<br/><br/>
+
+		Pentru a partaja date cu alte dispozitive, trebuie să le adăugați ID-ul unic de dispozitiv la lista dumneavoastră de dispozitive. După aceea puteți selecta care directoare le veți partaja cu care dispozitive.<br/><br/>
+
+		Vă rugăm să raportați orice problemă întâlniți prin intermediul <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Permisiune acces stocare</string>
 	<string name="storage_permission_desc">Syncthing are nevoie să acceseze stocarea pentru a face sincronizarea fișierelor.</string>

@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introdução</string>
-	<string name="welcome_text">O Syncthing é uma aplicação de sincronização de ficheiros de código aberto.
-\nPara partilhar dados com outros dispositivos, tem que adicionar o seu ID único de dispositivo à lista de dispositivos. Depois pode seleccionar quais as pastas a partilhar com os dispositivos.
-\nReporte, através do GitHub, quaisquer problemas que encontre, por favor.</string>
+	<string name="welcome_text">
+		<![CDATA[O Syncthing substitui os serviços de nuvem e dados fechados por algo aberto, fiável e descentralizado.<br/><br/>
+
+		Para partilhar dados com outros dispositivos, tem que adicionar o seu ID único de dispositivo à lista de dispositivos. Depois pode selecionar quais as pastas a partilhar com os dispositivos.<br/><br/>
+
+		Reporte, através do <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>, quaisquer problemas que encontre, por favor.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Permissão de Armazenamento</string>
 	<string name="storage_permission_desc">O Syncthing precisa aceder o seu armazenamento para fazer a sincronização de ficheiros.</string>

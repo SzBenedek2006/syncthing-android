@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">介紹</string>
-	<string name="welcome_text">Syncthing 是一個開放原始碼的檔案同步應用程式。
-\n在其他裝置間分享資料，你需要加入裝置的唯一識別碼到裝置清單中。之後，你可以選擇資料夾分享給哪些裝置。
-\n請把你遇到的問題回報到 GitHub 上。</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing 以開放、可靠和去中心化的方式取代了封閉的雲端和數據服務。<br/><br/>
+
+		要與其他裝置共享數據，你需要將它們的唯一裝置 ID 添加到裝置清單中。之後，你可以選擇與哪些裝置共享哪些資料夾。<br/><br/>
+
+		請通過 <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> 報告你遇到的任何問題。]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">儲存權限</string>
 	<string name="storage_permission_desc">Syncthing 需要訪問您的存儲以進行文件同步.</string>

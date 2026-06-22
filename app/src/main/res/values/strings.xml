@@ -14,9 +14,12 @@
 
 	<!-- Slide 1 -->
 	<string name="introduction">Introduction</string>
-	<string name="welcome_text">Syncthing is an open-source file synchronization application.
-\nTo share data with other devices, you need to add their unique device IDs to the device list. Afterwards you can select which folders to share with which devices.
-\nPlease report any problems you encounter via GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.<br/><br/>
+
+		To share data with other devices, you need to add their unique device IDs to the device list. Afterwards you can select which folders to share with which devices.<br/><br/>
+
+		Please report any problems you encounter via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
 	<!-- Slide 2 -->
 	<string name="storage_permission_title">Storage Permission</string>

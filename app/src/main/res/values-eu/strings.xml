@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Sarrera</string>
-	<string name="welcome_text">Syncthing iturri irekiko fitxategiak sinkronizatzeko aplikazio bat da.
-\nDatuak beste dispositibo batzuekin partekatzeko, gailuen zerrendari gailuen identifikatzaile bakarrak gehitu behar dizkiozu. Ondoren, aukeratu zer karpeta partekatuko dituzun zein gailurekin.
-\nMesedez, adierazi GitHub bidez aurkitzen duzun edozein arazoren berri.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing-ek hodei eta datu zerbitzu itxiak zerbait ireki, fidagarri eta deszentralizatu batekin ordezkatzen ditu.<br/><br/>
+
+		Datuak beste gailu batzuekin partekatzeko, gailuen zerrendari gailuen identifikatzaile bakarrak gehitu behar dizkiozu. Ondoren, aukeratu zer karpeta partekatuko dituzun zein gailurekin.<br/><br/>
+
+		Mesedez, adierazi aurkitzen duzun edozein arazoren berri <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> bidez.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Biltegiratzeko baimena</string>
 	<string name="storage_permission_desc">Syncthing-ek zure biltegira sartu behar du fitxategiak sinkronizatzeko.</string>

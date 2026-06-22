@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Introductie</string>
-	<string name="welcome_text">Syncthing is een opensource-bestandssynchronisatie-app.
-\nOm gegevens met andere apparaten te delen, moet je hun unieke apparaat-id\'s aan de apparatenlijst toevoegen. Daarna kun je selecteren welke mappen je met welke apparaten wilt delen.
-\nMeld eventuele problemen die je tegenkomt op onze GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing vervangt gesloten cloud- en datadiensten door iets open, betrouwbaar en gedecentraliseerd.<br/><br/>
+
+		Om gegevens met andere apparaten te delen, moet je hun unieke apparaat-id\'s aan de apparatenlijst toevoegen. Daarna kun je selecteren welke mappen je met welke apparaten wilt delen.<br/><br/>
+
+		Meld eventuele problemen die je tegenkomt via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Opslagmachtiging</string>
 	<string name="storage_permission_desc">Syncthing heeft toegang nodig tot jouw opslag om bestandssynchronisatie uit te voeren.</string>

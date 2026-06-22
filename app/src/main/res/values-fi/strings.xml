@@ -7,9 +7,12 @@
 	<string name="welcome_title">Tervetuloa Syncthingiin Androidille</string>
 	<!--Welcome wizard-->
 	<!--Slide 1-->
-	<string name="welcome_text">Syncthing on avoimen lähdekoodin tiedostojensynkronointisovellus.
-\nJakaaksesi tietoa toisten laitteiden kanssa, sinun tarvitsee lisätä niiden yksilölliset laitetunnukset laiteluetteloon. Myöhemmin voit valita, mitkä kansiot jaetaan minkä laitteiden kanssa.
-\nIlmoitathan ystävällisesti kaikista havaitsemistasi ongelmista GitHubin kautta.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing korvaa suljetut pilvi- ja tietopalvelut jollakin avoimella, luotettavalla ja hajautetulla.<br/><br/>
+
+		Jakaaksesi tietoa muiden laitteiden kanssa, sinun on lisättävä niiden yksilölliset laitetunnukset laiteluetteloon. Myöhemmin voit valita, mitkä kansiot jaetaan minkä laitteiden kanssa.<br/><br/>
+
+		Ilmoita kaikista havaitsemistasi ongelmista osoitteessa <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<!--Slide 3-->
 	<!--Slide 4-->

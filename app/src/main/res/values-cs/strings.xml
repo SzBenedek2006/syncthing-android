@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Úvod</string>
-	<string name="welcome_text">Syncthing je synchronizační aplikace s otevřeným zdrojovým kódem.
-\nPro sdílení dat s dalšími přístroji je třeba přidat jejich unikátní ID do seznamu. Poté lze určovat, které adresáře jsou sdíleny s kterými přístroji.
-\nVšechny zaznamenané chyby prosím hlašte přes GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing nahrazuje uzavřené cloudové a datové služby něčím otevřeným, důvěryhodným a decentralizovaným.<br/><br/>
+
+		Pro sdílení dat s dalšími přístroji je třeba přidat jejich unikátní ID do seznamu. Poté lze určovat, které adresáře jsou sdíleny s kterými přístroji.<br/><br/>
+
+		Všechny zaznamenané chyby prosím hlašte přes <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Oprávnění pro přístup k úložišti</string>
 	<string name="storage_permission_desc">Aby Syncthing mohl synchronizovat soubory, potřebuje přístup k úložišti.</string>

@@ -8,9 +8,12 @@
 	<!--Welcome wizard-->
 	<!--Slide 1-->
 	<string name="introduction">Wprowadzenie</string>
-	<string name="welcome_text">Syncthing to otwartoźródłowa aplikacja do synchronizacji plików.
-\nAby udostępnić dane innym urządzeniom, musisz dodać ich unikalne identyfikatory urządzeń do listy urządzeń. Następnie możesz wybrać, które foldery chcesz udostępnić ustalonym urządzeniom.
-\nWszelkie problemy, które napotkasz, prosimy zgłaszać za pośrednictwem serwisu GitHub.</string>
+	<string name="welcome_text">
+		<![CDATA[Syncthing zastępuje zamknięte usługi chmurowe i danych czymś otwartym, godnym zaufania i zdecentralizowanym.<br/><br/>
+
+		Aby udostępnić dane innym urządzeniom, musisz dodać ich unikalne identyfikatory urządzeń do listy urządzeń. Następnie możesz wybrać, które foldery chcesz udostępnić określonym urządzeniom.<br/><br/>
+
+		Wszelkie problemy, które napotkasz, prosimy zgłaszać za pośrednictwem serwisu <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Dostęp do plików</string>
 	<string name="storage_permission_desc">Syncthing wymaga dostępu do pamięci urządzenia, aby móc synchronizować pliki.</string>
