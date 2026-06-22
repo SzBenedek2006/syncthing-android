@@ -14,24 +14,25 @@
 
 	<!-- Slide 1 -->
 	<string name="introduction">Introduction</string>
+	<string name="welcome_subtitle">Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.\n</string>
 	<string name="welcome_text">
-		<![CDATA[Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.<br/><br/>
-
-		To share data with other devices, you need to add their unique device IDs to the device list. Afterwards you can select which folders to share with which devices.<br/><br/>
+		<![CDATA[To share data with other devices, you need to add their unique device IDs to the device list. Afterwards you can select which folders to share with which devices.<br/><br/>
 
 		Please report any problems you encounter via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
 	<!-- Slide 2 -->
 	<string name="storage_permission_title">Storage Permission</string>
-	<string name="storage_permission_desc">Syncthing needs to access your storage to do file synchronization.</string>
+	<string name="storage_permission_subtitle">Syncthing needs all-files access permission to do file synchronization.\n</string>
+	<string name="storage_permission_description">Syncthing has advanced features like watching for changes, auto-accept rules and high speed file access.\nWithout this permission most features would not work or be severely limited in functionality, reliability and performance.\n</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Your device does not support all files access</string>
 
 	<!-- Slide 3 -->
 	<string name="location_permission_title">Location Permission (background)</string>
-	<string name="location_permission_desc">Syncthing can be configured to synchronize on selected Wi-Fi networks only. To do that it needs to look up the SSID of the currently connected Wi-Fi, also when the app is closed. Therefore it requires permission to access the location in the background. This information is not used to look up your location. And the only stored information is the Wi-Fi you manually choose to add to the list - no other user data is stored.
-\n
-\nIf you want to use this feature, press the button above to grant the required permissions to Syncthing. Otherwise you can skip this step.</string>
+	<string name="location_permission_subtitle">This optional permission is needed on Android to see the Wi-Fi networks you are connected to.\n</string>
+	<string name="location_permission_description">"Syncthing can be configured to run on selected Wi-Fi networks only.\n
+This is only used for the run conditions feature and nothing else.\n
+All Wi-Fi and network related data is stored on-device."</string>
 
 	<!-- Slide 4 -->
 	<string name="api_level_30_title">Upgrade Information</string>
