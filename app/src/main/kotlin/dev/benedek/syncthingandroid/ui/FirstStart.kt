@@ -40,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,6 +53,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.ui.slides.ApiUpgradeSlide
@@ -70,20 +73,21 @@ fun FirstStartScreen(
 	onFinish: () -> Unit,
 	prefs: SharedPreferences,
 	activity: FirstStartActivity,
-	viewModel: FirstStartViewModel = viewModel()
 ) {
 	val context = LocalContext.current
+	val viewModel: FirstStartViewModel = viewModel(
+		factory = viewModelFactory {
+			initializer {
+				// Use applicationContext to avoid passing Activity context leaks down to the VM
+				FirstStartViewModel(context.applicationContext, prefs)
+			}
+		}
+	)
+
 	val scope = rememberCoroutineScope()
 	val slides = viewModel.slides
 	val lifecycleOwner = LocalLifecycleOwner.current
 
-	// Initialize VM
-	LaunchedEffect(Unit) {
-		viewModel.initialize(context, prefs)
-		if (viewModel.slides.isEmpty()) {
-			onFinish()
-		}
-	}
 
 	// Setup Pager
 	val pagerState = rememberPagerState(pageCount = { slides.size })

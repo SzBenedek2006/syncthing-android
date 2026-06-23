@@ -16,7 +16,10 @@ import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.util.PermissionUtil
 
-class FirstStartViewModel : ViewModel() {
+class FirstStartViewModel(
+	context: Context,
+	prefs: SharedPreferences
+) : ViewModel() {
 	var isStorageGranted by mutableStateOf(false)
 		private set
 	var isLocationGranted by mutableStateOf(false)
@@ -28,7 +31,7 @@ class FirstStartViewModel : ViewModel() {
 	var slides by mutableStateOf<List<FirstStartActivity.Slide>>(emptyList())
 		private set
 
-	fun initialize(context: Context, prefs: SharedPreferences) {
+	init {
 		updatePermissions(context)
 		initApiUpgradeState(prefs)
 		slides = FirstStartActivity.Slide.entries.filter { !shouldSkip(it, context, prefs) }
