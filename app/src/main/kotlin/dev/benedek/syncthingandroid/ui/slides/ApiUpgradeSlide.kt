@@ -44,7 +44,7 @@ fun ApiUpgradeSlide(
 		val context = LocalContext.current
 
 		SlideTitle(stringResource(R.string.api_level_30_title))
-		SlideDescription(stringResource(R.string.api_level_30_desc))
+		SlideDescription(stringResource(R.string.api_level_30_desc), null)
 		Button(
 			onClick = onButtonClick,
 			enabled = !isApiUpgraded

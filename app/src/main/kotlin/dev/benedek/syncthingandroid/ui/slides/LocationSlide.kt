@@ -16,6 +16,7 @@ import dev.benedek.syncthingandroid.ui.reusable.AdaptiveSlideLayout
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideImage
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
+import dev.benedek.syncthingandroid.ui.reusable.TextLayout
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
@@ -30,7 +31,9 @@ fun LocationSlide(
 		},
 		{
 			SlideDescription(
-				stringResource(R.string.location_permission_desc)
+				stringResource(R.string.location_permission_subtitle),
+				stringResource(R.string.location_permission_description),
+				textLayout = TextLayout.Expandable
 			)
 		},
 		Modifier,

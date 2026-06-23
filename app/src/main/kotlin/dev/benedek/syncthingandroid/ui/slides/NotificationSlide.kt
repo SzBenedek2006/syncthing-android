@@ -30,7 +30,8 @@ fun NotificationSlide(
 		},
 		{
 			SlideDescription(
-				stringResource(R.string.require_notification_permission_desc)
+				stringResource(R.string.require_notification_permission_desc),
+				null
 			)
 		},
 		Modifier,

@@ -1,6 +1,12 @@
 package dev.benedek.syncthingandroid.ui.reusable
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,11 +19,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ExpandLess
+import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.retain.retain
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -25,8 +40,10 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -36,6 +53,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+import kotlin.math.exp
 
 
 @SuppressLint("ModifierParameter")
@@ -56,7 +74,6 @@ fun SlideWelcomeTitle(
 	)
 }
 
-@SuppressLint("ModifierParameter")
 @Composable
 fun SlideTitle(
 	text: String,
@@ -74,26 +91,80 @@ fun SlideTitle(
 	)
 }
 
-@SuppressLint("ModifierParameter")
+enum class TextLayout {
+	Fixed,
+	Expandable
+}
+
 @Composable
 fun SlideDescription(
-	text: String,
+	subtitle: AnnotatedString,
+	description: AnnotatedString?,
 	modifier: Modifier = Modifier,
 	textAlign: TextAlign = TextAlign.Center,
 	fontSize: TextUnit = dimensionResource(R.dimen.slide_desc).value.sp,
 	lineHeight: TextUnit = 16.sp,
-
+	textLayout: TextLayout = TextLayout.Fixed
 	) {
-	Text(
-		text = text,
-		modifier = modifier,
-		textAlign = textAlign,
-		fontSize = fontSize,
-		lineHeight = lineHeight
+
+	var expanded by retain { mutableStateOf(textLayout == TextLayout.Fixed) }
+
+
+	Column(horizontalAlignment = Alignment.CenterHorizontally) {
+		Text(
+			text = subtitle,
+			modifier = modifier,
+			textAlign = textAlign,
+			fontSize = fontSize,
+			lineHeight = lineHeight,
+		)
+		if (description != null) {
+			AnimatedVisibility(
+				visible = expanded,
+				enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+				exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+			) {
+				Text(
+					text = description,
+					modifier = modifier,
+					textAlign = textAlign,
+					fontSize = fontSize,
+					lineHeight = lineHeight,
+				)
+			}
+			if (textLayout == TextLayout.Expandable) {
+				IconButton(
+					onClick = { expanded = !expanded }
+				) {
+					Icon(if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore, null)
+				}
+			}
+		}
+
+	}
+}
+
+@Composable
+fun SlideDescription(
+	subtitle: String,
+	description: String?,
+	modifier: Modifier = Modifier,
+	textAlign: TextAlign = TextAlign.Center,
+	fontSize: TextUnit = dimensionResource(R.dimen.slide_desc).value.sp,
+	lineHeight: TextUnit = 16.sp,
+	textLayout: TextLayout = TextLayout.Fixed
+) {
+	SlideDescription(
+		AnnotatedString(subtitle),
+		description.let { if (it == null) null else AnnotatedString(it) },
+		modifier,
+		textAlign,
+		fontSize,
+		lineHeight,
+		textLayout
 	)
 }
 
-@SuppressLint("ModifierParameter")
 @Composable
 fun SlideImage(
 	painter: Painter,
@@ -204,7 +275,10 @@ fun SlideTitlePreview() {
 fun SlideDescriptionPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
 		Surface {
-			SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.")
+			SlideDescription(
+				"Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.",
+				"To share data with other devices, you need to add their unique device IDs to the device list. Afterwards you can select which folders to share with which devices.\n\nPlease report any problems you encounter via GitHub."
+			)
 		}
 	}
 }
@@ -224,7 +298,7 @@ fun AdaptiveSlideLayoutPortraitPreview() {
 		Surface {
 			AdaptiveSlideLayout(
 				title = { SlideTitle("Introduction") },
-				description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.") },
+				description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
 				image = { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
 			)
 		}
@@ -239,7 +313,7 @@ fun AdaptiveSlideLayoutLandscapePreview() {
 			Surface {
 				AdaptiveSlideLayout(
 					title = { SlideTitle("Introduction") },
-					description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.") },
+					description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
 					image = { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
 				)
 			}
