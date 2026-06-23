@@ -15,7 +15,8 @@
 		Harap laporkan masalah apa pun yang Anda temui melalui <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Izin Penyimpanan</string>
-	<string name="storage_permission_description">Syncthing perlu mengakses penyimpanan Anda untuk melakukan sinkronisasi file.</string>
+	<string name="storage_permission_subtitle">Syncthing memerlukan izin akses semua file untuk melakukan sinkronisasi file.\n</string>
+	<string name="storage_permission_description">Syncthing memiliki fitur canggih seperti pemantauan perubahan, aturan terima otomatis, dan sinkronisasi file waktu nyata.\nTanpa izin ini, sebagian besar fitur tidak akan berfungsi atau sangat terbatas dalam fungsionalitas, keandalan, dan kinerja.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Izin Lokasi (latar belakang)</string>
 	<string name="location_permission_description">Sinkronisasi dapat dikonfigurasi untuk menyinkronkan hanya pada jaringan Wi-Fi tertentu. Untuk melakukan itu perlu mencari SSID dari Wi-Fi yang saat ini terhubung, juga ketika aplikasi ditutup. Oleh karena itu diperlukan izin untuk mengakses lokasi di latar belakang. Informasi ini tidak digunakan untuk mencari lokasi Anda. Dan satu-satunya informasi yang tersimpan adalah Wi-Fi yang Anda pilih secara manual untuk ditambahkan ke daftar - tidak ada data pengguna lain yang disimpan.

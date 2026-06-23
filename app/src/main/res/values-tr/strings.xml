@@ -15,7 +15,8 @@
 		Lütfen karşılaştığınız sorunları <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> üzerinden bildirin.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Depolama İzni</string>
-	<string name="storage_permission_description">Dosya eşitlemesi yapmak için Syncthing\'in depolama alanınıza erişmesi gerekiyor.</string>
+	<string name="storage_permission_subtitle">Dosya eşitlemesi yapmak için Syncthing\'in tüm dosyalara erişim iznine ihtiyacı var.\n</string>
+	<string name="storage_permission_description">Syncthing, değişiklikleri izleme, otomatik kabul kuralları ve gerçek zamanlı dosya eşitleme gibi gelişmiş özelliklere sahiptir.\nBu izin olmadan çoğu özellik çalışmaz veya işlevsellik, güvenilirlik ve performans açısından ciddi şekilde sınırlandırılır.</string>
 	<string name="dialog_all_files_access_not_supported">Cihazınız tüm dosyalara erişimi desteklemiyor</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Konum İzni (arka plan)</string>

@@ -15,7 +15,8 @@
 		Ver venleg og rapporter eventuelle problem du støter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Lagringsløyve</string>
-	<string name="storage_permission_description">For å få gjort filsynkronisering treng Syncthing løyve til å få tilgang til lagring.</string>
+	<string name="storage_permission_subtitle">Syncthing treng tilgang til alle filer for å utføre filsynkronisering.\n</string>
+	<string name="storage_permission_description">Syncthing har avanserte funksjonar som å overvake endringar, reglar for automatisk godkjenning og filsynkronisering i sanntid.\nUtan dette løyvet vil dei fleste funksjonane ikkje fungere, eller funksjonaliteten, pålitelegheita og ytinga vil bli sterkt avgrensa.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Tilgang til lokasjonsteneste (bakgrunn)</string>
 	<string name="location_permission_description">Syncthing kan setjast opp til å kun synkronisera på enkelte trådlause nettverk. Får å gjera dette må Syncthing leita opp SSID-en til det trådlause nettverket du er tilknytt, òg når appen er stengt. Vi treng difor løyve til å, i bakgrunnen, henta ut kor du er lokalisert. Denne informasjonen vert ikkje nytta til å leita opp kor du er. Den einaste daten som vert lagra er dei trådlause nettverka som manuelt vel å leggja til lista di - ingen annan data vert lagra.

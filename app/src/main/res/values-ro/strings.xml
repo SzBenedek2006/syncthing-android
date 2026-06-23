@@ -15,7 +15,8 @@
 		Vă rugăm să raportați orice probleme întâmpinați prin <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Permisiune acces stocare</string>
-	<string name="storage_permission_description">Syncthing are nevoie să acceseze stocarea pentru a face sincronizarea fișierelor.</string>
+	<string name="storage_permission_subtitle">Syncthing are nevoie de permisiunea de acces la toate fișierele pentru a efectua sincronizarea fișierelor.\n</string>
+	<string name="storage_permission_description">Syncthing dispune de funcționalități avansate, cum ar fi monitorizarea modificărilor, reguli de acceptare automată și sincronizarea fișierelor în timp real.\nFără această permisiune, majoritatea funcțiilor nu ar funcționa sau ar fi grav limitate în ceea ce privește funcționalitatea, fiabilitatea și performanța.</string>
 	<string name="dialog_all_files_access_not_supported">Dispozitivul dvs. nu acceptă accesul la toate fișierele</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Permisiune locație (fundal)</string>

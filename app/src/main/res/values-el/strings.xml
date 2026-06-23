@@ -410,6 +410,7 @@
 	<string name="location_permission_title">Άδεια τοποθεσίας (παρασκήνιο)</string>
 	<string name="back">Πίσω</string>
 	<string name="dialog_all_files_access_not_supported">Η συσκευή σας δεν υποστηρίζει την πρόσβαση σε όλα τα αρχεία</string>
-	<string name="storage_permission_description">Το Syncthing χρειάζεται πρόσβαση στον αποθηκευτικό σας χώρο προκειμένου να μπορεί να συγχρονίσει αρχεία.</string>
 	<string name="storage_permission_title">Άδεια αποθηκευτικού χώρου</string>
+	<string name="storage_permission_subtitle">Το Syncthing χρειάζεται άδεια πρόσβασης σε όλα τα αρχεία για να πραγματοποιήσει συγχρονισμό αρχείων.\n</string>
+	<string name="storage_permission_description">Το Syncthing διαθέτει προηγμένες λειτουργίες, όπως παρακολούθηση αλλαγών, κανόνες αυτόματης αποδοχής και συγχρονισμό αρχείων σε πραγματικό χρόνο.\nΧωρίς αυτήν την άδεια, οι περισσότερες λειτουργίες δεν θα λειτουργούσαν ή θα ήταν σοβαρά περιορισμένες σε λειτουργικότητα, αξιοπιστία και απόδοση.</string>
 </resources>

@@ -15,7 +15,8 @@
 		請透過 <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> 報告您遇到的任何問題。]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">儲存權限</string>
-	<string name="storage_permission_description">Syncthing 需要訪問您的存儲以進行文件同步.</string>
+	<string name="storage_permission_subtitle">Syncthing 需要「所有檔案存取權」才能進行檔案同步。\n</string>
+	<string name="storage_permission_description">Syncthing 具有監視更改、自動接受規則和實時檔案同步等進階功能。\n如果沒有此權限，大多數功能將無法運行，或在功能、可靠性和性能方面受到嚴重限制。</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">位置權限(背景)</string>
 	<string name="location_permission_description">Syncthing 可以配置為僅在選定的 Wi-Fi 網絡上同步。為此，它需要查找當前連接的 Wi-Fi 的 SSID，在應用程序關閉時也是如此。因此，它需要在後台訪問該位置的權限。此信息不會用於查找您的位置。唯一存儲的信息是您手動選擇添加到列表中的 Wi-Fi - 不會存儲其他用戶數據。

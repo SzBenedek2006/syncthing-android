@@ -15,7 +15,8 @@
 		Mesedez, eman aurkitzen duzun edozein arazoren berri <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> bidez.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Biltegiratzeko baimena</string>
-	<string name="storage_permission_description">Syncthing-ek zure biltegira sartu behar du fitxategiak sinkronizatzeko.</string>
+	<string name="storage_permission_subtitle">Syncthing-ek fitxategi guztietarako sarbide-baimena behar du fitxategiak sinkronizatzeko.\n</string>
+	<string name="storage_permission_description">Syncthing-ek funtzio aurreratuak ditu, hala nola aldaketak monitorizatzea, automatikoki onartzeko arauak eta denbora errealeko fitxategien sinkronizazioa.\nBaimen hori gabe, funtzio gehienek ez lukete funtzionatuko edo oso mugatuta egongo lirateke funtzionaltasunean, fidagarritasunean eta errendimenduan.</string>
 	<string name="dialog_all_files_access_not_supported">Zure gailuak ez du fitxategi guztiak atzitzea onartzen</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Kokapen baimena (atzeko planoa)</string>

@@ -14,7 +14,8 @@
 		कृपया किसी भी समस्या की रिपोर्ट <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> के माध्यम से करें।]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">स्टोरेज की अनुमति</string>
-	<string name="storage_permission_description">फाइल सिंक्रनाइज़ेशन करने के लिए Syncthing को आपके स्टोरेज तक पहुंचने की आवश्यकता है।</string>
+	<string name="storage_permission_subtitle">फ़ाइल सिंक्रनाइज़ेशन करने के लिए Syncthing को सभी फ़ाइलों तक पहुँच की अनुमति की आवश्यकता है।\n</string>
+	<string name="storage_permission_description">Syncthing में बदलावों पर नज़र रखने, स्वतः-स्वीकार नियम और वास्तविक समय फ़ाइल सिंक जैसी उन्नत सुविधाएँ हैं।\nइस अनुमति के बिना अधिकांश सुविधाएँ काम नहीं करेंगी या कार्यक्षमता, विश्वसनीयता और प्रदर्शन में गंभीर रूप से सीमित होंगी।</string>
 	<!--Slide 3-->
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->

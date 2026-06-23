@@ -15,7 +15,8 @@
 		Wszelkie napotkane problemy prosimy zgłaszać poprzez <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Dostęp do plików</string>
-	<string name="storage_permission_description">Syncthing wymaga dostępu do pamięci urządzenia, aby móc synchronizować pliki.</string>
+	<string name="storage_permission_subtitle">Syncthing wymaga uprawnień dostępu do wszystkich plików, aby móc synchronizować pliki.\n</string>
+	<string name="storage_permission_description">Syncthing posiada zaawansowane funkcje, takie jak monitorowanie zmian, reguły automatycznego akceptowania i synchronizacja plików w czasie rzeczywistym.\nBez tych uprawnień większość funkcji nie będzie działać lub ich funkcjonalność, niezawodność i wydajność będą poważnie ograniczone.</string>
 	<string name="dialog_all_files_access_not_supported">Twoje urządzenie nie wspiera dostępu do wszystkich plików</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Uprawnienie dostępu do lokalizacji (w tle)</string>

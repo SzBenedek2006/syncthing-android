@@ -15,7 +15,8 @@
 		Rapporter venligst eventuelle problemer, du støder på, via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Lagertilladelse</string>
-	<string name="storage_permission_description">Syncthing skal have adgang til dit lager for at udføre filsynkronisering.</string>
+	<string name="storage_permission_subtitle">Syncthing har brug for adgangstilladelse til alle filer for at udføre filsynkronisering.\n</string>
+	<string name="storage_permission_description">Syncthing har avancerede funktioner som overvågning af ændringer, regler for automatisk accept og filsynkronisering i realtid.\nUden denne tilladelse vil de fleste funktioner ikke fungere eller være alvorligt begrænsede i funktionalitet, pålidelighed og ydeevne.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Tilladelse til lokalisering (baggrund)</string>
 	<string name="location_permission_description">Syncthing kan konfigureres til kun at synkronisere på udvalgte Wi-Fi-netværk. For at gøre det skal den slå SSID\'et for det aktuelt tilsluttede Wi-Fi op, også når appen er lukket. Derfor kræver den tilladelse til at få adgang til placeringen i baggrunden. Disse oplysninger bruges ikke til at slå din placering op. Og de eneste lagrede oplysninger er det Wi-Fi, du manuelt vælger at tilføje til listen - ingen andre brugerdata gemmes.

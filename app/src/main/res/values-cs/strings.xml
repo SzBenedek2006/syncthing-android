@@ -15,7 +15,8 @@
 		Jakékoli problémy, na které narazíte, nahlaste prosím prostřednictvím <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubu</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Oprávnění pro přístup k úložišti</string>
-	<string name="storage_permission_description">Aby Syncthing mohl synchronizovat soubory, potřebuje přístup k úložišti.</string>
+	<string name="storage_permission_subtitle">Syncthing vyžaduje oprávnění k přístupu ke všem souborům pro provádění synchronizace.\n</string>
+	<string name="storage_permission_description">Syncthing má pokročilé funkce, jako je sledování změn, pravidla pro automatické přijímání a synchronizace souborů v reálném čase.\nBez tohoto oprávnění by většina funkcí nefungovala nebo by byla výrazně omezena v funkčnosti, spolehlivosti a výkonu.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Oprávnění přístupu k poloze (na pozadí)</string>
 	<string name="location_permission_description">Syncthing lze nastavit, aby docházelo k synchronizaci pouze na zvolených Wi-Fi sítích. K tomu potřebuje přístup k informacím o aktuálně připojené Wi-Fi, i pokud je aplikace vypnutá. Je tedy nutné udělit oprávnění. Informace nebudeme používat ke zjišťování Vaší polohy, navíc ukládáme pouze Vámi zadané Wi-Fi sítě.

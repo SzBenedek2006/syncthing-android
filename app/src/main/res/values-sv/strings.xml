@@ -15,7 +15,8 @@
 		Rapportera eventuella problem du stöter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Lagringsbehörighet</string>
-	<string name="storage_permission_description">Syncthing behöver komma åt ditt lagringsutrymme för att utföra filsynkronisering.</string>
+	<string name="storage_permission_subtitle">Syncthing behöver behörighet att få åtkomst till alla filer för att kunna synkronisera filer.\n</string>
+	<string name="storage_permission_description">Syncthing har avancerade funktioner som att övervaka ändringar, regler för automatisk acceptans och filsynkronisering i realtid.\nUtan denna behörighet skulle de flesta funktioner inte fungera eller vara kraftigt begränsade i funktionalitet, tillförlitlighet och prestanda.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Platsbehörighet (bakgrund)</string>
 	<string name="location_permission_description">Syncthing kan konfigureras för att synkronisera endast på utvalda Wi-Fi-nätverk. För att göra det måste den söka upp SSID för det för närvarande anslutna Wi-Fi-nätverket, även när appen är stängd. Därför krävs behörighet för att komma åt platsen i bakgrunden. Denna information används inte för att söka upp din plats. Och den enda lagrade informationen är det Wi-Fi-nätverk du manuellt väljer att lägga till i listan - ingen annan användardata lagras.

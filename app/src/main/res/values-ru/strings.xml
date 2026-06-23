@@ -15,7 +15,8 @@
 		Пожалуйста, сообщайте о любых проблемах, с которыми вы столкнулись, через <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Использование хранилища</string>
-	<string name="storage_permission_description">Syncthing необходим доступ к вашему хранилищу для синхронизации файлов.</string>
+	<string name="storage_permission_subtitle">Syncthing необходимо разрешение на доступ ко всем файлам для синхронизации файлов.\n</string>
+	<string name="storage_permission_description">В Syncthing есть расширенные функции, такие как отслеживание изменений, правила автоматического приема и синхронизация файлов в реальном времени.\nБез этого разрешения большинство функций не будет работать или будет сильно ограничено в функциональности, надежности и производительности.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Определение местоположения (в фоне)</string>
 	<string name="location_permission_description">Вы можете настроить Syncthing, чтобы синхронизация велась только в выбранных сетях Wi-Fi. Для поиска сетей, и только для этого, приложению требуется доступ к местоположению. Никакая другая информация о локации устройства не собирается и не сохраняется.

@@ -15,7 +15,9 @@
 		問題が発生した場合は、<a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>経由で報告してください。]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">ストレージアクセス許可</string>
-	<string name="storage_permission_description">Syncthing はファイル同期を行うためにストレージのアクセス許可が必要です。</string>
+	<string name="storage_permission_subtitle">Syncthing はファイルを同期するためにすべてのファイルへのアクセス許可を必要とします。\n</string>
+	<string name="storage_permission_description">Syncthing には変更の監視、自動承認ルール、リアルタイムのファイル同期などの高度な機能があります。\n
+この許可がないと、ほとんどの機能が動作しないか、機能性、信頼性、パフォーマンスが著しく制限されます。</string>
 	<!--Slide 3-->
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->

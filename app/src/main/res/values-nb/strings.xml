@@ -315,7 +315,8 @@
 
 		Vennligst rapporter eventuelle problemer du støter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<string name="storage_permission_title">Lagringstillatelse</string>
-	<string name="storage_permission_description">Syncthing må få tilgang til lagringsplassen din for å gjøre filsynkronisering.</string>
+	<string name="storage_permission_subtitle">Syncthing trenger tilgang til alle filer for å utføre filsynkronisering.\n</string>
+	<string name="storage_permission_description">Syncthing har avanserte funksjoner som overvåking av endringer, regler for automatisk godkjenning og filsynkronisering i sanntid.\nUten denne tillatelsen vil de fleste funksjonene ikke fungere, eller funksjonaliteten, påliteligheten og ytelsen vil bli sterkt begrenset.</string>
 	<string name="api_level_30_title">Oppgraderingsinformasjon</string>
 	<string name="back">Tilbake</string>
 	<string name="cont">Fortsett</string>

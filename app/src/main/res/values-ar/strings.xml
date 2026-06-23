@@ -180,6 +180,8 @@
 		<![CDATA[لمشاركة البيانات مع الأجهزة الأخرى، تحتاج إلى إضافة معرفات الأجهزة الفريدة الخاصة بها إلى قائمة الأجهزة. بعد ذلك، يمكنك اختيار المجلدات التي تريد مشاركتها مع أي أجهزة.<br/><br/>
 
 		يرجى الإبلاغ عن أي مشاكل تواجهها عبر <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
+	<string name="storage_permission_subtitle">يحتاج Syncthing إلى إذن الوصول إلى جميع الملفات لإجراء مزامنة الملفات.\n</string>
+	<string name="storage_permission_description">يحتوي Syncthing على ميزات متقدمة مثل مراقبة التغييرات وقواعد القبول التلقائي ومزامنة الملفات في الوقت الفعلي.\nبدون هذا الإذن، لن تعمل معظم الميزات أو ستكون محدودة للغاية في الوظائف والموثوقية والأداء.</string>
 	<string name="welcome_title">مرحبا بك في Syncthing على نظام أندرويد</string>
 	<string name="introduction">مقدمة</string>
 	<string name="api_level_30_title">معلومات التحديث</string>

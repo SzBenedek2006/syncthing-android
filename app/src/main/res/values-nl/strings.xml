@@ -15,7 +15,8 @@
 		Meld eventuele problemen die u tegenkomt via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Opslagmachtiging</string>
-	<string name="storage_permission_description">Syncthing heeft toegang nodig tot jouw opslag om bestandssynchronisatie uit te voeren.</string>
+	<string name="storage_permission_subtitle">Syncthing heeft toegang tot alle bestanden nodig om bestandssynchronisatie uit te voeren.\n</string>
+	<string name="storage_permission_description">Syncthing heeft geavanceerde functies zoals het controleren op wijzigingen, regels voor automatisch accepteren en realtime bestandssynchronisatie.\nZonder deze machtiging werken de meeste functies niet of zijn de functionaliteit, betrouwbaarheid en prestaties sterk beperkt.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Locatiemachtiging (achtergrond)</string>
 	<string name="location_permission_description">Syncthing kan worden ingesteld om alleen via geselecteerde wifi-netwerken te synchroniseren. Om dat te doen, moet het de ssid van het momenteel verbonden wifi-netwerk opzoeken, ook als de app is afgesloten. Daarom heeft Syncthing toestemming nodig om op de achtergrond de locatie op te vragen. Deze informatie wordt niet gebruikt om jóuw locatie te verkrijgen. De enige opgeslagen informatie is het door jou gekozen wifi-netwerk om aan de lijst toe te voegen - er worden geen andere gebruikersgegevens opgeslagen.

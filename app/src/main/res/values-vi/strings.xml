@@ -15,7 +15,8 @@
 		Vui lòng báo cáo bất kỳ vấn đề nào bạn gặp phải qua <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Quyền bộ nhớ</string>
-	<string name="storage_permission_description">Syncthing cần truy cập bộ nhớ của bạn để đồng bộ hoá tệp.</string>
+	<string name="storage_permission_subtitle">Syncthing cần quyền truy cập vào tất cả các tệp để thực hiện đồng bộ hóa tệp.\n</string>
+	<string name="storage_permission_description">Syncthing có các tính năng nâng cao như theo dõi các thay đổi, tự động chấp nhận các quy tắc và đồng bộ hóa tệp trong thời gian thực.\nNếu không có quyền này, hầu hết các tính năng sẽ không hoạt động hoặc bị giới hạn nghiêm trọng về chức năng, độ tin cậy và hiệu suất.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Quyền vị trí (trong nền)</string>
 	<string name="location_permission_description">Syncthing có thể được thiết lập để chỉ đồng bộ hoá khi được kết nối đến các mạng Wi-Fi được chọn. Để làm vậy, nó cần tra cứu SSID của mạng Wi-Fi hiện được kết nối, và cả khi ứng dụng đã được đóng. Do đó nó yêu cầu quyền truy cập vị trí trong nền. Thông tin này không được sử dụng để tra cứu vị trí của bạn. Và thông tin duy nhất được lưu trữ đó là mạng Wi-Fi bạn chọn để thêm vào danh sách này theo cách thủ công - không có dữ liệu người dùng nào khác được lưu trữ.

@@ -15,7 +15,8 @@
 		Segnala eventuali problemi riscontrati tramite <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Autorizzazione di archiviazione</string>
-	<string name="storage_permission_description">Syncthing deve accedere allo spazio di archiviazione per eseguire la sincronizzazione dei file.</string>
+	<string name="storage_permission_subtitle">Syncthing ha bisogno dell\'autorizzazione di accesso a tutti i file per eseguire la sincronizzazione dei file.\n</string>
+	<string name="storage_permission_description">Syncthing dispone di funzionalità avanzate come il monitoraggio delle modifiche, regole di accettazione automatica e la sincronizzazione dei file in tempo reale.\nSenza questa autorizzazione, la maggior parte delle funzionalità non funzionerebbe o sarebbe gravemente limitata in termini di funzionalità, affidabilità e prestazioni.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Autorizzazione per la posizione (background)</string>
 	<string name="location_permission_description">Syncthing può essere configurato per sincronizzarsi solo su reti Wi-Fi selezionate. Per farlo è necessario cercare l\'SSID della Wi-Fi attualmente connessa, anche quando l\'app è chiusa. Pertanto è necessaria l\'autorizzazione per accedere alla posizione in background. Queste informazioni non vengono utilizzate per cercare la tua posizione. E le uniche informazioni memorizzate sono la Wi-Fi che si sceglie manualmente di aggiungere all\'elenco: nessun altro dato utente viene memorizzato.
