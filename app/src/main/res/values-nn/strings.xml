@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing har avanserte funksjonar som å overvake endringar, reglar for automatisk godkjenning og filsynkronisering i sanntid.\nUtan dette løyvet vil dei fleste funksjonane ikkje fungere, eller funksjonaliteten, pålitelegheita og ytinga vil bli sterkt avgrensa.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Tilgang til lokasjonsteneste (bakgrunn)</string>
-	<string name="location_permission_description">Syncthing kan setjast opp til å kun synkronisera på enkelte trådlause nettverk. Får å gjera dette må Syncthing leita opp SSID-en til det trådlause nettverket du er tilknytt, òg når appen er stengt. Vi treng difor løyve til å, i bakgrunnen, henta ut kor du er lokalisert. Denne informasjonen vert ikkje nytta til å leita opp kor du er. Den einaste daten som vert lagra er dei trådlause nettverka som manuelt vel å leggja til lista di - ingen annan data vert lagra.
-\n
-\nOm du ynskjer å nytta denne funksjonen, trykk på knappen over for å gje løyvene som Syncthing treng for dette. Om du ynskjer kan du hoppa over dette steget.</string>
+	<string name="location_permission_subtitle">Dette valfrie løyvet er naudsynt på Android for å sjå kva Wi-Fi-nettverk du er knytt til.
+</string>
+	<string name="location_permission_description">Syncthing kan setjast opp til å synkronisere kun på valde Wi-Fi-nettverk.
+
+Dette vert kun nytta til funksjonen for køyrebetingelsar og ingen ting anna.
+
+All Wi-Fi- og nettverksrelatert data vert lagra på eininga.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Attende</string>

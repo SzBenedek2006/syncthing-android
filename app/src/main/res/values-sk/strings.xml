@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing má pokročilé funkcie, ako je sledovanie zmien, pravidlá automatického prijímania a synchronizácia súborov v reálnom čase.\nBez tohto oprávnenia by väčšina funkcií nefungovala alebo by bola výrazne obmedzená ich funkčnosť, spoľahlivosť a výkon.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Prístup k polohe zariadenia (na pozadí)</string>
-	<string name="location_permission_description">Syncthing sa dá nastaviť tak, aby bežal iba na zvolených WiFi sieťach. Rozpoznávanie dostupných WiFi sietí sa považuje za určovanie polohy. V tejto aplikácii sa však informácie o WiFi na určovanie polohy nepoužívajú. Jediný účel prečítania dostupných WiFi sietí je zobrazenie v zozname na výber sietí.
-\n
-\nAk chcete povolenie synchronizácie vymedziť podľa WiFi, povoľte aplikácii Syncthing prístup k polohe zariadenia aj keď je aplikácia neaktívna. Inak môžete tento krok preskočiť.</string>
+	<string name="location_permission_subtitle">Toto voliteľné povolenie je v systéme Android potrebné na zobrazenie sietí Wi-Fi, ku ktorým ste pripojení.
+</string>
+	<string name="location_permission_description">Syncthing je možné nastaviť tak, aby sa synchronizoval iba vo vybraných sieťach Wi-Fi.
+
+Toto sa používa výlučne pre funkciu podmienok spustenia a na nič iné.
+
+Všetky údaje týkajúce sa Wi-Fi a siete sú uložené v zariadení.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Späť</string>

@@ -23,16 +23,17 @@
 	<!-- Slide 2 -->
 	<string name="storage_permission_title">Storage Permission</string>
 	<string name="storage_permission_subtitle">Syncthing needs all-files access permission to do file synchronization.\n</string>
-	<string name="storage_permission_description">Syncthing has advanced features like watching for changes, auto-accept rules and high speed file access.\nWithout this permission most features would not work or be severely limited in functionality, reliability and performance.\n</string>
+	<string name="storage_permission_description">Syncthing has advanced features like watching for changes, auto-accept rules and real-time file sync.\n
+Without this permission most features would not work or be severely limited in functionality, reliability and performance.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Your device does not support all files access</string>
 
 	<!-- Slide 3 -->
 	<string name="location_permission_title">Location Permission (background)</string>
 	<string name="location_permission_subtitle">This optional permission is needed on Android to see the Wi-Fi networks you are connected to.\n</string>
-	<string name="location_permission_description">"Syncthing can be configured to run on selected Wi-Fi networks only.\n
+	<string name="location_permission_description">Syncthing can be configured to sync on selected Wi-Fi networks only.\n
 This is only used for the run conditions feature and nothing else.\n
-All Wi-Fi and network related data is stored on-device."</string>
+All Wi-Fi and network related data is stored on-device.</string>
 
 	<!-- Slide 4 -->
 	<string name="api_level_30_title">Upgrade Information</string>

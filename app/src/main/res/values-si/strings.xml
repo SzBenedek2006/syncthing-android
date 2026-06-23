@@ -15,6 +15,10 @@
 	<string name="storage_permission_description">Syncthing හට වෙනස්කම් සඳහා බලා සිටීම, ස්වයංක්‍රීය පිළිගැනීමේ නීති සහ තථ්‍ය කාලීන ගොනු සමමුහූර්ත කිරීම වැනි උසස් විශේෂාංග ඇත.\nමෙම අවසරය නොමැතිව බොහෝ විශේෂාංග ක්‍රියා නොකරනු ඇත, නැතහොත් ක්‍රියාකාරීත්වය, විශ්වසනීයත්වය සහ කාර්ය සාධනය දැඩි ලෙස සීමා වනු ඇත.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">ස්ථානීය අවසරය (පසුබිම)</string>
+	<string name="location_permission_subtitle">ඔබ සම්බන්ධ වී ඇති Wi-Fi ජාල බැලීමට Android මත මෙම විකල්ප අවසරය අවශ්‍ය වේ.\n</string>
+	<string name="location_permission_description">තෝරාගත් Wi-Fi ජාල මත පමණක් සමමුහූර්ත කිරීමට Syncthing වින්‍යාසගත කළ හැක.\n
+මෙය ධාවන කොන්දේසි විශේෂාංගය සඳහා පමණක් භාවිත වන අතර වෙනත් කිසිවක් සඳහා නොවේ.\n
+සියලුම Wi-Fi සහ ජාල සම්බන්ධ දත්ත උපාංගය මත ගබඩා වේ.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">ආපසු</string>

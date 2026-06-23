@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing har avancerade funktioner som att övervaka ändringar, regler för automatisk acceptans och filsynkronisering i realtid.\nUtan denna behörighet skulle de flesta funktioner inte fungera eller vara kraftigt begränsade i funktionalitet, tillförlitlighet och prestanda.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Platsbehörighet (bakgrund)</string>
-	<string name="location_permission_description">Syncthing kan konfigureras för att synkronisera endast på utvalda Wi-Fi-nätverk. För att göra det måste den söka upp SSID för det för närvarande anslutna Wi-Fi-nätverket, även när appen är stängd. Därför krävs behörighet för att komma åt platsen i bakgrunden. Denna information används inte för att söka upp din plats. Och den enda lagrade informationen är det Wi-Fi-nätverk du manuellt väljer att lägga till i listan - ingen annan användardata lagras.
-\n
-\nOm du vill använda denna funktion, tryck på knappen ovan för att ge de nödvändiga behörigheterna till Syncthing. Annars kan du hoppa över detta steg.</string>
+	<string name="location_permission_subtitle">Denna valfria behörighet behövs på Android för att se vilka Wi-Fi-nätverk du är ansluten till.
+</string>
+	<string name="location_permission_description">Syncthing kan konfigureras för att endast synkronisera på valda Wi-Fi-nätverk.
+
+Detta används enbart för funktionen körvillkor och inget annat.
+
+All Wi-Fi- och nätverksrelaterad data lagras på enheten.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Bakåt</string>

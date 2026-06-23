@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing dispone di funzionalità avanzate come il monitoraggio delle modifiche, regole di accettazione automatica e la sincronizzazione dei file in tempo reale.\nSenza questa autorizzazione, la maggior parte delle funzionalità non funzionerebbe o sarebbe gravemente limitata in termini di funzionalità, affidabilità e prestazioni.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Autorizzazione per la posizione (background)</string>
-	<string name="location_permission_description">Syncthing può essere configurato per sincronizzarsi solo su reti Wi-Fi selezionate. Per farlo è necessario cercare l\'SSID della Wi-Fi attualmente connessa, anche quando l\'app è chiusa. Pertanto è necessaria l\'autorizzazione per accedere alla posizione in background. Queste informazioni non vengono utilizzate per cercare la tua posizione. E le uniche informazioni memorizzate sono la Wi-Fi che si sceglie manualmente di aggiungere all\'elenco: nessun altro dato utente viene memorizzato.
-\n
-\nSe si desidera utilizzare questa funzione, premere il pulsante in alto per concedere le autorizzazioni richieste a Syncthing. Altrimenti è possibile saltare questo passaggio.</string>
+	<string name="location_permission_subtitle">Questa autorizzazione opzionale è necessaria su Android per vedere le reti Wi-Fi a cui sei connesso.
+</string>
+	<string name="location_permission_description">Syncthing può essere configurato per sincronizzarsi solo su reti Wi-Fi selezionate.
+
+Questo viene utilizzato solo per la funzione delle condizioni di esecuzione e nient\'altro.
+
+Tutti i dati relativi al Wi-Fi e alla rete vengono memorizzati sul dispositivo.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Indietro</string>

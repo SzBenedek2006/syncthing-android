@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing té funcions avançades com el seguiment de canvis, regles d\'acceptació automàtica i sincronització de fitxers en temps real.\nSense aquest permís, la majoria de funcions no funcionarien o estarien greument limitades en funcionalitat, fiabilitat i rendiment.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Permís d\'ubicació (de fons)</string>
-	<string name="location_permission_description">La sincronització es pot configurar per sincronitzar només a les xarxes Wi-Fi seleccionades. Per fer-ho, ha de buscar el SSID de la xarxa Wi-Fi connectada actualment, també quan l\'aplicació està tancada. Per tant, requereix permís per accedir a la ubicació en segon pla. Aquesta informació no s\'utilitza per cercar la vostra ubicació. I l\'única informació emmagatzemada és la Wi-Fi que trieu afegir manualment a la llista; no s\'emmagatzemen altres dades d\'usuari.
-\n
-\nSi voleu utilitzar aquesta funció, premeu el botó de dalt per concedir els permisos necessaris per a la sincronització. En cas contrari, podeu ometre aquest pas.</string>
+	<string name="location_permission_subtitle">Aquest permís opcional és necessari a Android per veure les xarxes Wi-Fi a les quals esteu connectat.
+</string>
+	<string name="location_permission_description">Syncthing es pot configurar per sincronitzar només en les xarxes Wi-Fi seleccionades.
+
+Això només s\'utilitza per a la funció de condicions d\'execució i per a res més.
+
+Totes les dades relacionades amb Wi-Fi i xarxes s\'emmagatzemen al dispositiu.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Torna</string>

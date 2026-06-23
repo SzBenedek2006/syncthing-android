@@ -172,9 +172,13 @@
 	<!--Displays the current file versioning type in the Folder activity-->
 	<!--Information displayed about the current file versioning configuration in the folder activity-->
 	<!--error message if the deviceID/QRCode dialog for some reason cannot be displayed.-->
-	<string name="location_permission_description">يمكن تخصيص Syncthing ليعمل على الشبكات اللاسلكية المصطفاة فقط. لنتمكن من فعل هذا نحتاج للوصول لعنوان SSID الخاص بالشبكة المتصلة، وإن كان التطبيق مغلقا. لهذا يجب منح التطبيق الإذن لقراءة الموقع أثناء عمله في الخلفية. لا تُستخدم هذه المعلومات لتتبع موقعك. ولا تُسجل غير الشبكات التي تختارها بنفسك - لا تُجمع معلومات إضافية عن المستخدم.
-\n
-\nإذا أردت استخدام هذه الخاصية، اضغط الزِّر أعلاه لإعطاء Syncthing الصلاحيات اللازمة. يمكنك تخطي هذه الخطوة إذا شئت.</string>
+	<string name="location_permission_subtitle">هذا الإذن الاختياري مطلوب على نظام أندرويد لمعرفة شبكات Wi-Fi المتصل بها.
+</string>
+	<string name="location_permission_description">يمكن تهيئة Syncthing للمزامنة على شبكات Wi-Fi محددة فقط.
+
+يُستخدم هذا فقط لميزة شروط التشغيل ولا شيء غير ذلك.
+
+يتم تخزين جميع البيانات المتعلقة بشبكات Wi-Fi والشبكة على الجهاز.</string>
 	<string name="welcome_subtitle">يقوم Syncthing باستبدال خدمات السحاب والبيانات الاحتكارية بشيء مفتوح وموثوق ولا مركزي.\n</string>
 	<string name="welcome_text">
 		<![CDATA[لمشاركة البيانات مع الأجهزة الأخرى، تحتاج إلى إضافة معرفات الأجهزة الفريدة الخاصة بها إلى قائمة الأجهزة. بعد ذلك، يمكنك اختيار المجلدات التي تريد مشاركتها مع أي أجهزة.<br/><br/>

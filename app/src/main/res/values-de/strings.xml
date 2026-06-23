@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing verfügt über erweiterte Funktionen wie das Überwachen von Änderungen, Regeln zur automatischen Annahme und Dateisynchronisation in Echtzeit.\nOhne diese Berechtigung würden die meisten Funktionen nicht funktionieren oder in ihrer Funktionalität, Zuverlässigkeit und Leistung stark eingeschränkt sein.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Standortberechtigung (Hintergrund)</string>
-	<string name="location_permission_description">Syncthing kann so konfiguriert werden, dass es sich nur in bestimmten WLAN-Netzen synchronisiert. Um dies tun zu können, muss es die SSID des momentan verbundenen WLAN herausfinden, auch wenn die App geschlossen ist. Dazu benötigt es die Berechtigung zur Abfrage des Standorts im Hintergrund. Diese Informationen werden nicht dazu genutzt nach deinem Standort zu sehen. Und die einzige gespeicherte Information ist das WLAN, dass du ausgewählt hast, um es auf die Liste zu setzen - darüberhinausgehende Benutzerdaten werden nicht gespeichert.
-\n
-\nWenn du diese Funktion nutzen willst, drücke den Knopf oben, um Syncthing die erforderlichen Berechtigungen zu erteilen. Anderenfalls kannst du diesen Schritt überspringen.</string>
+	<string name="location_permission_subtitle">Diese optionale Berechtigung wird unter Android benötigt, um die verbundenen WLAN-Netzwerke zu sehen.
+</string>
+	<string name="location_permission_description">Syncthing kann so konfiguriert werden, dass nur in ausgewählten WLAN-Netzwerken synchronisiert wird.
+
+Dies wird nur für die Funktion der Betriebsbedingungen verwendet und für nichts anderes.
+
+Alle WLAN- und netzwerkbezogenen Daten werden auf dem Gerät gespeichert.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Zurück</string>

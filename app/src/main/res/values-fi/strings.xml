@@ -14,6 +14,10 @@
 		Ilmoita mahdollisista ongelmista <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubin</a> kautta.]]></string>
 	<!--Slide 2-->
 	<!--Slide 3-->
+	<string name="location_permission_subtitle">Tämä valinnainen lupa tarvitaan Androidissa, jotta näet Wi-Fi-verkot, joihin olet yhdistetty.\n</string>
+	<string name="location_permission_description">Syncthing voidaan määrittää synkronoimaan vain valituissa Wi-Fi-verkoissa.\n
+Tätä käytetään vain käyntiehdot-ominaisuuteen eikä mihinkään muuhun.\n
+Kaikki Wi-Fi- ja verkkoon liittyvät tiedot tallennetaan laitteelle.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Takaisin</string>

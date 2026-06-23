@@ -15,13 +15,17 @@
         Ha programhibát vagy egyéb problémát találsz, kérlek <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubon</a> keresztül jelentsd.]]></string>
 	<!--Slide 2-->
 	<string name="storage_permission_title">Tárhely jogosultság</string>
-	<string name="storage_permission_description">A szinkronizáláshoz a Syncthingnek hozzáférésre van szüksége a tárhelyhez.</string>
+	<string name="storage_permission_subtitle">Syncthingnek minden-fájl hozzáférés engedélyre van szüksége a fájlok szinkronizálásához.\n</string>
+	<string name="storage_permission_description">A Syncthing olyan fejlett funkciókkal rendelkezik, mint változások figyelése, automatikus elfogadási szabályok és valós idejű fájlszinkronizálás.\n
+Ezen engedély nélkül a legtöbb funkció nem működne, vagy súlyosan korlátozott lenne a funkcionalitás, megbízhatóság és teljesítményében.</string>
+
 	<!--Slide 3-->
 	<string name="dialog_all_files_access_not_supported">Az eszközöd nem támogatja az összes fájl hozzáférését</string>
-	<string name="location_permission_title">Földrajzi hely engedély (háttérben)</string>
-	<string name="location_permission_description">A Syncthing beállítható úgy, hogy csak a kiválasztott Wi-Fi hálózatokon szinkronizáljon. Ehhez az alkalmazás bezárásakor is meg kell keresnie az éppen csatlakoztatott Wi-Fi SSID-jét. Ezért engedélyt igényel a helymeghatározáshoz való hozzáféréshez a háttérben. Ezt az információt nem használja fel az Ön tartózkodási helyének megkeresésére. Az egyetlen tárolt információ az a Wi-Fi, amelyet manuálisan választott a listához - más felhasználói adat nem kerül tárolásra.
-\n
-\nHa használni szeretné ezt a funkciót, nyomja meg a fenti gombot a szükséges engedélyek megadásához a Syncthing számára. Ellenkező esetben kihagyhatja ezt a lépést.</string>
+	<string name="location_permission_title">Hely engedély (háttérben)</string>
+	<string name="location_permission_subtitle">Ez az opcionális engedély szükséges Androidon hogy a Syncthing lássa hogy melyik Wi-Fi hálózatra csatlakozol.\n</string>
+	<string name="location_permission_description">A Syncthing beállítható úgy, hogy csak a kiválasztott Wi-Fi hálózatokon szinkronizáljon.\n
+Ez csak a futási feltételek funkcióhoz lesz használva, semmi máshoz.\n
+Minden Wi-Fi és hálózathoz kapcsolódó adat az eszközön lesz tárolva.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Vissza</string>

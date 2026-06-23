@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing 具有監視變更、自動接受規則和即時檔案同步等進階功能。\n如果沒有此權限，大多數功能將無法運作，或在功能、可靠性和效能方面受到嚴重限制。</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">位置使用權限（背景）</string>
-	<string name="location_permission_description">Syncthing 可以設定只在所選的 Wi-Fi 下進行同步。要做到這點須查找當前連接 Wi-Fi 的 SSID ，也可能在程式關閉時查找。因此他需要在後台使用位置權限，這不會使用你真實座標位置。這只儲存你手動添加到執行列表中的 SSID，不會儲存其他用戶資料。
-\n
-\n如果想使用此功能，請同意給予 Syncthing 授權，否則請跳過這步驟。</string>
+	<string name="location_permission_subtitle">Android 需要此可選權限才能查看您所連接的 Wi-Fi 網路。
+</string>
+	<string name="location_permission_description">Syncthing 可以設定為僅在選定的 Wi-Fi 網路上進行同步。
+
+此權限僅用於執行條件功能，不作其他用途。
+
+所有 Wi-Fi 和網路相關的資料都會儲存在裝置本機上。</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">上一步</string>

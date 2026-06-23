@@ -20,9 +20,13 @@
 	<string name="dialog_all_files_access_not_supported">Twoje urządzenie nie wspiera dostępu do wszystkich plików</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Uprawnienie dostępu do lokalizacji (w tle)</string>
-	<string name="location_permission_description">Syncthing może być ustawiony tak, aby synchronizować pliki jedynie na wybranych sieciach Wi-Fi. W tym celu musi mieć możliwość sprawdzania identyfikatora SSID obecnej sieci Wi-Fi, również gdy aplikacja jest zamknięta. W związku z tym potrzebuje on uprawnień do używania lokalizacji w tle. Informacje te nie są wykorzystywane do wykrywania Twojej lokalizacji. Jedyną przechowywaną informacją jest sieć Wi-Fi, którą sam zdecydujesz się dodać ręcznie do listy - żadne inne dane użytkownika nie są przechowywane.
-\n
-\nJeżeli chcesz używać tej funkcji, naciśnij przycisk powyżej, aby udzielić aplikacji Syncthing dostępu do wymaganych uprawnień. W przeciwnym razie możesz pominąć ten krok.</string>
+	<string name="location_permission_subtitle">To opcjonalne uprawnienie jest wymagane w systemie Android, aby widzieć sieci Wi-Fi, z którymi jesteś połączony.
+</string>
+	<string name="location_permission_description">Syncthing można skonfigurować tak, aby synchronizował się tylko w wybranych sieciach Wi-Fi.
+
+Jest to używane wyłącznie do funkcji warunków działania i do niczego innego.
+
+Wszystkie dane związane z Wi-Fi i siecią są przechowywane na urządzeniu.</string>
 	<!--Slide 4-->
 	<string name="api_level_30_title">Informacje o aktualizacji</string>
 	<string name="api_level_30_desc">W najnowszej aktualizacji syncthing-android jest ukierunkowany na poziom 30 API, który zmienia zachowanie systemu plików Androida. Dobra wiadomość: na Androidzie 11 i nowszych można teraz zapisywać na zewnętrznej karcie SD. Zła wiadomość: może być to wolniejsze, a niektóre ścieżki zostaną ukryte. Ze względu na te ukryte ścieżki należy zresetować bazę danych, aby zapobiec utracie danych. Spowoduje to ponowne zaszyfrowanie wszystkich danych, ale nie będzie potrzeby ich przesyłania z urządzeń zdalnych. Może to również powodować konflikty i ponownie tworzyć ostatnio usunięte pliki, jeśli nie jesteś teraz w pełni zsynchronizowany. W zależności od ilości posiadanych danych proces ten może wymagać dużej ilości zasobów, tj. zająć trochę czasu i zużywać dużo energii baterii.

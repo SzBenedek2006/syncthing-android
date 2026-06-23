@@ -20,9 +20,13 @@
 	<string name="dialog_all_files_access_not_supported">Dispozitivul dvs. nu acceptă accesul la toate fișierele</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Permisiune locație (fundal)</string>
-	<string name="location_permission_description">Syncthing poate fi configurat pentru a sincroniza numai pe rețelele Wi-Fi selectate. Pentru a face acest lucru, trebuie să caute SSID-ul Wi-Fi-ului conectat în prezent, chiar și atunci când aplicația este închisă. Prin urmare, necesită permisiunea de a accesa locația din fundal. Aceste informații nu sunt utilizate pentru a vă căuta locația. Și singurele informații stocate sunt Wi-Fi-ul pe care îl alegeți manual să îl adăugați la listă - nu sunt stocate alte date de utilizator.
-\n
-\nDacă doriți să utilizați această caracteristică, apăsați butonul de mai sus pentru a acorda permisiunile necesare pentru Syncthing. În caz contrar, puteți sări peste acest pas.</string>
+	<string name="location_permission_subtitle">Această permisiune opțională este necesară pe Android pentru a vedea rețelele Wi-Fi la care sunteți conectat.
+</string>
+	<string name="location_permission_description">Syncthing poate fi configurat să se sincronizeze doar pe anumite rețele Wi-Fi.
+
+Acest lucru este utilizat doar pentru funcția condițiilor de rulare și nimic altceva.
+
+Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 	<!--Slide 4-->
 	<string name="api_level_30_title">Informații de actualizare</string>
 	<string name="api_level_30_desc">Cu cea mai recentă actualizare, syncthing-android vizează nivelul API 30, care modifică comportamentul sistemului de fișiere Android. Vești bune: Pe Android 11 și pe cele mai noi, este acum capabil să scrie pe un card SD extern. Vești proaste: Este posibil să fie mai lent și unele căi de acces vor fi ascunse. Din cauza acestor căi ascunse, baza de date trebuie resetată pentru a preveni pierderea de date. Acest lucru va face ca toate datele dvs. să fie hașurate din nou, dar nu este nevoie să fie transferate de pe dispozitive la distanță. De asemenea, este posibil să creeze conflicte și să recreeze fișiere șterse recent dacă nu sunteți complet sincronizat în acest moment. În funcție de cantitatea de date pe care o aveți, acest proces poate fi foarte intensiv în ceea ce privește resursele, adică poate dura ceva timp și poate consuma multă energie din baterie.

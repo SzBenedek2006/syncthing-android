@@ -20,9 +20,13 @@
 	<string name="dialog_all_files_access_not_supported">Cihazınız tüm dosyalara erişimi desteklemiyor</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Konum İzni (arka plan)</string>
-	<string name="location_permission_description">Syncthing, yalnızca seçilen kablosuz (Wi-Fi) ağlarda eşitlemek için yapılandırılabilir. Bunu yapmak için uygulama kapalıyken de o anda bağlı olan kablosuzun (Wi-Fi) SSID\'sine bakması gerekir. Bu nedenle, arka planda konuma erişmek için izin gerektirir. Bu bilgiler konumunuzu aramak için kullanılmaz. Ve depolanan tek bilgi, listeye el ile eklemeyi seçtiğiniz kablosuz (Wi-Fi) bağlantıdır - başka hiçbir kullanıcı verisi depolanmaz.
-\n
-\nEğer bu özelliği kullanmak istiyorsanız, Syncthing\'e gerekli izinleri vermek için yukarıdaki düğmeye basın. Aksi takdirde bu adımı atlayabilirsiniz.</string>
+	<string name="location_permission_subtitle">Bağlı olduğunuz Wi-Fi ağlarını görebilmek için Android\'de bu isteğe bağlı izne ihtiyaç vardır.
+</string>
+	<string name="location_permission_description">Syncthing yalnızca seçilen Wi-Fi ağlarında eşitleme yapacak şekilde yapılandırılabilir.
+
+Bu sadece çalıştırma koşulları özelliği için kullanılır ve başka hiçbir şey için kullanılmaz.
+
+Tüm Wi-Fi ve ağ ile ilgili veriler cihazda depolanır.</string>
 	<!--Slide 4-->
 	<string name="api_level_30_title">Yükseltme Bilgileri</string>
 	<string name="api_level_30_desc">En son güncellemeyle syncthing-android, Android\'in dosya sisteminin davranışını değiştiren API seviyesi 30\'u hedefliyor. İyi haber: Android 11 ve daha yeni sürümlerde artık harici bir SD karta yazabiliyor. Kötü haber: Daha yavaş olabilir ve bazı yollar gizlenecektir. Bu gizli yollardan dolayı veri kaybını önlemek için veritabanının sıfırlanması gerekir. Bu, tüm verilerinizin tekrar adreslenmesine neden olacak, ancak bunların uzak cihazlardan aktarılmasına gerek yoktur. Ayrıca, şu anda tam olarak eşitlenmiş değilseniz çakışmalara neden olabilir ve yakın zamanda silinen dosyaları yeniden oluşturabilir. Ne kadar veriye sahip olduğunuza bağlı olarak, bu işlem çok kaynak yoğunluğunda olabilir, yani biraz zaman alabilir ve çok fazla pil gücü kullanabilir.

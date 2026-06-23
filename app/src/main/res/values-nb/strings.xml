@@ -9,6 +9,10 @@
 	<!--Slide 1-->
 	<!--Slide 2-->
 	<!--Slide 3-->
+	<string name="location_permission_subtitle">Denne valgfrie tillatelsen er nødvendig på Android for å se hvilke Wi-Fi-nettverk du er koblet til.\n</string>
+	<string name="location_permission_description">Syncthing kan konfigureres til å synkronisere kun på valgte Wi-Fi-nettverk.\n
+Dette brukes kun til funksjonen for kjørebetingelser og ingenting annet.\n
+All Wi-Fi- og nettverksrelatert data lagres på enheten.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="generic_error">Feil</string>

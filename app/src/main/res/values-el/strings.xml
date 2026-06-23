@@ -408,6 +408,10 @@
 	<string name="share_device_id_chooser">Διαμοιρασμός ID συσκευής με</string>
 	<string name="introduction">Εισαγωγή</string>
 	<string name="location_permission_title">Άδεια τοποθεσίας (παρασκήνιο)</string>
+	<string name="location_permission_subtitle">Αυτή η προαιρετική άδεια είναι απαραίτητη στο Android για να βλέπετε τα δίκτυα Wi-Fi στα οποία είστε συνδεδεμένοι.\n</string>
+	<string name="location_permission_description">Το Syncthing μπορεί να ρυθμιστεί ώστε να συγχρονίζει μόνο σε επιλεγμένα δίκτυα Wi-Fi.\n
+Αυτό χρησιμοποιείται μόνο για τη λειτουργία συνθηκών εκτέλεσης και για τίποτα άλλο.\n
+Όλα τα δεδομένα που σχετίζονται με το Wi-Fi και το δίκτυο αποθηκεύονται στη συσκευή.</string>
 	<string name="back">Πίσω</string>
 	<string name="dialog_all_files_access_not_supported">Η συσκευή σας δεν υποστηρίζει την πρόσβαση σε όλα τα αρχεία</string>
 	<string name="storage_permission_title">Άδεια αποθηκευτικού χώρου</string>

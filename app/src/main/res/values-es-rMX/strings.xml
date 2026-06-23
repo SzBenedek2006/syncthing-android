@@ -18,6 +18,10 @@
 	<string name="storage_permission_subtitle">Syncthing necesita permiso de acceso a todos los archivos para realizar la sincronización de archivos.\n</string>
 	<string name="storage_permission_description">Syncthing tiene funciones avanzadas como la observación de cambios, reglas de aceptación automática y sincronización de archivos en tiempo real.\nSin este permiso, la mayoría de las funciones no funcionarían o estarían seriamente limitadas en su funcionalidad, confiabilidad y rendimiento.</string>
 	<!--Slide 3-->
+	<string name="location_permission_subtitle">Este permiso opcional es necesario en Android para ver las redes Wi-Fi a las que está conectado.\n</string>
+	<string name="location_permission_description">Syncthing se puede configurar para sincronizar solo en redes Wi-Fi seleccionadas.\n
+Esto solo se usa para la función de condiciones de ejecución y nada más.\n
+Todos los datos relacionados con Wi-Fi y redes se almacenan en el dispositivo.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Retroceder</string>

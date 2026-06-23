@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing má pokročilé funkce, jako je sledování změn, pravidla pro automatické přijímání a synchronizace souborů v reálném čase.\nBez tohoto oprávnění by většina funkcí nefungovala nebo by byla výrazně omezena v funkčnosti, spolehlivosti a výkonu.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Oprávnění přístupu k poloze (na pozadí)</string>
-	<string name="location_permission_description">Syncthing lze nastavit, aby docházelo k synchronizaci pouze na zvolených Wi-Fi sítích. K tomu potřebuje přístup k informacím o aktuálně připojené Wi-Fi, i pokud je aplikace vypnutá. Je tedy nutné udělit oprávnění. Informace nebudeme používat ke zjišťování Vaší polohy, navíc ukládáme pouze Vámi zadané Wi-Fi sítě.
-\n
-\nPokud si přejete tuto funkci zapnout, udělte oprávnění tlačítkem výše. Jinak je možné tento krok přeskočit.</string>
+	<string name="location_permission_subtitle">Toto volitelné oprávnění je v systému Android nezbytné pro zobrazení Wi-Fi sítí, ke kterým jste připojeni.
+</string>
+	<string name="location_permission_description">Syncthing lze nakonfigurovat tak, aby se synchronizoval pouze na vybraných Wi-Fi sítích.
+
+Toto se používá pouze pro funkci podmínek spuštění a k ničemu jinému.
+
+Všechna data týkající se Wi-Fi a sítí jsou uložena v zařízení.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Zpět</string>

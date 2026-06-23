@@ -20,9 +20,13 @@
 	<string name="dialog_all_files_access_not_supported">Zure gailuak ez du fitxategi guztiak atzitzea onartzen</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Kokapen baimena (atzeko planoa)</string>
-	<string name="location_permission_description">Sintetizazioa hautatutako Wi-Fi sareetan soilik sinkronizatzeko konfigura daiteke. Horretarako, unean konektatutako Wi-Fi SSIDa bilatu behar du, aplikazioa itxita dagoenean ere. Hori dela eta, atzealdeko kokapenera sartzeko baimena behar da. Informazio hau ez da zure kokapena bilatzeko erabiltzen. Biltegiratutako informazio bakarra zerrendan eskuz gehitzea aukeratu duzun Wi-Fi da. Ez da beste erabiltzaile daturik gordetzen.
-\n
-\nFuntzio hau erabili nahi baduzu, sakatu goiko botoia Syncthing-i beharrezko baimenak emateko. Bestela, urrats hau salta dezakezu.</string>
+	<string name="location_permission_subtitle">Aukerako baimen hau beharrezkoa da Androiden konektatuta zauden Wi-Fi sareak ikusteko.
+</string>
+	<string name="location_permission_description">Syncthing hauta daitezkeen Wi-Fi sareetan soilik sinkronizatzeko konfigura daiteke.
+
+Hau exekuzio baldintzak funtziorako bakarrik erabiltzen da eta ez beste ezertarako.
+
+Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</string>
 	<!--Slide 4-->
 	<string name="api_level_30_title">Eguneraketa informazioa</string>
 	<string name="api_level_30_desc">Azken eguneraketarekin syncthing-android API 30 mailara zuzenduta dago, Android-en fitxategi-sistemaren portaera aldatzen duena. Berri onak: Android 11 eta berriagoetan orain kanpoko SD txartelean idazteko gai da. Berri txarrak: baliteke motelagoa izatea eta bide batzuk ezkutatuta egongo dira. Ezkutuko bide hauek direla eta, datu-basea berrezarri behar da datuak gal ez daitezen. Horrek zure datu guzttiak berriro zifratuko ditu, baina ez dira urruneko gailuetatik transferitu behar izango. Gatazkak ere sor ditzake eta duela gutxi ezabatu diren fitxategiak berriro sor ditzake une honetan guztiz sinkronizatuta ez bazaude. Daukazun datuen arabera, prozesu honek baliabide asko behar ditu, hau da, denbora pixka bat behar du eta bateria asko erabiltzen du.

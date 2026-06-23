@@ -19,9 +19,13 @@
 	<string name="storage_permission_description">Syncthing har avancerede funktioner som overvågning af ændringer, regler for automatisk accept og filsynkronisering i realtid.\nUden denne tilladelse vil de fleste funktioner ikke fungere eller være alvorligt begrænsede i funktionalitet, pålidelighed og ydeevne.</string>
 	<!--Slide 3-->
 	<string name="location_permission_title">Tilladelse til lokalisering (baggrund)</string>
-	<string name="location_permission_description">Syncthing kan konfigureres til kun at synkronisere på udvalgte Wi-Fi-netværk. For at gøre det skal den slå SSID\'et for det aktuelt tilsluttede Wi-Fi op, også når appen er lukket. Derfor kræver den tilladelse til at få adgang til placeringen i baggrunden. Disse oplysninger bruges ikke til at slå din placering op. Og de eneste lagrede oplysninger er det Wi-Fi, du manuelt vælger at tilføje til listen - ingen andre brugerdata gemmes.
-\n
-\nHvis du vil bruge denne funktion, skal du trykke på knappen ovenfor for at give Syncthing de nødvendige tilladelser. Ellers kan du springe dette trin over.</string>
+	<string name="location_permission_subtitle">Denne valgfrie tilladelse er nødvendig på Android for at se de Wi-Fi-netværk, du er forbundet til.
+</string>
+	<string name="location_permission_description">Syncthing kan konfigureres til kun at synkronisere på valgte Wi-Fi-netværk.
+
+Dette bruges kun til funktionen kørselsbetingelser og intet andet.
+
+Alle Wi-Fi- og netværksrelaterede data gemmes på enheden.</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">Tilbage</string>

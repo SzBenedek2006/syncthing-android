@@ -19,6 +19,10 @@
 	<string name="storage_permission_description">Syncthing には変更の監視、自動承認ルール、リアルタイムのファイル同期などの高度な機能があります。\n
 この許可がないと、ほとんどの機能が動作しないか、機能性、信頼性、パフォーマンスが著しく制限されます。</string>
 	<!--Slide 3-->
+	<string name="location_permission_subtitle">このオプションの権限は、接続している Wi-Fi ネットワークを確認するために Android で必要です。\n</string>
+	<string name="location_permission_description">Syncthing は、選択した Wi-Fi ネットワーク上でのみ同期するように設定できます。\n
+これは実行条件機能にのみ使用され、他の目的には使用されません。\n
+Wi-Fi およびネットワーク関連のデータはすべてデバイスに保存されます。</string>
 	<!--Slide 4-->
 	<!--Generic texts used everywhere-->
 	<string name="back">戻る</string>
