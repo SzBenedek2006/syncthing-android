@@ -540,7 +540,7 @@ Tutti i dati relativi al Wi-Fi e alla rete vengono memorizzati sul dispositivo.<
 	<string name="api_level_30_title">Informazioni Aggiornamento</string>
 	<string name="api_level_30_button">Ripristina il database</string>
 	<string name="toast_api_level_30_must_reset">È possibile continuare solamente cliccando sul pulsante di ripristino del database.</string>
-	<string name="require_notification_permission_desc">Necessario per ricevere notifiche di connessioni da parte di nuovi dispositivi, richieste di condivisione cartella, ecc.</string>
+	<string name="require_notification_permission_description">Necessario per ricevere notifiche di connessioni da parte di nuovi dispositivi, richieste di condivisione cartella, ecc.</string>
 	<string name="enable_notification_permission">Abilita Permesso di Inviare Notifiche</string>
 	<string name="api_level_30_desc">Con l\'aggiornamento più recente syncthing-android ha come target il livello di API 30, che comporta delle modifiche al comportamento del filesystem Android. La buona notizia è che su Android 11 e più recenti è ora possibile accedere in scrittura alla SD esterna. La brutta notizia è che potrebbe essere più lento e alcuni path nascosti. A causa di questi path nascosti, il database necessita di essere resettato per prevenire perdite di dati. Questo implica che dovrà essere ricalcolato l\'hash dei dati, ma non sarà necessario scaricare dati dai dispositivi remoti. Potrebbero verificarsi dei conflitti e alcuni file recentemente eliminati potrebbero essere ricreati, se in questo momento non si è perfettamente allineati. In base alla quantità di dati in gioco, il processo potrebbe essere pesante, cioè potrebbe richiedere tempo e incidere sulla batteria.
 \n

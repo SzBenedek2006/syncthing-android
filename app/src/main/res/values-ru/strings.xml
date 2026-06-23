@@ -551,5 +551,5 @@
 	<string name="toast_api_level_30_must_reset">Вы можете продолжить, только нажав кнопку сброса базы данных.</string>
 	<string name="api_level_30_button">Сбросить базу данных</string>
 	<string name="api_level_30_title">Информация о обновлении</string>
-	<string name="require_notification_permission_desc">Требуется для отображения уведомлений о новых подключениях устройств, запросов на совместное использование папок и т.д.</string>
+	<string name="require_notification_permission_description">Требуется для отображения уведомлений о новых подключениях устройств, запросов на совместное использование папок и т.д.</string>
 </resources>

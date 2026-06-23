@@ -387,7 +387,7 @@
 	<string name="folder_type_sendreceive_description">फोल्डर दूरस्थ डिवाइसों पर परिवर्तन भेजेगा और उनसे परिवर्तन प्राप्त करेगा।</string>
 	<string name="pull_order_type_oldestFirst">सबसे पुराना पहले</string>
 	<string name="pull_order_type_newestFirst">नया पहले</string>
-	<string name="require_notification_permission_desc">नए डिवाइस कनेक्शन, फोल्डर साझाकरण अनुरोध आदि के संबंध में सूचनाएं दिखाना आवश्यक है।</string>
+	<string name="require_notification_permission_description">नए डिवाइस कनेक्शन, फोल्डर साझाकरण अनुरोध आदि के संबंध में सूचनाएं दिखाना आवश्यक है।</string>
 	<string name="device_name">डिवाइस का नाम</string>
 	<string name="state_unknown">अज्ञात</string>
 	<string name="add_device">डिवाइस जोडे</string>

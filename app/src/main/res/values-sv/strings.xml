@@ -541,7 +541,7 @@ All Wi-Fi- och nätverksrelaterad data lagras på enheten.</string>
 	<string name="api_level_30_button">Återställ databas</string>
 	<string name="api_level_30_title">Uppgraderingsinformation</string>
 	<string name="toast_api_level_30_must_reset">Du kan bara fortsätta genom att klicka på knappen för att återställa databasen.</string>
-	<string name="require_notification_permission_desc">Krävs för att visa aviseringar om nya enhetsanslutningar, förfrågningar om mappdelning, etc.</string>
+	<string name="require_notification_permission_description">Krävs för att visa aviseringar om nya enhetsanslutningar, förfrågningar om mappdelning, etc.</string>
 	<string name="notification_permission_title">Aviseringsbehörighet</string>
 	<string name="enable_notification_permission">Aktivera meddelandebehörighet</string>
 </resources>

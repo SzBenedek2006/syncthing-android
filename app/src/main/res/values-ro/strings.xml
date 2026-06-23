@@ -545,7 +545,7 @@ Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 	<string name="browse">Navighează</string>
 	<string name="no_sub_folder_is_selected">Nu este selectat nici un subdirector</string>
 	<string name="share_device_id_chooser">Partajează ID dispozitiv cu</string>
-	<string name="require_notification_permission_desc">Necesar pentru a afișa notificări privind noile conexiuni de dispozitive, cererile de partajare a dosarelor etc.</string>
+	<string name="require_notification_permission_description">Necesar pentru a afișa notificări privind noile conexiuni de dispozitive, cererile de partajare a dosarelor etc.</string>
 	<string name="notification_permission_title">Permisiunea de notificare</string>
 	<string name="enable_notification_permission">Activați permisiunea de notificare</string>
 </resources>

@@ -543,7 +543,7 @@ Todos os dados relacionados a Wi-Fi e rede são armazenados no dispositivo.</str
 \nPor favor pressione o botão abaixo para redefinir o banco de dados e iniciar o Syncthing.</string>
 	<string name="api_level_30_title">Informação de Upgrade</string>
 	<string name="api_level_30_button">Redefinir banco de dados</string>
-	<string name="require_notification_permission_desc">Necessário para mostrar notificações sobre novas conexões de dispositivos, solicitações de compartilhamento de pasta, etc.</string>
+	<string name="require_notification_permission_description">Necessário para mostrar notificações sobre novas conexões de dispositivos, solicitações de compartilhamento de pasta, etc.</string>
 	<string name="notification_permission_title">Permissão de notificação</string>
 	<string name="toast_api_level_30_must_reset">Você só pode continuar clicando no botão para redefinir o banco de dados.</string>
 	<string name="run_conditions_title">Ativar condições de execução</string>

@@ -552,7 +552,7 @@ Minden Wi-Fi és hálózathoz kapcsolódó adat az eszközön lesz tárolva.</st
 	<string name="restart_question">Újraindítás?</string>
 	<string name="restart_description">Újraindítja a Syncthinget a háttérben. Ez nem fogja bezárni az appot.</string>
 	<string name="preview">Előnézet</string>
-	<string name="require_notification_permission_desc">Szükséges az új eszközcsatlakozásokról, mappamegosztási kérelmekről stb. szóló értesítések megjelenítéséhez.</string>
+	<string name="require_notification_permission_description">Szükséges az új eszközcsatlakozásokról, mappamegosztási kérelmekről stb. szóló értesítések megjelenítéséhez.</string>
 	<string name="notification_permission_title">Értesítési engedély</string>
 	<string name="beta">Béta</string>
 </resources>
