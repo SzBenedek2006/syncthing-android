@@ -520,7 +520,7 @@
 	<string name="syncthing_disabled_reason_wifi_is_metered">현재 WiFi는 유료입니다</string>
 	<string name="syncthing_disabled_reason_no_network_or_flightmode">네트워크 연결이 안되어있거나 비행기 모드가 작동 중입니다</string>
 	<string name="notification_permission_title">알림 권한</string>
-	<string name="require_notification_permission_description">새 기기 연결, 폴더 공유 요청 등에 대한 알림을 표시하려면 필요합니다.</string>
+	<string name="notification_permission_description">새 기기 연결, 폴더 공유 요청 등에 대한 알림을 표시하려면 필요합니다.</string>
 	<string name="respect_master_sync_title">Android \'데이터 자동 동기화\' 설정 따르기</string>
 	<string name="sync_only_wifi_ssids_connect_to_wifi">목록에 추가하려면 Wi-Fi에 연결해 주세요.</string>
 	<string name="syncthing_disabled_reason_no_allowed_method">WiFi나 모바일 데이터에서 동기화하도록 설정되지 않음</string>

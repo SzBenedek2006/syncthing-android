@@ -541,7 +541,7 @@ Tüm Wi-Fi ve ağ ile ilgili veriler cihazda depolanır.</string>
 	<string name="browse">Gözat</string>
 	<string name="no_sub_folder_is_selected">Alt klasör seçilmedi</string>
 	<string name="share_device_id_chooser">Cihaz kimliğini şununla paylaş</string>
-	<string name="require_notification_permission_description">Yeni cihaz bağlantıları, klasör paylaşım istekleri vb. ile ilgili bildirimlerin gösterilmesi için gereklidir.</string>
+	<string name="notification_permission_description">Yeni cihaz bağlantıları, klasör paylaşım istekleri vb. ile ilgili bildirimlerin gösterilmesi için gereklidir.</string>
 	<string name="notification_permission_title">Bildirim izni</string>
 	<string name="enable_notification_permission">Bildirim İznini etkinleştir</string>
 </resources>

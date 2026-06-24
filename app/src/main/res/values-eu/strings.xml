@@ -539,7 +539,7 @@ Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</strin
 	<string name="browse">Arakatu</string>
 	<string name="no_sub_folder_is_selected">Ez da azpikarpetarik aukeratu</string>
 	<string name="share_device_id_chooser">Partekatu gailuaren IDa honekin</string>
-	<string name="require_notification_permission_description">Beharrezkoa da gailuen konexio berriei, karpetak partekatzeko eskaerei eta abarrei buruzko jakinarazpenak erakusteko.</string>
+	<string name="notification_permission_description">Beharrezkoa da gailuen konexio berriei, karpetak partekatzeko eskaerei eta abarrei buruzko jakinarazpenak erakusteko.</string>
 	<string name="notification_permission_title">Jakinarazpen-baimena</string>
 	<string name="enable_notification_permission">Gaitu jakinarazpen-baimena</string>
 </resources>

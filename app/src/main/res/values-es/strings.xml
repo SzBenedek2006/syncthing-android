@@ -547,6 +547,6 @@ Todos los datos relacionados con Wi-Fi y redes se almacenan en el dispositivo.</
 	<string name="toast_api_level_30_must_reset">Sólo puede continuar haciendo clic en el botón para restablecer la base de datos.</string>
 	<string name="api_level_30_button">Restablecer la base de datos</string>
 	<string name="notification_permission_title">Permiso de notificación</string>
-	<string name="require_notification_permission_description">Necesario para mostrar las notificaciones sobre nuevas conexiones en los dispositivos, solicitudes para compartir las carpetas, etc.</string>
+	<string name="notification_permission_description">Necesario para mostrar las notificaciones sobre nuevas conexiones en los dispositivos, solicitudes para compartir las carpetas, etc.</string>
 	<string name="default_indicator">Predeterminado</string>
 </resources>

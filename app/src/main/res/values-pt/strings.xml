@@ -544,7 +544,7 @@ Todos os dados relacionados com Wi-Fi e redes são armazenados no dispositivo.</
 	<string name="dialog_all_files_access_not_supported">O seu dispositivo não suporta o acesso a todos os ficheiros</string>
 	<string name="api_level_30_button">Reiniciar base de dados</string>
 	<string name="toast_api_level_30_must_reset">Só pode continuar se clicar neste botão para reiniciar a base de dados.</string>
-	<string name="require_notification_permission_description">É necessário para mostrar notificações relativas às ligações com dispositivos novos, pedidos de partilha de pastas, etc.</string>
+	<string name="notification_permission_description">É necessário para mostrar notificações relativas às ligações com dispositivos novos, pedidos de partilha de pastas, etc.</string>
 	<string name="notification_permission_title">Permissão de notificação</string>
 	<string name="enable_notification_permission">Habilitar permissão de notificação</string>
 	<string name="run_conditions_title">Habilitar condições de execução</string>

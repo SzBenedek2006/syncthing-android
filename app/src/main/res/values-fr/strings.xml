@@ -547,5 +547,5 @@ Toutes les données relatives au Wi-Fi et au réseau sont stockées sur l\'appar
 	<string name="toast_api_level_30_must_reset">Vous ne pouvez continuer qu\'en cliquant sur le bouton de réinitialisation de la base de données.</string>
 	<string name="api_level_30_button">Réinitialiser la base de données</string>
 	<string name="notification_permission_title">Permission de notification</string>
-	<string name="require_notification_permission_description">Nécessaire pour afficher les notifications concernant les nouvelles connexions d\'appareils, les demandes de partage de dossiers, etc.</string>
+	<string name="notification_permission_description">Nécessaire pour afficher les notifications concernant les nouvelles connexions d\'appareils, les demandes de partage de dossiers, etc.</string>
 </resources>

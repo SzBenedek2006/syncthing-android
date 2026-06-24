@@ -543,5 +543,5 @@ Alle Wi-Fi- og netværksrelaterede data gemmes på enheden.</string>
 	<string name="api_level_30_desc">Med den seneste opdatering er syncthing-android rettet mod API-niveau 30, som ændrer adfærden i Androids filsystem. Det er en god nyhed: På Android 11 og nyere er det nu muligt at skrive til et eksternt SD-kort. Dårlige nyheder: Det kan være langsommere, og nogle stier vil være skjulte. På grund af disse skjulte stier skal databasen nulstilles for at forhindre datatab. Det betyder, at alle dine data skal hashes igen, men de behøver ikke at blive overført fra eksterne enheder. Det kan også skabe konflikter og genskabe nyligt slettede filer, hvis du ikke er helt synkroniseret lige nu. Afhængigt af hvor mange data du har, kan denne proces være meget ressourcekrævende, dvs. tage noget tid og bruge en masse batteristrøm..
 \n
 \nTryk på knappen nedenfor for at nulstille databasen og starte Syncthing.</string>
-	<string name="require_notification_permission_description">Nødvendigt for at vise notifikationer om nye enhedsforbindelser, anmodninger om mappedeling osv.</string>
+	<string name="notification_permission_description">Nødvendigt for at vise notifikationer om nye enhedsforbindelser, anmodninger om mappedeling osv.</string>
 </resources>
