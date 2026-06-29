@@ -5,6 +5,10 @@ if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
 	exit
 fi
 
+if [ "${PWD%/syncthing-android/scripts}" != "$PWD" ]; then
+	cd ..
+fi
+
 if [ ! "$(basename "$PWD")" = "syncthing-android" ]; then
 	echo "You are in $PWD, exiting now!"
 	exit
