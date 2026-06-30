@@ -40,6 +40,11 @@ Všetky údaje týkajúce sa Wi-Fi a siete sú uložené v zariadení.</string>
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Odosielať upozornenia</string>
+	<string name="notification_permission_subtitle">Odmietnutie tohto povolenia sťaží prístup k hlavným funkciám aplikácie.\n</string>
+	<string name="notification_permission_description">Toto povolenie je potrebné na zobrazovanie upozornení o synchronizácii na pozadí, žiadostiach o zdieľanie zariadení a priečinkov a ďalších.\n
+\n
+Ak toto povolenie odmietnete, k týmto funkciám budete mať prístup len prostredníctvom webového rozhrania.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Späť</string>

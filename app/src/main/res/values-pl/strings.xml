@@ -47,8 +47,11 @@ Wszystkie dane związane z Wi-Fi i siecią są przechowywane na urządzeniu.</st
 	<string name="toast_api_level_30_must_reset">Kontynuować można jedynie poprzez kliknięcie przycisku resetującego bazę danych.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Zezwolenie na powiadomienia</string>
-	<string name="notification_permission_description">Wymagane do wyświetlania powiadomień dotyczących nowych połączeń urządzeń, żądań udostępnienia folderów itp.</string>
+	<string name="notification_permission_title">Wyślij powiadomienia</string>
+	<string name="notification_permission_subtitle">Odmowa tego uprawnienia utrudni dostęp do podstawowych funkcji aplikacji.\n</string>
+	<string name="notification_permission_description">To uprawnienie jest wymagane do wyświetlania powiadomień o synchronizacji w tle, żądań udostępniania urządzeń i folderów oraz nie tylko.\n
+\n
+Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko poprzez interfejs sieciowy.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Wstecz</string>

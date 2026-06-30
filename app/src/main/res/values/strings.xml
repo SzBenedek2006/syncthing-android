@@ -44,6 +44,13 @@ All Wi-Fi and network related data is stored on-device.</string>
 	<string name="api_level_30_button">Reset database</string>
 	<string name="toast_api_level_30_must_reset">You can only continue by clicking the button to reset the database.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Send notifications</string>
+	<string name="notification_permission_subtitle">Denying this permission will make core features of the app harder to access.\n</string>
+	<string name="notification_permission_description">This permission is required to show notifications about syncing in the background, device and folder sharing requests and more.\n
+\n
+If you deny this permission, you can only access these features through the web interface.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Back</string>
 	<string name="cont">Continue</string>
@@ -771,8 +778,6 @@ All Wi-Fi and network related data is stored on-device.</string>
 	<string name="browse">Browse</string>
 	<string name="no_sub_folder_is_selected">No sub folder is selected</string>
 	<string name="share_device_id_chooser">Share device ID with</string>
-	<string name="notification_permission_description">Required to show notifications regarding new device connections, folder sharing requests, etc.</string>
-	<string name="notification_permission_title">Notification permission</string>
 	<string name="enable_notification_permission">Enable Notification Permission</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="title_activity_test">Test</string>

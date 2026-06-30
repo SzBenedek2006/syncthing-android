@@ -47,8 +47,11 @@
 	<string name="toast_api_level_30_must_reset">Вы можете продолжить, только нажав кнопку сброса базы данных.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Разрешение отправки уведомлений</string>
-	<string name="notification_permission_description">Требуется для отображения уведомлений о новых подключениях устройств, запросов на совместное использование папок и т.д.</string>
+	<string name="notification_permission_title">Отправка уведомлений</string>
+	<string name="notification_permission_subtitle">Отказ в этом разрешении затруднит доступ к основным функциям приложения.\n</string>
+	<string name="notification_permission_description">Это разрешение требуется для отображения уведомлений о фоновой синхронизации, запросах на совместное использование устройств и папок и многом другом.\n
+\n
+Если вы отклоните это разрешение, вы сможете получить доступ к этим функциям только через веб-интерфейс.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>

@@ -37,6 +37,11 @@ Kaikki Wi-Fi- ja verkkoon liittyvät tiedot tallennetaan laitteelle.</string>
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Lähetä ilmoituksia</string>
+	<string name="notification_permission_subtitle">Tämän luvan epääminen vaikeuttaa sovelluksen ydintoimintojen käyttöä.\n</string>
+	<string name="notification_permission_description">Tätä lupaa tarvitaan taustalla tapahtuvan synkronoinnin, laitteiden ja kansioiden jakamispyyntöjen sekä muiden ilmoitusten näyttämiseen.\n
+\n
+Jos epäät tämän luvan, nämä toiminnot ovat käytettävissä vain verkkokäyttöliittymän kautta.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Takaisin</string>

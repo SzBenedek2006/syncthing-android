@@ -47,8 +47,11 @@ Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</strin
 	<string name="toast_api_level_30_must_reset">Datu-basea berrezartzeko botoian klik eginez soilik jarraitu dezakezu.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Jakinarazpen-baimena</string>
-	<string name="notification_permission_description">Beharrezkoa da gailuen konexio berriei, karpetak partekatzeko eskaerei eta abarrei buruzko jakinarazpenak erakusteko.</string>
+	<string name="notification_permission_title">Bidali jakinarazpenak</string>
+	<string name="notification_permission_subtitle">Baimen hau ukatzeak aplikazioaren oinarrizko eginbideak atzitzea zailduko du.\n</string>
+	<string name="notification_permission_description">Baimen hau beharrezkoa da atzeko planoko sinkronizazioari buruzko jakinarazpenak, gailuak eta karpetak partekatzeko eskaerak eta gehiago erakusteko.\n
+\n
+Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dituzu eginbide horiek.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Atzera</string>

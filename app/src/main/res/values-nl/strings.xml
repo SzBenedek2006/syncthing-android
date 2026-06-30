@@ -47,8 +47,11 @@ Alle wifi- en netwerkgerelateerde gegevens worden lokaal op het apparaat opgesla
 	<string name="toast_api_level_30_must_reset">Je kunt alleen doorgaan door op de knop drukken om de database opnieuw op te bouwen.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Toestemming voor meldingen</string>
-	<string name="notification_permission_description">Verplicht voor het tonen van meldingen over nieuwe apparaatverbindingen, deelverzoeken, enz.</string>
+	<string name="notification_permission_title">Meldingen verzenden</string>
+	<string name="notification_permission_subtitle">Het weigeren van deze machtiging maakt het moeilijker om toegang te krijgen tot de kernfuncties van de app.\n</string>
+	<string name="notification_permission_description">Deze machtiging is vereist om meldingen te tonen over achtergrondsychronisatie, apparaat- en mapdeelverzoeken, en meer.\n
+\n
+Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de webinterface.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Terug</string>

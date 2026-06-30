@@ -47,8 +47,11 @@ Tutti i dati relativi al Wi-Fi e alla rete vengono memorizzati sul dispositivo.<
 	<string name="toast_api_level_30_must_reset">È possibile continuare solamente cliccando sul pulsante di ripristino del database.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Permesso di inviare notifiche</string>
-	<string name="notification_permission_description">Necessario per ricevere notifiche di connessioni da parte di nuovi dispositivi, richieste di condivisione cartella, ecc.</string>
+	<string name="notification_permission_title">Invia notifiche</string>
+	<string name="notification_permission_subtitle">Il rifiuto di questa autorizzazione renderà più difficile l\'accesso alle funzionalità principali dell\'app.\n</string>
+	<string name="notification_permission_description">Questa autorizzazione è necessaria per mostrare notifiche sulla sincronizzazione in background, richieste di condivisione di dispositivi e cartelle e altro ancora.\n
+\n
+Se neghi questa autorizzazione, potrai accedere a queste funzionalità solo tramite l\'interfaccia web.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Indietro</string>

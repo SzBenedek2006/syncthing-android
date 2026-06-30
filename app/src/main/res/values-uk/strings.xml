@@ -47,8 +47,11 @@
 	<string name="toast_api_level_30_must_reset">Продовження можливе лише після натиснення кнопки скидання бази даних.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Дозвід на повідомлення</string>
-	<string name="notification_permission_description">Вимагається для повідомлення про з\'єднання від нових пристроїв, запити на доступ на папки, і т.п.</string>
+	<string name="notification_permission_title">Надсилати сповіщення</string>
+	<string name="notification_permission_subtitle">Відмова у наданні цього дозволу ускладнить доступ до основних функцій додатка.\n</string>
+	<string name="notification_permission_description">Цей дозвіл потрібен для показу сповіщень про фонову синхронізацію, запитів на спільний доступ до пристроїв і тек та іншого.\n
+\n
+Якщо ви відхилите цей дозвіл, ви зможете отримати доступ до цих функцій лише через веб-інтерфейс.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>

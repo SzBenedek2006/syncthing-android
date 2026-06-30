@@ -47,8 +47,11 @@ Alle WLAN- und netzwerkbezogenen Daten werden auf dem Gerät gespeichert.</strin
 	<string name="toast_api_level_30_must_reset">Ein Fortsetzen ist nur durch Klicken auf die Schaltfläche zum Zurücksetzen der Datenbank möglich.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Berechtigung für Benachrichtigungen</string>
-	<string name="notification_permission_description">Erforderlich für die Anzeige von Benachrichtigungen bezüglich neuer Geräteverbindungen, Ordnerfreigabeanfragen usw.</string>
+	<string name="notification_permission_title">Benachrichtigungen senden</string>
+	<string name="notification_permission_subtitle">Das Ablehnen dieser Berechtigung erschwert den Zugriff auf Kernfunktionen der App.\n</string>
+	<string name="notification_permission_description">Diese Berechtigung ist erforderlich, um Benachrichtigungen über die Synchronisierung im Hintergrund, Geräte- und Ordnerfreigabeanfragen und mehr anzuzeigen.\n
+\n
+Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über die Web-Oberfläche zugreifen.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Zurück</string>

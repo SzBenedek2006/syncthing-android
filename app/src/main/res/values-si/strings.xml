@@ -35,6 +35,11 @@
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">දැනුම්දීම් එවන්න</string>
+	<string name="notification_permission_subtitle">මෙම අවසරය ප්‍රතික්ෂේප කිරීම යෙදුමේ මූලික විශේෂාංග වෙත ප්‍රවේශ වීම වඩාත් අපහසු කරනු ඇත.\n</string>
+	<string name="notification_permission_description">පසුබිම් සමමුහූර්තකරණය, උපාංග සහ ෆෝල්ඩර බෙදාගැනීමේ ඉල්ලීම් සහ තවත් දේ පිළිබඳ දැනුම්දීම් පෙන්වීමට මෙම අවසරය අවශ්‍ය වේ.\n
+\n
+ඔබ මෙම අවසරය ප්‍රතික්ෂේප කරන්නේ නම්, ඔබට මෙම විශේෂාංග වෙත ප්‍රවේශ විය හැක්කේ වෙබ් අතුරු මුහුණත හරහා පමණි.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">ආපසු</string>

@@ -40,6 +40,11 @@ All Wi-Fi- og nettverksrelatert data vert lagra på eininga.</string>
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Send varsel</string>
+	<string name="notification_permission_subtitle">Å nekte dette løyvet vil gjere appens kjernefunksjonar vanskelegare å få tilgang til.\n</string>
+	<string name="notification_permission_description">Dette løyvet er naudsynt for å vise varsel om bakgrunnssynkronisering, førespurnader om deling av einingar og mapper og meir.\n
+\n
+Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via vebgrensesnittet.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Attende</string>

@@ -38,6 +38,11 @@
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Αποστολή ειδοποιήσεων</string>
+	<string name="notification_permission_subtitle">Η άρνηση αυτής της άδειας θα καταστήσει πιο δύσκολη την πρόσβαση σε βασικές λειτουργίες της εφαρμογής.\n</string>
+	<string name="notification_permission_description">Αυτή η άδεια απαιτείται για την εμφάνιση ειδοποιήσεων σχετικά με το συγχρονισμό στο παρασκήνιο, αιτήματα κοινής χρήσης συσκευών και φακέλων και άλλα.\n
+\n
+Εάν αρνηθείτε αυτήν την άδεια, μπορείτε να έχετε πρόσβαση σε αυτές τις λειτουργίες μόνο μέσω της διεπαφής ιστού.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Πίσω</string>

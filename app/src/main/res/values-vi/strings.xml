@@ -40,6 +40,11 @@ Tất cả dữ liệu liên quan đến Wi-Fi và mạng đều được lưu t
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Gửi thông báo</string>
+	<string name="notification_permission_subtitle">Từ chối quyền này sẽ khiến các tính năng cốt lõi của ứng dụng khó truy cập hơn.\n</string>
+	<string name="notification_permission_description">Quyền này là bắt buộc để hiển thị thông báo về đồng bộ hóa nền, yêu cầu chia sẻ thiết bị và thư mục, v.v.\n
+\n
+Nếu bạn từ chối quyền này, bạn chỉ có thể truy cập các tính năng này thông qua giao diện web.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Quay lại</string>

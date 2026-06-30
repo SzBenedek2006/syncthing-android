@@ -47,8 +47,11 @@ Alle Wi-Fi- og netværksrelaterede data gemmes på enheden.</string>
 	<string name="toast_api_level_30_must_reset">Du kan kun fortsætte ved at klikke på knappen for at nulstille databasen.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Notifikationstilladelse</string>
-	<string name="notification_permission_description">Nødvendigt for at vise notifikationer om nye enhedsforbindelser, anmodninger om mappedeling osv.</string>
+	<string name="notification_permission_title">Send meddelelser</string>
+	<string name="notification_permission_subtitle">Afvisning af denne tilladelse vil gøre appens kernefunktioner sværere at få adgang til.\n</string>
+	<string name="notification_permission_description">Denne tilladelse er påkrævet for at vise meddelelser om synkronisering i baggrunden, anmodninger om deling af enheder og mapper og mere.\n
+\n
+Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via webgrænsefladen.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Tilbage</string>

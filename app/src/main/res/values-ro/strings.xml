@@ -47,8 +47,11 @@ Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 	<string name="toast_api_level_30_must_reset">Puteți continua doar dacă faceți clic pe butonul de resetare a bazei de date.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Permisiunea de notificare</string>
-	<string name="notification_permission_description">Necesar pentru a afișa notificări privind noile conexiuni de dispozitive, cererile de partajare a dosarelor etc.</string>
+	<string name="notification_permission_title">Trimite notificări</string>
+	<string name="notification_permission_subtitle">Refuzarea acestei permisiuni va face ca funcțiile de bază ale aplicației să fie mai greu de accesat.\n</string>
+	<string name="notification_permission_description">Această permisiune este necesară pentru a afișa notificări despre sincronizarea în fundal, cererile de partajare a dispozitivelor și dosarelor și multe altele.\n
+\n
+Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin interfața web.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Înapoi</string>

@@ -47,8 +47,11 @@
 	<string name="toast_api_level_30_must_reset">आप केवल डेटाबेस को रीसेट करने के लिए बटन पर क्लिक करके जारी रख सकते हैं।</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">अधिसूचना अनुमति</string>
-	<string name="notification_permission_description">नए डिवाइस कनेक्शन, फोल्डर साझाकरण अनुरोध आदि के संबंध में सूचनाएं दिखाना आवश्यक है।</string>
+	<string name="notification_permission_title">सूचनाएं भेजें</string>
+	<string name="notification_permission_subtitle">इस अनुमति को अस्वीकार करने से ऐप की मुख्य विशेषताओं तक पहुंचना कठिन हो जाएगा।\n</string>
+	<string name="notification_permission_description">पृष्ठभूमि सिंक, डिवाइस और फ़ोल्डर साझाकरण अनुरोधों और अधिक के बारे में सूचनाएं दिखाने के लिए यह अनुमति आवश्यक है।\n
+\n
+यदि आप इस अनुमति को अस्वीकार करते हैं, तो आप केवल वेब इंटरफ़ेस के माध्यम से इन सुविधाओं तक पहुँच सकते हैं।</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">वापस</string>

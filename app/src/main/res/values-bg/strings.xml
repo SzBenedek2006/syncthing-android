@@ -47,8 +47,11 @@
 	<string name="toast_api_level_30_must_reset">Можете да продължите само след натискане на бутона за нулиране на базата.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Права за известия</string>
-	<string name="notification_permission_description">Необходимо за да се показва свързване с устройства, заявки за споделяне на папки и т.н.</string>
+	<string name="notification_permission_title">Изпращане на известия</string>
+	<string name="notification_permission_subtitle">Отказът на това разрешение ще направи основните функции на приложението по-трудни за достъп.\n</string>
+	<string name="notification_permission_description">Това разрешение е необходимо за показване на известия за синхронизиране във фонов режим, заявки за споделяне на устройства и папки и др.\n
+\n
+Ако откажете това разрешение, можете да получите достъп до тези функции само чрез уеб интерфейса.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>

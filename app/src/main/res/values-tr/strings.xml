@@ -47,8 +47,11 @@ Tüm Wi-Fi ve ağ ile ilgili veriler cihazda depolanır.</string>
 	<string name="toast_api_level_30_must_reset">Veritabanını sıfırlamak için yalnızca düğmeye tıklayarak devam edebilirsiniz.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Bildirim izni</string>
-	<string name="notification_permission_description">Yeni cihaz bağlantıları, klasör paylaşım istekleri vb. ile ilgili bildirimlerin gösterilmesi için gereklidir.</string>
+	<string name="notification_permission_title">Bildirim gönder</string>
+	<string name="notification_permission_subtitle">Bu iznin reddedilmesi, uygulamanın temel özelliklerine erişimi zorlaştıracaktır.\n</string>
+	<string name="notification_permission_description">Bu izin, arka plan senkronizasyonu, cihaz ve klasör paylaşım istekleri ve daha fazlası hakkında bildirimler göstermek için gereklidir.\n
+\n
+Bu izni reddederseniz, bu özelliklere yalnızca web arayüzü üzerinden erişebilirsiniz.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Geri</string>

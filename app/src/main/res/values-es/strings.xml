@@ -47,8 +47,11 @@ Todos los datos relacionados con Wi-Fi y redes se almacenan en el dispositivo.</
 	<string name="toast_api_level_30_must_reset">Sólo puede continuar haciendo clic en el botón para restablecer la base de datos.</string>
 
 	<!-- Slide 5 -->
-	<string name="notification_permission_title">Permiso de notificación</string>
-	<string name="notification_permission_description">Necesario para mostrar las notificaciones sobre nuevas conexiones en los dispositivos, solicitudes para compartir las carpetas, etc.</string>
+	<string name="notification_permission_title">Enviar notificaciones</string>
+	<string name="notification_permission_subtitle">Denegar este permiso hará que las funciones principales de la aplicación sean más difíciles de acceder.\n</string>
+	<string name="notification_permission_description">Este permiso es necesario para mostrar notificaciones sobre la sincronización en segundo plano, solicitudes de uso compartido de dispositivos y carpetas y más.\n
+\n
+Si deniegas este permiso, solo podrás acceder a estas funciones a través de la interfaz web.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Atrás</string>

@@ -38,6 +38,13 @@ Minden Wi-Fi és hálózathoz kapcsolódó adat az eszközön lesz tárolva.</st
 	<!-- Slide 4 -->
 
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Értesítések küldése</string>
+	<string name="notification_permission_subtitle">Az engedély elutasítása megnehezíti az alkalmazás alapfunkcióinak elérését.\n</string>
+	<string name="notification_permission_description">Ez az engedély szükséges a háttérben futó szinkronizálásról, az eszköz- és mappamegosztási kérelmekről szóló és egyéb értesítések megjelenítéséhez.\n
+\n
+Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segítségével érhetőek el.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Vissza</string>
 	<string name="cont">Folytatás</string>
@@ -759,8 +766,6 @@ Minden Wi-Fi és hálózathoz kapcsolódó adat az eszközön lesz tárolva.</st
 	<string name="browse">Tallóz</string>
 	<string name="no_sub_folder_is_selected">Nincs kiválasztott almappa</string>
 	<string name="share_device_id_chooser">Eszközazonosító megosztása ezzel</string>
-	<string name="notification_permission_description">Szükséges az új eszközcsatlakozásokról, mappamegosztási kérelmekről stb. szóló értesítések megjelenítéséhez.</string>
-	<string name="notification_permission_title">Értesítési engedély</string>
 	<string name="enable_notification_permission">Értesítési engedély engedélyezése</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="title_activity_test">Teszt</string>

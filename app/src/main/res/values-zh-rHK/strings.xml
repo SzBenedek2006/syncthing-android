@@ -40,6 +40,11 @@
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">發送通知</string>
+	<string name="notification_permission_subtitle">拒絕此權限將使應用的某些核心功能難以訪問。\n</string>
+	<string name="notification_permission_description">需要此權限來顯示關於背景同步、裝置與資料夾共享請求等的通知。\n
+\n
+如果您拒絕此權限，您只能透過網頁介面訪問這些功能。</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">返回</string>

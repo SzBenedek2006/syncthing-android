@@ -42,6 +42,11 @@ Semua data terkait Wi-Fi dan jaringan disimpan di dalam perangkat.</string>
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Kirim notifikasi</string>
+	<string name="notification_permission_subtitle">Menolak izin ini akan membuat fitur utama aplikasi lebih sulit diakses.\n</string>
+	<string name="notification_permission_description">Izin ini diperlukan untuk menampilkan notifikasi tentang sinkronisasi latar belakang, permintaan berbagi perangkat dan folder, dan banyak lagi.\n
+\n
+Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui antarmuka web.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Kembali</string>

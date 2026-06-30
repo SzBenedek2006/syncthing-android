@@ -47,6 +47,11 @@ Všechna data týkající se Wi-Fi a sítí jsou uložena v zařízení.</string
 	<string name="toast_api_level_30_must_reset">Můžete pokračovat jen po obnovení databáze.</string>
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">Odesílat oznámení</string>
+	<string name="notification_permission_subtitle">Odmítnutí tohoto oprávnění ztíží přístup k hlavním funkcím aplikace.\n</string>
+	<string name="notification_permission_description">Toto oprávnění je vyžadováno k zobrazování oznámení o synchronizaci na pozadí, požadavků na sdílení zařízení a složek a dalších.\n
+\n
+Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouze prostřednictvím webového rozhraní.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Zpět</string>

@@ -39,6 +39,11 @@
 
 
 	<!-- Slide 5 -->
+	<string name="notification_permission_title">إرسال الإشعارات</string>
+	<string name="notification_permission_subtitle">رفض هذا الإذن سيجعل الوصول إلى الميزات الأساسية للتطبيق أكثر صعوبة.\n</string>
+	<string name="notification_permission_description">هذا الإذن مطلوب لإظهار إشعارات حول المزامنة في الخلفية، وطلبات مشاركة الأجهزة والمجلدات والمزيد.\n
+\n
+إذا رفضت هذا الإذن، يمكنك الوصول إلى هذه الميزات فقط من خلال واجهة الويب.</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="cont">استمرار</string>
