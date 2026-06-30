@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">데이터베이스 초기화</string>
 	<string name="toast_api_level_30_must_reset">데이터베이스를 재설정하는 버튼을 클릭해야만 계속할 수 있습니다.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">알림 권한</string>
+	<string name="notification_permission_description">새 기기 연결, 폴더 공유 요청 등에 대한 알림을 표시하려면 필요합니다.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">뒤로</string>
 	<string name="cont">계속하기</string>
@@ -765,8 +769,6 @@
 	<string name="browse">탐색</string>
 	<string name="no_sub_folder_is_selected">하위 폴더가 선택되지 않았습니다</string>
 	<string name="share_device_id_chooser">기기 식별자 공유</string>
-	<string name="notification_permission_description">새 기기 연결, 폴더 공유 요청 등에 대한 알림을 표시하려면 필요합니다.</string>
-	<string name="notification_permission_title">알림 권한</string>
 	<string name="enable_notification_permission">알림 권한 활성화</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

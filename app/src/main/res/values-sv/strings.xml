@@ -46,6 +46,10 @@ All Wi-Fi- och nätverksrelaterad data lagras på enheten.</string>
 	<string name="api_level_30_button">Återställ databas</string>
 	<string name="toast_api_level_30_must_reset">Du kan bara fortsätta genom att klicka på knappen för att återställa databasen.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Aviseringsbehörighet</string>
+	<string name="notification_permission_description">Krävs för att visa aviseringar om nya enhetsanslutningar, förfrågningar om mappdelning, etc.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Bakåt</string>
 	<string name="cont">Fortsätt</string>
@@ -767,8 +771,6 @@ All Wi-Fi- och nätverksrelaterad data lagras på enheten.</string>
 	<string name="browse">Bläddra</string>
 	<string name="no_sub_folder_is_selected">Ingen undermapp är vald</string>
 	<string name="share_device_id_chooser">Dela enhets-ID med</string>
-	<string name="notification_permission_description">Krävs för att visa aviseringar om nya enhetsanslutningar, förfrågningar om mappdelning, etc.</string>
-	<string name="notification_permission_title">Aviseringsbehörighet</string>
 	<string name="enable_notification_permission">Aktivera meddelandebehörighet</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

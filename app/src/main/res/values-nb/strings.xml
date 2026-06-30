@@ -39,6 +39,9 @@ All Wi-Fi- og nettverksrelatert data lagres på enheten.</string>
 	<string name="api_level_30_button">Nullstill database</string>
 	<string name="toast_api_level_30_must_reset">Du kan bare fortsette ved å klikke på knappen for å nullstille databasen.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Varslingsrettigheter</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Tilbake</string>
 	<string name="cont">Fortsett</string>
@@ -679,7 +682,6 @@ All Wi-Fi- og nettverksrelatert data lagres på enheten.</string>
 	<string name="browse">Bla gjennom</string>
 	<string name="no_sub_folder_is_selected">Ingen undermappe er valgt</string>
 	<string name="share_device_id_chooser">Del enhets ID med</string>
-	<string name="notification_permission_title">Varslingsrettigheter</string>
 	<string name="enable_notification_permission">Aktiver varslingsrettigheter</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

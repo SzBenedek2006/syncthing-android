@@ -46,6 +46,10 @@ Wszystkie dane związane z Wi-Fi i siecią są przechowywane na urządzeniu.</st
 	<string name="api_level_30_button">Zresetuj bazę danych</string>
 	<string name="toast_api_level_30_must_reset">Kontynuować można jedynie poprzez kliknięcie przycisku resetującego bazę danych.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Zezwolenie na powiadomienia</string>
+	<string name="notification_permission_description">Wymagane do wyświetlania powiadomień dotyczących nowych połączeń urządzeń, żądań udostępnienia folderów itp.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Wstecz</string>
 	<string name="cont">Dalej</string>
@@ -775,8 +779,6 @@ Wszystkie dane związane z Wi-Fi i siecią są przechowywane na urządzeniu.</st
 	<string name="browse">Przeglądaj</string>
 	<string name="no_sub_folder_is_selected">Żaden podfolder nie został wybrany</string>
 	<string name="share_device_id_chooser">Udostępnij identyfikator urządzenia</string>
-	<string name="notification_permission_description">Wymagane do wyświetlania powiadomień dotyczących nowych połączeń urządzeń, żądań udostępnienia folderów itp.</string>
-	<string name="notification_permission_title">Zezwolenie na powiadomienia</string>
 	<string name="enable_notification_permission">Włącz zezwolenie na powiadomienia</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

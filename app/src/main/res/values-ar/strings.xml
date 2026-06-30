@@ -38,6 +38,8 @@
 	<string name="api_level_30_title">معلومات التحديث</string>
 
 
+	<!-- Slide 5 -->
+
 	<!-- Generic texts used everywhere -->
 	<string name="cont">استمرار</string>
 	<string name="generic_error">خطأ</string>

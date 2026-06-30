@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">Сбросить базу данных</string>
 	<string name="toast_api_level_30_must_reset">Вы можете продолжить, только нажав кнопку сброса базы данных.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Разрешение отправки уведомлений</string>
+	<string name="notification_permission_description">Требуется для отображения уведомлений о новых подключениях устройств, запросов на совместное использование папок и т.д.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>
 	<string name="cont">Продолжить</string>
@@ -775,8 +779,6 @@
 	<string name="browse">Обзор</string>
 	<string name="no_sub_folder_is_selected">Подпапка не выбрана</string>
 	<string name="share_device_id_chooser">Поделиться ID устройства</string>
-	<string name="notification_permission_description">Требуется для отображения уведомлений о новых подключениях устройств, запросов на совместное использование папок и т.д.</string>
-	<string name="notification_permission_title">Разрешение отправки уведомлений</string>
 	<string name="enable_notification_permission">Включить разрешение отправки уведомлений</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

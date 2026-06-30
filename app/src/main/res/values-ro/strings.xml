@@ -46,6 +46,10 @@ Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 	<string name="api_level_30_button">Resetarea bazei de date</string>
 	<string name="toast_api_level_30_must_reset">Puteți continua doar dacă faceți clic pe butonul de resetare a bazei de date.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Permisiunea de notificare</string>
+	<string name="notification_permission_description">Necesar pentru a afișa notificări privind noile conexiuni de dispozitive, cererile de partajare a dosarelor etc.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Înapoi</string>
 	<string name="cont">Continuare</string>
@@ -771,8 +775,6 @@ Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 	<string name="browse">Navighează</string>
 	<string name="no_sub_folder_is_selected">Nu este selectat nici un subdirector</string>
 	<string name="share_device_id_chooser">Partajează ID dispozitiv cu</string>
-	<string name="notification_permission_description">Necesar pentru a afișa notificări privind noile conexiuni de dispozitive, cererile de partajare a dosarelor etc.</string>
-	<string name="notification_permission_title">Permisiunea de notificare</string>
 	<string name="enable_notification_permission">Activați permisiunea de notificare</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

@@ -46,6 +46,10 @@ Todos os dados relacionados a Wi-Fi e rede são armazenados no dispositivo.</str
 	<string name="api_level_30_button">Redefinir banco de dados</string>
 	<string name="toast_api_level_30_must_reset">Você só pode continuar clicando no botão para redefinir o banco de dados.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Permissão de notificação</string>
+	<string name="notification_permission_description">Necessário para mostrar notificações sobre novas conexões de dispositivos, solicitações de compartilhamento de pasta, etc.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Voltar</string>
 	<string name="cont">Continuar</string>
@@ -771,8 +775,6 @@ Todos os dados relacionados a Wi-Fi e rede são armazenados no dispositivo.</str
 	<string name="browse">Navegar</string>
 	<string name="no_sub_folder_is_selected">Nenhuma subpasta selecionada</string>
 	<string name="share_device_id_chooser">Compartilhe ID do dispositivo com</string>
-	<string name="notification_permission_description">Necessário para mostrar notificações sobre novas conexões de dispositivos, solicitações de compartilhamento de pasta, etc.</string>
-	<string name="notification_permission_title">Permissão de notificação</string>
 	<string name="enable_notification_permission">Ativar a Permissão de Notificação</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

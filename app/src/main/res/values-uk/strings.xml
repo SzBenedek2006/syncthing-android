@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">Скинути базу даних</string>
 	<string name="toast_api_level_30_must_reset">Продовження можливе лише після натиснення кнопки скидання бази даних.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Дозвід на повідомлення</string>
+	<string name="notification_permission_description">Вимагається для повідомлення про з\'єднання від нових пристроїв, запити на доступ на папки, і т.п.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>
 	<string name="cont">Продовжити</string>
@@ -775,8 +779,6 @@
 	<string name="browse">Огляд</string>
 	<string name="no_sub_folder_is_selected">Підтеку не вибрано</string>
 	<string name="share_device_id_chooser">Поділитися ідентифікатором пристрою з</string>
-	<string name="notification_permission_description">Вимагається для повідомлення про з\'єднання від нових пристроїв, запити на доступ на папки, і т.п.</string>
-	<string name="notification_permission_title">Дозвід на повідомлення</string>
 	<string name="enable_notification_permission">Дозволити повідомлення</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

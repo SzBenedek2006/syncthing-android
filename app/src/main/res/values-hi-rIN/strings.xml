@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">डेटाबेस रीसेट करें</string>
 	<string name="toast_api_level_30_must_reset">आप केवल डेटाबेस को रीसेट करने के लिए बटन पर क्लिक करके जारी रख सकते हैं।</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">अधिसूचना अनुमति</string>
+	<string name="notification_permission_description">नए डिवाइस कनेक्शन, फोल्डर साझाकरण अनुरोध आदि के संबंध में सूचनाएं दिखाना आवश्यक है।</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">वापस</string>
 	<string name="cont">जारी</string>
@@ -767,8 +771,6 @@
 	<string name="browse">ब्राउज़ करें</string>
 	<string name="no_sub_folder_is_selected">कोई उपफोल्डर चयनित नहीं है</string>
 	<string name="share_device_id_chooser">डिवाइस ID को इनके साथ साझा करें</string>
-	<string name="notification_permission_description">नए डिवाइस कनेक्शन, फोल्डर साझाकरण अनुरोध आदि के संबंध में सूचनाएं दिखाना आवश्यक है।</string>
-	<string name="notification_permission_title">अधिसूचना अनुमति</string>
 	<string name="enable_notification_permission">अधिसूचना अनुमति सक्षम करें</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

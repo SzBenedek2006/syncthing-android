@@ -46,6 +46,8 @@ Všechna data týkající se Wi-Fi a sítí jsou uložena v zařízení.</string
 	<string name="api_level_30_button">Obnovit databázi</string>
 	<string name="toast_api_level_30_must_reset">Můžete pokračovat jen po obnovení databáze.</string>
 
+	<!-- Slide 5 -->
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Zpět</string>
 	<string name="cont">Pokračovat</string>

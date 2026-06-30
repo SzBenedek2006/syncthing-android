@@ -46,6 +46,10 @@ Alle WLAN- und netzwerkbezogenen Daten werden auf dem Gerät gespeichert.</strin
 	<string name="api_level_30_button">Datenbank zurücksetzen</string>
 	<string name="toast_api_level_30_must_reset">Ein Fortsetzen ist nur durch Klicken auf die Schaltfläche zum Zurücksetzen der Datenbank möglich.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Berechtigung für Benachrichtigungen</string>
+	<string name="notification_permission_description">Erforderlich für die Anzeige von Benachrichtigungen bezüglich neuer Geräteverbindungen, Ordnerfreigabeanfragen usw.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Zurück</string>
 	<string name="cont">Weiter</string>
@@ -767,8 +771,6 @@ Alle WLAN- und netzwerkbezogenen Daten werden auf dem Gerät gespeichert.</strin
 	<string name="browse">Durchsuchen</string>
 	<string name="no_sub_folder_is_selected">Kein Ordner ausgewählt</string>
 	<string name="share_device_id_chooser">Geräte-ID teilen mit</string>
-	<string name="notification_permission_description">Erforderlich für die Anzeige von Benachrichtigungen bezüglich neuer Geräteverbindungen, Ordnerfreigabeanfragen usw.</string>
-	<string name="notification_permission_title">Berechtigung für Benachrichtigungen</string>
 	<string name="enable_notification_permission">Berechtigung für Benachrichtigungen erteilen</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="default_indicator">Standard</string>

@@ -46,6 +46,10 @@ Alle Wi-Fi- og netværksrelaterede data gemmes på enheden.</string>
 	<string name="api_level_30_button">Nulstil database</string>
 	<string name="toast_api_level_30_must_reset">Du kan kun fortsætte ved at klikke på knappen for at nulstille databasen.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Notifikationstilladelse</string>
+	<string name="notification_permission_description">Nødvendigt for at vise notifikationer om nye enhedsforbindelser, anmodninger om mappedeling osv.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Tilbage</string>
 	<string name="cont">Fortsæt</string>
@@ -767,8 +771,6 @@ Alle Wi-Fi- og netværksrelaterede data gemmes på enheden.</string>
 	<string name="browse">Gennemse</string>
 	<string name="no_sub_folder_is_selected">Der er ikke valgt nogen undermappe</string>
 	<string name="share_device_id_chooser">Del enheds-ID med</string>
-	<string name="notification_permission_description">Nødvendigt for at vise notifikationer om nye enhedsforbindelser, anmodninger om mappedeling osv.</string>
-	<string name="notification_permission_title">Notifikationstilladelse</string>
 	<string name="enable_notification_permission">Aktivér notifikationstilladelse</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

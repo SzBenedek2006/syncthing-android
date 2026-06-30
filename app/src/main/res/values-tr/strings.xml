@@ -46,6 +46,10 @@ Tüm Wi-Fi ve ağ ile ilgili veriler cihazda depolanır.</string>
 	<string name="api_level_30_button">Veritabanını sıfırla</string>
 	<string name="toast_api_level_30_must_reset">Veritabanını sıfırlamak için yalnızca düğmeye tıklayarak devam edebilirsiniz.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Bildirim izni</string>
+	<string name="notification_permission_description">Yeni cihaz bağlantıları, klasör paylaşım istekleri vb. ile ilgili bildirimlerin gösterilmesi için gereklidir.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Geri</string>
 	<string name="cont">Devam</string>
@@ -767,8 +771,6 @@ Tüm Wi-Fi ve ağ ile ilgili veriler cihazda depolanır.</string>
 	<string name="browse">Gözat</string>
 	<string name="no_sub_folder_is_selected">Alt klasör seçilmedi</string>
 	<string name="share_device_id_chooser">Cihaz kimliğini şununla paylaş</string>
-	<string name="notification_permission_description">Yeni cihaz bağlantıları, klasör paylaşım istekleri vb. ile ilgili bildirimlerin gösterilmesi için gereklidir.</string>
-	<string name="notification_permission_title">Bildirim izni</string>
 	<string name="enable_notification_permission">Bildirim İznini etkinleştir</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

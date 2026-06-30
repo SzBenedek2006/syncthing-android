@@ -46,6 +46,10 @@ Tutti i dati relativi al Wi-Fi e alla rete vengono memorizzati sul dispositivo.<
 	<string name="api_level_30_button">Ripristina il database</string>
 	<string name="toast_api_level_30_must_reset">È possibile continuare solamente cliccando sul pulsante di ripristino del database.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Permesso di inviare notifiche</string>
+	<string name="notification_permission_description">Necessario per ricevere notifiche di connessioni da parte di nuovi dispositivi, richieste di condivisione cartella, ecc.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Indietro</string>
 	<string name="cont">Continua</string>
@@ -771,8 +775,6 @@ Tutti i dati relativi al Wi-Fi e alla rete vengono memorizzati sul dispositivo.<
 	<string name="browse">Sfoglia</string>
 	<string name="no_sub_folder_is_selected">Nessuna sottocartella selezionata</string>
 	<string name="share_device_id_chooser">Condividi ID dispositivo con</string>
-	<string name="notification_permission_description">Necessario per ricevere notifiche di connessioni da parte di nuovi dispositivi, richieste di condivisione cartella, ecc.</string>
-	<string name="notification_permission_title">Permesso di inviare notifiche</string>
 	<string name="enable_notification_permission">Abilita Permesso di Inviare Notifiche</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

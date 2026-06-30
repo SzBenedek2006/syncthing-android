@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">重置資料庫</string>
 	<string name="toast_api_level_30_must_reset">你只能夠點擊按鈕來重置資料庫以繼續。</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">通知權限</string>
+	<string name="notification_permission_description">需要顯示有關新裝置連線、資料夾共杗請求等的通知。</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">上一步</string>
 	<string name="cont">下一步</string>
@@ -763,8 +767,6 @@
 	<string name="browse">瀏覽</string>
 	<string name="no_sub_folder_is_selected">無子資料夾被選擇</string>
 	<string name="share_device_id_chooser">分享裝置識別代碼</string>
-	<string name="notification_permission_description">需要顯示有關新裝置連線、資料夾共杗請求等的通知。</string>
-	<string name="notification_permission_title">通知權限</string>
 	<string name="enable_notification_permission">啟用通知權限</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">Нулиране на базата</string>
 	<string name="toast_api_level_30_must_reset">Можете да продължите само след натискане на бутона за нулиране на базата.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Права за известия</string>
+	<string name="notification_permission_description">Необходимо за да се показва свързване с устройства, заявки за споделяне на папки и т.н.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>
 	<string name="cont">Напред</string>
@@ -767,8 +771,6 @@
 	<string name="browse">Разглеждане</string>
 	<string name="no_sub_folder_is_selected">Не е избрана подпапка</string>
 	<string name="share_device_id_chooser">Споделяне идентификатора на устройството чрез</string>
-	<string name="notification_permission_description">Необходимо за да се показва свързване с устройства, заявки за споделяне на папки и т.н.</string>
-	<string name="notification_permission_title">Права за известия</string>
 	<string name="enable_notification_permission">Даване на право за известия</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

@@ -46,6 +46,10 @@ Alle wifi- en netwerkgerelateerde gegevens worden lokaal op het apparaat opgesla
 	<string name="api_level_30_button">Database opnieuw opbouwen</string>
 	<string name="toast_api_level_30_must_reset">Je kunt alleen doorgaan door op de knop drukken om de database opnieuw op te bouwen.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Toestemming voor meldingen</string>
+	<string name="notification_permission_description">Verplicht voor het tonen van meldingen over nieuwe apparaatverbindingen, deelverzoeken, enz.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Terug</string>
 	<string name="cont">Doorgaan</string>
@@ -767,8 +771,6 @@ Alle wifi- en netwerkgerelateerde gegevens worden lokaal op het apparaat opgesla
 	<string name="browse">Bladeren</string>
 	<string name="no_sub_folder_is_selected">Geen onderliggende map geselecteerd</string>
 	<string name="share_device_id_chooser">Apparaat-id delen met</string>
-	<string name="notification_permission_description">Verplicht voor het tonen van meldingen over nieuwe apparaatverbindingen, deelverzoeken, enz.</string>
-	<string name="notification_permission_title">Toestemming voor meldingen</string>
 	<string name="enable_notification_permission">Toestemming voor meldingen inschakelen</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

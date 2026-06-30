@@ -46,6 +46,10 @@ Totes les dades relacionades amb Wi-Fi i xarxes s\'emmagatzemen al dispositiu.</
 	<string name="api_level_30_button">Restableix la base de dades</string>
 	<string name="toast_api_level_30_must_reset">Només podeu continuar fent clic al botó per restablir la base de dades.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Permís de notificació</string>
+	<string name="notification_permission_description">Necessari per mostrar notificacions sobre connexions de dispositius nous, sol·licituds per compartir carpetes, etc.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Torna</string>
 	<string name="cont">Continua</string>
@@ -767,8 +771,6 @@ Totes les dades relacionades amb Wi-Fi i xarxes s\'emmagatzemen al dispositiu.</
 	<string name="browse">Navega</string>
 	<string name="no_sub_folder_is_selected">No s\'ha triat cap subcarpeta</string>
 	<string name="share_device_id_chooser">Comparteix la ID del dispositiu amb</string>
-	<string name="notification_permission_description">Necessari per mostrar notificacions sobre connexions de dispositius nous, sol·licituds per compartir carpetes, etc.</string>
-	<string name="notification_permission_title">Permís de notificació</string>
 	<string name="enable_notification_permission">Activa el permís de notificació</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

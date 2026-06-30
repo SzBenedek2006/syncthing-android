@@ -46,6 +46,10 @@
 	<string name="api_level_30_button">重置数据库</string>
 	<string name="toast_api_level_30_must_reset">您只能通过单击按钮重置数据库来继续。</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">通知权限</string>
+	<string name="notification_permission_description">需要显示有关新设备连接、文件夹共享请求等的通知。</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">返回</string>
 	<string name="cont">继续</string>
@@ -763,8 +767,6 @@
 	<string name="browse">浏览</string>
 	<string name="no_sub_folder_is_selected">未选择子文件夹</string>
 	<string name="share_device_id_chooser">分享设备 ID 与</string>
-	<string name="notification_permission_description">需要显示有关新设备连接、文件夹共享请求等的通知。</string>
-	<string name="notification_permission_title">通知权限</string>
 	<string name="enable_notification_permission">启用通知权限</string>
 	<!-- TODO: Remove or change this placeholder text -->
 

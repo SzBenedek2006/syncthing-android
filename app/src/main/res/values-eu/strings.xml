@@ -46,6 +46,10 @@ Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</strin
 	<string name="api_level_30_button">Berrezarri datu-basea</string>
 	<string name="toast_api_level_30_must_reset">Datu-basea berrezartzeko botoian klik eginez soilik jarraitu dezakezu.</string>
 
+	<!-- Slide 5 -->
+	<string name="notification_permission_title">Jakinarazpen-baimena</string>
+	<string name="notification_permission_description">Beharrezkoa da gailuen konexio berriei, karpetak partekatzeko eskaerei eta abarrei buruzko jakinarazpenak erakusteko.</string>
+
 	<!-- Generic texts used everywhere -->
 	<string name="back">Atzera</string>
 	<string name="cont">Jarraitu</string>
@@ -765,8 +769,6 @@ Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</strin
 	<string name="browse">Arakatu</string>
 	<string name="no_sub_folder_is_selected">Ez da azpikarpetarik aukeratu</string>
 	<string name="share_device_id_chooser">Partekatu gailuaren IDa honekin</string>
-	<string name="notification_permission_description">Beharrezkoa da gailuen konexio berriei, karpetak partekatzeko eskaerei eta abarrei buruzko jakinarazpenak erakusteko.</string>
-	<string name="notification_permission_title">Jakinarazpen-baimena</string>
 	<string name="enable_notification_permission">Gaitu jakinarazpen-baimena</string>
 	<!-- TODO: Remove or change this placeholder text -->
 
