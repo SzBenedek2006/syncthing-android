@@ -16,6 +16,7 @@ import dev.benedek.syncthingandroid.ui.reusable.AdaptiveSlideLayout
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
 import dev.benedek.syncthingandroid.ui.reusable.SlideImage
 import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
+import dev.benedek.syncthingandroid.ui.reusable.TextLayout
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
@@ -30,8 +31,9 @@ fun NotificationSlide(
 		},
 		{
 			SlideDescription(
-				stringResource(R.string.require_notification_permission_desc),
-				null
+				stringResource(R.string.notification_permission_subtitle),
+				stringResource(R.string.notification_permission_description),
+				textLayout = TextLayout.Expandable
 			)
 		},
 		Modifier,
