@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +32,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +46,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -632,6 +637,49 @@ fun AppDropDownMenu(
 			}
 		}
 	}
+}
+
+// Buttons
+
+@Composable fun DenyButton(
+	onClick: () -> Unit,
+	modifier: Modifier = Modifier,
+	enabled: Boolean = true,
+	shape: Shape = ButtonDefaults.outlinedShape,
+	colors: ButtonColors? = null,
+	elevation: ButtonElevation? = null,
+	border: BorderStroke? = null,
+	contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+	interactionSource: MutableInteractionSource? = null,
+	content: @Composable RowScope.() -> Unit,
+) {
+	OutlinedButton (
+		onClick = onClick,
+		modifier = modifier,
+		enabled = enabled,
+		shape = shape,
+		colors = colors ?: ButtonDefaults.outlinedButtonColors(
+			contentColor = MaterialTheme.colorScheme.error,
+			disabledContentColor = MaterialTheme.colorScheme.fromToken(OutlinedButtonTokens.DisabledLabelTextColor)
+				.copy(alpha = OutlinedButtonTokens.DisabledLabelTextOpacity)
+		),
+		elevation = elevation,
+		border = border ?: BorderStroke(
+			width = ButtonSmallTokens.OutlinedOutlineWidth,
+			color =
+				if (enabled) {
+					MaterialTheme.colorScheme.error
+				} else {
+					OutlinedButtonTokens.OutlineColor.value.copy(
+						alpha = OutlinedButtonTokens.DisabledContainerOpacity
+					)
+				},
+		),
+		contentPadding = contentPadding,
+		interactionSource = interactionSource,
+		content = content
+
+	)
 }
 
 // DIALOGS
