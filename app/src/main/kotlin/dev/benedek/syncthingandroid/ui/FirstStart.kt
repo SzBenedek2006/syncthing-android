@@ -1,14 +1,17 @@
 package dev.benedek.syncthingandroid.ui
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,8 +31,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -57,7 +62,11 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
+import dev.benedek.syncthingandroid.ui.reusable.ButtonSmallTokens
+import dev.benedek.syncthingandroid.ui.reusable.OutlinedButtonTokens
+import dev.benedek.syncthingandroid.ui.reusable.value
 import dev.benedek.syncthingandroid.ui.slides.ApiUpgradeSlide
+import dev.benedek.syncthingandroid.ui.slides.BatterySlide
 import dev.benedek.syncthingandroid.ui.slides.IntroSlide
 import dev.benedek.syncthingandroid.ui.slides.LocationSlide
 import dev.benedek.syncthingandroid.ui.slides.NotificationSlide
@@ -67,6 +76,7 @@ import dev.benedek.syncthingandroid.viewmodel.FirstStartViewModel
 import kotlinx.coroutines.launch
 
 val LocalIsLandscape = compositionLocalOf { false }
+private const val TAG = "FirstStart.kt"
 
 @Composable
 fun FirstStartScreen(
@@ -153,6 +163,7 @@ fun FirstStartScreen(
 						false
 					}
 				},
+				slide = viewModel.slides[pagerState.currentPage],
 				modifier = Modifier.safeDrawingPadding()
 			)
 		}
@@ -174,7 +185,12 @@ fun FirstStartScreen(
 				isStorageGranted = viewModel.isStorageGranted,
 				isLocationGranted = viewModel.isLocationGranted,
 				isNotificationGranted = viewModel.isNotificationGranted,
-				isApiUpgraded = viewModel.isApiUpgraded
+				isApiUpgraded = viewModel.isApiUpgraded,
+				isBatteryOptimizationIgnoreGranted = viewModel.isBatteryOptimizationIgnoreGranted,
+				askForIgnoreBatteryOptimization = activity::askForIgnoreBatteryOptimization,
+				denyIgnoreBatteryOptimization = { activity.denyIgnoreBatteryOptimization(); onNext() },
+				denyNotificationAccess = { activity.denyNotificationAccess(); onNext() },
+				denyLocationAccess = { activity.denyLocationAccess(); onNext() }
 			)
 		}
 	}
@@ -187,6 +203,7 @@ fun BottomControls(
 	onBack: () -> Unit,
 	onNext: () -> Unit,
 	canAdvance: (noToast: Boolean) -> Boolean,
+	slide: FirstStartActivity.Slide,
 	modifier: Modifier = Modifier
 ) {
 	val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
@@ -199,7 +216,10 @@ fun BottomControls(
 	Row(
 		modifier = modifier
 			.fillMaxWidth()
-			.padding(horizontal = if (isSmallScreen) 4.dp else 16.dp, vertical = if (isSmallScreen) 4.dp else 8.dp),
+			.padding(
+				horizontal = if (isSmallScreen) 4.dp else 16.dp,
+				vertical = if (isSmallScreen) 4.dp else 8.dp
+			),
 		horizontalArrangement = Arrangement.SpaceBetween,
 		verticalAlignment = Alignment.CenterVertically
 	) {
@@ -250,27 +270,57 @@ fun BottomControls(
 			modifier = Modifier.weight(1f),
 			contentAlignment = Alignment.CenterEnd
 		) {
-			Button(
-				onClick = onNext,
-				// TODO: Look into if this could be done without lifecycleState checking
-				//This is to update the composable state
-				enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true),
-			) {
-				if (isSmallScreen) {
-					Icon(
-						imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
-						contentDescription = stringResource(
-							if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+			if (isOptional(slide)) {
+				OutlinedButton(
+					onClick = onNext,
+					// TODO: Look into if this could be done without lifecycleState checking
+					// This is to update the composable state
+					enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true),
+					colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary),
+					border = BorderStroke(
+						width = ButtonSmallTokens.OutlinedOutlineWidth,
+						color = MaterialTheme.colorScheme.primary.copy(
+							alpha = OutlinedButtonTokens.DisabledContainerOpacity
 						)
-					)
-				} else {
-					Text(
-						text = stringResource(
-							if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+					),
+				) {
+					if (isSmallScreen) {
+						Icon(
+							imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
+							contentDescription = stringResource(
+								R.string.dialog_disable_battery_optimization_later
+							)
 						)
-					)
+					} else {
+						Text(
+							text = stringResource(
+								R.string.dialog_disable_battery_optimization_later
+							)
+						)
+					}
 				}
-
+			} else {
+				Button(
+					onClick = onNext,
+					// TODO: Look into if this could be done without lifecycleState checking
+					// This is to update the composable state
+					enabled = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && canAdvance(true),
+				) {
+					if (isSmallScreen) {
+						Icon(
+							imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
+							contentDescription = stringResource(
+								if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+							)
+						)
+					} else {
+						Text(
+							text = stringResource(
+								if (pagerState.currentPage == slideCount - 1) R.string.finish else R.string.cont
+							)
+						)
+					}
+				}
 			}
 		}
 
@@ -287,8 +337,12 @@ fun SlideContent(
 	isStorageGranted: Boolean,
 	isLocationGranted: Boolean,
 	isNotificationGranted: Boolean,
-	isApiUpgraded: Boolean
-
+	isApiUpgraded: Boolean,
+	isBatteryOptimizationIgnoreGranted: Boolean,
+	askForIgnoreBatteryOptimization: () -> Unit,
+	denyIgnoreBatteryOptimization: () -> Unit,
+	denyNotificationAccess: () -> Unit,
+	denyLocationAccess: () -> Unit
 ) {
 	val context = LocalContext.current
 
@@ -333,6 +387,8 @@ fun SlideContent(
 
 
 
+
+
 	Column(
 		modifier = Modifier
 			.fillMaxSize(),
@@ -354,7 +410,8 @@ fun SlideContent(
 			FirstStartActivity.Slide.LOCATION -> {
 				LocationSlide(
 					::askForLocationPermission,
-					isLocationGranted
+					isLocationGranted,
+					denyLocationAccess
 				)
 			}
 
@@ -368,9 +425,27 @@ fun SlideContent(
 			FirstStartActivity.Slide.NOTIFICATION -> {
 				NotificationSlide(
 					::askForNotificationPermission,
-					isNotificationGranted
+					isNotificationGranted,
+					denyNotificationAccess
+				)
+			}
+
+			FirstStartActivity.Slide.BATTERY -> {
+				BatterySlide(
+					askForIgnoreBatteryOptimization,
+					isBatteryOptimizationIgnoreGranted,
+					denyIgnoreBatteryOptimization
 				)
 			}
 		}
+	}
+}
+
+fun isOptional(slide: FirstStartActivity.Slide): Boolean {
+	return when (slide) {
+		FirstStartActivity.Slide.LOCATION -> true
+		FirstStartActivity.Slide.NOTIFICATION -> true
+		FirstStartActivity.Slide.BATTERY -> true
+		else -> false
 	}
 }

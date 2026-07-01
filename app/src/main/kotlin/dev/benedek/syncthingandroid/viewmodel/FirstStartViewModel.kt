@@ -1,20 +1,28 @@
 package dev.benedek.syncthingandroid.viewmodel
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.util.PermissionUtil
+import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForBatteryOptimization
+import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForLocationPermission
+import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForNotificationPermission
 
 class FirstStartViewModel(
 	context: Context,
@@ -28,6 +36,9 @@ class FirstStartViewModel(
 		private set
 	var isApiUpgraded by mutableStateOf(false)
 		private set
+	var isBatteryOptimizationIgnoreGranted by mutableStateOf(false)
+		private set
+
 	var slides by mutableStateOf<List<FirstStartActivity.Slide>>(emptyList())
 		private set
 
@@ -41,6 +52,7 @@ class FirstStartViewModel(
 		isStorageGranted = PermissionUtil.haveStoragePermission(context)
 		isLocationGranted = PermissionUtil.hasLocationPermissions(context)
 		isNotificationGranted = PermissionUtil.hasNotificationPermission(context)
+		isBatteryOptimizationIgnoreGranted = PermissionUtil.hasBatteryOptimizationIgnoreGranted(context)
 	}
 
 	fun initApiUpgradeState(prefs: SharedPreferences) {
@@ -91,7 +103,7 @@ class FirstStartViewModel(
 		return when (slide) {
 			FirstStartActivity.Slide.INTRO -> !prefs.getBoolean(Constants.PREF_FIRST_START, true)
 			FirstStartActivity.Slide.STORAGE -> isStorageGranted
-			FirstStartActivity.Slide.LOCATION -> isLocationGranted
+			FirstStartActivity.Slide.LOCATION -> !shouldAskForLocationPermission(context)
 			FirstStartActivity.Slide.API_LEVEL_30 -> {
 				val isRoot = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
 				isApiUpgraded || isRoot
@@ -99,11 +111,10 @@ class FirstStartViewModel(
 
 			FirstStartActivity.Slide.NOTIFICATION -> {
 				if (Build.VERSION.SDK_INT < 33) true
-				else ContextCompat.checkSelfPermission(
-					context,
-					Manifest.permission.POST_NOTIFICATIONS
-				) == PackageManager.PERMISSION_GRANTED
+				else !shouldAskForNotificationPermission(context)
 			}
+
+			FirstStartActivity.Slide.BATTERY ->  !shouldAskForBatteryOptimization(context)
 		}
 	}
 }
