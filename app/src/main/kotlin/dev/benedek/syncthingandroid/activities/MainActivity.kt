@@ -147,7 +147,7 @@ class MainActivity : StateDialogActivity() {
 			}
 
 		}
-		showBatteryOptimizationDialogIfNecessary()
+		//showBatteryOptimizationDialogIfNecessary()
 
 
 		// SyncthingService needs to be started from this activity as the user
