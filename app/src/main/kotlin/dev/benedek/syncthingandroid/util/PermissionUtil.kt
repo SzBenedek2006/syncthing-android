@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
+import android.os.PowerManager
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 
 object PermissionUtil {
 	val locationPermissions: Array<String>
@@ -62,6 +64,36 @@ object PermissionUtil {
 			) == PackageManager.PERMISSION_GRANTED
 		}
 		return true
+	}
+
+	fun hasBatteryOptimizationIgnoreGranted(context: Context): Boolean {
+		val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+		return powerManager.isIgnoringBatteryOptimizations(context.packageName)
+	}
+
+	fun shouldAskForBatteryOptimization(context: Context): Boolean {
+		val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+		val dontShowAgain = sharedPreferences.getBoolean(
+			"battery_optimization_dont_show_again",
+			false
+		)
+		val isGranted = powerManager.isIgnoringBatteryOptimizations(context.packageName)
+		return !dontShowAgain && !isGranted
+	}
+
+	fun shouldAskForNotificationPermission(context: Context): Boolean {
+		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+		val dontShowAgain = sharedPreferences.getBoolean("send_notification_permission_dont_show_again", false)
+		val isGranted = hasNotificationPermission(context)
+		return !isGranted && !dontShowAgain
+	}
+
+	fun shouldAskForLocationPermission(context: Context): Boolean {
+		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+		val dontShowAgain = sharedPreferences.getBoolean("location_permission_dont_show_again", false)
+		val isGranted = hasLocationPermissions(context)
+		return !isGranted && !dontShowAgain
 	}
 }
 
