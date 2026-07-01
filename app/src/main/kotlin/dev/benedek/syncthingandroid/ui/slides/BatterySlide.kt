@@ -1,17 +1,21 @@
 package dev.benedek.syncthingandroid.ui.slides
 
+import android.os.Build
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.BatteryStd
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
+import dev.benedek.syncthingandroid.ui.icons.battery_android_full
 import dev.benedek.syncthingandroid.ui.reusable.AdaptiveSlideLayout
 import dev.benedek.syncthingandroid.ui.reusable.DenyButton
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
@@ -22,29 +26,33 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
 @Composable
-fun NotificationSlide(
-	onButtonClick: () -> Unit,
+fun BatterySlide(
+	onGrantPermissionClick: () -> Unit,
 	isPermissionGranted: Boolean,
 	onDenyClick: () -> Unit
-) {
+	) {
 	AdaptiveSlideLayout(
 		{
-			SlideTitle(stringResource(R.string.notification_permission_title))
+			SlideTitle(stringResource(R.string.dialog_disable_battery_optimization_title))
 		},
 		{
 			SlideDescription(
-				stringResource(R.string.notification_permission_subtitle),
-				stringResource(R.string.notification_permission_description),
-				textLayout = TextLayout.Expandable
+				stringResource(R.string.dialog_disable_battery_optimization_message),
+				"",
+				textLayout = TextLayout.Fixed
 			)
 		},
 		Modifier,
 		{
-			SlideImage(painterResource(R.drawable.baseline_notifications_active_24))
+			if (Build.VERSION.SDK_INT_FULL > Build.VERSION_CODES_FULL.BAKLAVA) {
+				SlideImage(rememberVectorPainter(battery_android_full))
+			} else {
+				SlideImage(rememberVectorPainter(Icons.Outlined.BatteryStd))
+			}
 		},
 		{
 			Button(
-				onClick = onButtonClick,
+				onClick = onGrantPermissionClick,
 				enabled = !isPermissionGranted
 			) {
 				Text(
@@ -55,13 +63,14 @@ fun NotificationSlide(
 					}
 				)
 			}
-			if (!isPermissionGranted)
-			DenyButton(
-				onClick = onDenyClick,
-			) {
-				Text(
-					stringResource(R.string.dialog_disable_battery_optimization_dont_show_again) // Todo: Change to deny
-				)
+			if (!isPermissionGranted) {
+				DenyButton(
+					onClick = onDenyClick,
+				) {
+					Text(
+						stringResource(R.string.dialog_disable_battery_optimization_dont_show_again)
+					)
+				}
 			}
 		}
 	)
@@ -69,21 +78,21 @@ fun NotificationSlide(
 
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES)
 @Composable
-fun NotificationSlidePreview() {
+fun BatterySlidePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
 		Surface {
-			NotificationSlide({}, false, {})
+			BatterySlide({}, false, {})
 		}
 	}
 }
 
 @Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
 @Composable
-fun NotificationSlideLandscapePreview() {
+fun BatterySlideLandscapePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
 		CompositionLocalProvider(LocalIsLandscape provides true) {
 			Surface {
-				NotificationSlide({}, false, {})
+				BatterySlide({}, false, {})
 			}
 		}
 	}
