@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Einführung</string>
 	<string name="welcome_subtitle">Syncthing ersetzt proprietäre Cloud- und Datendienste durch etwas Offenes, Vertrauenswürdiges und Dezentralisiertes.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Bitte melden Sie alle Probleme, auf die Sie stoßen, über <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Speicher-Berechtigung</string>
 	<string name="storage_permission_subtitle">Syncthing benötigt die Berechtigung für den Zugriff auf alle Dateien, um die Dateisynchronisation durchzuführen.\n</string>
 	<string name="storage_permission_description">Syncthing verfügt über erweiterte Funktionen wie das Überwachen von Änderungen, Regeln zur automatischen Annahme und Dateisynchronisation in Echtzeit.\nOhne diese Berechtigung würden die meisten Funktionen nicht funktionieren oder in ihrer Funktionalität, Zuverlässigkeit und Leistung stark eingeschränkt sein.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Das Gerät unterstützt keinen uneingeschränkten Dateizugriff</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Standortberechtigung (Hintergrund)</string>
 	<string name="location_permission_subtitle">Diese optionale Berechtigung wird unter Android benötigt, um die verbundenen WLAN-Netzwerke zu sehen.
 </string>
@@ -37,7 +37,7 @@ Dies wird nur für die Funktion der Betriebsbedingungen verwendet und für nicht
 
 Alle WLAN- und netzwerkbezogenen Daten werden auf dem Gerät gespeichert.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Upgrade-Information</string>
 	<string name="api_level_30_desc">Mit dem neuesten Update zielt syncthing-android auf API-Level 30 ab, der das Verhalten des Dateisystems von Android verändert. Die gute Nachricht: Unter Android 11 und neuer ist es nun möglich, auf eine externe SD-Karte zu schreiben. Die schlechte Nachricht: Es kann langsamer sein und einige Pfade werden versteckt. Aufgrund dieser versteckten Pfade muss die Datenbank zurückgesetzt werden, um Datenverluste zu vermeiden. Dies führt dazu, dass alle Daten erneut gehasht werden müssen, aber nicht von externen Geräten übertragen werden müssen. Außerdem kann es zu Konflikten kommen und kürzlich gelöschte Dateien neu erstellen, falls sie noch nicht vollständig synchronisiert wurden. Abhängig von der Datenmenge kann dieser Vorgang sehr ressourcenintensiv sein, d. h. er kann einige Zeit in Anspruch nehmen und viel Batteriestrom verbrauchen.
 \n
@@ -46,12 +46,20 @@ Alle WLAN- und netzwerkbezogenen Daten werden auf dem Gerät gespeichert.</strin
 	<string name="api_level_30_button">Datenbank zurücksetzen</string>
 	<string name="toast_api_level_30_must_reset">Ein Fortsetzen ist nur durch Klicken auf die Schaltfläche zum Zurücksetzen der Datenbank möglich.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Benachrichtigungen senden</string>
 	<string name="notification_permission_subtitle">Das Ablehnen dieser Berechtigung erschwert den Zugriff auf Kernfunktionen der App.\n</string>
 	<string name="notification_permission_description">Diese Berechtigung ist erforderlich, um Benachrichtigungen über die Synchronisierung im Hintergrund, Geräte- und Ordnerfreigabeanfragen und mehr anzuzeigen.\n
 \n
 Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über die Web-Oberfläche zugreifen.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Akkulaufzeit-Optimierung</string>
+	<string name="dialog_disable_battery_optimization_message">Android kann die Synchronisation nach einiger Zeit stoppen. Um dies zu verhindern, muss der Energiesparmodus deaktiviert werden.
+\n
+\nEinige Geräte haben Apps vorinstalliert, welche Hintergrundaktivitäten unterbinden. Syncthing sollte deshalb auch dort in die Ausnahmeliste eingetragen werden.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Für Syncthing ausschalten</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Dieses Gerät unterstützt das Deaktivieren der Batterielaufzeit-Optimierung nicht</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Zurück</string>
@@ -61,6 +69,8 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 	<string name="generic_error">Fehler</string>
 	<string name="grant_permission">Zugriff gewähren</string>
 	<string name="permission_granted">Zugriff gewährt</string>
+	<string name="dont_show_again">Nicht mehr zeigen</string>
+	<string name="later">Später</string>
 
 	<string name="accept">Annehmen</string>
 
@@ -98,16 +108,6 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 
 	<string name="folder_rejected">Gerät „%1$s“ möchte Ordner \"%2$s\" teilen</string>
 
-	<string name="dialog_disable_battery_optimization_title">Akkulaufzeit-Optimierung</string>
-	<string name="dialog_disable_battery_optimization_message">Android kann die Synchronisation nach einiger Zeit stoppen. Um dies zu verhindern, muss der Energiesparmodus deaktiviert werden.
-\n
-\nEinige Geräte haben Apps vorinstalliert, welche Hintergrundaktivitäten unterbinden. Syncthing sollte deshalb auch dort in die Ausnahmeliste eingetragen werden.</string>
-	<string name="dialog_disable_battery_optimization_later">Später</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Nicht mehr zeigen</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Für Syncthing ausschalten</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Dieses Gerät unterstützt das Deaktivieren der Batterielaufzeit-Optimierung nicht</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Ladevorgang…</string>

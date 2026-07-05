@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Introduction</string>
 	<string name="welcome_subtitle">Syncthing remplace les services cloud et de données propriétaires par quelque chose d\'ouvert, de fiable et de décentralisé.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Veuillez signaler tout problème que vous rencontrez via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Permission de stockage</string>
 	<string name="storage_permission_subtitle">Syncthing a besoin de l\'autorisation d\'accès à tous les fichiers pour effectuer la synchronisation des fichiers.\n</string>
 	<string name="storage_permission_description">Syncthing dispose de fonctionnalités avancées telles que la surveillance des changements, des règles d\'acceptation automatique et la synchronisation des fichiers en temps réel.\nSans cette autorisation, la plupart des fonctionnalités ne fonctionneraient pas ou seraient sévèrement limitées en termes de fonctionnalité, de fiabilité et de performance.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Cet appareil ne supporte pas l\'accès à tous les fichiers</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Autorisation de géolocalisation (tâche de fond)</string>
 	<string name="location_permission_subtitle">Cette autorisation facultative est nécessaire sur Android pour voir les réseaux Wi-Fi auxquels vous êtes connecté.
 </string>
@@ -37,7 +37,7 @@ Ceci est utilisé uniquement pour la fonctionnalité des conditions d\'exécutio
 
 Toutes les données relatives au Wi-Fi et au réseau sont stockées sur l\'appareil.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informations sur la mise à jour</string>
 	<string name="api_level_30_desc">Avec la dernière mise à jour, syncthing-android vise une API de niveau 30, qui modifie le comportement du système de fichiers d\'Android. Bonne nouvelle : Sur Android 11 et les versions plus récentes, il est désormais possible d\'écrire sur une carte SD externe. Mauvaise nouvelle : l\'écriture peut être plus lente et certains chemins seront cachés. En raison de ces chemins cachés, la base de données doit être réinitialisée pour éviter toute perte de données. Toutes vos données seront alors à nouveau hachées, mais elles n\'auront pas besoin d\'être transférées à partir d\'appareils distants. Cela peut également créer des conflits et recréer des fichiers récemment supprimés si vous n\'êtes pas totalement synchronisé à ce stade. En fonction de la quantité de données que vous possédez, ce processus peut être très gourmand en ressources, c\'est-à-dire qu\'il peut prendre un certain temps et utiliser beaucoup de batterie.
 \n
@@ -46,12 +46,20 @@ Toutes les données relatives au Wi-Fi et au réseau sont stockées sur l\'appar
 	<string name="api_level_30_button">Réinitialiser la base de données</string>
 	<string name="toast_api_level_30_must_reset">Vous ne pouvez continuer qu\'en cliquant sur le bouton de réinitialisation de la base de données.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Envoyer des notifications</string>
 	<string name="notification_permission_subtitle">Refuser cette autorisation rendra les fonctionnalités de base de l\'application plus difficiles d\'accès.\n</string>
 	<string name="notification_permission_description">Cette autorisation est requise pour afficher des notifications sur la synchronisation en arrière-plan, les demandes de partage d\'appareils et de dossiers, etc.\n
 \n
 Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnalités que via l\'interface Web.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimisation de la batterie</string>
+	<string name="dialog_disable_battery_optimization_message">Android peut arrêter la synchronisation après un certain temps. Pour éviter cela, désactivez l\'optimisation de la batterie.
+\n
+\nCertains appareils disposent d\'applications préinstallées pour tuer les tâches. Vous devrez ajouter Syncthing à leur liste blanche.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Mettre à l\'arrêt pour Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Votre appareil ne prend pas en charge la désactivation des optimisations de la batterie</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Retour</string>
@@ -61,6 +69,8 @@ Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnali
 	<string name="generic_error">Erreur</string>
 	<string name="grant_permission">Accorder la permission</string>
 	<string name="permission_granted">Permission accordée</string>
+	<string name="dont_show_again">Ne pas afficher la prochaine fois</string>
+	<string name="later">Plus tard</string>
 
 	<string name="accept">Accepter</string>
 
@@ -98,16 +108,6 @@ Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnali
 
 	<string name="folder_rejected">L\'appareil \"%1$s\" souhaite synchroniser le partage \"%2$s\" avec le votre. Il sera créé s\'il n\'existe pas déjà</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optimisation de la batterie</string>
-	<string name="dialog_disable_battery_optimization_message">Android peut arrêter la synchronisation après un certain temps. Pour éviter cela, désactivez l\'optimisation de la batterie.
-\n
-\nCertains appareils disposent d\'applications préinstallées pour tuer les tâches. Vous devrez ajouter Syncthing à leur liste blanche.</string>
-	<string name="dialog_disable_battery_optimization_later">Plus tard</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Ne pas afficher la prochaine fois</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Mettre à l\'arrêt pour Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Votre appareil ne prend pas en charge la désactivation des optimisations de la batterie</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Chargement…</string>

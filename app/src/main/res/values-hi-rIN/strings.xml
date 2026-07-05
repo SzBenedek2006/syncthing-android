@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">परिचय</string>
 	<string name="welcome_subtitle">Syncthing मालिकाना क्लाउड और डेटा सेवाओं को कुछ खुले, भरोसेमंद और विकेंद्रीकृत के साथ बदल देता है।\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		कृपया किसी भी समस्या की रिपोर्ट <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> के माध्यम से करें।]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">स्टोरेज की अनुमति</string>
 	<string name="storage_permission_subtitle">फ़ाइल सिंक्रनाइज़ेशन करने के लिए Syncthing को सभी फ़ाइलों तक पहुँच की अनुमति की आवश्यकता है।\n</string>
 	<string name="storage_permission_description">Syncthing में बदलावों पर नज़र रखने, स्वतः-स्वीकार नियम और वास्तविक समय फ़ाइल सिंक जैसी उन्नत सुविधाएँ हैं।\nइस अनुमति के बिना अधिकांश सुविधाएँ काम नहीं करेंगी या कार्यक्षमता, विश्वसनीयता और प्रदर्शन में गंभीर रूप से सीमित होंगी।</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">आपका डिवाइस सभी फाइलों तक पहुंच का समर्थन नहीं करता है</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">स्थान अनुमति (पृष्ठभूमि)</string>
 	<string name="location_permission_subtitle">Android पर यह देखने के लिए इस वैकल्पिक अनुमति की आवश्यकता होती है कि आप किन Wi-Fi नेटवर्क से जुड़े हैं।
 </string>
@@ -37,7 +37,7 @@
 
 सभी Wi-Fi और नेटवर्क से संबंधित डेटा डिवाइस पर संग्रहीत किया जाता है。</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">अपग्रेड जानकारी</string>
 	<string name="api_level_30_desc">नवीनतम अपडेट के साथ Syncthing-Android API स्तर 30 को लक्षित कर रहा है, जो Android के फाइल सिस्टम के व्यवहार को बदल देता है। अच्छी खबर: Android 11 और नए पर यह अब इक्स्टर्नल SD कार्ड पर लिखने में सक्षम है। बुरी खबर: यह धीमी हो सकती है और कुछ रास्ते छुपे होंगे। इन छिपे हुए रास्तों के कारण, डेटा हानि को रोकने के लिए डेटाबेस को रीसेट करने की आवश्यकता होती है। इससे आपका सारा डेटा फिर से हैश हो जाएगा, लेकिन इसे दूरस्थ डिवाइस से स्थानांतरित करने की आवश्यकता नहीं है। यदि आप अभी पूरी तरह से सिंक में नहीं हैं तो यह टकराव भी पैदा कर सकता है और हाल ही में हटाई गई फाइलों को फिर से बना सकता है। आपके पास कितना डेटा है, इस पर निर्भर करते हुए, यह प्रक्रिया बहुत संसाधन गहन हो सकती है, यानी इसमें कुछ समय लगेगा और बहुत अधिक बैटरी पावर का उपयोग होगा।
 \n
@@ -46,12 +46,20 @@
 	<string name="api_level_30_button">डेटाबेस रीसेट करें</string>
 	<string name="toast_api_level_30_must_reset">आप केवल डेटाबेस को रीसेट करने के लिए बटन पर क्लिक करके जारी रख सकते हैं।</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">सूचनाएं भेजें</string>
 	<string name="notification_permission_subtitle">इस अनुमति को अस्वीकार करने से ऐप की मुख्य विशेषताओं तक पहुंचना कठिन हो जाएगा।\n</string>
 	<string name="notification_permission_description">पृष्ठभूमि सिंक, डिवाइस और फ़ोल्डर साझाकरण अनुरोधों और अधिक के बारे में सूचनाएं दिखाने के लिए यह अनुमति आवश्यक है।\n
 \n
 यदि आप इस अनुमति को अस्वीकार करते हैं, तो आप केवल वेब इंटरफ़ेस के माध्यम से इन सुविधाओं तक पहुँच सकते हैं।</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">बैटरी अनुकूलन</string>
+	<string name="dialog_disable_battery_optimization_message">Android कुछ समय बाद सिंक्रोनाइज़ेशन बंद कर सकता है। इसे रोकने के लिए, बैटरी ऑप्टिमाइज़ेशन बंद करें।
+\n
+\nकुछ डिवाइस में अतिरिक्त टास्क-किलिंग ऐप्स पहले से इंस्टॉल होते हैं। आपको Syncthing को भी उनकी श्वेतसूची में जोड़ना चाहिए।</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Syncthing बंद करें</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">आपका डिवाइस बैटरी ऑप्टिमाइज़ेशन को अक्षम करने का समर्थन नहीं करता है</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">वापस</string>
@@ -61,6 +69,8 @@
 	<string name="generic_error">त्रुटि</string>
 	<string name="grant_permission">अनुदान अनुमति</string>
 	<string name="permission_granted">अनुमति प्रदान की गई</string>
+	<string name="dont_show_again">दोबारा मत दिखाएं</string>
+	<string name="later">बाद में</string>
 
 	<string name="accept">स्वीकार करें</string>
 
@@ -98,16 +108,6 @@
 
 	<string name="folder_rejected">डिवाइस \"%1$s\" फोल्डर \"%2$s\" साझा करना चाहता है</string>
 
-	<string name="dialog_disable_battery_optimization_title">बैटरी अनुकूलन</string>
-	<string name="dialog_disable_battery_optimization_message">Android कुछ समय बाद सिंक्रोनाइज़ेशन बंद कर सकता है। इसे रोकने के लिए, बैटरी ऑप्टिमाइज़ेशन बंद करें।
-\n
-\nकुछ डिवाइस में अतिरिक्त टास्क-किलिंग ऐप्स पहले से इंस्टॉल होते हैं। आपको Syncthing को भी उनकी श्वेतसूची में जोड़ना चाहिए।</string>
-	<string name="dialog_disable_battery_optimization_later">बाद में</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">दोबारा मत दिखाएं</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Syncthing बंद करें</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">आपका डिवाइस बैटरी ऑप्टिमाइज़ेशन को अक्षम करने का समर्थन नहीं करता है</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">लोड हो रहा है…</string>

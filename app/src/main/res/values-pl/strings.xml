@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Wprowadzenie</string>
 	<string name="welcome_subtitle">Syncthing zastępuje własnościowe usługi chmurowe i dane czymś otwartym, godnym zaufania i zdecentralizowanym.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Wszelkie napotkane problemy prosimy zgłaszać poprzez <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Dostęp do plików</string>
 	<string name="storage_permission_subtitle">Syncthing wymaga uprawnień dostępu do wszystkich plików, aby móc synchronizować pliki.\n</string>
 	<string name="storage_permission_description">Syncthing posiada zaawansowane funkcje, takie jak monitorowanie zmian, reguły automatycznego akceptowania i synchronizacja plików w czasie rzeczywistym.\nBez tych uprawnień większość funkcji nie będzie działać lub ich funkcjonalność, niezawodność i wydajność będą poważnie ograniczone.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Twoje urządzenie nie wspiera dostępu do wszystkich plików</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Uprawnienie dostępu do lokalizacji (w tle)</string>
 	<string name="location_permission_subtitle">To opcjonalne uprawnienie jest wymagane w systemie Android, aby widzieć sieci Wi-Fi, z którymi jesteś połączony.
 </string>
@@ -37,7 +37,7 @@ Jest to używane wyłącznie do funkcji warunków działania i do niczego innego
 
 Wszystkie dane związane z Wi-Fi i siecią są przechowywane na urządzeniu.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informacje o aktualizacji</string>
 	<string name="api_level_30_desc">W najnowszej aktualizacji syncthing-android jest ukierunkowany na poziom 30 API, który zmienia zachowanie systemu plików Androida. Dobra wiadomość: na Androidzie 11 i nowszych można teraz zapisywać na zewnętrznej karcie SD. Zła wiadomość: może być to wolniejsze, a niektóre ścieżki zostaną ukryte. Ze względu na te ukryte ścieżki należy zresetować bazę danych, aby zapobiec utracie danych. Spowoduje to ponowne zaszyfrowanie wszystkich danych, ale nie będzie potrzeby ich przesyłania z urządzeń zdalnych. Może to również powodować konflikty i ponownie tworzyć ostatnio usunięte pliki, jeśli nie jesteś teraz w pełni zsynchronizowany. W zależności od ilości posiadanych danych proces ten może wymagać dużej ilości zasobów, tj. zająć trochę czasu i zużywać dużo energii baterii.
 \n
@@ -46,12 +46,20 @@ Wszystkie dane związane z Wi-Fi i siecią są przechowywane na urządzeniu.</st
 	<string name="api_level_30_button">Zresetuj bazę danych</string>
 	<string name="toast_api_level_30_must_reset">Kontynuować można jedynie poprzez kliknięcie przycisku resetującego bazę danych.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Wyślij powiadomienia</string>
 	<string name="notification_permission_subtitle">Odmowa tego uprawnienia utrudni dostęp do podstawowych funkcji aplikacji.\n</string>
 	<string name="notification_permission_description">To uprawnienie jest wymagane do wyświetlania powiadomień o synchronizacji w tle, żądań udostępniania urządzeń i folderów oraz nie tylko.\n
 \n
 Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko poprzez interfejs sieciowy.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optymalizacja baterii</string>
+	<string name="dialog_disable_battery_optimization_message">Android może wstrzymać synchronizację po pewnym czasie. By temu zapobiec, wyłącz optymalizację baterii.
+\n
+\nNiektóre urządzenia posiadają dodatkowe preinstalowane aplikacje zatrzymujące zadania - dobrze byłoby dopisać Syncthing do listy ich wyjątków.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Wyłącz dla aplikacji Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Twoje urządzenie nie wspiera wyłączania optymalizacji baterii</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Wstecz</string>
@@ -61,6 +69,8 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 	<string name="generic_error">Błąd</string>
 	<string name="grant_permission">Udziel dostępu</string>
 	<string name="permission_granted">Udzielono dostępu</string>
+	<string name="dont_show_again">Nie pokazuj ponownie</string>
+	<string name="later">Później</string>
 
 	<string name="accept">Akceptuj</string>
 
@@ -98,16 +108,6 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 
 	<string name="folder_rejected">Urządzenie \"%1$s\" chce współdzielić folder \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optymalizacja baterii</string>
-	<string name="dialog_disable_battery_optimization_message">Android może wstrzymać synchronizację po pewnym czasie. By temu zapobiec, wyłącz optymalizację baterii.
-\n
-\nNiektóre urządzenia posiadają dodatkowe preinstalowane aplikacje zatrzymujące zadania - dobrze byłoby dopisać Syncthing do listy ich wyjątków.</string>
-	<string name="dialog_disable_battery_optimization_later">Później</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Nie pokazuj ponownie</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Wyłącz dla aplikacji Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Twoje urządzenie nie wspiera wyłączania optymalizacji baterii</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Ładowanie…</string>

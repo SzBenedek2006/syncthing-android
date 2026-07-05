@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Introdução</string>
 	<string name="welcome_subtitle">O Syncthing substitui os serviços de nuvem e dados proprietários por algo aberto, fiável e descentralizado.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Reporte quaisquer problemas que encontrar através do <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>, por favor.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Permissão de Armazenamento</string>
 	<string name="storage_permission_subtitle">O Syncthing precisa da permissão de acesso a todos os ficheiros para fazer a sincronização de ficheiros.\n</string>
 	<string name="storage_permission_description">O Syncthing tem funcionalidades avançadas, como a monitorização de alterações, regras de aceitação automática e sincronização de ficheiros em tempo real.\nSem esta permissão, a maioria das funcionalidades não funcionaria ou estaria seriamente limitada em termos de funcionalidade, fiabilidade e desempenho.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">O seu dispositivo não suporta o acesso a todos os ficheiros</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Permissão de localização (em segundo plano)</string>
 	<string name="location_permission_subtitle">Esta permissão opcional é necessária no Android para ver as redes Wi-Fi a que está ligado.
 </string>
@@ -37,7 +37,7 @@ Isto é usado apenas para a funcionalidade de condições de execução e nada m
 
 Todos os dados relacionados com Wi-Fi e redes são armazenados no dispositivo.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informação da actualização</string>
 	<string name="api_level_30_desc">Com a última actualização o syncthing-android aponta para a API de nível 30, que muda o comportamento do sistema de ficheiros do Android. Boas notícias: No Android 11 e posterior é permitido escrever num cartão SD externo. Más notícias: Poderá ser mais lento e alguns caminhos estarão escondidos. Por causa desses caminhos escondidos, a base de dados tem que ser reiniciada para evitar a perda de dados. Isso irá fazer com que seja calculado o hash de todos os seus dados novamente, mas os dados não terão de ser transferidos de dispositivos remotos. Também poderá criar conflitos e recriar ficheiros que tinham sido apagados recentemente se não tiver a sincronia completa neste momento. Dependendo da quantidade de dados que tem, este processo pode consumir muitos recursos, ou seja, vai levar algum tempo e consumir muita carga da bateria.
 \n
@@ -46,12 +46,20 @@ Todos os dados relacionados com Wi-Fi e redes são armazenados no dispositivo.</
 	<string name="api_level_30_button">Reiniciar base de dados</string>
 	<string name="toast_api_level_30_must_reset">Só pode continuar se clicar neste botão para reiniciar a base de dados.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Enviar notificações</string>
 	<string name="notification_permission_subtitle">Recusar esta permissão tornará as funcionalidades principais da aplicação mais difíceis de aceder.\n</string>
 	<string name="notification_permission_description">Esta permissão é necessária para mostrar notificações sobre a sincronização em segundo plano, pedidos de partilha de dispositivos e pastas e muito mais.\n
 \n
 Se recusar esta permissão, só poderá aceder a estas funcionalidades através da interface web.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimização da bateria</string>
+	<string name="dialog_disable_battery_optimization_message">O Android pode parar a sincronização passado algum tempo. Para prevenir isso, desligue a optimização da bateria.
+\n
+\nAlguns dispositivos têm aplicações adicionais pré-instaladas para matar tarefas. Deve adicionar o Syncthing à lista de excepções dessas aplicações.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Desligar para o Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">O seu aparelho não suporta a desativação das otimizações de pilha</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Voltar</string>
@@ -61,6 +69,8 @@ Se recusar esta permissão, só poderá aceder a estas funcionalidades através 
 	<string name="generic_error">Erro</string>
 	<string name="grant_permission">Conceder permissão</string>
 	<string name="permission_granted">Permissão concedida</string>
+	<string name="dont_show_again">Não apresentar novamente</string>
+	<string name="later">Mais tarde</string>
 
 	<string name="accept">Aceitar</string>
 
@@ -98,16 +108,6 @@ Se recusar esta permissão, só poderá aceder a estas funcionalidades através 
 
 	<string name="folder_rejected">O dispositivo \"%1$s\" quer partilhar a pasta \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optimização da bateria</string>
-	<string name="dialog_disable_battery_optimization_message">O Android pode parar a sincronização passado algum tempo. Para prevenir isso, desligue a optimização da bateria.
-\n
-\nAlguns dispositivos têm aplicações adicionais pré-instaladas para matar tarefas. Deve adicionar o Syncthing à lista de excepções dessas aplicações.</string>
-	<string name="dialog_disable_battery_optimization_later">Mais tarde</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Não apresentar novamente</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Desligar para o Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">O seu aparelho não suporta a desativação das otimizações de pilha</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Carregando…</string>

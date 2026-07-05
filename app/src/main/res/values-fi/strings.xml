@@ -12,36 +12,44 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="welcome_subtitle">Syncthing korvaa suljetut pilvi- ja tietopalvelut jollakin avoimella, luotettavalla ja hajautetulla.\n</string>
 	<string name="welcome_text">
 		<![CDATA[Jotta voit jakaa tietoja muiden laitteiden kanssa, sinun on lisättävä niiden yksilölliset laitetunnukset laiteluetteloon. Sen jälkeen voit valita, mitkä kansiot jaetaan minkäkin laitteiden kanssa.<br/><br/>
 
 		Ilmoita mahdollisista ongelmista <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubin</a> kautta.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Tallennustilan lupa</string>
 	<string name="storage_permission_subtitle">Syncthing tarvitsee kaikkien tiedostojen käyttöoikeuden tiedostojen synkronointia varten.\n</string>
 	<string name="storage_permission_description">Syncthingissä on edistyneitä ominaisuuksia, kuten muutosten seuranta, automaattiset hyväksymissäännöt ja reaaliaikainen tiedostojen synkronointi.\nIlman tätä lupaa useimmat ominaisuudet eivät toimisi tai niiden toimivuus, luotettavuus ja suorituskyky olisivat erittäin rajallisia.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Laitteesi ei tue kaikkien tiedostojen käyttöä</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Sijaintilupa (tausta)</string>
 	<string name="location_permission_subtitle">Tämä valinnainen lupa tarvitaan Androidissa, jotta näet Wi-Fi-verkot, joihin olet yhdistetty.\n</string>
 	<string name="location_permission_description">Syncthing voidaan määrittää synkronoimaan vain valituissa Wi-Fi-verkoissa.\n
 Tätä käytetään vain käyntiehdot-ominaisuuteen eikä mihinkään muuhun.\n
 Kaikki Wi-Fi- ja verkkoon liittyvät tiedot tallennetaan laitteelle.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Lähetä ilmoituksia</string>
 	<string name="notification_permission_subtitle">Tämän luvan epääminen vaikeuttaa sovelluksen ydintoimintojen käyttöä.\n</string>
 	<string name="notification_permission_description">Tätä lupaa tarvitaan taustalla tapahtuvan synkronoinnin, laitteiden ja kansioiden jakamispyyntöjen sekä muiden ilmoitusten näyttämiseen.\n
 \n
 Jos epäät tämän luvan, nämä toiminnot ovat käytettävissä vain verkkokäyttöliittymän kautta.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Akun käytön optimointi</string>
+	<string name="dialog_disable_battery_optimization_message">Android saattaa pysäyttää synkronoinnin jonkin ajan kuluttua. Tämän estämiseksi, poista käytöstä akun käytön optimointi.
+\n
+\nJoissain laitteissa on lisäksi prosessienhallintasovelluksia valmiiksi asennettuna. Sinun tulisi lisätä Syncthing myös niiden sallittujen sovellusten listalle.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Poista käytöstä Synthingille</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Laitteesi ei tue akun käytön optimoinnin poistamista käytöstä</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Takaisin</string>
@@ -50,6 +58,8 @@ Jos epäät tämän luvan, nämä toiminnot ovat käytettävissä vain verkkokä
 	<string name="generic_example">Esimerkki</string>
 	<string name="generic_error">Virhe</string>
 	<string name="permission_granted">Lupa myönnetty</string>
+	<string name="dont_show_again">Älä näytä uudelleen</string>
+	<string name="later">Myöhemmin</string>
 
 	<string name="accept">Hyväksy</string>
 
@@ -84,16 +94,6 @@ Jos epäät tämän luvan, nämä toiminnot ovat käytettävissä vain verkkokä
 
 	<string name="folder_rejected">Laite \"%1$s\" haluaa jakaa kansion \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Akun käytön optimointi</string>
-	<string name="dialog_disable_battery_optimization_message">Android saattaa pysäyttää synkronoinnin jonkin ajan kuluttua. Tämän estämiseksi, poista käytöstä akun käytön optimointi.
-\n
-\nJoissain laitteissa on lisäksi prosessienhallintasovelluksia valmiiksi asennettuna. Sinun tulisi lisätä Syncthing myös niiden sallittujen sovellusten listalle.</string>
-	<string name="dialog_disable_battery_optimization_later">Myöhemmin</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Älä näytä uudelleen</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Poista käytöstä Synthingille</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Laitteesi ei tue akun käytön optimoinnin poistamista käytöstä</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Lataa…</string>

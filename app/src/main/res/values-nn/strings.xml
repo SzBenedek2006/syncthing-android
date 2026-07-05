@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Innleiing</string>
 	<string name="welcome_subtitle">Syncthing erstattar proprietære sky- og datatenester med noko ope, påliteleg og desentralisert.\n</string>
 	<string name="welcome_text">
@@ -20,13 +20,13 @@
 
 		Ver venleg og rapporter eventuelle problem du støter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Lagringsløyve</string>
 	<string name="storage_permission_subtitle">Syncthing treng tilgang til alle filer for å utføre filsynkronisering.\n</string>
 	<string name="storage_permission_description">Syncthing har avanserte funksjonar som å overvake endringar, reglar for automatisk godkjenning og filsynkronisering i sanntid.\nUtan dette løyvet vil dei fleste funksjonane ikkje fungere, eller funksjonaliteten, pålitelegheita og ytinga vil bli sterkt avgrensa.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Tilgang til lokasjonsteneste (bakgrunn)</string>
 	<string name="location_permission_subtitle">Dette valfrie løyvet er naudsynt på Android for å sjå kva Wi-Fi-nettverk du er knytt til.
 </string>
@@ -36,15 +36,17 @@ Dette vert kun nytta til funksjonen for køyrebetingelsar og ingen ting anna.
 
 All Wi-Fi- og nettverksrelatert data vert lagra på eininga.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Send varsel</string>
 	<string name="notification_permission_subtitle">Å nekte dette løyvet vil gjere appens kjernefunksjonar vanskelegare å få tilgang til.\n</string>
 	<string name="notification_permission_description">Dette løyvet er naudsynt for å vise varsel om bakgrunnssynkronisering, førespurnader om deling av einingar og mapper og meir.\n
 \n
 Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via vebgrensesnittet.</string>
+
+	<!-- Battery slide -->
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Attende</string>
@@ -54,6 +56,7 @@ Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via
 	<string name="generic_error">Feil</string>
 	<string name="grant_permission">Gje løyve</string>
 	<string name="permission_granted">Løyve er gjeve</string>
+	<string name="later">Seinare</string>
 
 	<string name="accept">Godta</string>
 
@@ -88,9 +91,6 @@ Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via
 
 
 
-	<string name="dialog_disable_battery_optimization_later">Seinare</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Lastar…</string>

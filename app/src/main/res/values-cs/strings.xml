@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Úvod</string>
 	<string name="welcome_subtitle">Syncthing nahrazuje proprietární cloudové a datové služby něčím otevřeným, důvěryhodným a decentralizovaným.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Jakékoli problémy, na které narazíte, nahlaste prosím prostřednictvím <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubu</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Oprávnění pro přístup k úložišti</string>
 	<string name="storage_permission_subtitle">Syncthing vyžaduje oprávnění k přístupu ke všem souborům pro provádění synchronizace.\n</string>
 	<string name="storage_permission_description">Syncthing má pokročilé funkce, jako je sledování změn, pravidla pro automatické přijímání a synchronizace souborů v reálném čase.\nBez tohoto oprávnění by většina funkcí nefungovala nebo by byla výrazně omezena v funkčnosti, spolehlivosti a výkonu.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Vaše zařízení nepodporuje přístup ke všem souborům</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Oprávnění přístupu k poloze (na pozadí)</string>
 	<string name="location_permission_subtitle">Toto volitelné oprávnění je v systému Android nezbytné pro zobrazení Wi-Fi sítí, ke kterým jste připojeni.
 </string>
@@ -37,7 +37,7 @@ Toto se používá pouze pro funkci podmínek spuštění a k ničemu jinému.
 
 Všechna data týkající se Wi-Fi a sítí jsou uložena v zařízení.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informace o aktualizaci</string>
 	<string name="api_level_30_desc">S poslední aktualizací programu syncthing-android je využívána cílová úroveň API 30, která mění chování Androidího souborového systému. Dobré zprávy: Na Androidu 11 a novějším lze nyní zapisovat na externí SD kartu. Špatné zprávy: Přístup bude nejspíše pomalejší a některé cesty budou skryty. Právě kvůli skrytým cestám musí být databáze vymazána aby se předešlo ztrátě dat. To způsobí přehashování všech Vašich dat, ta se ale nebudou muset znovu přenášet ze vzdálených zařízení. Může ale také dojít ke konfliktům a znovu vytvoření smazaných souborů, pokud zrovna nejste plně sesynchronizováni. V závislosti na objemu dat může tento proces velmi silně zatížit výpočetní prostředky, jinak řečeno, může trvat docela dlouho a spotřebovat dost energie.
 \n
@@ -46,12 +46,20 @@ Všechna data týkající se Wi-Fi a sítí jsou uložena v zařízení.</string
 	<string name="api_level_30_button">Obnovit databázi</string>
 	<string name="toast_api_level_30_must_reset">Můžete pokračovat jen po obnovení databáze.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Odesílat oznámení</string>
 	<string name="notification_permission_subtitle">Odmítnutí tohoto oprávnění ztíží přístup k hlavním funkcím aplikace.\n</string>
 	<string name="notification_permission_description">Toto oprávnění je vyžadováno k zobrazování oznámení o synchronizaci na pozadí, požadavků na sdílení zařízení a složek a dalších.\n
 \n
 Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouze prostřednictvím webového rozhraní.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimalizace využití baterie</string>
+	<string name="dialog_disable_battery_optimization_message">Po nějakém čase může Android zastavit synchronizaci. Aby se tak nestalo, vypněte optimalizaci využití baterie.
+\n
+\nNa některých zařízeních mohou být také předinstalovány aplikace ukončující úlohy. Měli byste Syncthing přidat do jejich výjimek.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Vypnout pro Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Vaše zařízení nepodporuje vypnutí optimalizací baterie</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Zpět</string>
@@ -61,6 +69,8 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 	<string name="generic_error">Chyba</string>
 	<string name="grant_permission">Udělit oprávnění</string>
 	<string name="permission_granted">Oprávnění uděleno</string>
+	<string name="dont_show_again">Znovu neukazovat</string>
+	<string name="later">Později</string>
 
 	<string name="accept">Příjmout</string>
 
@@ -98,16 +108,6 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 
 	<string name="folder_rejected">Zařízení \"%1$s\" chce sdílet adresář \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optimalizace využití baterie</string>
-	<string name="dialog_disable_battery_optimization_message">Po nějakém čase může Android zastavit synchronizaci. Aby se tak nestalo, vypněte optimalizaci využití baterie.
-\n
-\nNa některých zařízeních mohou být také předinstalovány aplikace ukončující úlohy. Měli byste Syncthing přidat do jejich výjimek.</string>
-	<string name="dialog_disable_battery_optimization_later">Později</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Znovu neukazovat</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Vypnout pro Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Vaše zařízení nepodporuje vypnutí optimalizací baterie</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Načítání…</string>

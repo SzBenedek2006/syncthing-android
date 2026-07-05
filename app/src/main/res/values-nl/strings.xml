@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Introductie</string>
 	<string name="welcome_subtitle">Syncthing vervangt propriëtaire cloud- en datadiensten door iets open, betrouwbaars en gedecentraliseerds.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Meld eventuele problemen die u tegenkomt via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Opslagmachtiging</string>
 	<string name="storage_permission_subtitle">Syncthing heeft toegang tot alle bestanden nodig om bestandssynchronisatie uit te voeren.\n</string>
 	<string name="storage_permission_description">Syncthing heeft geavanceerde functies zoals het controleren op wijzigingen, regels voor automatisch accepteren en realtime bestandssynchronisatie.\nZonder deze machtiging werken de meeste functies niet of zijn de functionaliteit, betrouwbaarheid en prestaties sterk beperkt.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Je apparaat ondersteunt geen toegang tot alle bestanden</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Locatiemachtiging (achtergrond)</string>
 	<string name="location_permission_subtitle">Deze optionele machtiging is vereist op Android om te kunnen zien met welke wifi-netwerken u bent verbonden.
 </string>
@@ -37,7 +37,7 @@ Dit wordt uitsluitend gebruikt voor de uitvoervoorwaarden en nergens anders voor
 
 Alle wifi- en netwerkgerelateerde gegevens worden lokaal op het apparaat opgeslagen.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informatie over upgrade</string>
 	<string name="api_level_30_desc">Met de nieuwste update richt syncthing-android zich op API niveau 30 wat het gedrag van Androids bestandssysteem verandert. Goed nieuws: Op Android 11 en nieuwer is syncthing nu in staat om op een externe sd-kaart te schrijven. Slecht nieuws: Het kan langzamer zijn en sommige paden zullen verborgen zijn. Door deze verborgen paden, moet de database opnieuw worden opgebouwd om dataverlies te voorkomen. Hierbij worden al je bestanden opnieuw gehasht. Ze hoeven niet opnieuw te worden gesynchroniseerd van andere apparaten. Het proces kan ook conflicten creëren en onlangs gewiste bestanden terug brengen als dit apparaat nu niet volledig gesynchroniseerd is. Afhankelijk van hoeveel bestanden je hebt, kan dit proces zeer intensief zijn, veel tijd kosten en veel batterij-energie kosten.
 \n
@@ -46,12 +46,20 @@ Alle wifi- en netwerkgerelateerde gegevens worden lokaal op het apparaat opgesla
 	<string name="api_level_30_button">Database opnieuw opbouwen</string>
 	<string name="toast_api_level_30_must_reset">Je kunt alleen doorgaan door op de knop drukken om de database opnieuw op te bouwen.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Meldingen verzenden</string>
 	<string name="notification_permission_subtitle">Het weigeren van deze machtiging maakt het moeilijker om toegang te krijgen tot de kernfuncties van de app.\n</string>
 	<string name="notification_permission_description">Deze machtiging is vereist om meldingen te tonen over achtergrondsychronisatie, apparaat- en mapdeelverzoeken, en meer.\n
 \n
 Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de webinterface.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Batterij-optimalisatie</string>
+	<string name="dialog_disable_battery_optimization_message">Android kan de synchronisatie na enige tijd stoppen. Schakel batterij-optimalisatie uit om dit te voorkomen.
+\n
+\nOp sommige apparaten zijn aanvullende apps voor het beëindigen van taken voorgeïnstalleerd - voeg Syncthing ook toe aan hun witte lijst.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Uitschakelen voor Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Uw apparaat biedt geen ondersteuning voor het uitschakelen van batterij-optimalisatie</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Terug</string>
@@ -61,6 +69,8 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 	<string name="generic_error">Fout</string>
 	<string name="grant_permission">Machtiging verlenen</string>
 	<string name="permission_granted">Machtiging verleend</string>
+	<string name="dont_show_again">Niet meer tonen</string>
+	<string name="later">Later</string>
 
 	<string name="accept">Accepteren</string>
 
@@ -98,16 +108,6 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 
 	<string name="folder_rejected">Het apparaat \"%1$s\" wil de map \"%2$s\" delen</string>
 
-	<string name="dialog_disable_battery_optimization_title">Batterij-optimalisatie</string>
-	<string name="dialog_disable_battery_optimization_message">Android kan de synchronisatie na enige tijd stoppen. Schakel batterij-optimalisatie uit om dit te voorkomen.
-\n
-\nOp sommige apparaten zijn aanvullende apps voor het beëindigen van taken voorgeïnstalleerd - voeg Syncthing ook toe aan hun witte lijst.</string>
-	<string name="dialog_disable_battery_optimization_later">Later</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Niet meer tonen</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Uitschakelen voor Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Uw apparaat biedt geen ondersteuning voor het uitschakelen van batterij-optimalisatie</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Laden…</string>

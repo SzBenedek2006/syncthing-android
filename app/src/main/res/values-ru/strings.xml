@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Введение</string>
 	<string name="welcome_subtitle">Syncthing заменяет проприетарные облачные сервисы и сервисы данных чем-то открытым, надежным и децентрализованным.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Пожалуйста, сообщайте о любых проблемах, с которыми вы столкнулись, через <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Использование хранилища</string>
 	<string name="storage_permission_subtitle">Syncthing необходимо разрешение на доступ ко всем файлам для синхронизации файлов.\n</string>
 	<string name="storage_permission_description">В Syncthing есть расширенные функции, такие как отслеживание изменений, правила автоматического приема и синхронизация файлов в реальном времени.\nБез этого разрешения большинство функций не будет работать или будет сильно ограничено в функциональности, надежности и производительности.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Ваше устройство не поддерживает доступ ко всем файлам</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Определение местоположения (в фоне)</string>
 	<string name="location_permission_subtitle">Это необязательное разрешение необходимо на Android, чтобы видеть сети Wi-Fi, к которым вы подключены.
 </string>
@@ -37,7 +37,7 @@
 
 Все данные, связанные с Wi-Fi и сетью, хранятся на устройстве.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Информация о обновлении</string>
 	<string name="api_level_30_desc">После последнего обновления, syncthing-android собирается с целевым уровнем API 30, который меняет поведение файловой системы Android. Хорошая новость: Если у вас Android 11 или новее, то вы сможете записывать данные на SD-карту. Плохая новость: такая запись может быть медленнее, а некоторые пути будут скрыты. Из-за этих скрытых путей, база данных должна быть сброшена, чтобы предотвратить потерю данных. Это приведет к тому, что все ваши данные будут снова хешированы, но их не нужно будет передавать с удаленных устройств. Если в этот момент вы не полностью синхронизированы, то они также могут создавать конфликты и воссоздавать недавно удаленные файлы. В зависимости от того, сколько у вас данных, этот процесс может быть очень ресурсоемким, то есть он займёт некоторое время и будет использовать много энергии от аккумулятора.
 \n
@@ -46,12 +46,20 @@
 	<string name="api_level_30_button">Сбросить базу данных</string>
 	<string name="toast_api_level_30_must_reset">Вы можете продолжить, только нажав кнопку сброса базы данных.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Отправка уведомлений</string>
 	<string name="notification_permission_subtitle">Отказ в этом разрешении затруднит доступ к основным функциям приложения.\n</string>
 	<string name="notification_permission_description">Это разрешение требуется для отображения уведомлений о фоновой синхронизации, запросах на совместное использование устройств и папок и многом другом.\n
 \n
 Если вы отклоните это разрешение, вы сможете получить доступ к этим функциям только через веб-интерфейс.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Оптимизация батареи</string>
+	<string name="dialog_disable_battery_optimization_message">Android может остановить синхронизацию через определенное время. Чтобы избежать этого, отключите оптимизацию батареи.
+\n
+\nТакже, если на вашем устройстве установлена программа для автоматического завершения приложений, внесите Syncthing в список ее исключений.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Отключить для Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Ваше устройство не поддерживает отключение энергосбережения</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Назад</string>
@@ -61,6 +69,8 @@
 	<string name="generic_error">Ошибка</string>
 	<string name="grant_permission">Выдать доступ</string>
 	<string name="permission_granted">Доступ получен</string>
+	<string name="dont_show_again">Больше не показывать</string>
+	<string name="later">Позже</string>
 
 	<string name="accept">Принять</string>
 
@@ -98,16 +108,6 @@
 
 	<string name="folder_rejected">Устройство «%1$s» хочет поделиться папкой «%2$s»</string>
 
-	<string name="dialog_disable_battery_optimization_title">Оптимизация батареи</string>
-	<string name="dialog_disable_battery_optimization_message">Android может остановить синхронизацию через определенное время. Чтобы избежать этого, отключите оптимизацию батареи.
-\n
-\nТакже, если на вашем устройстве установлена программа для автоматического завершения приложений, внесите Syncthing в список ее исключений.</string>
-	<string name="dialog_disable_battery_optimization_later">Позже</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Больше не показывать</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Отключить для Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Ваше устройство не поддерживает отключение энергосбережения</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Загрузка…</string>

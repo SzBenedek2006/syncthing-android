@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Introducció</string>
 	<string name="welcome_subtitle">Syncthing substitueix els serveis de dades i de núvol propietaris per una alternativa oberta, fiable i descentralitzada.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Informeu de qualsevol problema que trobeu a través de <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Permís d\'emmagatzematge</string>
 	<string name="storage_permission_subtitle">Syncthing necessita permís d\'accés a tots els fitxers per a dur a terme la sincronització.\n</string>
 	<string name="storage_permission_description">Syncthing té funcions avançades com el seguiment de canvis, regles d\'acceptació automàtica i sincronització de fitxers en temps real.\nSense aquest permís, la majoria de funcions no funcionarien o estarien greument limitades en funcionalitat, fiabilitat i rendiment.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">El vostre dispositiu no admet l\'accés a tots els fitxers</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Permís d\'ubicació (de fons)</string>
 	<string name="location_permission_subtitle">Aquest permís opcional és necessari a Android per veure les xarxes Wi-Fi a les quals esteu connectat.
 </string>
@@ -37,7 +37,7 @@ Això només s\'utilitza per a la funció de condicions d\'execució i per a res
 
 Totes les dades relacionades amb Wi-Fi i xarxes s\'emmagatzemen al dispositiu.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informació d\'actualització</string>
 	<string name="api_level_30_desc">Amb l\'última actualització, syncthing-android està orientat al nivell 30 de l\'API, que canvia el comportament del sistema de fitxers d\'Android. Bones notícies: a Android 11 i posteriors ara es pot escriure en una targeta SD externa. Males notícies: pot ser més lent i alguns camins s\'amagaran. A causa d\'aquests camins ocults, la base de dades s\'ha de restablir per evitar la pèrdua de dades. Això farà que totes les vostres dades tornin a ser hash, però no cal que es transfereixin des de dispositius remots. També pot crear conflictes i tornar a crear fitxers suprimits recentment si ara mateix no esteu completament sincronitzats. Depenent de la quantitat de dades que tingueu, aquest procés pot ser molt intensiu en recursos, és a dir, necessitar una mica de temps i utilitzar molta energia de la bateria.
 \n
@@ -46,12 +46,20 @@ Totes les dades relacionades amb Wi-Fi i xarxes s\'emmagatzemen al dispositiu.</
 	<string name="api_level_30_button">Restableix la base de dades</string>
 	<string name="toast_api_level_30_must_reset">Només podeu continuar fent clic al botó per restablir la base de dades.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Enviar notificacions</string>
 	<string name="notification_permission_subtitle">Denegar aquest permís farà que les funcions principals de l\'aplicació siguin més difícils d\'accedir.\n</string>
 	<string name="notification_permission_description">Aquest permís és necessari per mostrar notificacions sobre la sincronització en segon pla, sol·licituds d\'ús compartit de dispositius i carpetes i més.\n
 \n
 Si denegueu aquest permís, només podreu accedir a aquestes funcions a través de la interfície web.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimització de bateria</string>
+	<string name="dialog_disable_battery_optimization_message">Passat algun temps, l\'Android podria aturar la sincronització. Per evitar-ho, apagueu l\'optimitzador de bateria.
+\n
+\nAlguns dispositius porten pre-instal·lades aplicacions que finalitzen les tasques automàticament, en aquest cas hauríeu d\'afegir el Syncthing a la seva llista d\'aplicacions autoritzades.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Desactiva per al Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">El teu dispositiu no permet desactivar les optimitzacions de bateria</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Torna</string>
@@ -61,6 +69,8 @@ Si denegueu aquest permís, només podreu accedir a aquestes funcions a través 
 	<string name="generic_error">Error</string>
 	<string name="grant_permission">Concedeix el permís</string>
 	<string name="permission_granted">Permís concedit</string>
+	<string name="dont_show_again">No ho tornis a mostrar</string>
+	<string name="later">Més tard</string>
 
 	<string name="accept">Accepta</string>
 
@@ -98,16 +108,6 @@ Si denegueu aquest permís, només podreu accedir a aquestes funcions a través 
 
 	<string name="folder_rejected">El dispositiu \"%1$s\" vol compartir la carpeta \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optimització de bateria</string>
-	<string name="dialog_disable_battery_optimization_message">Passat algun temps, l\'Android podria aturar la sincronització. Per evitar-ho, apagueu l\'optimitzador de bateria.
-\n
-\nAlguns dispositius porten pre-instal·lades aplicacions que finalitzen les tasques automàticament, en aquest cas hauríeu d\'afegir el Syncthing a la seva llista d\'aplicacions autoritzades.</string>
-	<string name="dialog_disable_battery_optimization_later">Més tard</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">No ho tornis a mostrar</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Desactiva per al Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">El teu dispositiu no permet desactivar les optimitzacions de bateria</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Carregant…</string>

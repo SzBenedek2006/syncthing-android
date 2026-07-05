@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Úvod</string>
 	<string name="welcome_subtitle">Syncthing nahrádza proprietárne cloudové a dátové služby niečím otvoreným, dôveryhodným a decentralizovaným.\n</string>
 	<string name="welcome_text">
@@ -20,13 +20,13 @@
 
 		Akékoľvek problémy, na ktoré narazíte, nahláste prostredníctvom <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubu</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Povolenie prístupu k úložisku</string>
 	<string name="storage_permission_subtitle">Syncthing potrebuje oprávnenie na prístup ku všetkým súborom na vykonanie synchronizácie súborov.\n</string>
 	<string name="storage_permission_description">Syncthing má pokročilé funkcie, ako je sledovanie zmien, pravidlá automatického prijímania a synchronizácia súborov v reálnom čase.\nBez tohto oprávnenia by väčšina funkcií nefungovala alebo by bola výrazne obmedzená ich funkčnosť, spoľahlivosť a výkon.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Prístup k polohe zariadenia (na pozadí)</string>
 	<string name="location_permission_subtitle">Toto voliteľné povolenie je v systéme Android potrebné na zobrazenie sietí Wi-Fi, ku ktorým ste pripojení.
 </string>
@@ -36,15 +36,23 @@ Toto sa používa výlučne pre funkciu podmienok spustenia a na nič iné.
 
 Všetky údaje týkajúce sa Wi-Fi a siete sú uložené v zariadení.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Odosielať upozornenia</string>
 	<string name="notification_permission_subtitle">Odmietnutie tohto povolenia sťaží prístup k hlavným funkciám aplikácie.\n</string>
 	<string name="notification_permission_description">Toto povolenie je potrebné na zobrazovanie upozornení o synchronizácii na pozadí, žiadostiach o zdieľanie zariadení a priečinkov a ďalších.\n
 \n
 Ak toto povolenie odmietnete, k týmto funkciám budete mať prístup len prostredníctvom webového rozhrania.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimalizácia batérie</string>
+	<string name="dialog_disable_battery_optimization_message">Android môže synchronizáciu po nejakom čase prerušiť. Ak tomu chcete zabrániť, vypnite optimalizáciu baterky.
+\n
+\nNiektoré zariadenia majú nainštalované dodatočné procesy, ktoré ukončujú aplikácie. Aj v týchto aplikáciách by ste mali Syncthing zaradiť na zoznam výnimiek.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Vypnúť pre Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Vaše zariadenie nepodporuje vypnutie optimalizácie baterky</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Späť</string>
@@ -54,6 +62,8 @@ Ak toto povolenie odmietnete, k týmto funkciám budete mať prístup len prostr
 	<string name="generic_error">Chyba</string>
 	<string name="grant_permission">Udeliť prístup</string>
 	<string name="permission_granted">Prístup udelený</string>
+	<string name="dont_show_again">Už nezobrazovať</string>
+	<string name="later">Neskôr</string>
 
 	<string name="accept">Prijať</string>
 
@@ -91,16 +101,6 @@ Ak toto povolenie odmietnete, k týmto funkciám budete mať prístup len prostr
 
 	<string name="folder_rejected">Zariadenie \"%1$s\" chce synchronizovať priečinok \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optimalizácia batérie</string>
-	<string name="dialog_disable_battery_optimization_message">Android môže synchronizáciu po nejakom čase prerušiť. Ak tomu chcete zabrániť, vypnite optimalizáciu baterky.
-\n
-\nNiektoré zariadenia majú nainštalované dodatočné procesy, ktoré ukončujú aplikácie. Aj v týchto aplikáciách by ste mali Syncthing zaradiť na zoznam výnimiek.</string>
-	<string name="dialog_disable_battery_optimization_later">Neskôr</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Už nezobrazovať</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Vypnúť pre Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Vaše zariadenie nepodporuje vypnutie optimalizácie baterky</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Načítavam…</string>

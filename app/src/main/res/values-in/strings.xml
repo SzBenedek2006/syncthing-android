@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Pendahuluan</string>
 	<string name="welcome_subtitle">Syncthing menggantikan layanan cloud dan data eksklusif dengan sesuatu yang terbuka, tepercaya, dan terdesentralisasi.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Harap laporkan masalah apa pun yang Anda temui melalui <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Izin Penyimpanan</string>
 	<string name="storage_permission_subtitle">Syncthing memerlukan izin akses semua file untuk melakukan sinkronisasi file.\n</string>
 	<string name="storage_permission_description">Syncthing memiliki fitur canggih seperti pemantauan perubahan, aturan terima otomatis, dan sinkronisasi file waktu nyata.\nTanpa izin ini, sebagian besar fitur tidak akan berfungsi atau sangat terbatas dalam fungsionalitas, keandalan, dan kinerja.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Perangkat Anda tidak mendukung semua akses file</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Izin Lokasi (latar belakang)</string>
 	<string name="location_permission_subtitle">Izin opsional ini diperlukan di Android untuk melihat jaringan Wi-Fi tempat Anda terhubung.
 </string>
@@ -37,16 +37,24 @@ Ini hanya digunakan untuk fitur syarat operasi dan tidak untuk hal lain.
 
 Semua data terkait Wi-Fi dan jaringan disimpan di dalam perangkat.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informasi Peningkatan</string>
 
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Kirim notifikasi</string>
 	<string name="notification_permission_subtitle">Menolak izin ini akan membuat fitur utama aplikasi lebih sulit diakses.\n</string>
 	<string name="notification_permission_description">Izin ini diperlukan untuk menampilkan notifikasi tentang sinkronisasi latar belakang, permintaan berbagi perangkat dan folder, dan banyak lagi.\n
 \n
 Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui antarmuka web.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimisasi Baterai</string>
+	<string name="dialog_disable_battery_optimization_message">Android mungkin akan menghentikan penyelarasan setelah beberapa waktu. Untuk mencegah hal ini, matikan optimisasi baterai.
+\n
+\nBeberapa perangkat mungkin sudah memiliki aplikasi penghentian tugas. Anda juga perlu memasukkan Syncthing pada whitelist aplikasi tersebut.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Matikan untuk Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Perangkat anda tidak mendukung untuk mematikan optimisasi baterai</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Kembali</string>
@@ -54,6 +62,8 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 	<string name="finish">Selesai</string>
 	<string name="generic_example">Contoh</string>
 	<string name="generic_error">Kesalahan</string>
+	<string name="dont_show_again">Jangan tampilkan lagi</string>
+	<string name="later">Nanti</string>
 
 
 
@@ -85,16 +95,6 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 
 
 
-	<string name="dialog_disable_battery_optimization_title">Optimisasi Baterai</string>
-	<string name="dialog_disable_battery_optimization_message">Android mungkin akan menghentikan penyelarasan setelah beberapa waktu. Untuk mencegah hal ini, matikan optimisasi baterai.
-\n
-\nBeberapa perangkat mungkin sudah memiliki aplikasi penghentian tugas. Anda juga perlu memasukkan Syncthing pada whitelist aplikasi tersebut.</string>
-	<string name="dialog_disable_battery_optimization_later">Nanti</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Jangan tampilkan lagi</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Matikan untuk Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Perangkat anda tidak mendukung untuk mematikan optimisasi baterai</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Memuat…</string>

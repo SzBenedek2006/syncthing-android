@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">소개</string>
 	<string name="welcome_subtitle">Syncthing은 독점적인 클라우드 및 데이터 서비스를 개방적이고 신뢰할 수 있으며 분산된 서비스로 대체합니다.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		발생하는 모든 문제는 <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>를 통해 보고해 주세요.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">저장소 권한</string>
 	<string name="storage_permission_subtitle">Syncthing이 파일 동기화를 수행하려면 모든 파일에 대한 접근 권한이 필요합니다.\n</string>
 	<string name="storage_permission_description">Syncthing은 변경 사항 감지, 자동 수락 규칙, 실시간 파일 동기화와 같은 고급 기능을 제공합니다.\n이 권한이 없으면 대부분의 기능이 작동하지 않거나 기능, 안정성 및 성능이 심각하게 제한될 수 있습니다.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">사용자의 장치는 모든 파일에 대한 접근을 지원하지 않습니다</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">위치 권한(배경)</string>
 	<string name="location_permission_subtitle">이 선택적 권한은 Android에서 현재 연결된 Wi-Fi 네트워크를 확인하는 데 필요합니다.
 </string>
@@ -37,7 +37,7 @@
 
 모든 Wi-Fi 및 네트워크 관련 데이터는 기기에 저장됩니다.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">업그레이드 정보</string>
 	<string name="api_level_30_desc">최신 업데이트로 syncthing-android가 API 수준 30을 타게팅하여 Android 파일 시스템의 동작이 변경되었습니다. 좋은 소식은 Android 11 이상에서는 이제 외부 SD 카드를 쓸 수 있다는 것입니다. 나쁜 소식은 속도가 느려질 수 있고 일부 경로가 숨겨질 수 있다는 점입니다. 이러한 숨겨진 경로로 인해 데이터 손실을 방지하기 위해서는 데이터베이스를 재설정해야 합니다. 이로 인해 모든 데이터를 다시 해시해야 하지만 원격 기기에서 데이터를 전송할 필요는 없습니다. 또한, 현재 완전히 동기화되지 않은 경우 충돌이 발생하거나 최근에 삭제된 파일이 다시 생성될 수 있습니다. 데이터 양에 따라 이 과정은 매우 많은 자원을 소모할 수 있으며, 시간이 걸리고 많은 배터리 전력을 사용할 수 있습니다.
 \n
@@ -46,12 +46,20 @@
 	<string name="api_level_30_button">데이터베이스 초기화</string>
 	<string name="toast_api_level_30_must_reset">데이터베이스를 재설정하는 버튼을 클릭해야만 계속할 수 있습니다.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">알림 보내기</string>
 	<string name="notification_permission_subtitle">이 권한을 거부하면 앱의 주요 기능을 사용하는 데 어려움이 있을 수 있습니다.\n</string>
 	<string name="notification_permission_description">이 권한은 백그라운드 동기화, 기기 및 폴더 공유 요청 등에 대한 알림을 표시하는 데 필요합니다.\n
 \n
 이 권한을 거부하면 웹 인터페이스를 통해서만 이러한 기능을 사용할 수 있습니다.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">배터리 최적화</string>
+	<string name="dialog_disable_battery_optimization_message">안드로이드 운영체제는 시간이 지나면 동기화를 정지시킬 수도 있습니다. 이를 막기 위해 배터리 최적화 기능을 꺼주시기 바랍니다.
+\n
+\n몇몇 기기들은 추가적인 태스크 관리 앱이 선탑재되어 있습니다. 태스크 관리 앱의 신뢰목록에 등록함으로써 역시 문제를 해결하실 수 있습니다.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Syncthing을 위해서 끄기</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">사용자의 기기는 배터리 최적화를 비활성화하는 것을 지원하지 않습니다</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">뒤로</string>
@@ -61,6 +69,8 @@
 	<string name="generic_error">오류</string>
 	<string name="grant_permission">권한 부여</string>
 	<string name="permission_granted">권한이 부여됨</string>
+	<string name="dont_show_again">다시 보지 않기</string>
+	<string name="later">나중에</string>
 
 	<string name="accept">허용</string>
 
@@ -98,16 +108,6 @@
 
 	<string name="folder_rejected">기기 \"%1$s\"가 폴더 \"%2$s\"를 공유하려고 합니다</string>
 
-	<string name="dialog_disable_battery_optimization_title">배터리 최적화</string>
-	<string name="dialog_disable_battery_optimization_message">안드로이드 운영체제는 시간이 지나면 동기화를 정지시킬 수도 있습니다. 이를 막기 위해 배터리 최적화 기능을 꺼주시기 바랍니다.
-\n
-\n몇몇 기기들은 추가적인 태스크 관리 앱이 선탑재되어 있습니다. 태스크 관리 앱의 신뢰목록에 등록함으로써 역시 문제를 해결하실 수 있습니다.</string>
-	<string name="dialog_disable_battery_optimization_later">나중에</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">다시 보지 않기</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Syncthing을 위해서 끄기</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">사용자의 기기는 배터리 최적화를 비활성화하는 것을 지원하지 않습니다</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">로드 중…</string>

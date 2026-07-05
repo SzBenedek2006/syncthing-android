@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Introducere</string>
 	<string name="welcome_subtitle">Syncthing înlocuiește serviciile proprietare de cloud și date cu ceva deschis, de încredere și descentralizat.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Vă rugăm să raportați orice probleme întâmpinați prin <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Permisiune acces stocare</string>
 	<string name="storage_permission_subtitle">Syncthing are nevoie de permisiunea de acces la toate fișierele pentru a efectua sincronizarea fișierelor.\n</string>
 	<string name="storage_permission_description">Syncthing dispune de funcționalități avansate, cum ar fi monitorizarea modificărilor, reguli de acceptare automată și sincronizarea fișierelor în timp real.\nFără această permisiune, majoritatea funcțiilor nu ar funcționa sau ar fi grav limitate în ceea ce privește funcționalitatea, fiabilitatea și performanța.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Dispozitivul dvs. nu acceptă accesul la toate fișierele</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Permisiune locație (fundal)</string>
 	<string name="location_permission_subtitle">Această permisiune opțională este necesară pe Android pentru a vedea rețelele Wi-Fi la care sunteți conectat.
 </string>
@@ -37,7 +37,7 @@ Acest lucru este utilizat doar pentru funcția condițiilor de rulare și nimic 
 
 Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Informații de actualizare</string>
 	<string name="api_level_30_desc">Cu cea mai recentă actualizare, syncthing-android vizează nivelul API 30, care modifică comportamentul sistemului de fișiere Android. Vești bune: Pe Android 11 și pe cele mai noi, este acum capabil să scrie pe un card SD extern. Vești proaste: Este posibil să fie mai lent și unele căi de acces vor fi ascunse. Din cauza acestor căi ascunse, baza de date trebuie resetată pentru a preveni pierderea de date. Acest lucru va face ca toate datele dvs. să fie hașurate din nou, dar nu este nevoie să fie transferate de pe dispozitive la distanță. De asemenea, este posibil să creeze conflicte și să recreeze fișiere șterse recent dacă nu sunteți complet sincronizat în acest moment. În funcție de cantitatea de date pe care o aveți, acest proces poate fi foarte intensiv în ceea ce privește resursele, adică poate dura ceva timp și poate consuma multă energie din baterie.
 \n
@@ -46,12 +46,20 @@ Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 	<string name="api_level_30_button">Resetarea bazei de date</string>
 	<string name="toast_api_level_30_must_reset">Puteți continua doar dacă faceți clic pe butonul de resetare a bazei de date.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Trimite notificări</string>
 	<string name="notification_permission_subtitle">Refuzarea acestei permisiuni va face ca funcțiile de bază ale aplicației să fie mai greu de accesat.\n</string>
 	<string name="notification_permission_description">Această permisiune este necesară pentru a afișa notificări despre sincronizarea în fundal, cererile de partajare a dispozitivelor și dosarelor și multe altele.\n
 \n
 Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin interfața web.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Optimizare baterie</string>
+	<string name="dialog_disable_battery_optimization_message">Android poate oprii sincronizarea după un timp. Pentru a prevenii asta, opriți optimizarea bateriei.
+\n
+\nUnele dispozitive au aplicații adiționale preinstalate care pot oprii aplicațiile. Ar trebui să adăugați Syncthing și în listele lor de excepții.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Închide Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Dispozitivul dumneavoastră nu suportă dezactivarea optimizărilor de baterie</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Înapoi</string>
@@ -61,6 +69,8 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 	<string name="generic_error">Eroare</string>
 	<string name="grant_permission">Acordă permisiunea</string>
 	<string name="permission_granted">Permisiune acordată</string>
+	<string name="dont_show_again">Nu mai afișa</string>
+	<string name="later">Mai târziu</string>
 
 	<string name="accept">Acceptă</string>
 
@@ -98,16 +108,6 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 
 	<string name="folder_rejected">Dispozitivul \"%1$s\" dorește să partajeze directorul \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Optimizare baterie</string>
-	<string name="dialog_disable_battery_optimization_message">Android poate oprii sincronizarea după un timp. Pentru a prevenii asta, opriți optimizarea bateriei.
-\n
-\nUnele dispozitive au aplicații adiționale preinstalate care pot oprii aplicațiile. Ar trebui să adăugați Syncthing și în listele lor de excepții.</string>
-	<string name="dialog_disable_battery_optimization_later">Mai târziu</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Nu mai afișa</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Închide Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Dispozitivul dumneavoastră nu suportă dezactivarea optimizărilor de baterie</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Se încarcă…</string>

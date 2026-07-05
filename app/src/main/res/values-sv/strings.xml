@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Introduktion</string>
 	<string name="welcome_subtitle">Syncthing ersätter proprietära moln- och datatjänster med något öppet, pålitligt och decentraliserat.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Rapportera eventuella problem du stöter på via <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a>.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Lagringsbehörighet</string>
 	<string name="storage_permission_subtitle">Syncthing behöver behörighet att få åtkomst till alla filer för att kunna synkronisera filer.\n</string>
 	<string name="storage_permission_description">Syncthing har avancerade funktioner som att övervaka ändringar, regler för automatisk acceptans och filsynkronisering i realtid.\nUtan denna behörighet skulle de flesta funktioner inte fungera eller vara kraftigt begränsade i funktionalitet, tillförlitlighet och prestanda.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Din enhet stöder inte all filåtkomst</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Platsbehörighet (bakgrund)</string>
 	<string name="location_permission_subtitle">Denna valfria behörighet behövs på Android för att se vilka Wi-Fi-nätverk du är ansluten till.
 </string>
@@ -37,7 +37,7 @@ Detta används enbart för funktionen körvillkor och inget annat.
 
 All Wi-Fi- och nätverksrelaterad data lagras på enheten.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Uppgraderingsinformation</string>
 	<string name="api_level_30_desc">Med den senaste uppdateringen är syncthing-android inriktad på API-nivå 30, vilket förändrar beteendet hos Androids filsystem. Goda nyheter: På Android 11 och nyare går det nu att skriva till ett externt SD-kort. Dåliga nyheter: Det kan vara långsammare och vissa sökvägar kommer att vara dolda. På grund av dessa dolda sökvägar måste databasen återställas för att förhindra dataförlust. Detta gör att all din data hashas igen, men den behöver inte överföras från fjärrenheter. Det kan också skapa konflikter och återskapa nyligen borttagna filer om du inte är helt synkroniserad just nu. Beroende på hur mycket data du har kan denna process vara mycket resurskrävande, d.v.s. ta lite tid och använda mycket batterikraft.
 \n
@@ -46,12 +46,20 @@ All Wi-Fi- och nätverksrelaterad data lagras på enheten.</string>
 	<string name="api_level_30_button">Återställ databas</string>
 	<string name="toast_api_level_30_must_reset">Du kan bara fortsätta genom att klicka på knappen för att återställa databasen.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Skicka aviseringar</string>
 	<string name="notification_permission_subtitle">Att neka den här behörigheten kommer att göra appens kärnfunktioner svårare att komma åt.\n</string>
 	<string name="notification_permission_description">Denna behörighet krävs för att visa aviseringar om bakgrundssynkronisering, förfrågningar om delning av enheter och mappar med mera.\n
 \n
 Om du nekar denna behörighet kan du endast komma åt dessa funktioner via webbgränssnittet.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Batterioptimering</string>
+	<string name="dialog_disable_battery_optimization_message">Android kan stoppa synkroniseringen efter en viss tid. För att förhindra detta, stäng av batterioptimering.
+\n
+\nNågra enheter har ytterligare uppgiftsdödande appar förinstallerade. Ni bör också lägga till Syncthing till deras vitlista.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Stäng av för Syncthing</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Din enhet har inte stöd för att inaktivera batterioptimeringar</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Bakåt</string>
@@ -61,6 +69,8 @@ Om du nekar denna behörighet kan du endast komma åt dessa funktioner via webbg
 	<string name="generic_error">Fel</string>
 	<string name="grant_permission">Bevilja behörighet</string>
 	<string name="permission_granted">Behörighet beviljat</string>
+	<string name="dont_show_again">Visa inte igen</string>
+	<string name="later">Senare</string>
 
 	<string name="accept">Acceptera</string>
 
@@ -98,16 +108,6 @@ Om du nekar denna behörighet kan du endast komma åt dessa funktioner via webbg
 
 	<string name="folder_rejected">Enhet \"%1$s\" vill dela mapp \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Batterioptimering</string>
-	<string name="dialog_disable_battery_optimization_message">Android kan stoppa synkroniseringen efter en viss tid. För att förhindra detta, stäng av batterioptimering.
-\n
-\nNågra enheter har ytterligare uppgiftsdödande appar förinstallerade. Ni bör också lägga till Syncthing till deras vitlista.</string>
-	<string name="dialog_disable_battery_optimization_later">Senare</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Visa inte igen</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Stäng av för Syncthing</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Din enhet har inte stöd för att inaktivera batterioptimeringar</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Läser in…</string>

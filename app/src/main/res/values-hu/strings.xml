@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Bevezetés</string>
 	<string name="welcome_subtitle">Syncthing lecseréli a zárt felhő és adatszolgáltatókat valamivel ami nyílt, megbízható és decentralizált.\n</string>
 	<string name="welcome_text">
@@ -20,7 +20,7 @@
 
         Ha programhibát vagy egyéb problémát találsz, kérlek <a href="https://github.com/SzBenedek2006/syncthing-android">GitHubon</a> keresztül jelentsd.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Tárhely jogosultság</string>
 	<string name="storage_permission_subtitle">Syncthingnek minden-fájl hozzáférés engedélyre van szüksége a fájlok szinkronizálásához.\n</string>
 	<string name="storage_permission_description">A Syncthing olyan fejlett funkciókkal rendelkezik, mint változások figyelése, automatikus elfogadási szabályok és valós idejű fájlszinkronizálás.\n
@@ -28,22 +28,30 @@ Ezen engedély nélkül a legtöbb funkció nem működne, vagy súlyosan korlá
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Az eszközöd nem támogatja az összes fájl hozzáférését</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Hely engedély (háttérben)</string>
 	<string name="location_permission_subtitle">Ez az opcionális engedély szükséges Androidon hogy a Syncthing lássa hogy melyik Wi-Fi hálózatra csatlakozol.\n</string>
 	<string name="location_permission_description">A Syncthing beállítható úgy, hogy csak a kiválasztott Wi-Fi hálózatokon szinkronizáljon.\n
 Ez csak a futási feltételek funkcióhoz lesz használva, semmi máshoz.\n
 Minden Wi-Fi és hálózathoz kapcsolódó adat az eszközön lesz tárolva.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Értesítések küldése</string>
 	<string name="notification_permission_subtitle">Az engedély elutasítása megnehezíti az alkalmazás alapfunkcióinak elérését.\n</string>
 	<string name="notification_permission_description">Ez az engedély szükséges a háttérben futó szinkronizálásról, az eszköz- és mappamegosztási kérelmekről szóló és egyéb értesítések megjelenítéséhez.\n
 \n
 Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segítségével érhetőek el.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Akkumulátor optimalizáció</string>
+	<string name="dialog_disable_battery_optimization_message">Az Android idővel leállíthatja a szinkronizálást. Ennek megakadályozásához kapcsold ki az akkumulátor optimalizálást.
+\n
+\nNéhány eszközön extra alkalmazás-leállító alkalmazást telepített fel a gyártó. Ezekben szintén érdemes a Syncthinget fehérlistára tenni.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Syncthing kivételezése</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Az eszközöd nem támogatja az akkumulátor optimalizálás letiltását</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Vissza</string>
@@ -53,6 +61,8 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<string name="generic_error">Hiba</string>
 	<string name="grant_permission">Jogosultság megadás</string>
 	<string name="permission_granted">Jogosultság megadva</string>
+	<string name="dont_show_again">Ne jelenjen meg újra</string>
+	<string name="later">Később</string>
 
 	<string name="accept">Elfogad</string>
 
@@ -90,16 +100,6 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 
 	<string name="folder_rejected">\"%1$s\" eszköz szeretné megosztani a mappát: \"%2$s\"</string>
 
-	<string name="dialog_disable_battery_optimization_title">Akkumulátor optimalizáció</string>
-	<string name="dialog_disable_battery_optimization_message">Az Android idővel leállíthatja a szinkronizálást. Ennek megakadályozásához kapcsold ki az akkumulátor optimalizálást.
-\n
-\nNéhány eszközön extra alkalmazás-leállító alkalmazást telepített fel a gyártó. Ezekben szintén érdemes a Syncthinget fehérlistára tenni.</string>
-	<string name="dialog_disable_battery_optimization_later">Később</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Ne jelenjen meg újra</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Syncthing kivételezése</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Az eszközöd nem támogatja az akkumulátor optimalizálás letiltását</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Betöltés…</string>

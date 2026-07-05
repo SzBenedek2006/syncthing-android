@@ -12,7 +12,7 @@
 
 	<!-- Welcome wizard -->
 
-	<!-- Slide 1 -->
+	<!-- Intro slide -->
 	<string name="introduction">Sarrera</string>
 	<string name="welcome_subtitle">Syncthing-ek hodei eta datu-zerbitzu jabedunak ordezkatzen ditu zerbait ireki, fidagarri eta deszentralizatuarekin.\n</string>
 	<string name="welcome_text">
@@ -20,14 +20,14 @@
 
 		Mesedez, eman aurkitzen duzun edozein arazoren berri <a href="https://github.com/SzBenedek2006/syncthing-android">GitHub</a> bidez.]]></string>
 
-	<!-- Slide 2 -->
+	<!-- Storage slide -->
 	<string name="storage_permission_title">Biltegiratzeko baimena</string>
 	<string name="storage_permission_subtitle">Syncthing-ek fitxategi guztietarako sarbide-baimena behar du fitxategiak sinkronizatzeko.\n</string>
 	<string name="storage_permission_description">Syncthing-ek funtzio aurreratuak ditu, hala nola aldaketak monitorizatzea, automatikoki onartzeko arauak eta denbora errealeko fitxategien sinkronizazioa.\nBaimen hori gabe, funtzio gehienek ez lukete funtzionatuko edo oso mugatuta egongo lirateke funtzionaltasunean, fidagarritasunean eta errendimenduan.</string>
 	<!-- See https://developer.android.com/training/data-storage/manage-all-files -->
 	<string name="dialog_all_files_access_not_supported">Zure gailuak ez du fitxategi guztiak atzitzea onartzen</string>
 
-	<!-- Slide 3 -->
+	<!-- Location slide -->
 	<string name="location_permission_title">Kokapen baimena (atzeko planoa)</string>
 	<string name="location_permission_subtitle">Aukerako baimen hau beharrezkoa da Androiden konektatuta zauden Wi-Fi sareak ikusteko.
 </string>
@@ -37,7 +37,7 @@ Hau exekuzio baldintzak funtziorako bakarrik erabiltzen da eta ez beste ezertara
 
 Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</string>
 
-	<!-- Slide 4 -->
+	<!-- Api upgrade slide (will be removed) -->
 	<string name="api_level_30_title">Eguneraketa informazioa</string>
 	<string name="api_level_30_desc">Azken eguneraketarekin syncthing-android API 30 mailara zuzenduta dago, Android-en fitxategi-sistemaren portaera aldatzen duena. Berri onak: Android 11 eta berriagoetan orain kanpoko SD txartelean idazteko gai da. Berri txarrak: baliteke motelagoa izatea eta bide batzuk ezkutatuta egongo dira. Ezkutuko bide hauek direla eta, datu-basea berrezarri behar da datuak gal ez daitezen. Horrek zure datu guzttiak berriro zifratuko ditu, baina ez dira urruneko gailuetatik transferitu behar izango. Gatazkak ere sor ditzake eta duela gutxi ezabatu diren fitxategiak berriro sor ditzake une honetan guztiz sinkronizatuta ez bazaude. Daukazun datuen arabera, prozesu honek baliabide asko behar ditu, hau da, denbora pixka bat behar du eta bateria asko erabiltzen du.
 \n
@@ -46,12 +46,20 @@ Wi-Fi eta sarearekin erlazionatutako datu guztiak gailuan gordetzen dira.</strin
 	<string name="api_level_30_button">Berrezarri datu-basea</string>
 	<string name="toast_api_level_30_must_reset">Datu-basea berrezartzeko botoian klik eginez soilik jarraitu dezakezu.</string>
 
-	<!-- Slide 5 -->
+	<!-- Notification slide -->
 	<string name="notification_permission_title">Bidali jakinarazpenak</string>
 	<string name="notification_permission_subtitle">Baimen hau ukatzeak aplikazioaren oinarrizko eginbideak atzitzea zailduko du.\n</string>
 	<string name="notification_permission_description">Baimen hau beharrezkoa da atzeko planoko sinkronizazioari buruzko jakinarazpenak, gailuak eta karpetak partekatzeko eskaerak eta gehiago erakusteko.\n
 \n
 Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dituzu eginbide horiek.</string>
+
+	<!-- Battery slide -->
+	<string name="dialog_disable_battery_optimization_title">Bateria optimizatzea</string>
+	<string name="dialog_disable_battery_optimization_message">Androidek sinkronizazioa eten dezake denbora bat igarota. Hori saihesteko, bateriaren optimizazioa desgaitu ezazu.
+\n
+\ngailu batzuek aplikazio gehigarriak dituzte instalatuta zereginak amaitzeko. Era berean, Syncthing gehitu beharko zenioke zure zerrenda zuriari.</string>
+	<string name="dialog_disable_battery_optimization_turn_off">Desgaitu Syncthing-entzat</string>
+	<string name="dialog_disable_battery_optimizations_not_supported">Zure gailuak ez du onartzen bateria-optimizazioak desaktibatzea</string>
 
 	<!-- Generic texts used everywhere -->
 	<string name="back">Atzera</string>
@@ -61,6 +69,8 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 	<string name="generic_error">Errorea</string>
 	<string name="grant_permission">Baimena ematea</string>
 	<string name="permission_granted">Baimena emanda</string>
+	<string name="dont_show_again">Ez erakutsi berriro</string>
+	<string name="later">Geroago</string>
 
 	<string name="accept">Onartu</string>
 
@@ -98,16 +108,6 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 
 	<string name="folder_rejected">\"%1$s\" Gailuak \"%2$s\" karpeta partekatu nahi du</string>
 
-	<string name="dialog_disable_battery_optimization_title">Bateria optimizatzea</string>
-	<string name="dialog_disable_battery_optimization_message">Androidek sinkronizazioa eten dezake denbora bat igarota. Hori saihesteko, bateriaren optimizazioa desgaitu ezazu.
-\n
-\ngailu batzuek aplikazio gehigarriak dituzte instalatuta zereginak amaitzeko. Era berean, Syncthing gehitu beharko zenioke zure zerrenda zuriari.</string>
-	<string name="dialog_disable_battery_optimization_later">Geroago</string>
-	<string name="dialog_disable_battery_optimization_dont_show_again">Ez erakutsi berriro</string>
-	<string name="dialog_disable_battery_optimization_turn_off">Desgaitu Syncthing-entzat</string>
-	<string name="dialog_disable_battery_optimizations_not_supported">Zure gailuak ez du onartzen bateria-optimizazioak desaktibatzea</string>
-
-	<!-- StateDialogActivity -->
 
 	<!-- Text for FoldersFragment and DevicesFragment loading view -->
 	<string name="api_loading">Kargatzen …</string>
