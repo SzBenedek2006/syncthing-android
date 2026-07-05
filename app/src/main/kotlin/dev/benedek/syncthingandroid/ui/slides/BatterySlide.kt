@@ -68,7 +68,7 @@ fun BatterySlide(
 					onClick = onDenyClick,
 				) {
 					Text(
-						stringResource(R.string.dialog_disable_battery_optimization_dont_show_again)
+						stringResource(R.string.dont_show_again)
 					)
 				}
 			}

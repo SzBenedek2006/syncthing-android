@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,7 +62,7 @@ fun LocationSlide(
 				onClick = onDenyClick
 			) {
 				Text(
-					stringResource(R.string.dialog_disable_battery_optimization_dont_show_again)
+					stringResource(R.string.dont_show_again)
 				)
 			}
 		}

@@ -60,7 +60,7 @@ fun NotificationSlide(
 				onClick = onDenyClick,
 			) {
 				Text(
-					stringResource(R.string.dialog_disable_battery_optimization_dont_show_again) // Todo: Change to deny
+					stringResource(R.string.dont_show_again) // Todo: Change to deny
 				)
 			}
 		}

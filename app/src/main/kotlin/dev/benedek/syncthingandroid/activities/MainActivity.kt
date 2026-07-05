@@ -90,7 +90,7 @@ class MainActivity : StateDialogActivity() {
 				batteryOptimizationDialogDismissed = true
 			}
 			.setNegativeButton(
-				R.string.dialog_disable_battery_optimization_dont_show_again
+				R.string.dont_show_again
 			) { _: DialogInterface?, _: Int ->
 				sharedPreferences.edit {
 					putBoolean("battery_optimization_dont_show_again", true)
