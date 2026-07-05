@@ -23,6 +23,11 @@ if [ "$1" = "--cleanup" ]; then
 	done
 	echo
 	exit
+elif [ -n "$1" ]; then
+	# Unknown option
+	echo "Usage: $0 [--cleanup]"
+    echo "Unknown option: $1"
+    exit 1
 fi
 
 echo "Making backup if needed..."
