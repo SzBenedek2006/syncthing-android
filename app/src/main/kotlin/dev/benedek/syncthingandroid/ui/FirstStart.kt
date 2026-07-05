@@ -2,6 +2,7 @@ package dev.benedek.syncthingandroid.ui
 
 import android.Manifest
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
@@ -270,7 +271,7 @@ fun BottomControls(
 			modifier = Modifier.weight(1f),
 			contentAlignment = Alignment.CenterEnd
 		) {
-			if (isOptional(slide)) {
+			if (isOptional(slide) && !isAccepted(slide, LocalContext.current)) {
 				OutlinedButton(
 					onClick = onNext,
 					// TODO: Look into if this could be done without lifecycleState checking
@@ -446,6 +447,19 @@ fun isOptional(slide: FirstStartActivity.Slide): Boolean {
 		FirstStartActivity.Slide.LOCATION -> true
 		FirstStartActivity.Slide.NOTIFICATION -> true
 		FirstStartActivity.Slide.BATTERY -> true
+		else -> false
+	}
+}
+
+/**
+ * Return `true` if the permission for the slide is granted. `false` otherwise.
+ */
+fun isAccepted(slide: FirstStartActivity.Slide, context: Context): Boolean {
+	return when (slide) {
+		FirstStartActivity.Slide.LOCATION -> PermissionUtil.hasLocationPermissions(context)
+		FirstStartActivity.Slide.NOTIFICATION -> PermissionUtil.hasNotificationPermission(context)
+		FirstStartActivity.Slide.BATTERY -> PermissionUtil.hasBatteryOptimizationIgnoreGranted(context)
+		FirstStartActivity.Slide.STORAGE -> PermissionUtil.haveStoragePermission(context)
 		else -> false
 	}
 }
