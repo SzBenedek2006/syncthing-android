@@ -54,8 +54,8 @@ Todos os dados relacionados com Wi-Fi e redes são armazenados no dispositivo.</
 Se recusar esta permissão, só poderá aceder a estas funcionalidades através da interface web.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Optimização da bateria</string>
-	<string name="dialog_disable_battery_optimization_message">O Android pode parar a sincronização passado algum tempo. Para prevenir isso, desligue a optimização da bateria.
+	<string name="disable_battery_optimization_title">Optimização da bateria</string>
+	<string name="disable_battery_optimization_message">O Android pode parar a sincronização passado algum tempo. Para prevenir isso, desligue a optimização da bateria.
 \n
 \nAlguns dispositivos têm aplicações adicionais pré-instaladas para matar tarefas. Deve adicionar o Syncthing à lista de excepções dessas aplicações.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Desligar para o Syncthing</string>

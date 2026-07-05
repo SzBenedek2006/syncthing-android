@@ -44,8 +44,8 @@ Kaikki Wi-Fi- ja verkkoon liittyvät tiedot tallennetaan laitteelle.</string>
 Jos epäät tämän luvan, nämä toiminnot ovat käytettävissä vain verkkokäyttöliittymän kautta.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Akun käytön optimointi</string>
-	<string name="dialog_disable_battery_optimization_message">Android saattaa pysäyttää synkronoinnin jonkin ajan kuluttua. Tämän estämiseksi, poista käytöstä akun käytön optimointi.
+	<string name="disable_battery_optimization_title">Akun käytön optimointi</string>
+	<string name="disable_battery_optimization_message">Android saattaa pysäyttää synkronoinnin jonkin ajan kuluttua. Tämän estämiseksi, poista käytöstä akun käytön optimointi.
 \n
 \nJoissain laitteissa on lisäksi prosessienhallintasovelluksia valmiiksi asennettuna. Sinun tulisi lisätä Syncthing myös niiden sallittujen sovellusten listalle.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Poista käytöstä Synthingille</string>

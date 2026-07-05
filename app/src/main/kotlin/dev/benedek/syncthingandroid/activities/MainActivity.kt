@@ -61,8 +61,8 @@ class MainActivity : StateDialogActivity() {
 		}
 
 		batteryOptimizationsDialog = Util.getAlertDialogBuilder(this)
-			.setTitle(R.string.dialog_disable_battery_optimization_title)
-			.setMessage(R.string.dialog_disable_battery_optimization_message)
+			.setTitle(R.string.disable_battery_optimization_title)
+			.setMessage(R.string.disable_battery_optimization_message)
 			.setPositiveButton(
 				R.string.dialog_disable_battery_optimization_turn_off
 			) { _: DialogInterface?, _: Int ->

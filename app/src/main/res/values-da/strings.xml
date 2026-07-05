@@ -54,8 +54,8 @@ Alle Wi-Fi- og netværksrelaterede data gemmes på enheden.</string>
 Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via webgrænsefladen.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Batterioptimering</string>
-	<string name="dialog_disable_battery_optimization_message">Android stopper måske synkroniseringen efter et stykke tid. Du kan forhindre dette ved at slå batterioptimering fra.
+	<string name="disable_battery_optimization_title">Batterioptimering</string>
+	<string name="disable_battery_optimization_message">Android stopper måske synkroniseringen efter et stykke tid. Du kan forhindre dette ved at slå batterioptimering fra.
 \n
 \nNogle enheder har ekstra job-afsluttende apps installeret. Du burde også tilføje Syncthing til deres whitelist.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Sluk for Syncthing</string>

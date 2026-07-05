@@ -54,8 +54,8 @@
 如果您拒绝此权限，您只能通过 Web 界面访问这些功能。</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">电池优化</string>
-	<string name="dialog_disable_battery_optimization_message">Android 可能会在一段时间后停止同步。为防止这种情况，请关闭电池优化。
+	<string name="disable_battery_optimization_title">电池优化</string>
+	<string name="disable_battery_optimization_message">Android 可能会在一段时间后停止同步。为防止这种情况，请关闭电池优化。
 \n
 \n有些设备预装了额外的任务终止应用。您也应该将 Syncthing 添加到他们的白名单中。</string>
 	<string name="dialog_disable_battery_optimization_turn_off">为 Syncthing 关闭</string>

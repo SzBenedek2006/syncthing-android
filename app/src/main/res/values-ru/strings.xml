@@ -54,8 +54,8 @@
 Если вы отклоните это разрешение, вы сможете получить доступ к этим функциям только через веб-интерфейс.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Оптимизация батареи</string>
-	<string name="dialog_disable_battery_optimization_message">Android может остановить синхронизацию через определенное время. Чтобы избежать этого, отключите оптимизацию батареи.
+	<string name="disable_battery_optimization_title">Оптимизация батареи</string>
+	<string name="disable_battery_optimization_message">Android может остановить синхронизацию через определенное время. Чтобы избежать этого, отключите оптимизацию батареи.
 \n
 \nТакже, если на вашем устройстве установлена программа для автоматического завершения приложений, внесите Syncthing в список ее исключений.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Отключить для Syncthing</string>

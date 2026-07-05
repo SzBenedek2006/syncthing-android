@@ -54,8 +54,8 @@ Toate datele legate de Wi-Fi și rețea sunt stocate pe dispozitiv.</string>
 Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin interfața web.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Optimizare baterie</string>
-	<string name="dialog_disable_battery_optimization_message">Android poate oprii sincronizarea după un timp. Pentru a prevenii asta, opriți optimizarea bateriei.
+	<string name="disable_battery_optimization_title">Optimizare baterie</string>
+	<string name="disable_battery_optimization_message">Android poate oprii sincronizarea după un timp. Pentru a prevenii asta, opriți optimizarea bateriei.
 \n
 \nUnele dispozitive au aplicații adiționale preinstalate care pot oprii aplicațiile. Ar trebui să adăugați Syncthing și în listele lor de excepții.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Închide Syncthing</string>

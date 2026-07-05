@@ -49,8 +49,8 @@ Semua data terkait Wi-Fi dan jaringan disimpan di dalam perangkat.</string>
 Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui antarmuka web.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Optimisasi Baterai</string>
-	<string name="dialog_disable_battery_optimization_message">Android mungkin akan menghentikan penyelarasan setelah beberapa waktu. Untuk mencegah hal ini, matikan optimisasi baterai.
+	<string name="disable_battery_optimization_title">Optimisasi Baterai</string>
+	<string name="disable_battery_optimization_message">Android mungkin akan menghentikan penyelarasan setelah beberapa waktu. Untuk mencegah hal ini, matikan optimisasi baterai.
 \n
 \nBeberapa perangkat mungkin sudah memiliki aplikasi penghentian tugas. Anda juga perlu memasukkan Syncthing pada whitelist aplikasi tersebut.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Matikan untuk Syncthing</string>

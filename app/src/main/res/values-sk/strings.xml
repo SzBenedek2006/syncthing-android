@@ -47,8 +47,8 @@ Všetky údaje týkajúce sa Wi-Fi a siete sú uložené v zariadení.</string>
 Ak toto povolenie odmietnete, k týmto funkciám budete mať prístup len prostredníctvom webového rozhrania.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Optimalizácia batérie</string>
-	<string name="dialog_disable_battery_optimization_message">Android môže synchronizáciu po nejakom čase prerušiť. Ak tomu chcete zabrániť, vypnite optimalizáciu baterky.
+	<string name="disable_battery_optimization_title">Optimalizácia batérie</string>
+	<string name="disable_battery_optimization_message">Android môže synchronizáciu po nejakom čase prerušiť. Ak tomu chcete zabrániť, vypnite optimalizáciu baterky.
 \n
 \nNiektoré zariadenia majú nainštalované dodatočné procesy, ktoré ukončujú aplikácie. Aj v týchto aplikáciách by ste mali Syncthing zaradiť na zoznam výnimiek.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Vypnúť pre Syncthing</string>

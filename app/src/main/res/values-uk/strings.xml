@@ -54,8 +54,8 @@
 Якщо ви відхилите цей дозвіл, ви зможете отримати доступ до цих функцій лише через веб-інтерфейс.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Енергозбереження</string>
-	<string name="dialog_disable_battery_optimization_message">Android може зупинити синхронізацію через деякий час. Щоб цьому запобігти, вимкніть енергозбереження.
+	<string name="disable_battery_optimization_title">Енергозбереження</string>
+	<string name="disable_battery_optimization_message">Android може зупинити синхронізацію через деякий час. Щоб цьому запобігти, вимкніть енергозбереження.
 \n
 \nДеякі пристрої постачаються з додатками, які припиняють інші процеси. Вам також варто додати Syncthing до їхнього білого списку.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Вимкнути для Syncthing</string>

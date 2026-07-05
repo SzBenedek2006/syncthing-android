@@ -47,7 +47,7 @@ All Wi-Fi- og nettverksrelatert data lagres på enheten.</string>
 Hvis du nekter denne tillatelsen, kan du bare få tilgang til disse funksjonene via webgrensesnittet.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Batteri optimalisering</string>
+	<string name="disable_battery_optimization_title">Batteri optimalisering</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Slå av for Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Din enheten støtter ikke deaktivering av batterioptimaliseringer</string>
 

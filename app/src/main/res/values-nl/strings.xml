@@ -54,8 +54,8 @@ Alle wifi- en netwerkgerelateerde gegevens worden lokaal op het apparaat opgesla
 Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de webinterface.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Batterij-optimalisatie</string>
-	<string name="dialog_disable_battery_optimization_message">Android kan de synchronisatie na enige tijd stoppen. Schakel batterij-optimalisatie uit om dit te voorkomen.
+	<string name="disable_battery_optimization_title">Batterij-optimalisatie</string>
+	<string name="disable_battery_optimization_message">Android kan de synchronisatie na enige tijd stoppen. Schakel batterij-optimalisatie uit om dit te voorkomen.
 \n
 \nOp sommige apparaten zijn aanvullende apps voor het beëindigen van taken voorgeïnstalleerd - voeg Syncthing ook toe aan hun witte lijst.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Uitschakelen voor Syncthing</string>

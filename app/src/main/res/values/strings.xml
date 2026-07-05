@@ -52,8 +52,8 @@ All Wi-Fi and network related data is stored on-device.</string>
 If you deny this permission, you can only access these features through the web interface.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Battery Optimization</string>
-	<string name="dialog_disable_battery_optimization_message">Android may stop synchronization after some time. To prevent this, turn off battery optimization.
+	<string name="disable_battery_optimization_title">Battery Optimization</string>
+	<string name="disable_battery_optimization_message">Android may stop synchronization after some time. To prevent this, turn off battery optimization.
 \n
 \nSome devices have additional task-killing apps preinstalled. You should add Syncthing to their whitelist, as well.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Turn off for Syncthing</string>

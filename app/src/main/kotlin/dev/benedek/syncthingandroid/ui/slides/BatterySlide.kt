@@ -33,11 +33,11 @@ fun BatterySlide(
 	) {
 	AdaptiveSlideLayout(
 		{
-			SlideTitle(stringResource(R.string.dialog_disable_battery_optimization_title))
+			SlideTitle(stringResource(R.string.disable_battery_optimization_title))
 		},
 		{
 			SlideDescription(
-				stringResource(R.string.dialog_disable_battery_optimization_message),
+				stringResource(R.string.disable_battery_optimization_message),
 				"",
 				textLayout = TextLayout.Fixed
 			)

@@ -54,8 +54,8 @@
 Ако откажете това разрешение, можете да получите достъп до тези функции само чрез уеб интерфейса.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Пестене на батерия</string>
-	<string name="dialog_disable_battery_optimization_message">Android може да спре приложението след определено време. За да предотвратите това, изключете оптимизацията на батерията.
+	<string name="disable_battery_optimization_title">Пестене на батерия</string>
+	<string name="disable_battery_optimization_message">Android може да спре приложението след определено време. За да предотвратите това, изключете оптимизацията на батерията.
 \n
 \nНякои устройства имат допълнителни приложения за спиране на задачи. Трябва да добавите Syncthing и в техния разрешителен списък.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Изключване за Syncthing</string>

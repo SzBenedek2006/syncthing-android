@@ -54,8 +54,8 @@ Všechna data týkající se Wi-Fi a sítí jsou uložena v zařízení.</string
 Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouze prostřednictvím webového rozhraní.</string>
 
 	<!-- Battery slide -->
-	<string name="dialog_disable_battery_optimization_title">Optimalizace využití baterie</string>
-	<string name="dialog_disable_battery_optimization_message">Po nějakém čase může Android zastavit synchronizaci. Aby se tak nestalo, vypněte optimalizaci využití baterie.
+	<string name="disable_battery_optimization_title">Optimalizace využití baterie</string>
+	<string name="disable_battery_optimization_message">Po nějakém čase může Android zastavit synchronizaci. Aby se tak nestalo, vypněte optimalizaci využití baterie.
 \n
 \nNa některých zařízeních mohou být také předinstalovány aplikace ukončující úlohy. Měli byste Syncthing přidat do jejich výjimek.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Vypnout pro Syncthing</string>
