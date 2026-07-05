@@ -85,7 +85,7 @@ class MainActivity : StateDialogActivity() {
 				}
 			}
 			.setNeutralButton(
-				R.string.dialog_disable_battery_optimization_later
+				R.string.later
 			) { _: DialogInterface?, _: Int ->
 				batteryOptimizationDialogDismissed = true
 			}

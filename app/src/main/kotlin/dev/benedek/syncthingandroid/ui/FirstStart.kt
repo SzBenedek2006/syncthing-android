@@ -1,13 +1,11 @@
 package dev.benedek.syncthingandroid.ui
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -41,12 +39,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,7 +61,6 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.ui.reusable.ButtonSmallTokens
 import dev.benedek.syncthingandroid.ui.reusable.OutlinedButtonTokens
-import dev.benedek.syncthingandroid.ui.reusable.value
 import dev.benedek.syncthingandroid.ui.slides.ApiUpgradeSlide
 import dev.benedek.syncthingandroid.ui.slides.BatterySlide
 import dev.benedek.syncthingandroid.ui.slides.IntroSlide
@@ -289,13 +284,13 @@ fun BottomControls(
 						Icon(
 							imageVector = if (pagerState.currentPage == slideCount - 1) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward,
 							contentDescription = stringResource(
-								R.string.dialog_disable_battery_optimization_later
+								R.string.later
 							)
 						)
 					} else {
 						Text(
 							text = stringResource(
-								R.string.dialog_disable_battery_optimization_later
+								R.string.later
 							)
 						)
 					}
