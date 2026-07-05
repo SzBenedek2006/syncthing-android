@@ -58,6 +58,9 @@ Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via
 	<string name="disable_battery_optimization_message">Android stopper måske synkroniseringen efter et stykke tid. Du kan forhindre dette ved at slå batterioptimering fra.
 \n
 \nNogle enheder har ekstra job-afsluttende apps installeret. Du burde også tilføje Syncthing til deres whitelist.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android stopper måske synkroniseringen efter et stykke tid. Du kan forhindre dette ved at slå batterioptimering fra.\n</string>
+	<string name="disable_battery_optimization_description">Nogle enheder har ekstra job-afsluttende apps installeret. Du burde også tilføje Syncthing til deres whitelist.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Sluk for Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Din enhed understøtter ikke at slå batterioptimeringer fra</string>
 

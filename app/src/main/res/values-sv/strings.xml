@@ -58,6 +58,9 @@ Om du nekar denna behörighet kan du endast komma åt dessa funktioner via webbg
 	<string name="disable_battery_optimization_message">Android kan stoppa synkroniseringen efter en viss tid. För att förhindra detta, stäng av batterioptimering.
 \n
 \nNågra enheter har ytterligare uppgiftsdödande appar förinstallerade. Ni bör också lägga till Syncthing till deras vitlista.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android kan stoppa synkroniseringen efter en viss tid. För att förhindra detta, stäng av batterioptimering.\n</string>
+	<string name="disable_battery_optimization_description">Några enheter har ytterligare uppgiftsdödande appar förinstallerade. Ni bör också lägga till Syncthing till deras vitlista.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Stäng av för Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Din enhet har inte stöd för att inaktivera batterioptimeringar</string>
 

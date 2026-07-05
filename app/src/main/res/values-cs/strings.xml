@@ -58,6 +58,9 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 	<string name="disable_battery_optimization_message">Po nějakém čase může Android zastavit synchronizaci. Aby se tak nestalo, vypněte optimalizaci využití baterie.
 \n
 \nNa některých zařízeních mohou být také předinstalovány aplikace ukončující úlohy. Měli byste Syncthing přidat do jejich výjimek.</string>
+
+	<string name="disable_battery_optimization_subtitle">Po nějakém čase může Android zastavit synchronizaci. Aby se tak nestalo, vypněte optimalizaci využití baterie.\n</string>
+	<string name="disable_battery_optimization_description">Na některých zařízeních mohou být také předinstalovány aplikace ukončující úlohy. Měli byste Syncthing přidat do jejich výjimek.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Vypnout pro Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Vaše zařízení nepodporuje vypnutí optimalizací baterie</string>
 

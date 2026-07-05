@@ -58,6 +58,9 @@ Si denegueu aquest permís, només podreu accedir a aquestes funcions a través 
 	<string name="disable_battery_optimization_message">Passat algun temps, l\'Android podria aturar la sincronització. Per evitar-ho, apagueu l\'optimitzador de bateria.
 \n
 \nAlguns dispositius porten pre-instal·lades aplicacions que finalitzen les tasques automàticament, en aquest cas hauríeu d\'afegir el Syncthing a la seva llista d\'aplicacions autoritzades.</string>
+
+	<string name="disable_battery_optimization_subtitle">Passat algun temps, l\'Android podria aturar la sincronització. Per evitar-ho, apagueu l\'optimitzador de bateria.\n</string>
+	<string name="disable_battery_optimization_description">Alguns dispositius porten pre-instal·lades aplicacions que finalitzen les tasques automàticament, en aquest cas hauríeu d\'afegir el Syncthing a la seva llista d\'aplicacions autoritzades.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Desactiva per al Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">El teu dispositiu no permet desactivar les optimitzacions de bateria</string>
 

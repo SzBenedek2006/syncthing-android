@@ -58,6 +58,9 @@ Se neghi questa autorizzazione, potrai accedere a queste funzionalità solo tram
 	<string name="disable_battery_optimization_message">Android potrebbe interrompere la sincronizzazione dopo qualche tempo. Per evitare questo, spegnere l\'ottimizzazione della batteria.
 \n
 \nAlcuni dispositivi hanno ulteriori applicazioni preinstallate di interruzione dei processi. Si dovrebbe aggiungere Syncthing alla loro whitelist.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android potrebbe interrompere la sincronizzazione dopo qualche tempo. Per evitare questo, spegnere l\'ottimizzazione della batteria.\n</string>
+	<string name="disable_battery_optimization_description">Alcuni dispositivi hanno ulteriori applicazioni preinstallate di interruzione dei processi. Si dovrebbe aggiungere Syncthing alla loro whitelist.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Spegnere per Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Questo dispositivo non supporta la disabilitazione delle ottimizzazioni della batteria</string>
 

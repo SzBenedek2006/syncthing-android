@@ -58,6 +58,9 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 	<string name="disable_battery_optimization_message">Android kann die Synchronisation nach einiger Zeit stoppen. Um dies zu verhindern, muss der Energiesparmodus deaktiviert werden.
 \n
 \nEinige Geräte haben Apps vorinstalliert, welche Hintergrundaktivitäten unterbinden. Syncthing sollte deshalb auch dort in die Ausnahmeliste eingetragen werden.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android kann die Synchronisation nach einiger Zeit stoppen. Um dies zu verhindern, muss der Energiesparmodus deaktiviert werden.\n</string>
+	<string name="disable_battery_optimization_description">Einige Geräte haben Apps vorinstalliert, welche Hintergrundaktivitäten unterbinden. Syncthing sollte deshalb auch dort in die Ausnahmeliste eingetragen werden.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Für Syncthing ausschalten</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Dieses Gerät unterstützt das Deaktivieren der Batterielaufzeit-Optimierung nicht</string>
 

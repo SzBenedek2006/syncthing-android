@@ -58,6 +58,9 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 	<string name="disable_battery_optimization_message">Android kan de synchronisatie na enige tijd stoppen. Schakel batterij-optimalisatie uit om dit te voorkomen.
 \n
 \nOp sommige apparaten zijn aanvullende apps voor het beëindigen van taken voorgeïnstalleerd - voeg Syncthing ook toe aan hun witte lijst.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android kan de synchronisatie na enige tijd stoppen. Schakel batterij-optimalisatie uit om dit te voorkomen.\n</string>
+	<string name="disable_battery_optimization_description">Op sommige apparaten zijn aanvullende apps voor het beëindigen van taken voorgeïnstalleerd - voeg Syncthing ook toe aan hun witte lijst.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Uitschakelen voor Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Uw apparaat biedt geen ondersteuning voor het uitschakelen van batterij-optimalisatie</string>
 

@@ -58,6 +58,9 @@
 	<string name="disable_battery_optimization_message">Android कुछ समय बाद सिंक्रोनाइज़ेशन बंद कर सकता है। इसे रोकने के लिए, बैटरी ऑप्टिमाइज़ेशन बंद करें।
 \n
 \nकुछ डिवाइस में अतिरिक्त टास्क-किलिंग ऐप्स पहले से इंस्टॉल होते हैं। आपको Syncthing को भी उनकी श्वेतसूची में जोड़ना चाहिए।</string>
+
+	<string name="disable_battery_optimization_subtitle">Android कुछ समय बाद सिंक्रोनाइज़ेशन बंद कर सकता है। इसे रोकने के लिए, बैटरी ऑप्टिमाइज़ेशन बंद करें।\n</string>
+	<string name="disable_battery_optimization_description">कुछ डिवाइस में अतिरिक्त टास्क-किलिंग ऐप्स पहले से इंस्टॉल होते हैं। आपको Syncthing को भी उनकी श्वेतसूची में जोड़ना चाहिए।</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Syncthing बंद करें</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">आपका डिवाइस बैटरी ऑप्टिमाइज़ेशन को अक्षम करने का समर्थन नहीं करता है</string>
 

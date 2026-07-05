@@ -51,6 +51,9 @@ Nếu bạn từ chối quyền này, bạn chỉ có thể truy cập các tín
 	<string name="disable_battery_optimization_message">Android có thể sẽ dừng việc đồng bộ hoá sau một khoảng thòi gian. Để ngăn chặn việc này, hãy tắt tối ưu hoá pin.
 \n
 \nMột số thiết bị có thêm cả các ứng dụng dừng tiến trình được cài sẵn. Bạn cũng nên thêm Syncthing vào danh sách loại trừ của chúng.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android có thể sẽ dừng việc đồng bộ hoá sau một khoảng thòi gian. Để ngăn chặn việc này, hãy tắt tối ưu hoá pin.\n</string>
+	<string name="disable_battery_optimization_description">Một số thiết bị có thêm cả các ứng dụng dừng tiến trình được cài sẵn. Bạn cũng nên thêm Syncthing vào danh sách loại trừ của chúng.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Tắt cho Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Thiết bị của bạn không hỗ trợ tắt tối ưu hoá pin</string>
 

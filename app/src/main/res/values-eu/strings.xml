@@ -58,6 +58,9 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 	<string name="disable_battery_optimization_message">Androidek sinkronizazioa eten dezake denbora bat igarota. Hori saihesteko, bateriaren optimizazioa desgaitu ezazu.
 \n
 \ngailu batzuek aplikazio gehigarriak dituzte instalatuta zereginak amaitzeko. Era berean, Syncthing gehitu beharko zenioke zure zerrenda zuriari.</string>
+
+	<string name="disable_battery_optimization_subtitle">Androidek sinkronizazioa eten dezake denbora bat igarota. Hori saihesteko, bateriaren optimizazioa desgaitu ezazu.\n</string>
+	<string name="disable_battery_optimization_description">gailu batzuek aplikazio gehigarriak dituzte instalatuta zereginak amaitzeko. Era berean, Syncthing gehitu beharko zenioke zure zerrenda zuriari.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Desgaitu Syncthing-entzat</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Zure gailuak ez du onartzen bateria-optimizazioak desaktibatzea</string>
 

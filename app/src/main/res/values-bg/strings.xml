@@ -58,6 +58,9 @@
 	<string name="disable_battery_optimization_message">Android може да спре приложението след определено време. За да предотвратите това, изключете оптимизацията на батерията.
 \n
 \nНякои устройства имат допълнителни приложения за спиране на задачи. Трябва да добавите Syncthing и в техния разрешителен списък.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android може да спре приложението след определено време. За да предотвратите това, изключете оптимизацията на батерията.\n</string>
+	<string name="disable_battery_optimization_description">Някои устройства имат допълнителни приложения за спиране на задачи. Трябва да добавите Syncthing и в техния разрешителен списък.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Изключване за Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Устройството не поддържа изключване на оптимизирането на батерията</string>
 

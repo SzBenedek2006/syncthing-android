@@ -58,6 +58,9 @@
 	<string name="disable_battery_optimization_message">Android може зупинити синхронізацію через деякий час. Щоб цьому запобігти, вимкніть енергозбереження.
 \n
 \nДеякі пристрої постачаються з додатками, які припиняють інші процеси. Вам також варто додати Syncthing до їхнього білого списку.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android може зупинити синхронізацію через деякий час. Щоб цьому запобігти, вимкніть енергозбереження.\n</string>
+	<string name="disable_battery_optimization_description">Деякі пристрої постачаються з додатками, які припиняють інші процеси. Вам також варто додати Syncthing до їхнього білого списку.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Вимкнути для Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Ваш пристрій не дозволяє вимкнути енергозбереження</string>
 

@@ -50,6 +50,9 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<string name="disable_battery_optimization_message">Az Android idővel leállíthatja a szinkronizálást. Ennek megakadályozásához kapcsold ki az akkumulátor optimalizálást.
 \n
 \nNéhány eszközön extra alkalmazás-leállító alkalmazást telepített fel a gyártó. Ezekben szintén érdemes a Syncthinget fehérlistára tenni.</string>
+
+	<string name="disable_battery_optimization_subtitle">Az Android idővel leállíthatja a szinkronizálást. Ennek megakadályozásához kapcsold ki az akkumulátor optimalizálást.\n</string>
+	<string name="disable_battery_optimization_description">Néhány eszközön extra alkalmazás-leállító alkalmazást telepített fel a gyártó. Ezekben szintén érdemes a Syncthinget fehérlistára tenni.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Syncthing kivételezése</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Az eszközöd nem támogatja az akkumulátor optimalizálás letiltását</string>
 

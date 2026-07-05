@@ -53,6 +53,9 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 	<string name="disable_battery_optimization_message">Android mungkin akan menghentikan penyelarasan setelah beberapa waktu. Untuk mencegah hal ini, matikan optimisasi baterai.
 \n
 \nBeberapa perangkat mungkin sudah memiliki aplikasi penghentian tugas. Anda juga perlu memasukkan Syncthing pada whitelist aplikasi tersebut.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android mungkin akan menghentikan penyelarasan setelah beberapa waktu. Untuk mencegah hal ini, matikan optimisasi baterai.\n</string>
+	<string name="disable_battery_optimization_description">Beberapa perangkat mungkin sudah memiliki aplikasi penghentian tugas. Anda juga perlu memasukkan Syncthing pada whitelist aplikasi tersebut.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Matikan untuk Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Perangkat anda tidak mendukung untuk mematikan optimisasi baterai</string>
 

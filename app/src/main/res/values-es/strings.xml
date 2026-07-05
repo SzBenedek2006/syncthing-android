@@ -58,6 +58,9 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 	<string name="disable_battery_optimization_message">Andoid puede detener la sincronización pasado un tiempo. Para evitarlo, deshabilita la optimización de batería.
 \n
 \nAlgunos dispositivos tienen instaladas aplicaciones adicionales para terminar tareas. Igualmente, deberías añadir Syncthing a su lista blanca.</string>
+
+	<string name="disable_battery_optimization_subtitle">Andoid puede detener la sincronización pasado un tiempo. Para evitarlo, deshabilita la optimización de batería.\n</string>
+	<string name="disable_battery_optimization_description">Algunos dispositivos tienen instaladas aplicaciones adicionales para terminar tareas. Igualmente, deberías añadir Syncthing a su lista blanca.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Deshabilitar para Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Tu dispositivo no permite desactivar las optimizaciones de batería</string>
 

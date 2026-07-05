@@ -58,6 +58,9 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 	<string name="disable_battery_optimization_message">Android może wstrzymać synchronizację po pewnym czasie. By temu zapobiec, wyłącz optymalizację baterii.
 \n
 \nNiektóre urządzenia posiadają dodatkowe preinstalowane aplikacje zatrzymujące zadania - dobrze byłoby dopisać Syncthing do listy ich wyjątków.</string>
+
+	<string name="disable_battery_optimization_subtitle">Android może wstrzymać synchronizację po pewnym czasie. By temu zapobiec, wyłącz optymalizację baterii.\n</string>
+	<string name="disable_battery_optimization_description">Niektóre urządzenia posiadają dodatkowe preinstalowane aplikacje zatrzymujące zadania - dobrze byłoby dopisać Syncthing do listy ich wyjątków.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Wyłącz dla aplikacji Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Twoje urządzenie nie wspiera wyłączania optymalizacji baterii</string>
 

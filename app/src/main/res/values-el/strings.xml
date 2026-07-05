@@ -49,6 +49,9 @@
 	<string name="disable_battery_optimization_message">Το Android ενδέχεται να σταματήσει τον συγχρονισμό μετά από κάποιο χρονικό διάστημα. Για να αποφευχθεί αυτό, απενεργοποιήστε τη βελτιστοποίηση μπαταρίας.
 \n
 \nΚάποιες συσκευές διαθέτουν επίσης προεγκατεστημένες εφαρμογές τερματισμού διεργασιών. Προσθέστε το Syncthing στο whitelist τους.</string>
+
+	<string name="disable_battery_optimization_subtitle">Το Android ενδέχεται να σταματήσει τον συγχρονισμό μετά από κάποιο χρονικό διάστημα. Για να αποφευχθεί αυτό, απενεργοποιήστε τη βελτιστοποίηση μπαταρίας.\n</string>
+	<string name="disable_battery_optimization_description">Κάποιες συσκευές διαθέτουν επίσης προεγκατεστημένες εφαρμογές τερματισμού διεργασιών. Προσθέστε το Syncthing στο whitelist τους.</string>
 	<string name="dialog_disable_battery_optimization_turn_off">Να απενεργοποιηθεί για το Syncthing</string>
 	<string name="dialog_disable_battery_optimizations_not_supported">Η συσκευή σας δεν επιτρέπει την απενεργοποίηση των βελτιστοποιήσεων μπαταρίας</string>
 
