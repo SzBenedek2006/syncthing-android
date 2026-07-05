@@ -37,9 +37,9 @@ fun BatterySlide(
 		},
 		{
 			SlideDescription(
-				stringResource(R.string.disable_battery_optimization_message),
-				"",
-				textLayout = TextLayout.Fixed
+				stringResource(R.string.disable_battery_optimization_subtitle),
+				stringResource(R.string.disable_battery_optimization_description),
+				textLayout = TextLayout.Expandable
 			)
 		},
 		Modifier,
