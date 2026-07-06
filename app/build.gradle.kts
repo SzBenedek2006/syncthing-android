@@ -44,7 +44,7 @@ dependencies {
 	implementation("androidx.work:work-multiprocess:${workVersion}") // Multiprocess support
 
 	implementation("me.zhanghai.compose.preference:preference:2.2.0")
-	val vicoVersion = "3.1.0"
+	val vicoVersion = "3.2.3"
 	implementation("com.patrykandpatrick.vico:compose-m3:$vicoVersion")
 }
 
