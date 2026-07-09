@@ -58,13 +58,13 @@ jobs:
           ./gradlew --no-daemon buildNative assembleRelease bundleRelease
           rm "$SYNCTHING_RELEASE_STORE_FILE" # "$SYNCTHING_RELEASE_PLAY_ACCOUNT_CONFIG_FILE"
 
-          echo '${{ secrets.GNUPG_SIGNING_KEY_BASE64 }}' | base64 -d | gpg --import
-          cd app/build/outputs/apk/release
-          sha256sum app-release.apk | gpg --clearsign > sha256sum.txt.asc
+          # echo '${{ secrets.GNUPG_SIGNING_KEY_BASE64 }}' | base64 -d | gpg --import
+          # cd app/build/outputs/apk/release
+          # sha256sum app-release.apk | gpg --clearsign > sha256sum.txt.asc
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "app/build/outputs/apk/release/*.apk,app/build/outputs/apk/release/*.asc"
+          artifacts: "app/build/outputs/apk/release/*.apk" #,app/build/outputs/apk/release/*.asc"
           artifactErrorsFailBuild: true
           bodyFile: "app/src/main/play/release-notes/en-GB/default.txt"
           prerelease: ${{ contains('-rc.', github.ref_name) }}
