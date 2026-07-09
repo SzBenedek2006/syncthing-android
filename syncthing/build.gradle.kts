@@ -207,23 +207,11 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 			val goExe = goBin.absolutePath
 
 			ShellRunner.runShellCommand(goExe, "version", workDir = syncthingSrcDir, env = hostEnv)
-			providers.exec {
-				workingDir = syncthingSrcDir
-				commandLine(goExe, "run", "build.go", "version")
 
-				standardOutput = System.out
-				errorOutput = System.err
-
-				environment(System.getenv())
-				environment(hostEnv)
-
-				// Explicitly add local Go to the PATH variable for this command execution
-				val pathKey = if (System.getProperty("os.name").lowercase().contains("win")) "Path" else "PATH"
-				environment(pathKey, "${goBin.parentFile.absolutePath}${File.pathSeparator}${System.getenv(pathKey)}")
-			}.result.get()
 			ShellRunner.runShellCommand(
 				goExe,
 				"run",
+				"-tags", "tools",
 				"build.go",
 				"version",
 				workDir = syncthingSrcDir,
