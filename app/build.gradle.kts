@@ -87,6 +87,7 @@ configure<ApplicationExtension> {
 		resValue("string", "app_package_id", applicationId!!)
 	}
 
+	// For release-app.yaml
 	signingConfigs {
 		create("release") {
 			storeFile = System.getenv("SYNCTHING_RELEASE_STORE_FILE")?.let(::file)
