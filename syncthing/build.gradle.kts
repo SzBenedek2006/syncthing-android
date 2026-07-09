@@ -211,7 +211,9 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 				workingDir = syncthingSrcDir
 				commandLine(goExe, "run", "build.go", "version")
 
-				// Inject your environment
+				standardOutput = System.out
+				errorOutput = System.err
+
 				environment(System.getenv())
 				environment(hostEnv)
 
