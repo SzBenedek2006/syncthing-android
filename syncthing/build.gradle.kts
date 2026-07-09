@@ -189,6 +189,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 
 			// Environment for Host Tools
 			val hostEnv = mapOf(
+				"GOROOT" to goBin.parentFile.parentFile.absolutePath,
 				"GO111MODULE" to "on",
 				"_GRADLE_GO_BIN_DIR" to goBin.parentFile.absolutePath
 			)
