@@ -29,12 +29,12 @@ jobs:
           java -version
           ./gradlew --no-daemon buildNative lint assembleDebug
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         with:
           name: syncthing-android-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v7
         with:
           name: reports-and-libs
           path: |
