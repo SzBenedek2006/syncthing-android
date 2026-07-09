@@ -35,4 +35,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew assembleDebug --no-build-cache --no-configuration-cache --no-daemon --info
+      run: ./gradlew assembleDebug --no-build-cache --no-configuration-cache --no-daemon
