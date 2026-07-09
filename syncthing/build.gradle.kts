@@ -212,8 +212,6 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 			ShellRunner.runShellCommand(
 				goExe,
 				"run",
-				"-v",
-				"-tags", "tools",
 				"build.go",
 				"version",
 				workDir = syncthingSrcDir,
