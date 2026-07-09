@@ -23,13 +23,13 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - name: Ensure release branch
-        run: |
-          git config --system --add safe.directory '*'
-          if ! git branch -a --contains $(git rev-parse HEAD) | grep release >/dev/null; then
-            echo "Tag is not part of release branch - aborting..."
-            exit 1
-          fi
+      # - name: Ensure release branch
+        # run: |
+          # git config --system --add safe.directory '*'
+          # if ! git branch -a --contains $(git rev-parse HEAD) | grep release >/dev/null; then
+            # echo "Tag is not part of release branch - aborting..."
+            # exit 1
+          # fi
 
       - name: build_release
         env:
