@@ -43,7 +43,7 @@ jobs:
 
       - name: build_release
         env:
-          SYNCTHING_RELEASE_KEY_ALIAS: android
+          SYNCTHING_RELEASE_KEY_ALIAS: Syncthing
           SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
           SYNCTHING_RELEASE_STORE_FILE: '${{ runner.temp }}/signing-keystore.jks'
           #SYNCTHING_RELEASE_PLAY_ACCOUNT_CONFIG_FILE: '${{ runner.temp }}/google-play-secrets.json'
