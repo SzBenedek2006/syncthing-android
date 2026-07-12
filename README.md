@@ -10,8 +10,8 @@ I want to thank all contributors of the original project for their awesome work!
 <!--
 <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_1.png" alt="screenshot 1" width="200" /> <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_2.png" alt="screenshot 2" width="200" /> <img src="app/src/main/play/listings/en-GB/graphics/phone-screenshots/screenshot_phone_3.png" alt="screenshot 3" width="200" />
 -->
-<img width="200" alt="Welcome screen of the app (white mode)" src="https://github.com/user-attachments/assets/2c77bda2-ac8f-4243-9622-d4c848e62dad" /> 
-<img width="200" alt="Welcome screen of the app" src="https://github.com/user-attachments/assets/ab63d0ea-9948-4bb1-9f66-56872e8cdd8b" />
+<img width="200" alt="Welcome screen of the app (white mode)" src="https://github.com/user-attachments/assets/2a726ce3-edfe-4fec-96d8-0696323362fb" />
+<img width="200" alt="Welcome screen of the app (dark mode)" src="https://github.com/user-attachments/assets/3a922a9b-3d84-4bfe-bad2-9b26518fc086" />
 
 
 # Building (info is out of date, working on it...)
