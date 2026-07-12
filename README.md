@@ -1,3 +1,4 @@
+<div align="center">
 # Syncthing for Android
 
 [![License: MPLv2](https://img.shields.io/badge/License-MPLv2-blue.svg)](https://opensource.org/licenses/MPL-2.0)
@@ -14,6 +15,8 @@ I want to thank all contributors of the original project for their awesome work!
 -->
 <img width="200" alt="Welcome screen of the app (white mode)" src="https://github.com/user-attachments/assets/2a726ce3-edfe-4fec-96d8-0696323362fb" />
 <img width="200" alt="Welcome screen of the app (dark mode)" src="https://github.com/user-attachments/assets/3a922a9b-3d84-4bfe-bad2-9b26518fc086" />
+
+</div>
 
 
 # Building
