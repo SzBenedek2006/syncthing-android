@@ -1,4 +1,5 @@
 <div align="center">
+
 # Syncthing for Android
 
 [![License: MPLv2](https://img.shields.io/badge/License-MPLv2-blue.svg)](https://opensource.org/licenses/MPL-2.0)
