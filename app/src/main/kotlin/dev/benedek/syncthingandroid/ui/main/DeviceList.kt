@@ -75,7 +75,7 @@ fun DeviceListItem(
 		Modifier
 			.fillMaxWidth()
 			.clickable(
-				onClickLabel = device.displayName ?: device.name,
+				onClickLabel = device.displayName,
 				onClick = {
 					val intent = Intent(context, DeviceActivity::class.java)
 					intent.putExtra(DeviceActivity.EXTRA_IS_CREATE, false)
@@ -93,7 +93,7 @@ fun DeviceListItem(
 				Alignment.Bottom
 			) {
 				Text(
-					text = device.displayName ?: device.name ?: device.deviceID ?: "",
+					text = device.displayName,
 					modifier = Modifier.weight(1f).padding(end = 8.dp),
 					style = MaterialTheme.typography.titleMedium,
 					overflow = TextOverflow.Ellipsis,
