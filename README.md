@@ -1,6 +1,8 @@
 # Syncthing for Android
 
 [![License: MPLv2](https://img.shields.io/badge/License-MPLv2-blue.svg)](https://opensource.org/licenses/MPL-2.0)
+[![Build](https://img.shields.io/github/actions/workflow/status/SzBenedek2006/syncthing-android/android.yml?logo=github)](https://github.com/SzBenedek2006/syncthing-android/actions)
+[![Min SDK](https://img.shields.io/badge/minSdk-23(Android%206)-38a853?logo=android)](https://developer.android.com/about/versions/marshmallow)
 
 A wrapper of [Syncthing](https://github.com/syncthing/syncthing) for Android.
 This is intended to be the revival and continuation of the original [syncthing/syncthing-android](https://github.com/syncthing/syncthing-android) project.
