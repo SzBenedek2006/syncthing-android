@@ -2,8 +2,8 @@
 
 [![License: MPLv2](https://img.shields.io/badge/License-MPLv2-blue.svg)](https://opensource.org/licenses/MPL-2.0)
 
-A wrapper of [Syncthing](https://github.com/syncthing/syncthing) for Android, currently in the middle of a rewrite. </br>
-Forked from the public archive [syncthing/syncthing-android](https://github.com/syncthing/syncthing-android).
+A wrapper of [Syncthing](https://github.com/syncthing/syncthing) for Android.
+This is intended to be the revival and continuation of the original [syncthing/syncthing-android](https://github.com/syncthing/syncthing-android) project.
 
 I want to thank all contributors of the original project for their awesome work!
 
@@ -14,16 +14,17 @@ I want to thank all contributors of the original project for their awesome work!
 <img width="200" alt="Welcome screen of the app (dark mode)" src="https://github.com/user-attachments/assets/3a922a9b-3d84-4bfe-bad2-9b26518fc086" />
 
 
-# Building (info is out of date, working on it...)
+# Building
+_(May be out of date. If so, please open an issue!)_
 
 These dependencies and instructions are necessary for building from the command
-line. If you build using Android Studio, you can set up sdk, java and ndk differently.
-I think you still need to install python and go dependencies outside of AS.
-The docker file may be out of date or non-functional (working on it...)
+line. If you build using Android Studio, you can set up SDK, Java and NDK differently.
+The Docker file is not needed for building, and is out of date or non-functional.
 
 ## Dependencies
 
-1. Android SDK and NDK
+1. Set up JDK version 21.
+2. Android SDK and NDK
     1. Download SDK command line tools from https://developer.android.com/studio#command-line-tools-only.
     2. Unpack the downloaded archive to an empty folder. This path is going
        to become your `ANDROID_HOME` folder.
@@ -38,37 +39,37 @@ The docker file may be out of date or non-functional (working on it...)
        ```
     4. Navigate inside `cmdline-tools/latest/bin`, then execute
        ```
-       ./sdkmanager "platform-tools" "build-tools;<version>" "platforms;android-<version>" "extras;android;m2repository" "ndk;<version>"
+       yes | ./sdkmanager "platform-tools" "build-tools;36.0.0" "platforms;android-36" "extras;android;m2repository" "ndk;29.0.14206865"
        ```
        The required tools and NDK will be downloaded automatically.
 
-        **NOTE:** You should check [Dockerfile](docker/Dockerfile) for the
-        specific version numbers to insert in the command above.
-2. Go (see https://docs.syncthing.net/dev/building#prerequisites for the
-   required version)
-3. Java version 11 (if not present in ``$PATH``, you might need to set
-   ``$JAVA_HOME`` accordingly)
-4. Python version 3
+_(Go is downloaded automatically by Gradle when building.)_
+_(Python is not needed anymore.)_
+
 
 ## Build instructions
 
 1. Clone the project with
-   ```
-   git clone https://github.com/syncthing/syncthing-android.git --recursive
-   ```
-   Alternatively, if already present on the disk, run
-   ```
-   git submodule init && git submodule update
-   ```
-   in the project folder.
+    ```
+    git clone https://github.com/syncthing/syncthing-android.git --recursive
+    ```
+    Alternatively, if already present on the disk, run
+    ```
+    git pull && git submodule init && git submodule update
+    ```
+    in the project folder.
 2. Make sure that the `ANDROID_HOME` environment variable is set to the path
-   containing the Android SDK (see [Dependecies](#dependencies)).
-3. Navigate inside `syncthing-android`, then build the APK file with
-   ```
-   ./gradlew buildNative
-   ./gradlew assembleDebug
-   ```
-4. Once completed, `app-debug.apk` will be present inside `app/build/outputs/apk/debug`.
+   containing the Android SDK (see [Dependencies](#dependencies)).
+3. Navigate inside `syncthing-android`, then build with
+
+    To build the APK:
+    ```
+    ./gradlew assembleDebug
+    ```
+    To build the AAB:
+    ```
+    ./gradlew bundleDebug
+4. Once completed, the result will be in `app/build/outputs/apk/debug` and `app/build/outputs/bundle/debug` respectively.
 
 **NOTE:** On Windows, you must use the Command Prompt (and not PowerShell) to
 compile. When doing so, in the commands replace all forward slashes `/` with
