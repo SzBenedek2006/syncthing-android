@@ -79,8 +79,8 @@ configure<ApplicationExtension> {
 		applicationId = "dev.benedek.syncthingandroid"
 		minSdk = 23
 		targetSdk = 36
-		versionCode = 4600
-		versionName = "2.1.1.0"
+		versionCode = 4700
+		versionName = "2.1.2.0"
 		testApplicationId = "dev.benedek.syncthingandroid.test"
 		manifestPlaceholders["appName"] = "@string/app_name"
 		//testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
