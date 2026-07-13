@@ -164,41 +164,7 @@ play {
 	track.set("beta")
 }
 
-androidComponents {
-	onVariants { variant ->
-		val ndkDirProvider = sdkComponents.ndkDirectory.map { it.asFile.absolutePath }
-		gradle.rootProject.extra["ndk.dir"] = ndkDirProvider.get()
-
-		variant.outputs.forEach { output ->
-			// This abomination is needed for a simple renaming of an output file?
-			(output as? com.android.build.api.variant.impl.VariantOutputImpl)?.outputFileName?.set(
-				output.versionName.map { versionName ->
-					"syncthing-android-${variant.name}_${versionName}.apk"
-				})
-		}
-
-		// Tasks don't exist yet when onVariants runs, so must wait
-		project.afterEvaluate {
-			val taskName = "merge${variant.name.replaceFirstChar { it.titlecase() }}JniLibFolders"
-			project.tasks.findByName(taskName)?.dependsOn(":syncthing:buildNative")
-		}
-
-		// Get the path to ADB from the SDK components
-		val adbPath = sdkComponents.adb.get().asFile.absolutePath
-		val appId = variant.applicationId.get()
-		val capitalizedVariant = variant.name.replaceFirstChar { it.uppercase() }
-
-		tasks.register<Exec>("grantSpecialPermissions$capitalizedVariant") {
-			group = "verification"
-			description = "Grants MANAGE_EXTERNAL_STORAGE and whitelists battery for $appId"
-
-			commandLine(
-				adbPath, "shell",
-				"appops set $appId MANAGE_EXTERNAL_STORAGE allow; " +
-						"dumpsys deviceidle whitelist +$appId"
-			)
-
-		}
-	}
+base {
+	archivesName.set("syncthing-android-${android.defaultConfig.versionName}")
 }
 
