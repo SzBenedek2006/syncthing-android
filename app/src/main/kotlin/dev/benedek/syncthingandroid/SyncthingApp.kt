@@ -2,6 +2,8 @@ package dev.benedek.syncthingandroid
 
 import android.app.Application
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
@@ -9,6 +11,7 @@ import android.system.Os
 import android.util.Log
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
+import dev.benedek.syncthingandroid.model.PackageInfo
 import dev.benedek.syncthingandroid.util.Languages
 import dev.benedek.syncthingandroid.util.ThemeControls
 import java.io.File
@@ -17,6 +20,8 @@ import java.io.FileOutputStream
 class SyncthingApp : Application() {
 	override fun onCreate() {
 		super.onCreate()
+
+		initPackageInfo()
 
 		ThemeControls.init(this)
 
@@ -76,5 +81,19 @@ class SyncthingApp : Application() {
 				Log.e("SyncthingApp", "Failed to apply Legacy SSL Hack", e)
 			}
 		}
+	}
+
+
+	fun initPackageInfo() {
+		PackageInfo.DEBUG = (this.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+		PackageInfo.APPLICATION_ID = this.packageName
+		PackageInfo.BUILD_TYPE = when {
+			packageName.endsWith(".debug") -> "debug"
+			packageName.endsWith(".beta") -> "beta"
+			else -> "release"
+		}
+		val packageInfo = this.packageManager.getPackageInfo(packageName, 0)
+		PackageInfo.VERSION_CODE = packageInfo.versionCode
+		PackageInfo.VERSION_NAME = packageInfo.versionName
 	}
 }
