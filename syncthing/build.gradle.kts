@@ -173,11 +173,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 
 
 		// get_min_sdk(project_dir):
-		val appBuildGradle = layout.projectDirectory.file("../app/build.gradle.kts").asFile
-		val minSdk = appBuildGradle.readLines()
-			.firstOrNull { it.contains("minSdk") }
-			?.filter { it.isDigit() } ?: error("Could not find minSdk in build.gradle.kts")
-
+		val minSdk = libs.versions.minSdk.get()
 
 		doLast {
 			val ccPath =
