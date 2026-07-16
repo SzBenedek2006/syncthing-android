@@ -9,6 +9,7 @@ import javax.inject.Inject
 import org.gradle.api.file.ArchiveOperations
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.kotlin.dsl.support.serviceOf
+import java.util.Properties
 
 val goVersionShared = "1.26.3"
 
@@ -169,8 +170,19 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 		outputs.dir(jniOutDir)
 
 		// get_ndk_home():
-		val ndkDir = libs.versions.ndk.get()
+		val localProperties = Properties().apply {
+			val localPropertiesFile = rootProject.projectDir.resolve("local.properties")
+			if (localPropertiesFile.exists()) {
+				localPropertiesFile.inputStream().use { load(it) }
+			}
+		}
 
+		val sdkDir = localProperties.getProperty("sdk.dir")
+			?: System.getenv("ANDROID_HOME")
+			?: ""
+
+		val ndkVerson = libs.versions.ndk.get()
+		val ndkDir = if (sdkDir.isNotEmpty()) "$sdkDir/ndk/$ndkVerson" else ""
 
 		// get_min_sdk(project_dir):
 		val minSdk = libs.versions.minSdk.get()
