@@ -5,7 +5,7 @@ import android.text.TextUtils
 data class Device (
 	var deviceID: String? = null,
 	var name: String = "",
-	var addresses: MutableList<String?>? = null,
+	var addresses: List<String?>? = null,
 	var compression: String? = null,
 	var certName: String? = null,
 	var introducer: Boolean = false,
