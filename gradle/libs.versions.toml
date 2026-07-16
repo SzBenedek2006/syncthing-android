@@ -1,6 +1,6 @@
 [versions]
 # Android SDK setup
-compileSdk = "36"
+compileSdk = "37"
 minSdk = "23"
 targetSdk = "36"
 buildTools = "36.0.0"
