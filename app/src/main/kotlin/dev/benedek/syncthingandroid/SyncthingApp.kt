@@ -3,7 +3,6 @@ package dev.benedek.syncthingandroid
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
@@ -93,6 +92,7 @@ class SyncthingApp : Application() {
 			else -> "release"
 		}
 		val packageInfo = this.packageManager.getPackageInfo(packageName, 0)
+		@Suppress("Deprecation")
 		PackageInfo.VERSION_CODE = packageInfo.versionCode
 		PackageInfo.VERSION_NAME = packageInfo.versionName
 	}
