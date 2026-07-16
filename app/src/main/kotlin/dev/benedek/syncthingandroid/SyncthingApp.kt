@@ -53,7 +53,7 @@ class SyncthingApp : Application() {
 			try {
 				val certName = "isrgrootx1.pem"
 				// Result: /data/user/0/dev.benedek.syncthingandroid.debug/files/isrgrootx1.pem
-				val certFile = File(context.getFilesDir(), certName)
+				val certFile = File(context.filesDir, certName)
 
 				// Copy from assets to internal storage if not already there
 				if (!certFile.exists()) {
@@ -61,7 +61,7 @@ class SyncthingApp : Application() {
 						this.toString(),
 						"File(context.getFilesDir(), certName) didn't find the file"
 					)
-					context.getAssets().open(certName).use { `in` ->
+					context.assets.open(certName).use { `in` ->
 						FileOutputStream(certFile).use { out ->
 							val buffer = ByteArray(1024)
 							var read: Int
@@ -72,10 +72,10 @@ class SyncthingApp : Application() {
 					}
 				}
 
-				Os.setenv("SSL_CERT_FILE", certFile.getAbsolutePath(), true)
+				Os.setenv("SSL_CERT_FILE", certFile.absolutePath, true)
 				Log.i(
 					"SyncthingApp",
-					"Legacy SSL Hack applied using: " + certFile.getAbsolutePath()
+					"Legacy SSL Hack applied using: " + certFile.absolutePath
 				)
 			} catch (e: Exception) {
 				Log.e("SyncthingApp", "Failed to apply Legacy SSL Hack", e)
