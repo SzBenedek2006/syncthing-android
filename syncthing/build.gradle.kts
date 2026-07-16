@@ -169,7 +169,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 		outputs.dir(jniOutDir)
 
 		// get_ndk_home():
-		val ndkDir = rootProject.extra["ndk.dir"] as String
+		val ndkDir = libs.versions.ndk.get()
 
 
 		// get_min_sdk(project_dir):
