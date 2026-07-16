@@ -8,23 +8,24 @@ buildscript {
         //set("ndkVersionShared", "29.0.13113456") // not needed if built in docker
 
     }
-    val benchmarkVersion = gradle.extra.get("benchmarkVersion") as String
 
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
     }
-    dependencies {
-        classpath("androidx.benchmark:benchmark-baseline-profile-gradle-plugin:$benchmarkVersion")
-        classpath("com.android.tools.build:gradle:9.3.0")
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.36.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.21")
-        classpath("org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.2.21")
-    }
+
 }
 
-extra.set("benchmarkVersion", gradle.extra.get("benchmarkVersion") as String)
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose.compiler) apply false
+    alias(libs.plugins.androidx.baselineprofile) apply false
+    alias(libs.plugins.benManes.versions) apply false
+}
+
 
 tasks.register<Delete>("clean") {
     delete(getLayout().buildDirectory)

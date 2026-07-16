@@ -3,8 +3,6 @@ plugins {
 	id("androidx.baselineprofile")
 }
 
-val benchmarkVersion = rootProject.extra.get("benchmarkVersion") as String
-
 android {
 	namespace = "dev.benedek.baselineprofile"
 	compileSdk = 36
@@ -32,10 +30,10 @@ baselineProfile {
 }
 
 dependencies {
-	implementation("androidx.benchmark:benchmark-macro-junit4:$benchmarkVersion")
-	implementation("androidx.test.espresso:espresso-core:3.7.0")
-	implementation("androidx.test.ext:junit:1.3.0")
-	implementation("androidx.test.uiautomator:uiautomator:2.3.0")
+	implementation(libs.androidx.benchmark.macro)
+	implementation(libs.androidx.test.espresso.core)
+	implementation(libs.androidx.test.ext.junit)
+	implementation(libs.androidx.test.uiautomator)
 }
 
 

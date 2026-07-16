@@ -1,51 +1,49 @@
 import com.android.build.api.dsl.ApplicationExtension
 
 plugins {
-	id("com.android.application")
-	id("com.github.ben-manes.versions")
-	id("com.github.triplet.play") version "4.0.0"
-	id("org.jetbrains.kotlin.plugin.compose")
-	id("androidx.baselineprofile")
+	alias(libs.plugins.android.application)
+	alias(libs.plugins.benManes.versions)
+	alias(libs.plugins.play.publisher)
+	alias(libs.plugins.kotlin.compose.compiler)
+	alias(libs.plugins.androidx.baselineprofile)
 }
 
 dependencies {
 
-	implementation("androidx.profileinstaller:profileinstaller:1.4.1")
-	implementation("eu.chainfire:libsuperuser:1.1.1")
-	implementation("com.google.android.material:material:1.14.0")
-	implementation("com.google.code.gson:gson:2.14.0")
-	implementation("org.mindrot:jbcrypt:0.4")
-	implementation("com.google.guava:guava:33.6.0-android")
-	implementation("com.annimon:stream:1.2.2")
-	implementation("com.android.volley:volley:1.2.1")
+	implementation(libs.androidx.profileinstaller)
+	implementation(libs.libsuperuser)
+	implementation(libs.google.material)
+	implementation(libs.gson)
+	implementation(libs.jbcrypt)
+	implementation(libs.guava)
+	implementation(libs.annimon.stream)
+	implementation(libs.volley)
 
-	implementation("com.journeyapps:zxing-android-embedded:4.3.0") {
+	implementation(libs.zxing.embedded) {
 		isTransitive = false
 	}
-	implementation("com.google.zxing:core:3.5.4")
+	implementation(libs.zxing.core)
 
-	implementation("androidx.core:core-splashscreen:1.2.0")
-	implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-	implementation("androidx.documentfile:documentfile:1.1.0")
-	implementation("androidx.lifecycle:lifecycle-runtime-ktx")
-	implementation("androidx.activity:activity-compose:1.13.0")
-	implementation(platform("androidx.compose:compose-bom:2026.06.01"))
-	implementation("androidx.compose.ui:ui")
-	implementation("androidx.compose.ui:ui-tooling")
-	implementation("androidx.compose.material:material-icons-extended:1.7.8")
-	implementation("androidx.navigation:navigation-compose:2.9.8")
-	implementation("androidx.compose.material3:material3:1.4.0")
-	implementation("androidx.preference:preference:1.2.1")
+	implementation(libs.androidx.core.splashscreen)
+	implementation(libs.androidx.constraintlayout)
+	implementation(libs.androidx.documentfile)
+	implementation(libs.androidx.lifecycle.runtime.ktx)
+	implementation(libs.androidx.activity.compose)
+	implementation(platform(libs.androidx.compose.bom))
+	implementation(libs.androidx.compose.ui)
+	implementation(libs.androidx.compose.ui.tooling)
+	implementation(libs.androidx.compose.icons)
+	implementation(libs.androidx.navigation.compose)
+	implementation(libs.androidx.compose.material3)
+	implementation(libs.androidx.preference)
 	"baselineProfile"(project(":baselineprofile"))
 
-	val workVersion = "2.11.2"
-	implementation("androidx.work:work-runtime:${workVersion}") // Java only
-	implementation("androidx.work:work-runtime-ktx:${workVersion}") // Kotlin + coroutines
-	implementation("androidx.work:work-multiprocess:${workVersion}") // Multiprocess support
+	implementation(libs.androidx.work.runtime) // Java only
+	implementation(libs.androidx.work.runtime.ktx) // Kotlin + coroutines
+	implementation(libs.androidx.work.multiprocess) // Multiprocess support
 
-	implementation("me.zhanghai.compose.preference:preference:2.2.0")
-	val vicoVersion = "3.2.3"
-	implementation("com.patrykandpatrick.vico:compose-m3:$vicoVersion")
+	implementation(libs.compose.preference)
+	implementation(libs.vico.compose)
 }
 
 /* For testing only
@@ -63,9 +61,9 @@ android {
 configure<ApplicationExtension> {
 	// Changes to these values need to be reflected in `../docker/Dockerfile`
 	//noinspection GradleDependency
-	compileSdk = 36
-	buildToolsVersion = "36.0.0"
-	ndkVersion = "29.0.14206865"
+	compileSdk = libs.versions.compileSdk.get().toInt()
+	buildToolsVersion = libs.versions.buildTools.get()
+	ndkVersion = libs.versions.ndk.get()
 
 	buildFeatures {
 		dataBinding = true
@@ -77,8 +75,8 @@ configure<ApplicationExtension> {
 
 	defaultConfig {
 		applicationId = "dev.benedek.syncthingandroid"
-		minSdk = 23
-		targetSdk = 36
+		minSdk = libs.versions.minSdk.get().toInt()
+		targetSdk = libs.versions.targetSdk.get().toInt()
 		versionCode = 4700
 		versionName = "2.1.2.0"
 		testApplicationId = "dev.benedek.syncthingandroid.test"
