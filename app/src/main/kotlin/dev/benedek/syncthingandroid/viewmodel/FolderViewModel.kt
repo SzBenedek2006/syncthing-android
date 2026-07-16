@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package dev.benedek.syncthingandroid.viewmodel
 
 import android.app.Dialog
