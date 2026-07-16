@@ -166,3 +166,8 @@ base {
 	archivesName.set("syncthing-android-${android.defaultConfig.versionName}")
 }
 
+
+tasks.named("preBuild") {
+	dependsOn(":syncthing:buildNative")
+}
+
