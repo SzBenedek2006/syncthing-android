@@ -76,6 +76,12 @@ data class Folder(
 		devices.add(device)
 	}
 
+	/**
+	 * Finds the [Device] within this folder.
+	 *
+	 * @param deviceId The ID of the device to look up.
+	 * @return The [Device] object if it's in the shared devices list; `null` otherwise.
+	 */
 	fun getDevice(deviceId: String?): Device? {
 		for (d in devices) {
 			if (d.deviceID == deviceId) {
