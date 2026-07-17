@@ -115,6 +115,9 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 		}
 
 	public override fun onCreate(savedInstanceState: Bundle?) {
+		isCreateMode = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
+		registerOnServiceConnectedListener { this.onServiceConnected() }
+
 		// Needed for pureBlack
 		val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 		if (ThemeControls.useDarkMode != null) {
@@ -169,8 +172,6 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 			WindowInsetsCompat.CONSUMED
 		}
 
-		isCreateMode = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
-		registerOnServiceConnectedListener { this.onServiceConnected() }
 		setTitle(if (isCreateMode) R.string.add_device else R.string.edit_device)
 
 		binding!!.qrButton.setOnClickListener(this)
