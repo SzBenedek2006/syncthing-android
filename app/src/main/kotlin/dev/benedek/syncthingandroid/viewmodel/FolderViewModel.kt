@@ -403,6 +403,7 @@ class FolderViewModel : ViewModel() {
 
 		if (!canWriteToPath) {
 			folder.type = Constants.FOLDER_TYPE_SEND_ONLY
+			folderNeedsToUpdate = true
 		}
 	}
 
@@ -453,7 +454,10 @@ class FolderViewModel : ViewModel() {
 		folder = found
 		checkWritePermissions(serviceReference?.get(), found.path)
 
-		newDeviceId?.let { folder.addDevice(it) }
+		newDeviceId?.let {
+			folder.addDevice(it)
+			folderNeedsToUpdate = true
+		}
 
 		editedVersioning = folder.versioning!!.deepCopy()
 	}
