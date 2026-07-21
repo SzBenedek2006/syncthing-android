@@ -42,8 +42,8 @@ dependencies {
 	implementation(libs.androidx.work.runtime.ktx) // Kotlin + coroutines
 	implementation(libs.androidx.work.multiprocess) // Multiprocess support
 
-	implementation(libs.compose.preference)
-	implementation(libs.vico.compose)
+	implementation(libs.me.zhanghai.compose.preference)
+	implementation(libs.com.patrykandpatrick.vico.compose)
 }
 
 /* For testing only
