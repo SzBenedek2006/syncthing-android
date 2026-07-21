@@ -12,9 +12,9 @@ data class Device (
 	var paused: Boolean = false,
 	var ignoredFolders: MutableList<IgnoredFolder?>? = null,
 ) {
+	/**
+	 * The device name, or up to the first characters of the ID if the name is empty.
+	 */
 	val displayName: String
-		/**
-		 * Returns the device name, or the first characters of the ID if the name is empty.
-		 */
 		get() = name.ifEmpty { deviceID?.substring(0, min(7, deviceID!!.length)) ?: "" }
 }
