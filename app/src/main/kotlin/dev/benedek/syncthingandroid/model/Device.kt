@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.model
 
-import android.text.TextUtils
 import kotlin.math.min
 
 data class Device (

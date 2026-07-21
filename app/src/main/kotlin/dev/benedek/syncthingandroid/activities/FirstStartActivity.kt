@@ -1,16 +1,13 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,7 +23,6 @@ import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.FirstStartScreen
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
-import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.PermissionUtil.haveStoragePermission
 import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForBatteryOptimization
 import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForLocationPermission
