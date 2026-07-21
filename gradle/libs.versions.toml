@@ -38,6 +38,7 @@ preference = "1.2.1"
 work = "2.11.2"
 compose-preference = "2.2.0"
 vico = "3.2.3"
+kotlinx-serialization-json = "1.11.0"
 
 
 [libraries]
@@ -54,6 +55,7 @@ androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-mac
 libsuperuser = { group = "eu.chainfire", name = "libsuperuser", version.ref = "libsuperuser" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+kotlinx-serialization-gson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 jbcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "jbcrypt" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 annimon-stream = { group = "com.annimon", name = "stream", version.ref = "annimon-stream" }
@@ -98,3 +100,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 play-publisher = { id = "com.github.triplet.play", version.ref = "play-publisher" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

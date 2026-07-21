@@ -6,6 +6,7 @@ plugins {
 	alias(libs.plugins.play.publisher)
 	alias(libs.plugins.kotlin.compose.compiler)
 	alias(libs.plugins.androidx.baselineprofile)
+	alias(libs.plugins.serialization)
 }
 
 dependencies {
@@ -14,6 +15,7 @@ dependencies {
 	implementation(libs.libsuperuser)
 	implementation(libs.google.material)
 	implementation(libs.gson)
+	implementation(libs.kotlinx.serialization.gson)
 	implementation(libs.jbcrypt)
 	implementation(libs.guava)
 	implementation(libs.annimon.stream)
