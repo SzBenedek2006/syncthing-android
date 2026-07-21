@@ -32,6 +32,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
@@ -860,6 +861,35 @@ fun CustomDialog(
 			}
 		}
 	}
+}
+
+@Composable
+fun DeleteDialog(
+	onOk: () -> Unit,
+	onCancel: (() -> Unit)? = null,
+	title: String? = null,
+	text: String? = null,
+	onDismissRequest: (() -> Unit)? = null,
+) {
+	AlertDialog(
+		onDismissRequest = onDismissRequest ?: onCancel ?: { },
+		confirmButton = {
+			TextButton(
+				onClick = onOk
+			) {
+				Text(stringResource(android.R.string.ok))
+			}
+		},
+		dismissButton = {
+			TextButton(
+				onClick = onCancel ?: onDismissRequest ?: {}
+			) {
+				Text(stringResource(android.R.string.cancel))
+			}
+		},
+		title = title?.let { { Text(it) } },
+		text = text?.let { { Text(it) } }
+	)
 }
 
 

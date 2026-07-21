@@ -74,6 +74,7 @@ import dev.benedek.syncthingandroid.ui.reusable.AppDropDownMenu
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.AppTextField
 import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
+import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
@@ -343,35 +344,6 @@ fun Folder(
 				}
 			},
 			text = { Text(stringResource(R.string.dialog_discard_changes)) }
-		)
-	}
-
-	@Composable
-	fun DeleteDialog(
-		onOk: () -> Unit,
-		onCancel: (() -> Unit)? = null,
-		title: String? = null,
-		text: String? = null,
-		onDismissRequest: (() -> Unit)? = null,
-	) {
-		AlertDialog(
-			onDismissRequest = onDismissRequest ?: onCancel ?: { },
-			confirmButton = {
-				TextButton(
-					onClick = onOk
-				) {
-					Text(stringResource(android.R.string.ok))
-				}
-			},
-			dismissButton = {
-				TextButton(
-					onClick = onCancel ?: onDismissRequest ?: {}
-				) {
-					Text(stringResource(android.R.string.cancel))
-				}
-			},
-			title = title?.let { { Text(it) } },
-			text = text?.let { { Text(it) } }
 		)
 	}
 
