@@ -379,6 +379,7 @@ fun Folder(
 	if (viewModel.showFolderTypeDialog) {
 		SingleSelectDialog(
 			title = stringResource(R.string.folder_type),
+			text = null,
 			items = viewModel.folderType.map { stringResource(it.titleRes) },
 			initialSelectedIndex = viewModel.folderType.indexOfFirst { it.value == viewModel.folder.type },
 			onSelect = { index ->
@@ -390,6 +391,7 @@ fun Folder(
 	if (viewModel.showFolderPullOrderDialog) {
 		SingleSelectDialog(
 			title = stringResource(R.string.pull_order),
+			text = null,
 			items = viewModel.folderPullOrders.map { stringResource(it.titleRes) },
 			initialSelectedIndex = viewModel.folderPullOrders.indexOfFirst { it.value == viewModel.folder.order },
 			onSelect = { index ->
