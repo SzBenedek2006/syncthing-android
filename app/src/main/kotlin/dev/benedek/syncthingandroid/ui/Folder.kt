@@ -349,10 +349,13 @@ fun Folder(
 	@Composable
 	fun DeleteDialog(
 		onOk: () -> Unit,
-		onCancel: (() -> Unit)? = null
+		onCancel: (() -> Unit)? = null,
+		title: String? = null,
+		text: String? = null,
+		onDismissRequest: (() -> Unit)? = null,
 	) {
 		AlertDialog(
-			onDismissRequest = onCancel ?: { viewModel.showDeleteDialog = false },
+			onDismissRequest = onDismissRequest ?: onCancel ?: { },
 			confirmButton = {
 				TextButton(
 					onClick = onOk
@@ -362,13 +365,13 @@ fun Folder(
 			},
 			dismissButton = {
 				TextButton(
-					onClick = onCancel ?: { viewModel.showDeleteDialog = false }
+					onClick = onCancel ?: onDismissRequest ?: {}
 				) {
 					Text(stringResource(android.R.string.cancel))
 				}
 			},
-			title = { Text(stringResource(R.string.delete_folder)) },
-			text = { Text(stringResource(R.string.delete_folder_description)) }
+			title = title?.let { { Text(it) } },
+			text = text?.let { { Text(it) } }
 		)
 	}
 
@@ -423,7 +426,12 @@ fun Folder(
 		)
 	}
 	if (viewModel.showDeleteDialog) {
-		DeleteDialog({ viewModel.onDelete(onFinish) })
+		DeleteDialog(
+			{ viewModel.onDelete(onFinish) },
+			{ viewModel.showDeleteDialog = false },
+			stringResource(R.string.delete_folder),
+			stringResource(R.string.delete_folder_description)
+		)
 	}
 }
 
