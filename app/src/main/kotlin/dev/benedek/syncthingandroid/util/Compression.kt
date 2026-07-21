@@ -13,10 +13,16 @@ enum class Compression(val index: Int) {
 	METADATA(1),
 	ALWAYS(2);
 
+	/**
+	 * @return the [String] value used by Syncthing
+	 */
 	fun getValue(context: Context): String? {
 		return context.resources.getStringArray(R.array.compress_values)[index]
 	}
 
+	/**
+	 * @return the compression's display name
+	 */
 	fun getTitle(context: Context): String? {
 		return context.resources.getStringArray(R.array.compress_entries)[index]
 	}
