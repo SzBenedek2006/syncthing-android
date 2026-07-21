@@ -18,7 +18,9 @@ import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
@@ -30,15 +32,20 @@ import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.service.SyncthingService
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression
 import dev.benedek.syncthingandroid.util.TextWatcherAdapter
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
 
 /**
  * Shows device details and allows changing them.
  */
 class DeviceActivity : SyncthingActivity(), View.OnClickListener {
+	val compose = false
+
+	private val viewModel: DeviceViewModel by viewModels()
 	private var device: Device? = null
 
 	private var binding: ActivityDeviceBinding? = null
@@ -68,7 +75,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 				deviceNeedsToUpdate = true
 
 				device!!.compression = compression.getValue(this@DeviceActivity)
-				binding!!.compressionValue.text = compression.getTitle(this@DeviceActivity)
+				binding?.compressionValue?.text = compression.getTitle(this@DeviceActivity)
 			}
 		}
 
@@ -144,47 +151,68 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 			}
 		)
 
-		binding = ActivityDeviceBinding.inflate(layoutInflater)
-		setContentView(binding!!.getRoot())
 
-
-		// Targeting android 15 enables and 16 forces edge-to-edge,
-		ViewCompat.setOnApplyWindowInsetsListener(
-			binding!!.getRoot()
-		) { v: View?, windowInsets: WindowInsetsCompat? ->
-			val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
-			val mlp = v!!.layoutParams as ViewGroup.MarginLayoutParams
-			mlp.leftMargin = insets.left
-			mlp.bottomMargin = insets.bottom
-			mlp.rightMargin = insets.right
-			v.setLayoutParams(mlp)
-			WindowInsetsCompat.CONSUMED
-		}
-
-		ViewCompat.setOnApplyWindowInsetsListener(
-			binding!!.getRoot()
-		) { v: View?, insets: WindowInsetsCompat? ->
-			val bars = insets!!.getInsets(
-				WindowInsetsCompat.Type.systemBars()
-						or WindowInsetsCompat.Type.displayCutout()
-			)
-			v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
-			WindowInsetsCompat.CONSUMED
-		}
-
-		setTitle(if (isCreateMode) R.string.add_device else R.string.edit_device)
-
-		binding!!.qrButton.setOnClickListener(this)
-		binding!!.compressionContainer.setOnClickListener(this)
-
-		if (savedInstanceState != null) {
-			if (device == null) {
-				device = Gson().fromJson(
-					savedInstanceState.getString("device"),
-					Device::class.java
-				)
+		// 1. Set title
+		// 2. Setup ui
+		// 3. Retain needed objects
+		if (compose) {
+			setContent {
+				SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
+					dev.benedek.syncthingandroid.ui.Device(
+						viewModel,
+						this::finish
+					)
+				}
 			}
-			restoreDialogStates(savedInstanceState)
+		} else {
+
+			binding = ActivityDeviceBinding.inflate(layoutInflater)
+			setContentView(binding?.getRoot())
+
+
+			// Targeting android 15 enables and 16 forces edge-to-edge,
+			binding?.getRoot()?.let {
+				ViewCompat.setOnApplyWindowInsetsListener(
+					it
+				) { v: View?, windowInsets: WindowInsetsCompat? ->
+					val insets = windowInsets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+					val mlp = v!!.layoutParams as ViewGroup.MarginLayoutParams
+					mlp.leftMargin = insets.left
+					mlp.bottomMargin = insets.bottom
+					mlp.rightMargin = insets.right
+					v.setLayoutParams(mlp)
+					WindowInsetsCompat.CONSUMED
+				}
+			}
+
+			binding?.getRoot()?.let {
+				ViewCompat.setOnApplyWindowInsetsListener(
+					it
+				) { v: View?, insets: WindowInsetsCompat? ->
+					val bars = insets!!.getInsets(
+						WindowInsetsCompat.Type.systemBars()
+								or WindowInsetsCompat.Type.displayCutout()
+					)
+					v!!.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+					WindowInsetsCompat.CONSUMED
+				}
+			}
+
+			setTitle(if (isCreateMode) R.string.add_device else R.string.edit_device)
+
+			binding?.qrButton?.setOnClickListener(this)
+			binding?.compressionContainer?.setOnClickListener(this)
+
+			// TODO: Remove when compose is done
+			if (savedInstanceState != null) {
+				if (device == null) {
+					device = Gson().fromJson(
+						savedInstanceState.getString("device"),
+						Device::class.java
+					)
+				}
+				restoreDialogStates(savedInstanceState)
+			}
 		}
 		if (isCreateMode) {
 			if (device == null) {
@@ -222,9 +250,9 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 			)
 			syncthingService.unregisterOnServiceStateChangeListener(::serviceStateChangeListener)
 		}
-		binding!!.id.removeTextChangedListener(idTextWatcher)
-		binding!!.name.removeTextChangedListener(nameTextWatcher)
-		binding!!.addresses.removeTextChangedListener(addressesTextWatcher)
+		binding?.id?.removeTextChangedListener(idTextWatcher)
+		binding?.name?.removeTextChangedListener(nameTextWatcher)
+		binding?.addresses?.removeTextChangedListener(addressesTextWatcher)
 	}
 
 	public override fun onPause() {
@@ -273,6 +301,20 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 			)
 		)
 		syncthingService.registerOnServiceStateChangeListener(::serviceStateChangeListener)
+
+		viewModel.setService(syncthingService)
+
+		viewModel.setInitialState(
+			this,
+			this::finish,
+			isCreate = isCreateMode,
+			deviceId = intent.getStringExtra(EXTRA_DEVICE_ID),
+			name = intent.getStringExtra(EXTRA_DEVICE_NAME) ?: "",
+			addresses = DYNAMIC_ADDRESS,
+			compression = Compression.METADATA.getValue(this),
+			introducer = false,
+			paused = false
+		)
 	}
 
 	/**
@@ -285,11 +327,11 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 	private fun onReceiveConnections(deviceStatuses: DeviceStatuses) {
 		val viewsExist = binding?.syncthingVersion != null
 		if (viewsExist && deviceStatuses.connectionsMap?.containsKey(device!!.deviceID) == true) {
-			binding!!.currentAddress.visibility = View.VISIBLE
-			binding!!.syncthingVersion.visibility = View.VISIBLE
-			binding!!.currentAddress.text =
+			binding?.currentAddress?.visibility = View.VISIBLE
+			binding?.syncthingVersion?.visibility = View.VISIBLE
+			binding?.currentAddress?.text =
 				deviceStatuses.connectionsMap!![device!!.deviceID]!!.address
-			binding!!.syncthingVersion.text =
+			binding?.syncthingVersion?.text =
 				deviceStatuses.connectionsMap!![device!!.deviceID]!!.clientVersion
 		}
 	}
@@ -322,31 +364,33 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 			)
 		}
 
-		updateViewsAndSetListeners()
+		if (!compose) {
+			updateViewsAndSetListeners()
+		}
 	}
 
 	private fun updateViewsAndSetListeners() {
-		binding!!.id.removeTextChangedListener(idTextWatcher)
-		binding!!.name.removeTextChangedListener(nameTextWatcher)
-		binding!!.addresses.removeTextChangedListener(addressesTextWatcher)
-		binding!!.introducer.setOnCheckedChangeListener(null)
-		binding!!.devicePause.setOnCheckedChangeListener(null)
+		binding?.id?.removeTextChangedListener(idTextWatcher)
+		binding?.name?.removeTextChangedListener(nameTextWatcher)
+		binding?.addresses?.removeTextChangedListener(addressesTextWatcher)
+		binding?.introducer?.setOnCheckedChangeListener(null)
+		binding?.devicePause?.setOnCheckedChangeListener(null)
 
 		// Update views
-		binding!!.id.setText(device!!.deviceID)
-		binding!!.name.setText(device!!.name)
-		binding!!.addresses.setText(displayableAddresses())
-		binding!!.compressionValue.text =
+		binding?.id?.setText(device!!.deviceID)
+		binding?.name?.setText(device!!.name)
+		binding?.addresses?.setText(displayableAddresses())
+		binding?.compressionValue?.text =
 			Compression.fromValue(this, device!!.compression).getTitle(this)
-		binding!!.introducer.setChecked(device!!.introducer)
-		binding!!.devicePause.setChecked(device!!.paused)
+		binding?.introducer?.setChecked(device!!.introducer)
+		binding?.devicePause?.setChecked(device!!.paused)
 
 		// Keep state updated
-		binding!!.id.addTextChangedListener(idTextWatcher)
-		binding!!.name.addTextChangedListener(nameTextWatcher)
-		binding!!.addresses.addTextChangedListener(addressesTextWatcher)
-		binding!!.introducer.setOnCheckedChangeListener(checkedListener)
-		binding!!.devicePause.setOnCheckedChangeListener(checkedListener)
+		binding?.id?.addTextChangedListener(idTextWatcher)
+		binding?.name?.addTextChangedListener(nameTextWatcher)
+		binding?.addresses?.addTextChangedListener(addressesTextWatcher)
+		binding?.introducer?.setOnCheckedChangeListener(checkedListener)
+		binding?.devicePause?.setOnCheckedChangeListener(checkedListener)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -431,7 +475,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 				val scanResult = intent?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
 				if (scanResult != null) {
 					device!!.deviceID = scanResult
-					binding!!.id.setText(device!!.deviceID)
+					binding?.id?.setText(device!!.deviceID)
 				}
 			}
 		}
@@ -448,14 +492,16 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 	}
 
 	private fun prepareEditMode() {
-		window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+		if (!compose) {
+			window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
-		val dr = ContextCompat.getDrawable(this, R.drawable.ic_content_copy_24dp)
-		binding!!.id.setCompoundDrawablesWithIntrinsicBounds(null, null, dr, null)
-		binding!!.id.setEnabled(false)
-		binding!!.qrButton.setVisibility(View.GONE)
+			val dr = ContextCompat.getDrawable(this, R.drawable.ic_content_copy_24dp)
+			binding?.id?.setCompoundDrawablesWithIntrinsicBounds(null, null, dr, null)
+			binding?.id?.setEnabled(false)
+			binding?.qrButton?.setVisibility(View.GONE)
 
-		binding!!.idContainer.setOnClickListener(this)
+			binding?.idContainer?.setOnClickListener(this)
+		}
 	}
 
 	/**
@@ -486,16 +532,16 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
 	override fun onClick(v: View) {
 		when (v) {
-			binding!!.compressionContainer -> {
+			binding?.compressionContainer -> {
 				showCompressionDialog()
 			}
 
-			binding!!.qrButton -> {
+			binding?.qrButton -> {
 				val qrIntent = QRScannerActivity.intent(this)
 				startActivityForResult(qrIntent, QR_SCAN_REQUEST_CODE)
 			}
 
-			binding!!.idContainer -> {
+			binding?.idContainer -> {
 				Util.copyDeviceId(this, device!!.deviceID)
 			}
 		}
