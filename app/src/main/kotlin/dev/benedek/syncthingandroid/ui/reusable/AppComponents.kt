@@ -304,7 +304,9 @@ fun OptionTile(
 	}
 
 	Surface(
-		modifier.then(behaviorModifier).heightIn(min = 56.dp),
+		modifier
+			.then(behaviorModifier)
+			.heightIn(min = 56.dp),
 		shape,
 		color,
 		contentColor,
@@ -315,11 +317,15 @@ fun OptionTile(
 				Icon(
 					leftIconPainter,
 					leftIconContentDescription,
-					Modifier.padding(14.dp).size(24.dp),
+					Modifier
+						.padding(14.dp)
+						.size(24.dp),
 					iconColor
 				)
 			} else if (!noIconPadding) {
-				Box(Modifier.padding(14.dp).size(24.dp))
+				Box(Modifier
+					.padding(14.dp)
+					.size(24.dp))
 			} else {
 				Box(Modifier.padding(start = 14.dp))
 			}
@@ -431,7 +437,9 @@ fun StatTile(
 	}
 
 	Surface(
-		modifier.then(behaviorModifier).heightIn(min = 56.dp),
+		modifier
+			.then(behaviorModifier)
+			.heightIn(min = 56.dp),
 		shape,
 		color,
 		contentColor,
@@ -464,11 +472,15 @@ fun StatTile(
 				if (leftIcon != null) {
 					leftIcon()
 				} else if (!noIconPadding) {
-					Box(Modifier.padding(14.dp).size(24.dp))
+					Box(Modifier
+						.padding(14.dp)
+						.size(24.dp))
 				} else {
 					Box(Modifier.padding(start = 14.dp))
 				}
-				Column(Modifier.weight(1f).padding(4.dp)) {
+				Column(Modifier
+					.weight(1f)
+					.padding(4.dp)) {
 					if (title != null) {
 						Text(
 							text = title,
@@ -685,13 +697,39 @@ fun AppDropDownMenu(
 // DIALOGS
 
 @Composable
+fun <K> SingleSelectDialog(
+	title: String?,
+	text: String?,
+	items: Map<K, String>?,
+	initialSelectedKey: K?,
+	onSelect: (K) -> Unit,
+	onDismiss: () -> Unit
+) {
+	val entryList: List<Map.Entry<K, String>>? = remember(items) { items?.entries?.toList() } // Convert to list efficiently
+	val initialIndex: Int? = remember(entryList, initialSelectedKey) {
+		entryList?.indexOfFirst { it.key == initialSelectedKey }?.takeIf { it >= 0 }
+	}
+
+
+	SingleSelectDialog(
+		title,
+		text,
+		entryList?.map { it.value },
+		initialIndex,
+		{ index -> entryList?.let { onSelect(it[index].key) } },
+		onDismiss
+	)
+}
+
+
+@Composable
 fun SingleSelectDialog(
-	title: String? = null,
-	text: String? = null,
-	items: List<String>? = null,
-	initialSelectedIndex: Int? = null,
-	onSelect: (Int) -> Unit = {},
-	onDismiss: () -> Unit = {}
+	title: String?,
+	text: String?,
+	items: List<String>?,
+	initialSelectedIndex: Int?,
+	onSelect: (Int) -> Unit,
+	onDismiss: () -> Unit
 ) {
 	var selectedIndex by remember { mutableStateOf(initialSelectedIndex) }
 
@@ -997,11 +1035,16 @@ fun AppDropDownMenuPreview() {
 @Composable
 fun SingleSelectDialogPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		SingleSelectDialog(
-			"Title",
-			"Description 1 2 3!",
-			listOf("1", "2", "3", "Lorem ipsum dolor sit amet")
-		)
+		Box(Modifier.fillMaxSize()) {
+			SingleSelectDialog(
+				"Title",
+				"Description 1 2 3!",
+				listOf("1", "2", "3", "Lorem ipsum dolor sit amet"),
+				null,
+				{},
+				{}
+			)
+		}
 	}
 }
 
