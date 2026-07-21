@@ -13,7 +13,7 @@ data class Device (
 	var ignoredFolders: MutableList<IgnoredFolder?>? = null,
 ) {
 	/**
-	 * The device name, or up to the first characters of the ID if the name is empty.
+	 * The device name, or if the name is empty up to the first 7 characters of the ID.
 	 */
 	val displayName: String
 		get() = name.ifEmpty { deviceID?.substring(0, min(7, deviceID!!.length)) ?: "" }
