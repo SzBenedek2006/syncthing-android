@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.Folder
-import dev.benedek.syncthingandroid.model.isValid
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
@@ -286,7 +285,7 @@ class FolderViewModel : ViewModel() {
 				.show()
 			return
 		}
-		if (!folder.id!!.isValid) {
+		if (!Folder.isValidId(folder.id)) {
 			Toast.makeText(context, R.string.folder_id_not_valid, Toast.LENGTH_LONG)
 				.show()
 			return

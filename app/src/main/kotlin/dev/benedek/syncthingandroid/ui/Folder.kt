@@ -68,7 +68,7 @@ import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FolderPickerActivity
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.model.isValid
+import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.AppDropDownMenu
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
@@ -100,7 +100,7 @@ fun Folder(
 	) {
 		val folder = viewModel.folder
 		//TODO: Improvement: maybe check if syncthing has access to path
-		if (folder.label.isNullOrEmpty() || !folder.id!!.isValid || folder.path.isNullOrEmpty()) {
+		if (folder.label.isNullOrEmpty() || !Folder.isValidId(folder.id) || folder.path.isNullOrEmpty()) {
 			viewModel.isValidFolder = false
 		} else {
 			viewModel.isValidFolder = true
