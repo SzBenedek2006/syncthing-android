@@ -222,24 +222,25 @@ fun Folder(
 				}
 			}
 			HorizontalDivider()
-			Column(
-				modifier = Modifier
-			) {
-				var showItems by rememberSaveable { mutableStateOf(false) }
-				val rotationAmount: Float? = if (showItems) 180f else 0f
-				OptionTile(
-					title = stringResource(R.string.devices),
-					leftIconPainter = rememberVectorPainter(Icons.Outlined.Devices),
-					rightIconPainter = rememberVectorPainter(Icons.Outlined.ExpandMore),
-					onClick = { showItems = !showItems },
-					rightIconRotationAmount = rotationAmount,
-					contentColor = if (showItems) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-				)
-				DeviceListSection(
-					viewModel.deviceList,
-					showItems,
-					viewModel::onDeviceSelectionChange
-				)
+
+			var showItems by rememberSaveable { mutableStateOf(false) }
+			Surface(tonalElevation = if (showItems) 4.dp else 0.dp) {
+				Column() {
+					val rotationAmount: Float? = if (showItems) 180f else 0f
+					OptionTile(
+						title = stringResource(R.string.devices),
+						leftIconPainter = rememberVectorPainter(Icons.Outlined.Devices),
+						rightIconPainter = rememberVectorPainter(Icons.Outlined.ExpandMore),
+						onClick = { showItems = !showItems },
+						rightIconRotationAmount = rotationAmount,
+						contentColor = if (showItems) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+					)
+					DeviceListSection(
+						viewModel.deviceList,
+						showItems,
+						viewModel::onDeviceSelectionChange
+					)
+				}
 			}
 			HorizontalDivider()
 			OptionTile(
@@ -424,7 +425,7 @@ fun DeviceListSection(
 		exit = shrinkVertically() + fadeOut()
 	) {
 		if (deviceList.isEmpty()) {
-			Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
+			Box(modifier = Modifier.fillMaxWidth().padding(16.dp), Alignment.Center) {
 				Text(stringResource(R.string.devices_list_empty), style = MaterialTheme.typography.titleMedium)
 			}
 		} else {
