@@ -60,6 +60,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
+import dev.benedek.syncthingandroid.model.Slide
 import dev.benedek.syncthingandroid.ui.reusable.ButtonSmallTokens
 import dev.benedek.syncthingandroid.ui.reusable.OutlinedButtonTokens
 import dev.benedek.syncthingandroid.ui.slides.ApiUpgradeSlide
@@ -200,7 +201,7 @@ fun BottomControls(
 	onBack: () -> Unit,
 	onNext: () -> Unit,
 	canAdvance: (noToast: Boolean) -> Boolean,
-	slide: FirstStartActivity.Slide,
+	slide: Slide,
 	modifier: Modifier = Modifier
 ) {
 	val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
@@ -327,7 +328,7 @@ fun BottomControls(
 
 @Composable
 fun SlideContent(
-	slide: FirstStartActivity.Slide,
+	slide: Slide,
 	activity: FirstStartActivity,
 	permissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>,
 	onUpgradeDatabase: () -> Unit,
@@ -393,18 +394,18 @@ fun SlideContent(
 		verticalArrangement = Arrangement.Center
 	) {
 		when (slide) {
-			FirstStartActivity.Slide.INTRO -> {
+			Slide.INTRO -> {
 				IntroSlide()
 			}
 
-			FirstStartActivity.Slide.STORAGE -> {
+			Slide.STORAGE -> {
 				StorageSlide(
 					::askForStoragePermission,
 					isStorageGranted
 				)
 			}
 
-			FirstStartActivity.Slide.LOCATION -> {
+			Slide.LOCATION -> {
 				LocationSlide(
 					::askForLocationPermission,
 					isLocationGranted,
@@ -412,14 +413,14 @@ fun SlideContent(
 				)
 			}
 
-			FirstStartActivity.Slide.API_LEVEL_30 -> {
+			Slide.API_LEVEL_30 -> {
 				ApiUpgradeSlide(
 					onUpgradeDatabase,
 					isApiUpgraded
 				)
 			}
 
-			FirstStartActivity.Slide.NOTIFICATION -> {
+			Slide.NOTIFICATION -> {
 				NotificationSlide(
 					::askForNotificationPermission,
 					isNotificationGranted,
@@ -427,7 +428,7 @@ fun SlideContent(
 				)
 			}
 
-			FirstStartActivity.Slide.BATTERY -> {
+			Slide.BATTERY -> {
 				BatterySlide(
 					askForIgnoreBatteryOptimization,
 					isBatteryOptimizationIgnoreGranted,
@@ -438,11 +439,11 @@ fun SlideContent(
 	}
 }
 
-fun isOptional(slide: FirstStartActivity.Slide): Boolean {
+fun isOptional(slide: Slide): Boolean {
 	return when (slide) {
-		FirstStartActivity.Slide.LOCATION -> true
-		FirstStartActivity.Slide.NOTIFICATION -> true
-		FirstStartActivity.Slide.BATTERY -> true
+		Slide.LOCATION -> true
+		Slide.NOTIFICATION -> true
+		Slide.BATTERY -> true
 		else -> false
 	}
 }
@@ -450,12 +451,12 @@ fun isOptional(slide: FirstStartActivity.Slide): Boolean {
 /**
  * Return `true` if the permission for the slide is granted. `false` otherwise.
  */
-fun isAccepted(slide: FirstStartActivity.Slide, context: Context): Boolean {
+fun isAccepted(slide: Slide, context: Context): Boolean {
 	return when (slide) {
-		FirstStartActivity.Slide.LOCATION -> PermissionUtil.hasLocationPermissions(context)
-		FirstStartActivity.Slide.NOTIFICATION -> PermissionUtil.hasNotificationPermission(context)
-		FirstStartActivity.Slide.BATTERY -> PermissionUtil.hasBatteryOptimizationIgnoreGranted(context)
-		FirstStartActivity.Slide.STORAGE -> PermissionUtil.haveStoragePermission(context)
+		Slide.LOCATION -> PermissionUtil.hasLocationPermissions(context)
+		Slide.NOTIFICATION -> PermissionUtil.hasNotificationPermission(context)
+		Slide.BATTERY -> PermissionUtil.hasBatteryOptimizationIgnoreGranted(context)
+		Slide.STORAGE -> PermissionUtil.haveStoragePermission(context)
 		else -> false
 	}
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
+import dev.benedek.syncthingandroid.model.Slide
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForBatteryOptimization
@@ -33,13 +34,13 @@ class FirstStartViewModel(
 	var isBatteryOptimizationIgnoreGranted by mutableStateOf(false)
 		private set
 
-	var slides by mutableStateOf<List<FirstStartActivity.Slide>>(emptyList())
+	var slides by mutableStateOf<List<Slide>>(emptyList())
 		private set
 
 	init {
 		updatePermissions(context)
 		initApiUpgradeState(prefs)
-		slides = FirstStartActivity.Slide.entries.filter { !shouldSkip(it, context, prefs) }
+		slides = Slide.entries.filter { !shouldSkip(it, context, prefs) }
 	}
 
 	fun updatePermissions(context: Context) {
@@ -62,9 +63,9 @@ class FirstStartViewModel(
 	/**
 	 * Navigation Logic
 	 */
-	fun canAdvance(currentSlide: FirstStartActivity.Slide, context: Context, noToast: Boolean = false): Boolean {
+	fun canAdvance(currentSlide: Slide, context: Context, noToast: Boolean = false): Boolean {
 		return when (currentSlide) {
-			FirstStartActivity.Slide.STORAGE -> {
+			Slide.STORAGE -> {
 				if (!isStorageGranted && !noToast) {
 					Toast.makeText(
 						context,
@@ -75,7 +76,7 @@ class FirstStartViewModel(
 				isStorageGranted
 			}
 
-			FirstStartActivity.Slide.API_LEVEL_30 -> {
+			Slide.API_LEVEL_30 -> {
 				if (!isApiUpgraded && !noToast) {
 					Toast.makeText(
 						context,
@@ -93,22 +94,22 @@ class FirstStartViewModel(
 	/**
 	 * Skip Logic
 	 */
-	fun shouldSkip(slide: FirstStartActivity.Slide, context: Context, prefs: SharedPreferences): Boolean {
+	fun shouldSkip(slide: Slide, context: Context, prefs: SharedPreferences): Boolean {
 		return when (slide) {
-			FirstStartActivity.Slide.INTRO -> !prefs.getBoolean(Constants.PREF_FIRST_START, true)
-			FirstStartActivity.Slide.STORAGE -> isStorageGranted
-			FirstStartActivity.Slide.LOCATION -> !shouldAskForLocationPermission(context)
-			FirstStartActivity.Slide.API_LEVEL_30 -> {
+			Slide.INTRO -> !prefs.getBoolean(Constants.PREF_FIRST_START, true)
+			Slide.STORAGE -> isStorageGranted
+			Slide.LOCATION -> !shouldAskForLocationPermission(context)
+			Slide.API_LEVEL_30 -> {
 				val isRoot = prefs.getBoolean(Constants.PREF_USE_ROOT, false)
 				isApiUpgraded || isRoot
 			}
 
-			FirstStartActivity.Slide.NOTIFICATION -> {
+			Slide.NOTIFICATION -> {
 				if (Build.VERSION.SDK_INT < 33) true
 				else !shouldAskForNotificationPermission(context)
 			}
 
-			FirstStartActivity.Slide.BATTERY ->  !shouldAskForBatteryOptimization(context)
+			Slide.BATTERY ->  !shouldAskForBatteryOptimization(context)
 		}
 	}
 }

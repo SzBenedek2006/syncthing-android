@@ -32,14 +32,6 @@ import dev.benedek.syncthingandroid.util.Util
 import java.io.File
 
 class FirstStartActivity : ThemedAppCompatActivity() {
-	enum class Slide {
-		INTRO,
-		STORAGE,
-		LOCATION,
-		API_LEVEL_30,
-		NOTIFICATION,
-		BATTERY
-	}
 
 
 	private val preferences: SharedPreferences by lazy {
