@@ -225,7 +225,7 @@ fun Folder(
 			Column(
 				modifier = Modifier
 			) {
-				var showItems by remember { mutableStateOf(false) }
+				var showItems by rememberSaveable { mutableStateOf(false) }
 				val rotationAmount: Float? = if (showItems) 180f else 0f
 				OptionTile(
 					title = stringResource(R.string.devices),
