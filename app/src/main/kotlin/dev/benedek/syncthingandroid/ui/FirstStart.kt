@@ -54,6 +54,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -85,7 +86,7 @@ fun FirstStartScreen(
 		factory = viewModelFactory {
 			initializer {
 				// Use applicationContext to avoid passing Activity context leaks down to the VM
-				FirstStartViewModel(context.applicationContext, prefs)
+				FirstStartViewModel(context.applicationContext, prefs, createSavedStateHandle())
 			}
 		}
 	)

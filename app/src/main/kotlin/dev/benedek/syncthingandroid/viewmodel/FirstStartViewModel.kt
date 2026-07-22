@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
@@ -18,7 +19,8 @@ import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForNotification
 
 class FirstStartViewModel(
 	context: Context,
-	prefs: SharedPreferences
+	prefs: SharedPreferences,
+	state: SavedStateHandle
 ) : ViewModel() {
 	var isStorageGranted by mutableStateOf(false)
 		private set
