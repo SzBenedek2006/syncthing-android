@@ -423,7 +423,7 @@ fun DeviceListSection(
 			deviceList.forEachIndexed { _, item ->
 				key(item.device.deviceID) {
 					OptionTile(
-						title = item.device.name,
+						title = item.device.displayName,
 						checked = item.isSelected,
 						onCheckedChange = { isChecked ->
 							onDeviceChecked(item.device, isChecked)
