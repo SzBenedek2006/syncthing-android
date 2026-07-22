@@ -56,8 +56,8 @@ fun Device(
 		viewModel.device.addresses
 	) {
 		val device = viewModel.device
-		//TODO: Improvement: maybe check if syncthing has access to path
-		if (device.name.isEmpty()  || device.deviceID.isNullOrEmpty()) {
+		//TODO: check other things
+		if (device.deviceID.isNullOrEmpty()) {
 			viewModel.isValidDevice = false
 		} else {
 			viewModel.isValidDevice = true
