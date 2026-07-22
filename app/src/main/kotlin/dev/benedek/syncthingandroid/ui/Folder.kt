@@ -382,7 +382,7 @@ fun Folder(
 	if (viewModel.showVersioningDialog) {
 
 		var typeIndex by remember { mutableIntStateOf(0) }
-		typeIndex = if (Constants.FVER_TYPES.indexOf(viewModel.editedVersioning!!.type) == -1) {
+		typeIndex = if (Constants.FVER_TYPES.indexOf(viewModel.editedVersioning?.type) == -1) {
 			0
 		} else {
 			Constants.FVER_TYPES.indexOf(viewModel.editedVersioning!!.type)
