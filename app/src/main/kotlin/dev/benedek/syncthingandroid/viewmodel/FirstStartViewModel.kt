@@ -21,8 +21,8 @@ import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForNotification
 
 class FirstStartViewModel(
 	context: Context,
-	prefs: SharedPreferences,
-	state: SavedStateHandle
+	sharedPreferences: SharedPreferences,
+	savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 	var isStorageGranted by mutableStateOf(false)
 		private set
@@ -37,15 +37,15 @@ class FirstStartViewModel(
 
 	var slides by mutableStateOf<List<Slide>>(emptyList())
 		private set
-	var savedSlides: List<Slide>? by state.saved { null }
+	var savedSlides: List<Slide>? by savedStateHandle.saved { null }
 
 	init {
 		updatePermissions(context)
-		initApiUpgradeState(prefs)
+		initApiUpgradeState(sharedPreferences)
 		if (savedSlides != null) {
 			slides = savedSlides!!
 		} else {
-			savedSlides = Slide.entries.filter { !shouldSkip(it, context, prefs) }
+			savedSlides = Slide.entries.filter { !shouldSkip(it, context, sharedPreferences) }
 			slides = savedSlides!!
 		}
 
