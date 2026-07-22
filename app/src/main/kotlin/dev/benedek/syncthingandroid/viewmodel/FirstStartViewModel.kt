@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.serialization.saved
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.model.Slide
@@ -36,11 +37,18 @@ class FirstStartViewModel(
 
 	var slides by mutableStateOf<List<Slide>>(emptyList())
 		private set
+	var savedSlides: List<Slide>? by state.saved { null }
 
 	init {
 		updatePermissions(context)
 		initApiUpgradeState(prefs)
-		slides = Slide.entries.filter { !shouldSkip(it, context, prefs) }
+		if (savedSlides != null) {
+			slides = savedSlides!!
+		} else {
+			savedSlides = Slide.entries.filter { !shouldSkip(it, context, prefs) }
+			slides = savedSlides!!
+		}
+
 	}
 
 	fun updatePermissions(context: Context) {
