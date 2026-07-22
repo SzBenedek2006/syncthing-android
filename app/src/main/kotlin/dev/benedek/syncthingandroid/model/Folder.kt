@@ -1,7 +1,7 @@
 package dev.benedek.syncthingandroid.model
 
 import dev.benedek.syncthingandroid.service.Constants
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
 data class Folder(
 	var id: String? = null,
@@ -42,10 +42,11 @@ data class Folder(
 		fun isValidId(id: String?): Boolean =
 			if (id.isNullOrEmpty()) false else validRegex.matches(id)
 	}
+	@Serializable
 	data class Versioning(
 		var type: String? = null,
 		var params: MutableMap<String?, String?> = mutableMapOf()
-	) : Serializable {
+	) {
 		fun deepCopy() = copy(params = params.toMutableMap())
 	}
 
