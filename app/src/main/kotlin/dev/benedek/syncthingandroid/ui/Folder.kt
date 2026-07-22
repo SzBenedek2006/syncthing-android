@@ -11,9 +11,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +42,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -49,6 +52,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -419,16 +423,22 @@ fun DeviceListSection(
 		enter = expandVertically() + fadeIn(),
 		exit = shrinkVertically() + fadeOut()
 	) {
-		Column {
-			deviceList.forEachIndexed { _, item ->
-				key(item.device.deviceID) {
-					OptionTile(
-						title = item.device.displayName,
-						checked = item.isSelected,
-						onCheckedChange = { isChecked ->
-							onDeviceChecked(item.device, isChecked)
-						}
-					)
+		if (deviceList.isEmpty()) {
+			Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
+				Text(stringResource(R.string.devices_list_empty), style = MaterialTheme.typography.titleMedium)
+			}
+		} else {
+			Column {
+				deviceList.forEachIndexed { _, item ->
+					key(item.device.deviceID) {
+						OptionTile(
+							title = item.device.displayName,
+							checked = item.isSelected,
+							onCheckedChange = { isChecked ->
+								onDeviceChecked(item.device, isChecked)
+							}
+						)
+					}
 				}
 			}
 		}
