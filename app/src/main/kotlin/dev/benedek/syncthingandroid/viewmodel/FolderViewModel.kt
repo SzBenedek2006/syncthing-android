@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.viewmodel
 
-import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -53,7 +51,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	var deviceList = mutableStateListOf<DeviceUiState>()
 		private set
 	private var folderNeedsToUpdate by savedStateHandle.saveable { mutableStateOf(false) }
-	private var versioning: Folder.Versioning? = null
 	private var isInitialized: Boolean by savedStateHandle.saveable { mutableStateOf(false) }
 	var isPathWritable by mutableStateOf(false)
 
@@ -83,9 +80,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		)
 	)
 
-	fun getCurrentFolderType(): FolderType {
-		return folderType.find { it.value == folder.type }!!
-	}
 
 	data class FolderPullOrder(
 		val value: String,
@@ -126,9 +120,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		)
 	)
 
-	fun getCurrentFolderPullOrder(): FolderPullOrder {
-		return folderPullOrders.find { it.value == folder.type }!!
-	}
 
 	var editedVersioning: Folder.Versioning? by savedStateHandle.saveable {
 		mutableStateOf(null)
@@ -136,7 +127,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 
 	// DIALOGS
-	private var discardDialog: Dialog? = null
 	var showDiscardDialog by savedStateHandle.saveable { mutableStateOf(false) }
 	var showFolderTypeDialog by savedStateHandle.saveable { mutableStateOf(false) }
 	var showFolderPullOrderDialog by savedStateHandle.saveable { mutableStateOf(false) }
@@ -395,7 +385,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 	private fun loadDeviceList() {
 		val currentApi = api ?: return
-		val allDevices = currentApi.getDevices(false) ?: emptyList<Device>()
+		val allDevices = currentApi.getDevices(false) ?: emptyList()
 		deviceList.clear()
 
 		allDevices.forEach { device ->
@@ -528,29 +518,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		}
 	}
 
-	private fun updateFolder() {
-		if (!isCreateMode) {
-			/**
-			 * RestApi is guaranteed not to be null as [onServiceStateChange]
-			 * immediately finishes this activity if SyncthingService shuts down.
-			 */
-			api!!.updateFolder(folder)
-		}
-	}
-
-	fun checkPathAccess(): Boolean {
-		if (folder.path == null) {
-			return false
-		}
-		val file = File(folder.path!!)
-
-		return if (file.exists()) {
-			file.canWrite() && file.canRead()
-		} else {
-			val parentDir = file.parentFile
-			parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(file)
-		}
-	}
 
 	private fun checkFileName(file: File): Boolean {
 		return try {
@@ -560,7 +527,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			} else {
 				false
 			}
-		} catch (e: IOException) {
+		} catch (_: IOException) {
 			false
 		}
 	}
@@ -594,14 +561,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			"activities.syncthingandroid.benedek.dev.FolderActivity.DEVICE_ID"
 
 		private const val TAG = "FolderActivity"
-
-		private const val IS_SHOWING_DELETE_DIALOG = "DELETE_FOLDER_DIALOG_STATE"
-		private const val IS_SHOW_DISCARD_DIALOG = "DISCARD_FOLDER_DIALOG_STATE"
-
-		private const val FILE_VERSIONING_DIALOG_REQUEST = 3454
-		private const val PULL_ORDER_DIALOG_REQUEST = 3455
-		private const val FOLDER_TYPE_DIALOG_REQUEST = 3456
-		private const val CHOOSE_FOLDER_REQUEST = 3459
 
 		const val FOLDER_MARKER_NAME = ".stfolder"
 		const val IGNORE_FILE_NAME = ".stignore"
