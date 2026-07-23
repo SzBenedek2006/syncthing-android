@@ -1,6 +1,8 @@
 package dev.benedek.syncthingandroid.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,6 +51,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -67,7 +69,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FolderPickerActivity
@@ -88,327 +89,365 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
 
+data class FolderUiState(
+	val folder: Folder = Folder(),
+	val isCreateMode: Boolean = false,
+	val isValidFolder: Boolean = false,
+	val deviceList: SnapshotStateList<FolderViewModel.DeviceUiState> = mutableStateListOf(),
+	val folderType: List<FolderViewModel.FolderType> = emptyList(),
+	val folderPullOrders: List<FolderViewModel.FolderPullOrder> = emptyList(),
+	val editedVersioning: Folder.Versioning? = null,
+	val showDeleteDialog: Boolean = false,
+	val showDiscardDialog: Boolean = false,
+	val showFolderTypeDialog: Boolean = false,
+	val showFolderPullOrderDialog: Boolean = false,
+	val showVersioningDialog: Boolean = false,
+)
+
+data class FolderActions(
+	val onFinish: () -> Unit = {},
+	val onDone: (Context, onFinish: () -> Unit) -> Unit = { _, _ -> },
+	val onCancel: (onFinish: () -> Unit) -> Unit = {},
+	val onDelete: (onFinish: () -> Unit) -> Unit = {},
+	val setIsValidFolder: (Boolean) -> Unit = {},
+	val onFolderSelectedViaSaf: (Uri, Context) -> Unit = { _, _ -> },
+	val onPathChange: (String) -> Unit = {},
+	val setShowDeleteDialog: (Boolean) -> Unit = {},
+	val setShowDiscardDialog: (Boolean) -> Unit = {},
+	val setShowFolderTypeDialog: (Boolean) -> Unit = {},
+	val onPausedChange: (checked: Boolean) -> Unit = {},
+	val onLabelChange: (value: String) -> Unit = {},
+	val onIdChange: (value: String) -> Unit = {},
+	val checkPathAccess: () -> Boolean = { true },
+	val onDeviceSelectionChange: (device: Device, isSelected: Boolean) -> Unit = { _, _ -> },
+	val setShowVersioningDialog: (Boolean) -> Unit = {},
+	val onFsWatcherChange: (Boolean) -> Unit = {},
+	val editIgnores: (Context) -> Unit = {},
+	val onFolderTypeChange: (type: String) -> Unit = {},
+	val setShowFolderPullOrderDialog: (Boolean) -> Unit = {},
+	val setEditedVersioning: (Folder.Versioning?) -> Unit = {},
+	val onVersioningSave: () -> Unit = {},
+	val onVersioningChange: (type: String?, param: String?, paramValue: String?) -> Unit = { _, _, _ -> },
+	val onPullOrderChange: (order: String) -> Unit = {},
+)
 
 @Composable
 fun Folder(
-	viewModel: FolderViewModel,
-	onFinish: () -> Unit = {}
+	state: FolderUiState,
+	actions: FolderActions
 ) {
 	val context = LocalContext.current
 	val focusManager = LocalFocusManager.current
 
-	LaunchedEffect(
-		viewModel.folder.label,
-		viewModel.folder.id,
-		viewModel.folder.path
-	) {
-		val folder = viewModel.folder
-		//TODO: Improvement: maybe check if syncthing has access to path
-		if (folder.label.isNullOrEmpty() || !Folder.isValidId(folder.id) || folder.path.isNullOrEmpty()) {
-			viewModel.isValidFolder = false
-		} else {
-			viewModel.isValidFolder = true
-		}
-	}
+	with(state) {
+		with(actions) {
 
-	val directoryPicker = rememberLauncherForActivityResult(
-		contract = ActivityResultContracts.OpenDocumentTree()
-	) { uri: Uri? ->
-		if (uri != null) {
-			viewModel.onFolderSelectedViaSaf(uri, context)
-		}
-	}
-
-	val advancedDirectoryPicker = rememberLauncherForActivityResult(
-		contract = ActivityResultContracts.StartActivityForResult()
-	) { result ->
-		if (result.resultCode == Activity.RESULT_OK) {
-			val path = result.data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
-			if (!path.isNullOrEmpty()) {
-				viewModel.onPathChange(path)
-			}
-		}
-	}
-
-	AppScaffold(
-		topAppBarTitle =
-			if (viewModel.isCreateMode) stringResource(R.string.create_folder)
-			else stringResource(R.string.edit_folder),
-		topActionOnClick = { viewModel.onDone(context, onFinish) },
-		topActionActive = viewModel.isValidFolder,
-		topNavigationOnClick = { viewModel.onCancel(onFinish) },
-		modifier = Modifier.pointerInput(Unit) {
-			detectTapGestures(onTap = {
-				focusManager.clearFocus()
-			})
-		}
-	) { paddingValues ->
-		Column(
-			modifier = Modifier
-				.fillMaxWidth()
-				.verticalScroll(rememberScrollState())
-				.padding(paddingValues),
-		) {
-			HorizontalDivider()
-			AppTextField(
-				label = R.string.folder_label,
-				leadingIconPainter = R.drawable.ic_label_outline_24dp,
-				value = viewModel.folder.label ?: "",
-				onValueChange = { viewModel.onLabelChange(it) }
-			)
-			HorizontalDivider()
-			AppTextField(
-				label = stringResource(R.string.folder_id),
-				leadingIconPainter = rememberVectorPainter(Icons.Outlined.VpnKey),
-				value = viewModel.folder.id ?: "",
-				onValueChange = { viewModel.onIdChange(it) },
-				keyboardOptions = KeyboardOptions(
-					capitalization = KeyboardCapitalization.None,
-					keyboardType = KeyboardType.Text
-				),
-				readOnly = !viewModel.isCreateMode
-			)
-			HorizontalDivider()
-			Row(
-				verticalAlignment = Alignment.CenterVertically
+			LaunchedEffect(
+				folder.label,
+				folder.id,
+				folder.path
 			) {
-				AppTextField(
-					label = stringResource(R.string.directory),
-					leadingIconPainter = rememberVectorPainter(Icons.Outlined.Folder),
-					value = viewModel.folder.path ?: "",
-					onValueChange = { viewModel.onPathChange(it) },
-					modifier = Modifier.weight(1f),
-					readOnly = !viewModel.isCreateMode
-				)
-				if (viewModel.isCreateMode) {
+				//TODO: Improvement: maybe check if syncthing has access to path
+				if (folder.label.isNullOrEmpty() || !Folder.isValidId(folder.id) || folder.path.isNullOrEmpty()) {
+					setIsValidFolder(false)
+				} else {
+					setIsValidFolder(true)
+				}
+			}
 
-					if (viewModel.checkPathAccess()) {
-						Icon(Icons.Outlined.CheckCircle, "")
+			val directoryPicker = rememberLauncherForActivityResult(
+				contract = ActivityResultContracts.OpenDocumentTree()
+			) { uri: Uri? ->
+				if (uri != null) {
+					onFolderSelectedViaSaf(uri, context)
+				}
+			}
+
+			val advancedDirectoryPicker = rememberLauncherForActivityResult(
+				contract = ActivityResultContracts.StartActivityForResult()
+			) { result ->
+				if (result.resultCode == Activity.RESULT_OK) {
+					val path = result.data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
+					if (!path.isNullOrEmpty()) {
+						onPathChange(path)
 					}
+				}
+			}
 
-					Button(
-						onClick = {
-							val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-
-							if (prefs.getBoolean(Constants.PREF_ADVANCED_FOLDER_PICKER, false)) {
-								val intent = FolderPickerActivity.createIntent(
-									context = context,
-									initialDirectory = viewModel.folder.path,
-									rootDirectory = null // or whatever your logic requires
-								)
-								advancedDirectoryPicker.launch(intent)
-							} else {
-								directoryPicker.launch(
-									FileUtils.getPickerInitialUri(
-										context,
-										viewModel.folder.path
-									)
-								)
-							}
-
-						},
-						shape = RoundedCornerShape(0.dp),
-						colors = ButtonColors(
-							containerColor = MaterialTheme.colorScheme.secondaryContainer,
-							contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-							disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
-							disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+			AppScaffold(
+				topAppBarTitle =
+				if (isCreateMode) stringResource(R.string.create_folder)
+				else stringResource(R.string.edit_folder),
+				topActionOnClick = { onDone(context, onFinish) },
+				topActionActive = isValidFolder,
+				topNavigationOnClick = { onCancel(onFinish) },
+				modifier = Modifier.pointerInput(Unit) {
+					detectTapGestures(onTap = {
+						focusManager.clearFocus()
+					})
+				}
+			) { paddingValues ->
+				Column(
+					modifier = Modifier
+						.fillMaxWidth()
+						.verticalScroll(rememberScrollState())
+						.padding(paddingValues),
+				) {
+					HorizontalDivider()
+					AppTextField(
+						label = R.string.folder_label,
+						leadingIconPainter = R.drawable.ic_label_outline_24dp,
+						value = folder.label ?: "",
+						onValueChange = { onLabelChange(it) }
+					)
+					HorizontalDivider()
+					AppTextField(
+						label = stringResource(R.string.folder_id),
+						leadingIconPainter = rememberVectorPainter(Icons.Outlined.VpnKey),
+						value = folder.id ?: "",
+						onValueChange = { onIdChange(it) },
+						keyboardOptions = KeyboardOptions(
+							capitalization = KeyboardCapitalization.None,
+							keyboardType = KeyboardType.Text
 						),
-						modifier = Modifier
-							.height(intrinsicSize = IntrinsicSize.Max)
+						readOnly = !isCreateMode
+					)
+					HorizontalDivider()
+					Row(
+						verticalAlignment = Alignment.CenterVertically
 					) {
-						Text(stringResource(R.string.select))
-					}
-				}
-			}
-			HorizontalDivider()
+						AppTextField(
+							label = stringResource(R.string.directory),
+							leadingIconPainter = rememberVectorPainter(Icons.Outlined.Folder),
+							value = folder.path ?: "",
+							onValueChange = { onPathChange(it) },
+							modifier = Modifier.weight(1f),
+							readOnly = !isCreateMode
+						)
+						if (isCreateMode) {
 
-			var showItems by rememberSaveable { mutableStateOf(false) }
-			Surface(tonalElevation = if (showItems) 4.dp else 0.dp) {
-				Column() {
-					val rotationAmount: Float? = if (showItems) 180f else 0f
-					OptionTile(
-						title = stringResource(R.string.devices),
-						leftIconPainter = rememberVectorPainter(Icons.Outlined.Devices),
-						rightIconPainter = rememberVectorPainter(Icons.Outlined.ExpandMore),
-						onClick = { showItems = !showItems },
-						rightIconRotationAmount = rotationAmount,
-						contentColor = if (showItems) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-					)
-					DeviceListSection(
-						viewModel.deviceList,
-						showItems,
-						viewModel::onDeviceSelectionChange
-					)
-				}
-			}
-			HorizontalDivider()
-			OptionTile(
-				title = stringResource(R.string.folder_type),
-				description = stringResource(
-					viewModel.folderType.find { it.value == viewModel.folder.type }!!.titleRes
-				),
-				leftIconPainter = painterResource(R.drawable.folder_managed_24px),
-				onClick = { viewModel.showFolderTypeDialog = true }
-			)
-			HorizontalDivider()
-
-			OptionTile(
-				title = stringResource(R.string.folder_fileWatcher),
-				description = stringResource(R.string.folder_fileWatcherDescription),
-				leftIconPainter = painterResource(R.drawable.sync_eye_24dp),
-				checked = viewModel.folder.fsWatcherEnabled,
-				onCheckedChange = { viewModel.onFsWatcherChange(!viewModel.folder.fsWatcherEnabled) }
-			)
-			HorizontalDivider()
-			OptionTile(
-				title = stringResource(R.string.folder_pause),
-				leftIconPainter = rememberVectorPainter(Icons.Outlined.Pause),
-				checked = viewModel.folder.paused,
-				onCheckedChange = { viewModel.onPausedChange(!viewModel.folder.paused) }
-			)
-			HorizontalDivider()
-			OptionTile(
-				title = stringResource(R.string.pull_order),
-				description = if (viewModel.folder.order != null) stringResource(
-					viewModel.folderPullOrders.find { it.value == viewModel.folder.order }?.titleRes
-						?: R.string.pull_order
-				) else stringResource(viewModel.folderPullOrders[0].titleRes),
-				leftIconPainter = rememberVectorPainter(Icons.AutoMirrored.Outlined.Sort),
-				onClick = { viewModel.showFolderPullOrderDialog = true }
-			)
-			HorizontalDivider()
-			OptionTile(
-				title = stringResource(R.string.file_versioning),
-				description = if (viewModel.folder.versioning?.type.isNullOrEmpty() || viewModel.folder.versioning == null)
-					Constants.FVER_TYPE_NONE else {
-					viewModel.folder.versioning!!.type +
-							when (viewModel.folder.versioning!!.type) {
-								Constants.FVER_TYPE_SIMPLE ->
-									"\n" + Constants.FVER_PARAM_SIMPLE_KEEP + " = " + viewModel.folder.versioning?.params[Constants.FVER_PARAM_SIMPLE_KEEP]
-
-								Constants.FVER_TYPE_TRASHCAN ->
-									"\n" + Constants.FVER_PARAM_TRASHCAN_CLEANDAYS + " = " + viewModel.folder.versioning?.params[Constants.FVER_PARAM_TRASHCAN_CLEANDAYS]
-
-								Constants.FVER_TYPE_STAGGERED ->
-									"\n" + Constants.FVER_PARAM_STAGGERED_PATH + " = " + viewModel.folder.versioning?.params[Constants.FVER_PARAM_STAGGERED_PATH] + "\n" +
-											Constants.FVER_PARAM_STAGGERED_MAXAGE + " = " + viewModel.folder.versioning?.params[Constants.FVER_PARAM_STAGGERED_MAXAGE]
-
-								Constants.FVER_TYPE_EXTERNAL ->
-									"\n" + Constants.FVER_PARAM_EXTERNAL_COMMAND + " = " + viewModel.folder.versioning?.params[Constants.FVER_PARAM_EXTERNAL_COMMAND]
-
-								else -> ""
+							if (checkPathAccess()) {
+								Icon(Icons.Outlined.CheckCircle, "")
 							}
-				},
-				leftIconPainter = rememberVectorPainter(Icons.Outlined.Archive),
-				onClick = { viewModel.showVersioningDialog = true }
-			)
-			HorizontalDivider()
-			OptionTile(
-				title = stringResource(R.string.ignore_patterns),
-				description = stringResource(R.string.open_stignore_description),
-				leftIconPainter = rememberVectorPainter(Icons.Outlined.FilterAlt),
-				onClick = { viewModel.editIgnores(context) },
-				enabled = if (viewModel.folder.path != null) File(viewModel.folder.path!!).exists() else false
-			)
-			HorizontalDivider()
-			if (!viewModel.isCreateMode) {
-				OptionTile(
-					title = stringResource(R.string.delete_folder),
-					description = stringResource(R.string.delete_folder_description),
-					leftIconPainter = rememberVectorPainter(Icons.Outlined.Delete),
-					onClick = { viewModel.showDeleteDialog = true },
-					contentColor = MaterialTheme.colorScheme.error,
+
+							Button(
+								onClick = {
+									val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+
+									if (prefs.getBoolean(Constants.PREF_ADVANCED_FOLDER_PICKER, false)) {
+										val intent = FolderPickerActivity.createIntent(
+											context = context,
+											initialDirectory = folder.path,
+											rootDirectory = null // or whatever your logic requires
+										)
+										advancedDirectoryPicker.launch(intent)
+									} else {
+										directoryPicker.launch(
+											FileUtils.getPickerInitialUri(
+												context,
+												folder.path
+											)
+										)
+									}
+
+								},
+								shape = RoundedCornerShape(0.dp),
+								colors = ButtonColors(
+									containerColor = MaterialTheme.colorScheme.secondaryContainer,
+									contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+									disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
+									disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
+								),
+								modifier = Modifier
+									.height(intrinsicSize = IntrinsicSize.Max)
+							) {
+								Text(stringResource(R.string.select))
+							}
+						}
+					}
+					HorizontalDivider()
+
+					var showItems by rememberSaveable { mutableStateOf(false) }
+					Surface(tonalElevation = if (showItems) 4.dp else 0.dp) {
+						Column() {
+							val rotationAmount: Float? = if (showItems) 180f else 0f
+							OptionTile(
+								title = stringResource(R.string.devices),
+								leftIconPainter = rememberVectorPainter(Icons.Outlined.Devices),
+								rightIconPainter = rememberVectorPainter(Icons.Outlined.ExpandMore),
+								onClick = { showItems = !showItems },
+								rightIconRotationAmount = rotationAmount,
+								contentColor = if (showItems) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+							)
+							DeviceListSection(
+								deviceList,
+								showItems,
+								onDeviceSelectionChange
+							)
+						}
+					}
+					HorizontalDivider()
+					OptionTile(
+						title = stringResource(R.string.folder_type),
+						description = folderType.find { it.value == folder.type }?.titleRes?.let { stringResource(it) },
+						leftIconPainter = painterResource(R.drawable.folder_managed_24px),
+						onClick = { setShowFolderTypeDialog(true) }
+					)
+					HorizontalDivider()
+
+					OptionTile(
+						title = stringResource(R.string.folder_fileWatcher),
+						description = stringResource(R.string.folder_fileWatcherDescription),
+						leftIconPainter = painterResource(R.drawable.sync_eye_24dp),
+						checked = folder.fsWatcherEnabled,
+						onCheckedChange = { onFsWatcherChange(!folder.fsWatcherEnabled) }
+					)
+					HorizontalDivider()
+					OptionTile(
+						title = stringResource(R.string.folder_pause),
+						leftIconPainter = rememberVectorPainter(Icons.Outlined.Pause),
+						checked = folder.paused,
+						onCheckedChange = { onPausedChange(!folder.paused) }
+					)
+					HorizontalDivider()
+					OptionTile(
+						title = stringResource(R.string.pull_order),
+						description = folderPullOrders.find { it.value == folder.order }?.titleRes?.let { stringResource(it) }
+							?: folderPullOrders.firstOrNull()?.titleRes?.let { stringResource(it) }
+							?: stringResource(R.string.pull_order),
+
+						leftIconPainter = rememberVectorPainter(Icons.AutoMirrored.Outlined.Sort),
+						onClick = { setShowFolderPullOrderDialog(true) }
+					)
+					HorizontalDivider()
+					OptionTile(
+						title = stringResource(R.string.file_versioning),
+						description = if (folder.versioning?.type.isNullOrEmpty() || folder.versioning == null)
+							Constants.FVER_TYPE_NONE else {
+							folder.versioning!!.type +
+									when (folder.versioning!!.type) {
+										Constants.FVER_TYPE_SIMPLE ->
+											"\n" + Constants.FVER_PARAM_SIMPLE_KEEP + " = " + folder.versioning?.params[Constants.FVER_PARAM_SIMPLE_KEEP]
+
+										Constants.FVER_TYPE_TRASHCAN ->
+											"\n" + Constants.FVER_PARAM_TRASHCAN_CLEANDAYS + " = " + folder.versioning?.params[Constants.FVER_PARAM_TRASHCAN_CLEANDAYS]
+
+										Constants.FVER_TYPE_STAGGERED ->
+											"\n" + Constants.FVER_PARAM_STAGGERED_PATH + " = " + folder.versioning?.params[Constants.FVER_PARAM_STAGGERED_PATH] + "\n" +
+													Constants.FVER_PARAM_STAGGERED_MAXAGE + " = " + folder.versioning?.params[Constants.FVER_PARAM_STAGGERED_MAXAGE]
+
+										Constants.FVER_TYPE_EXTERNAL ->
+											"\n" + Constants.FVER_PARAM_EXTERNAL_COMMAND + " = " + folder.versioning?.params[Constants.FVER_PARAM_EXTERNAL_COMMAND]
+
+										else -> ""
+									}
+						},
+						leftIconPainter = rememberVectorPainter(Icons.Outlined.Archive),
+						onClick = { setShowVersioningDialog(true) }
+					)
+					HorizontalDivider()
+					OptionTile(
+						title = stringResource(R.string.ignore_patterns),
+						description = stringResource(R.string.open_stignore_description),
+						leftIconPainter = rememberVectorPainter(Icons.Outlined.FilterAlt),
+						onClick = { editIgnores(context) },
+						enabled = if (folder.path != null) File(folder.path!!).exists() else false
+					)
+					HorizontalDivider()
+					if (!isCreateMode) {
+						OptionTile(
+							title = stringResource(R.string.delete_folder),
+							description = stringResource(R.string.delete_folder_description),
+							leftIconPainter = rememberVectorPainter(Icons.Outlined.Delete),
+							onClick = { setShowDeleteDialog(true) },
+							contentColor = MaterialTheme.colorScheme.error,
+						)
+						HorizontalDivider()
+					}
+
+
+				}
+			}
+
+			if (showDiscardDialog) {
+				AlertDialog(
+					onDismissRequest = { setShowDiscardDialog(false) },
+					confirmButton = {
+						TextButton(
+							onClick = onFinish
+						) {
+							Text(stringResource(android.R.string.ok))
+						}
+					},
+					dismissButton = {
+						TextButton(
+							onClick = { setShowDiscardDialog(false) }
+						) {
+							Text(stringResource(android.R.string.cancel))
+						}
+					},
+					text = { Text(stringResource(R.string.dialog_discard_changes)) }
 				)
-				HorizontalDivider()
 			}
 
-
-		}
-	}
-
-	@Composable
-	fun DiscardDialog(
-		onOk: (() -> Unit)? = null,
-		onCancel: (() -> Unit)? = null
-	) {
-		AlertDialog(
-			onDismissRequest = onCancel ?: { viewModel.showDiscardDialog = false },
-			confirmButton = {
-				TextButton(
-					onClick = onOk ?: onFinish
-				) {
-					Text(stringResource(android.R.string.ok))
-				}
-			},
-			dismissButton = {
-				TextButton(
-					onClick = onCancel ?: { viewModel.showDiscardDialog = false }
-				) {
-					Text(stringResource(android.R.string.cancel))
-				}
-			},
-			text = { Text(stringResource(R.string.dialog_discard_changes)) }
-		)
-	}
-
-	if (viewModel.showDiscardDialog) {
-		DiscardDialog()
-	}
-
-	if (viewModel.showFolderTypeDialog) {
-		SingleSelectDialog(
-			title = stringResource(R.string.folder_type),
-			text = null,
-			items = viewModel.folderType.map { stringResource(it.titleRes) },
-			initialSelectedIndex = viewModel.folderType.indexOfFirst { it.value == viewModel.folder.type },
-			onSelect = { index ->
-				viewModel.onFolderTypeChange(viewModel.folderType[index].value)
-			},
-			onDismiss = { viewModel.showFolderTypeDialog = false }
-		)
-	}
-	if (viewModel.showFolderPullOrderDialog) {
-		SingleSelectDialog(
-			title = stringResource(R.string.pull_order),
-			text = null,
-			items = viewModel.folderPullOrders.map { stringResource(it.titleRes) },
-			initialSelectedIndex = viewModel.folderPullOrders.indexOfFirst { it.value == viewModel.folder.order },
-			onSelect = { index ->
-				viewModel.onPullOrderChange(viewModel.folderPullOrders[index].value)
-			},
-			onDismiss = { viewModel.showFolderPullOrderDialog = false }
-		)
-	}
-	if (viewModel.showVersioningDialog) {
-
-		var typeIndex by remember { mutableIntStateOf(0) }
-		typeIndex = if (Constants.FVER_TYPES.indexOf(viewModel.editedVersioning?.type) == -1) {
-			0
-		} else {
-			Constants.FVER_TYPES.indexOf(viewModel.editedVersioning!!.type)
-		}
-		VersioningDialog(
-			title = stringResource(R.string.file_versioning),
-			onDismissRequest = {
-				viewModel.editedVersioning = viewModel.folder.versioning!!.deepCopy()
-				viewModel.showVersioningDialog = false
-			},
-			typeIndex = typeIndex,
-			viewModel = viewModel,
-			onSelectedIndexChange = { index ->
-				viewModel.onVersioningChange(Constants.FVER_TYPES[index])
-				typeIndex = index
+			if (showFolderTypeDialog) {
+				SingleSelectDialog(
+					title = stringResource(R.string.folder_type),
+					text = null,
+					items = folderType.map { stringResource(it.titleRes) },
+					initialSelectedIndex = folderType.indexOfFirst { it.value == folder.type },
+					onSelect = { index ->
+						onFolderTypeChange(folderType[index].value)
+					},
+					onDismiss = { setShowFolderTypeDialog(false) }
+				)
 			}
-		)
-	}
-	if (viewModel.showDeleteDialog) {
-		DeleteDialog(
-			{ viewModel.onDelete(onFinish) },
-			{ viewModel.showDeleteDialog = false },
-			stringResource(R.string.delete_folder),
-			stringResource(R.string.delete_folder_description)
-		)
+			if (showFolderPullOrderDialog) {
+				SingleSelectDialog(
+					title = stringResource(R.string.pull_order),
+					text = null,
+					items = folderPullOrders.map { stringResource(it.titleRes) },
+					initialSelectedIndex = folderPullOrders.indexOfFirst { it.value == folder.order },
+					onSelect = { index ->
+						onPullOrderChange(folderPullOrders[index].value)
+					},
+					onDismiss = { setShowFolderPullOrderDialog(false) }
+				)
+			}
+			if (showVersioningDialog) {
+
+				var typeIndex by remember { mutableIntStateOf(0) }
+				typeIndex = if (Constants.FVER_TYPES.indexOf(editedVersioning?.type) == -1) {
+					0
+				} else {
+					Constants.FVER_TYPES.indexOf(editedVersioning!!.type)
+				}
+				VersioningDialog(
+					title = stringResource(R.string.file_versioning),
+					onDismissRequest = {
+						setEditedVersioning(folder.versioning!!.deepCopy())
+						setShowVersioningDialog(false)
+					},
+					typeIndex = typeIndex,
+					onSelectedIndexChange = { index ->
+						onVersioningChange(Constants.FVER_TYPES[index], null, null)
+						typeIndex = index
+					},
+					editedVersioning = editedVersioning,
+					onVersioningSave = onVersioningSave,
+					setShowVersioningDialog = setShowVersioningDialog,
+					onVersioningChange = onVersioningChange
+				)
+			}
+			if (showDeleteDialog) {
+				DeleteDialog(
+					{ onDelete(onFinish) },
+					{ setShowDeleteDialog(false) },
+					stringResource(R.string.delete_folder),
+					stringResource(R.string.delete_folder_description)
+				)
+			}
+		}
 	}
 }
 
@@ -425,7 +464,9 @@ fun DeviceListSection(
 		exit = shrinkVertically() + fadeOut()
 	) {
 		if (deviceList.isEmpty()) {
-			Box(modifier = Modifier.fillMaxWidth().padding(16.dp), Alignment.Center) {
+			Box(modifier = Modifier
+				.fillMaxWidth()
+				.padding(16.dp), Alignment.Center) {
 				Text(stringResource(R.string.devices_list_empty), style = MaterialTheme.typography.titleMedium)
 			}
 		} else {
@@ -453,13 +494,16 @@ fun VersioningDialog(
 	description: String? = null,
 	onDismissRequest: () -> Unit,
 	typeIndex: Int,
-	viewModel: FolderViewModel,
-	onSelectedIndexChange: (Int) -> Unit
+	onSelectedIndexChange: (Int) -> Unit,
+	editedVersioning: Folder.Versioning?,
+	onVersioningSave: () -> Unit,
+	setShowVersioningDialog: (Boolean) -> Unit,
+	onVersioningChange: (type: String?, param: String?, paramValue: String?) -> Unit
 ) {
 
 	val onOk = {
-		viewModel.onVersioningSave()
-		viewModel.showVersioningDialog = false
+		onVersioningSave()
+		setShowVersioningDialog(false)
 	}
 	CustomDialog(
 		title,
@@ -486,10 +530,10 @@ fun VersioningDialog(
 				Constants.FVER_TYPE_SIMPLE -> {
 					Text(stringResource(R.string.simple_file_versioning_description))
 					OutlinedTextField(
-						value = viewModel.editedVersioning?.params[Constants.FVER_PARAM_SIMPLE_KEEP]
+						value = editedVersioning?.params[Constants.FVER_PARAM_SIMPLE_KEEP]
 							?: "",
 						onValueChange = {
-							viewModel.onVersioningChange(
+							onVersioningChange(
 								types[typeIndex],
 								Constants.FVER_PARAM_SIMPLE_KEEP,
 								it
@@ -503,10 +547,10 @@ fun VersioningDialog(
 				Constants.FVER_TYPE_TRASHCAN -> {
 					Text(stringResource(R.string.trashcan_versioning_description))
 					OutlinedTextField(
-						value = viewModel.editedVersioning?.params[Constants.FVER_PARAM_TRASHCAN_CLEANDAYS]
+						value = editedVersioning?.params[Constants.FVER_PARAM_TRASHCAN_CLEANDAYS]
 							?: "",
 						onValueChange = {
-							viewModel.onVersioningChange(
+							onVersioningChange(
 								types[typeIndex],
 								Constants.FVER_PARAM_TRASHCAN_CLEANDAYS,
 								it
@@ -520,10 +564,10 @@ fun VersioningDialog(
 				Constants.FVER_TYPE_STAGGERED -> {
 					Text(stringResource(R.string.staggered_versioning_description))
 					OutlinedTextField(
-						value = viewModel.editedVersioning?.params[Constants.FVER_PARAM_STAGGERED_PATH]
+						value = editedVersioning?.params[Constants.FVER_PARAM_STAGGERED_PATH]
 							?: "",
 						onValueChange = {
-							viewModel.onVersioningChange(
+							onVersioningChange(
 								types[typeIndex],
 								Constants.FVER_PARAM_STAGGERED_PATH,
 								it
@@ -534,10 +578,10 @@ fun VersioningDialog(
 					)
 					Text(stringResource(R.string.versions_path_description))
 					OutlinedTextField(
-						value = viewModel.editedVersioning?.params[Constants.FVER_PARAM_STAGGERED_MAXAGE]
+						value = editedVersioning?.params[Constants.FVER_PARAM_STAGGERED_MAXAGE]
 							?: "",
 						onValueChange = {
-							viewModel.onVersioningChange(
+							onVersioningChange(
 								types[typeIndex],
 								Constants.FVER_PARAM_STAGGERED_MAXAGE,
 								it
@@ -550,10 +594,10 @@ fun VersioningDialog(
 
 				Constants.FVER_TYPE_EXTERNAL -> {
 					OutlinedTextField(
-						value = viewModel.editedVersioning?.params[Constants.FVER_PARAM_EXTERNAL_COMMAND]
+						value = editedVersioning?.params[Constants.FVER_PARAM_EXTERNAL_COMMAND]
 							?: "",
 						onValueChange = {
-							viewModel.onVersioningChange(
+							onVersioningChange(
 								types[typeIndex],
 								Constants.FVER_PARAM_EXTERNAL_COMMAND,
 								it
@@ -569,10 +613,27 @@ fun VersioningDialog(
 }
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview(showSystemUi = true, showBackground = true, uiMode = ThemeControls.UI_MODE)
 fun FolderPreview() {
 	SyncthingandroidTheme(ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-		Folder(viewModel<FolderViewModel>())
+		Folder(
+			state = FolderUiState(
+				folder = Folder(),
+				isValidFolder = true,
+				isCreateMode = true,
+				deviceList = mutableStateListOf(),
+				folderType = emptyList(),
+				folderPullOrders = emptyList(),
+				editedVersioning = null,
+				showDeleteDialog = false,
+				showDiscardDialog = false,
+				showFolderTypeDialog = false,
+				showFolderPullOrderDialog = false,
+				showVersioningDialog = false,
+			),
+			actions = FolderActions()
+		)
 	}
 }

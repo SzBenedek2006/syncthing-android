@@ -8,6 +8,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.graphics.toColorInt
 import dev.benedek.syncthingandroid.ui.Folder
+import dev.benedek.syncthingandroid.ui.FolderActions
+import dev.benedek.syncthingandroid.ui.FolderUiState
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
@@ -46,8 +48,46 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 		setContent {
 			SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
 				Folder(
-					viewModel = viewModel,
-					onFinish = { finish() } // Pass the function to close the activity
+					state = FolderUiState(
+						folder = viewModel.folder,
+						isCreateMode = viewModel.isCreateMode,
+						isValidFolder = viewModel.isValidFolder,
+						deviceList = viewModel.deviceList,
+						folderType = viewModel.folderType,
+						folderPullOrders = viewModel.folderPullOrders,
+						editedVersioning = viewModel.editedVersioning,
+						showDeleteDialog = viewModel.showDeleteDialog,
+						showDiscardDialog = viewModel.showDiscardDialog,
+						showFolderTypeDialog = viewModel.showFolderTypeDialog,
+						showFolderPullOrderDialog = viewModel.showFolderPullOrderDialog,
+						showVersioningDialog = viewModel.showVersioningDialog,
+					),
+					actions = FolderActions(
+						onFinish = { finish() },
+						onDone = viewModel::onDone,
+						onCancel = viewModel::onCancel,
+						onDelete = viewModel::onDelete,
+						setIsValidFolder = { viewModel.isValidFolder = it },
+						onFolderSelectedViaSaf = viewModel::onFolderSelectedViaSaf,
+						onPathChange = viewModel::onPathChange,
+						setShowDeleteDialog = { viewModel.showDeleteDialog = it },
+						setShowDiscardDialog = { viewModel.showDiscardDialog = it },
+						setShowFolderTypeDialog = { viewModel.showFolderTypeDialog = it },
+						onPausedChange = viewModel::onPausedChange,
+						onLabelChange = viewModel::onLabelChange,
+						onIdChange = viewModel::onIdChange,
+						checkPathAccess = viewModel::checkPathAccess,
+						onDeviceSelectionChange = viewModel::onDeviceSelectionChange,
+						setShowVersioningDialog = { viewModel.showVersioningDialog = it },
+						onFsWatcherChange = viewModel::onFsWatcherChange,
+						editIgnores = viewModel::editIgnores,
+						onFolderTypeChange = viewModel::onFolderTypeChange,
+						setShowFolderPullOrderDialog = { viewModel.showFolderPullOrderDialog = it },
+						setEditedVersioning = { viewModel.editedVersioning = it },
+						onVersioningSave = viewModel::onVersioningSave,
+						onVersioningChange = viewModel::onVersioningChange,
+						onPullOrderChange = viewModel::onPullOrderChange
+					)
 				)
 			}
 		}
