@@ -6,7 +6,8 @@ plugins {
 	alias(libs.plugins.play.publisher)
 	alias(libs.plugins.kotlin.compose.compiler)
 	alias(libs.plugins.androidx.baselineprofile)
-	alias(libs.plugins.serialization)
+	alias(libs.plugins.kotlin.serialization)
+	alias(libs.plugins.kotlin.parcelize)
 }
 
 dependencies {
