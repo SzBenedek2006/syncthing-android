@@ -14,7 +14,7 @@ import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.serialization.saved
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import dev.benedek.syncthingandroid.R
@@ -25,6 +25,9 @@ import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.Util
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -36,7 +39,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	private val api: RestApi? get() = serviceReference?.get()?.api
 
 	var folder by savedStateHandle.saveable {
-		mutableStateOf(Folder(), policy = neverEqualPolicy())
+		mutableStateOf(Folder())
 	}
 		private set
 	var folderUri: Uri by mutableStateOf(Uri.EMPTY)
@@ -52,6 +55,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	private var folderNeedsToUpdate by savedStateHandle.saveable { mutableStateOf(false) }
 	private var versioning: Folder.Versioning? = null
 	private var isInitialized: Boolean by savedStateHandle.saveable { mutableStateOf(false) }
+	var isPathWritable by mutableStateOf(false)
 
 	// FOLDER TYPE STUFF
 	// TODO: Move these to Constants or Util
@@ -127,7 +131,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	}
 
 	var editedVersioning: Folder.Versioning? by savedStateHandle.saveable {
-		mutableStateOf(null, policy = neverEqualPolicy())
+		mutableStateOf(null)
 	}
 
 
@@ -176,38 +180,32 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 				loadExistingFolder(folderId, newDeviceId, onFinish, context)
 			}
 		}
-		syncFolderState()
 
 		loadDeviceList()
 	}
 
 	fun onLabelChange(value: String) {
-		folder.label = value
-		syncFolderState()
+		folder = folder.copy(label = value)
 		folderNeedsToUpdate(true)
 	}
 
 	fun onIdChange(value: String) {
-		folder.id = value
-		syncFolderState()
+		folder = folder.copy(id = value)
 		folderNeedsToUpdate(true)
 	}
 
 	fun onPathChange(value: String) {
-		folder.path = value
-		syncFolderState()
+		folder = folder.copy(path = value)
 		folderNeedsToUpdate(true)
 	}
 
 	fun onFsWatcherChange(checked: Boolean) {
-		folder.fsWatcherEnabled = checked
-		syncFolderState()
+		folder = folder.copy(fsWatcherEnabled = checked)
 		folderNeedsToUpdate(true)
 	}
 
 	fun onPausedChange(checked: Boolean) {
-		folder.paused = checked
-		syncFolderState()
+		folder = folder.copy(paused = checked)
 		folderNeedsToUpdate(true)
 	}
 
@@ -225,8 +223,8 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			return
 		}
 
-		folder.order = order
-		syncFolderState()
+		folder = folder.copy(order = order)
+
 		folderNeedsToUpdate(true)
 	}
 
@@ -240,8 +238,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			return
 		}
 
-		folder.type = type
-		syncFolderState()
+		folder = folder.copy(type = type)
 		folderNeedsToUpdate(true)
 	}
 
@@ -250,13 +247,14 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		param: String? = null,
 		paramValue: String? = null
 	) {
-		editedVersioning!!.type = type
-		if (param != null)
-			editedVersioning!!.params[param] = paramValue
+		val temp = editedVersioning?.deepCopy()
+		if (temp != null) {
+			temp.type = type
+			if (param != null)
+				temp.params[param] = paramValue
+			editedVersioning = temp.deepCopy()
+		}
 
-		editedVersioning.also {
-			editedVersioning = it
-		} // This is sadly needed for compose to update!
 		Log.d(
 			"onVersioningChange",
 			"editedVersioning: $editedVersioning\n" +
@@ -265,14 +263,14 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	}
 
 	fun onVersioningSave() {
-		if (editedVersioning!!.type.isNullOrEmpty() || editedVersioning!!.type == Constants.FVER_TYPE_NONE) {
-			folder.versioning = Folder.Versioning()
+		val changedVersioning: Folder.Versioning = if (editedVersioning?.type.isNullOrEmpty() || editedVersioning!!.type == Constants.FVER_TYPE_NONE) {
+			Folder.Versioning()
 		} else {
-			folder.versioning = editedVersioning!!.deepCopy()
+			editedVersioning!!.deepCopy()
 		}
-		syncFolderState()
+		folder = folder.copy(versioning = changedVersioning)
 		folderNeedsToUpdate(true)
-		Log.d(
+		Log.i(
 			"onVersioningSave",
 			"editedVersioning: $editedVersioning\n" +
 					"folder.versioning: ${folder.versioning}"
@@ -385,12 +383,13 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			deviceList[index] = deviceList[index].copy(isSelected = isSelected)
 		}
 
+		val newDevices = folder.devices.map { it.copy() }.toMutableList()
 		if (isSelected) {
-			folder.addDevice(device.deviceID!!)
+			newDevices.add(Folder.Device(deviceID = device.deviceID))
 		} else {
-			folder.removeDevice(device.deviceID)
+			newDevices.removeAll { it.deviceID == device.deviceID }
 		}
-		syncFolderState() // Needed for compose to update :<
+		folder = folder.copy(devices = newDevices)
 		folderNeedsToUpdate(true)
 	}
 
@@ -417,6 +416,21 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		}
 	}
 
+	fun checkPathAccess(path: String?) {
+		viewModelScope.launch {
+			isPathWritable = withContext(Dispatchers.IO) {
+				if (path.isNullOrEmpty()) return@withContext false
+				val file = File(path)
+				if (file.exists()) {
+					file.canWrite() && file.canRead()
+				} else {
+					val parentDir = file.parentFile
+					parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(file)
+				}
+			}
+		}
+	}
+
 	private fun initNewFolder(
 		folderId: String?,
 		deviceId: String?,
@@ -426,25 +440,28 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		type: String? = null,
 		paused: Boolean? = null
 	) {
-		folder.label = folderLabel
-		folder.id = folderId ?: generateRandomFolderId()
-		folder.path = null
+		val newFolder = Folder()
+		newFolder.label = folderLabel
+		newFolder.id = folderId ?: generateRandomFolderId()
+		newFolder.path = null
 
-		deviceId?.let { folder.addDevice(it) }
-		if (type != null) folder.type = type
-		folder.fsWatcherEnabled = true
-		folder.fsWatcherDelayS = 10
+		deviceId?.let { newFolder.addDevice(it) }
+		if (type != null) newFolder.type = type
+		newFolder.fsWatcherEnabled = true
+		newFolder.fsWatcherDelayS = 10
 		/**
 		 * Folder rescan interval defaults to 3600s as it is the default in
 		 * syncthing when the file watcher is enabled and a new folder is created.
 		 */
 		// TODO: Make a setting for default rescan interval and custom rescan interval in folder screen
-		folder.rescanIntervalS = 3600
+		newFolder.rescanIntervalS = 3600
+		if (paused != null) newFolder.paused = paused
+		newFolder.versioning = Folder.Versioning()
 
-		if (paused != null) folder.paused = paused
+		editedVersioning = newFolder.versioning!!.deepCopy()
 
-		folder.versioning = Folder.Versioning()
-		editedVersioning = folder.versioning!!.deepCopy()
+		folder = newFolder
+		checkPathAccess(folder.path)
 	}
 
 	private fun loadExistingFolder(
@@ -461,15 +478,16 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			onDone(context, onFinish)
 			return
 		}
-		folder = found
 		checkWritePermissions(serviceReference?.get(), found.path)
 
 		newDeviceId?.let {
-			folder.addDevice(it)
+			found.addDevice(it)
 			folderNeedsToUpdate(true)
 		}
 
-		editedVersioning = folder.versioning!!.deepCopy()
+		editedVersioning = found.versioning?.deepCopy()
+		folder = found
+		checkPathAccess(folder.path)
 	}
 
 	private fun generateRandomFolderId(): String {
@@ -558,10 +576,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		return path.replace(regex, "/storage/emulated/0")
 	}
 
-
-	private fun syncFolderState(): Unit {
-		folder = folder
-	}
 
 	private fun folderNeedsToUpdate(value: Boolean) {
 		folderNeedsToUpdate = value

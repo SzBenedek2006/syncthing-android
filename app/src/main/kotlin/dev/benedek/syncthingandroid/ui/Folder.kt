@@ -47,6 +47,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -89,11 +90,13 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
 
+@Immutable
 data class FolderUiState(
 	val folder: Folder = Folder(),
 	val isCreateMode: Boolean = false,
 	val isValidFolder: Boolean = false,
-	val deviceList: SnapshotStateList<FolderViewModel.DeviceUiState> = mutableStateListOf(),
+	val isPathWritable: Boolean = false,
+	val deviceList: List<FolderViewModel.DeviceUiState> = emptyList(),
 	val folderType: List<FolderViewModel.FolderType> = emptyList(),
 	val folderPullOrders: List<FolderViewModel.FolderPullOrder> = emptyList(),
 	val editedVersioning: Folder.Versioning? = null,
@@ -104,6 +107,7 @@ data class FolderUiState(
 	val showVersioningDialog: Boolean = false,
 )
 
+@Immutable
 data class FolderActions(
 	val onFinish: () -> Unit = {},
 	val onDone: (Context, onFinish: () -> Unit) -> Unit = { _, _ -> },
@@ -118,7 +122,6 @@ data class FolderActions(
 	val onPausedChange: (checked: Boolean) -> Unit = {},
 	val onLabelChange: (value: String) -> Unit = {},
 	val onIdChange: (value: String) -> Unit = {},
-	val checkPathAccess: () -> Boolean = { true },
 	val onDeviceSelectionChange: (device: Device, isSelected: Boolean) -> Unit = { _, _ -> },
 	val setShowVersioningDialog: (Boolean) -> Unit = {},
 	val onFsWatcherChange: (Boolean) -> Unit = {},
@@ -226,7 +229,7 @@ fun Folder(
 						)
 						if (isCreateMode) {
 
-							if (checkPathAccess()) {
+							if (isPathWritable) {
 								Icon(Icons.Outlined.CheckCircle, "")
 							}
 
@@ -416,12 +419,14 @@ fun Folder(
 			}
 			if (showVersioningDialog) {
 
-				var typeIndex by remember { mutableIntStateOf(0) }
-				typeIndex = if (Constants.FVER_TYPES.indexOf(editedVersioning?.type) == -1) {
-					0
-				} else {
-					Constants.FVER_TYPES.indexOf(editedVersioning!!.type)
+				var typeIndex by remember(editedVersioning?.type) {
+					mutableIntStateOf(
+						Constants.FVER_TYPES
+							.indexOf(editedVersioning?.type)
+							.coerceAtLeast(0)
+					)
 				}
+
 				VersioningDialog(
 					title = stringResource(R.string.file_versioning),
 					onDismissRequest = {
@@ -454,7 +459,7 @@ fun Folder(
 
 @Composable
 fun DeviceListSection(
-	deviceList: SnapshotStateList<FolderViewModel.DeviceUiState>,
+	deviceList: List<FolderViewModel.DeviceUiState>,
 	showItems: Boolean,
 	onDeviceChecked: (Device, Boolean) -> Unit
 ) {
