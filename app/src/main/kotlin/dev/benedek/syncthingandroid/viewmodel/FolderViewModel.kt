@@ -12,7 +12,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.serialization.saved
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.Folder
@@ -26,15 +30,18 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import kotlin.random.Random
 
-class FolderViewModel : ViewModel() {
+@OptIn(SavedStateHandleSaveableApi::class)
+class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	private var serviceReference: WeakReference<SyncthingService>? = null
 	private val api: RestApi? get() = serviceReference?.get()?.api
 
-	var folder by mutableStateOf(Folder(), policy = neverEqualPolicy())
+	var folder by savedStateHandle.saveable {
+		mutableStateOf(Folder(), policy = neverEqualPolicy())
+	}
 		private set
 	var folderUri: Uri by mutableStateOf(Uri.EMPTY)
 
-	var isCreateMode by mutableStateOf(false)
+	var isCreateMode by savedStateHandle.saveable { mutableStateOf(false) }
 	var canWriteToPath by mutableStateOf(false)
 		private set
 
@@ -42,9 +49,9 @@ class FolderViewModel : ViewModel() {
 
 	var deviceList = mutableStateListOf<DeviceUiState>()
 		private set
-	private var folderNeedsToUpdate by mutableStateOf(false)
+	private var folderNeedsToUpdate by savedStateHandle.saveable { mutableStateOf(false) }
 	private var versioning: Folder.Versioning? = null
-	private var isInitialized = false
+	private var isInitialized: Boolean by savedStateHandle.saveable { mutableStateOf(false) }
 
 	// FOLDER TYPE STUFF
 	// TODO: Move these to Constants or Util
@@ -119,17 +126,20 @@ class FolderViewModel : ViewModel() {
 		return folderPullOrders.find { it.value == folder.type }!!
 	}
 
-	var editedVersioning: Folder.Versioning? by mutableStateOf(null, policy = neverEqualPolicy())
+	var editedVersioning: Folder.Versioning? by savedStateHandle.saveable {
+		mutableStateOf(null, policy = neverEqualPolicy())
+	}
 
 
+	// DIALOGS
 	private var discardDialog: Dialog? = null
-	var showDiscardDialog by mutableStateOf(false)
-	var showFolderTypeDialog by mutableStateOf(false)
-	var showFolderPullOrderDialog by mutableStateOf(false)
-	var showVersioningDialog by mutableStateOf(false)
-	var showDeleteDialog by mutableStateOf(false)
+	var showDiscardDialog by savedStateHandle.saveable { mutableStateOf(false) }
+	var showFolderTypeDialog by savedStateHandle.saveable { mutableStateOf(false) }
+	var showFolderPullOrderDialog by savedStateHandle.saveable { mutableStateOf(false) }
+	var showVersioningDialog by savedStateHandle.saveable { mutableStateOf(false) }
+	var showDeleteDialog by savedStateHandle.saveable { mutableStateOf(false) }
 
-	var isValidFolder by mutableStateOf(false)
+	var isValidFolder by savedStateHandle.saveable { mutableStateOf(false) }
 
 
 	fun setService(service: SyncthingService) {
@@ -166,38 +176,39 @@ class FolderViewModel : ViewModel() {
 				loadExistingFolder(folderId, newDeviceId, onFinish, context)
 			}
 		}
+		syncFolderState()
 
 		loadDeviceList()
 	}
 
 	fun onLabelChange(value: String) {
 		folder.label = value
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onIdChange(value: String) {
 		folder.id = value
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onPathChange(value: String) {
 		folder.path = value
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onFsWatcherChange(checked: Boolean) {
 		folder.fsWatcherEnabled = checked
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onPausedChange(checked: Boolean) {
 		folder.paused = checked
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onPullOrderChange(order: String) {
@@ -215,8 +226,8 @@ class FolderViewModel : ViewModel() {
 		}
 
 		folder.order = order
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onFolderTypeChange(type: String) {
@@ -230,8 +241,8 @@ class FolderViewModel : ViewModel() {
 		}
 
 		folder.type = type
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 	}
 
 	fun onVersioningChange(
@@ -259,8 +270,8 @@ class FolderViewModel : ViewModel() {
 		} else {
 			folder.versioning = editedVersioning!!.deepCopy()
 		}
-		folder = folder
-		folderNeedsToUpdate = true
+		syncFolderState()
+		folderNeedsToUpdate(true)
 		Log.d(
 			"onVersioningSave",
 			"editedVersioning: $editedVersioning\n" +
@@ -335,7 +346,7 @@ class FolderViewModel : ViewModel() {
 
 	fun onDelete(onFinish: () -> Unit) {
 		api?.removeFolder(folder.id)
-		folderNeedsToUpdate = false
+		folderNeedsToUpdate(false)
 		onFinish()
 	}
 
@@ -379,8 +390,8 @@ class FolderViewModel : ViewModel() {
 		} else {
 			folder.removeDevice(device.deviceID)
 		}
-		folder = folder // Needed for compose to update :<
-		folderNeedsToUpdate = true
+		syncFolderState() // Needed for compose to update :<
+		folderNeedsToUpdate(true)
 	}
 
 	private fun loadDeviceList() {
@@ -402,7 +413,7 @@ class FolderViewModel : ViewModel() {
 
 		if (!canWriteToPath) {
 			folder.type = Constants.FOLDER_TYPE_SEND_ONLY
-			folderNeedsToUpdate = true
+			folderNeedsToUpdate(true)
 		}
 	}
 
@@ -455,7 +466,7 @@ class FolderViewModel : ViewModel() {
 
 		newDeviceId?.let {
 			folder.addDevice(it)
-			folderNeedsToUpdate = true
+			folderNeedsToUpdate(true)
 		}
 
 		editedVersioning = folder.versioning!!.deepCopy()
@@ -547,6 +558,14 @@ class FolderViewModel : ViewModel() {
 		return path.replace(regex, "/storage/emulated/0")
 	}
 
+
+	private fun syncFolderState(): Unit {
+		folder = folder
+	}
+
+	private fun folderNeedsToUpdate(value: Boolean) {
+		folderNeedsToUpdate = value
+	}
 
 	companion object {
 		const val EXTRA_NOTIFICATION_ID: String =
