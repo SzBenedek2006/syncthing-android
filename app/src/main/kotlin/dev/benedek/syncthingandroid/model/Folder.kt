@@ -1,8 +1,10 @@
 package dev.benedek.syncthingandroid.model
 
+import android.os.Parcelable
 import dev.benedek.syncthingandroid.service.Constants
-import kotlinx.serialization.Serializable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Folder(
 	var id: String? = null,
 	var label: String? = null,
@@ -32,7 +34,7 @@ data class Folder(
 	var weakHashThresholdPct: Int = 25,
 	var markerName: String = ".stfolder",
 	var invalid: String? = null,
-) {
+) : Parcelable {
 	companion object {
 		private val validDefaultRegex = Regex("^[a-z0-9]{5}-[a-z0-9]{5}$")
 		private val validRegex = Regex("^[a-z0-9](?:[a-z0-9._-]{0,61}[a-z0-9])?$")
@@ -42,18 +44,19 @@ data class Folder(
 		fun isValidId(id: String?): Boolean =
 			if (id.isNullOrEmpty()) false else validRegex.matches(id)
 	}
-	@Serializable
+	@Parcelize
 	data class Versioning(
 		var type: String? = null,
 		var params: MutableMap<String?, String?> = mutableMapOf()
-	) {
+	) : Parcelable {
 		fun deepCopy() = copy(params = params.toMutableMap())
 	}
 
+	@Parcelize
 	data class MinDiskFree(
 		var value: Float = 0f,
 		var unit: String? = null
-	)
+	) : Parcelable
 
 	fun addDevice(deviceId: String) {
 		devices.add(Device(deviceID = deviceId))
@@ -73,9 +76,10 @@ data class Folder(
 		return label.takeUnless { it.isNullOrEmpty() } ?: id ?: ""
 	}
 
+	@Parcelize
 	data class Device(
 		var deviceID: String? = null,
 		var introducedBy: String? = null,
 		var encryptionPassword: String? = null
-	)
+	) : Parcelable
 }
