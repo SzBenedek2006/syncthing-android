@@ -89,7 +89,6 @@ val buildTargets = listOf(
 
 
 // Git fetch tags
-// TODO: Maybe don't depend on tags?
 val fetchSyncthingTags = tasks.register("fetchSyncthingTags") {
 	description = "Runs git fetch --tags in syncthing's git repo"
 	val providerFactory: ProviderFactory = providers
