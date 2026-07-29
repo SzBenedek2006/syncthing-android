@@ -311,7 +311,12 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 	}
 }
 
-
+// Don't run buildNative tasks concurrently, as go build system already uses concurrency.
+buildNativeTasks.zipWithNext().forEach { (previousTask, currentTask) ->
+	currentTask.configure {
+		mustRunAfter(previousTask)
+	}
+}
 
 
 tasks.register("buildNative") {
