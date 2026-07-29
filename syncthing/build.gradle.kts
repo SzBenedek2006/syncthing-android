@@ -4,8 +4,6 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import java.util.Locale
-import javax.inject.Inject
 import org.gradle.api.file.ArchiveOperations
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.kotlin.dsl.support.serviceOf
@@ -14,7 +12,8 @@ import java.util.Properties
 val goVersionShared = "1.26.3"
 
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
-	val goVersion = goVersionShared
+	description = "Set up Go inside this project to don't depend on system go version."
+    val goVersion = goVersionShared
 
 	val goInstallDir = layout.projectDirectory.dir("go/$goVersion").asFile
 	val goBinDir = File(goInstallDir, "go/bin")
@@ -25,6 +24,7 @@ val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
 
 	val fs = project.serviceOf<FileSystemOperations>()
 	val archives = project.serviceOf<ArchiveOperations>()
+	val projectDir = layout.projectDirectory
 
 	doLast {
 
@@ -59,7 +59,7 @@ val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
 			error("Failed to download Go! Server returned HTTP ${response.statusCode()}")
 		}
 
-		println("Extracting Go from $archive into $goInstallDir")
+		println("Extracting Go from ${archive.relativeTo(projectDir.asFile)} into ${goInstallDir.relativeTo(projectDir.asFile)}")
 
 		fs.copy {
 			from(if (goExt == "zip") archives.zipTree(archive) else archives.tarTree(archive))
@@ -97,16 +97,15 @@ val fetchSyncthingTags = tasks.register("fetchSyncthingTags") {
 
 
     doLast {
-		val targetDir = repoDir
 		var output: ExecOutput? = null
 		try {
 			providerFactory.exec {
-				workingDir = targetDir
+				workingDir = repoDir
 				commandLine("git", "fetch", "--tags")
 				isIgnoreExitValue = true // Don't crash if offline
 			}
 			output = providerFactory.exec {
-				workingDir = targetDir
+				workingDir = repoDir
 				commandLine("git", "tag")
 				isIgnoreExitValue = true
 			}
@@ -162,7 +161,8 @@ object ShellRunner {
 val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 
 	tasks.register("buildNative_$target") {
-		dependsOn(setupGo, fetchSyncthingTags)
+		description = "Builds syncthing for $target architecture."
+        dependsOn(setupGo, fetchSyncthingTags)
 		val goVersion = goVersionShared
 
 
@@ -320,7 +320,8 @@ buildNativeTasks.zipWithNext().forEach { (previousTask, currentTask) ->
 
 
 tasks.register("buildNative") {
-	dependsOn(buildNativeTasks)
+	description = "This is a stub task so buildNativeTasks can be a list and reuse code."
+    dependsOn(buildNativeTasks)
 	doLast {
 		println("All builds finished")
 	}
@@ -330,6 +331,7 @@ tasks.register("buildNative") {
  * Use separate task instead of standard clean(), so these folders aren't deleted by `gradle clean`.
  */
 tasks.register<Delete>("cleanNative") {
-	delete("$projectDir/../app/src/main/jniLibs/")
+	description = "Clean syncthing build files."
+    delete("$projectDir/../app/src/main/jniLibs/")
 	delete("gobuild")
 }
