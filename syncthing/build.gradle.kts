@@ -1,4 +1,4 @@
-// TODO, FIXME: Add other os-es and test windows and macos
+// TODO, FIXME: Add other os-es and test windows and macOS
 
 import java.net.URI
 import java.net.http.HttpClient
@@ -216,8 +216,8 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 			?: System.getenv("ANDROID_HOME")
 			?: ""
 
-		val ndkVerson = libs.versions.ndk.get()
-		val ndkDir = if (sdkDir.isNotEmpty()) "$sdkDir/ndk/$ndkVerson" else ""
+		val ndkVersion = libs.versions.ndk.get()
+		val ndkDir = if (sdkDir.isNotEmpty()) "$sdkDir/ndk/$ndkVersion" else ""
 
 		// get_min_sdk(project_dir):
 		val minSdk = libs.versions.minSdk.get()
