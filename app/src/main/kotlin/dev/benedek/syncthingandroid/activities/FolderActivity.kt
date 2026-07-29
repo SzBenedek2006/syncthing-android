@@ -68,7 +68,6 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 						onDone = viewModel::onDone,
 						onCancel = viewModel::onCancel,
 						onDelete = viewModel::onDelete,
-						setIsValidFolder = { viewModel.isValidFolder = it },
 						onFolderSelectedViaSaf = viewModel::onFolderSelectedViaSaf,
 						onPathChange = viewModel::onPathChange,
 						setShowDeleteDialog = { viewModel.showDeleteDialog = it },

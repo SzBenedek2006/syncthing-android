@@ -176,26 +176,31 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 	fun onLabelChange(value: String) {
 		folder = folder.copy(label = value)
+		updateIsValidFolder()
 		folderNeedsToUpdate(true)
 	}
 
 	fun onIdChange(value: String) {
 		folder = folder.copy(id = value)
+		updateIsValidFolder()
 		folderNeedsToUpdate(true)
 	}
 
 	fun onPathChange(value: String) {
 		folder = folder.copy(path = value)
+		updateIsValidFolder()
 		folderNeedsToUpdate(true)
 	}
 
 	fun onFsWatcherChange(checked: Boolean) {
 		folder = folder.copy(fsWatcherEnabled = checked)
+		updateIsValidFolder()
 		folderNeedsToUpdate(true)
 	}
 
 	fun onPausedChange(checked: Boolean) {
 		folder = folder.copy(paused = checked)
+		updateIsValidFolder()
 		folderNeedsToUpdate(true)
 	}
 
@@ -452,6 +457,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 		folder = newFolder
 		checkPathAccess(folder.path)
+		updateIsValidFolder()
 	}
 
 	private fun loadExistingFolder(
@@ -478,6 +484,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		editedVersioning = found.versioning?.deepCopy()
 		folder = found
 		checkPathAccess(folder.path)
+		updateIsValidFolder()
 	}
 
 	private fun generateRandomFolderId(): String {
@@ -543,6 +550,10 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		return path.replace(regex, "/storage/emulated/0")
 	}
 
+	private fun updateIsValidFolder() {
+		isValidFolder =
+			!folder.label.isNullOrEmpty() && Folder.isValidId(folder.id) && !folder.path.isNullOrEmpty()
+	}
 
 	private fun folderNeedsToUpdate(value: Boolean) {
 		folderNeedsToUpdate = value
