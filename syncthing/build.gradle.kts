@@ -90,16 +90,48 @@ val buildTargets = listOf(
 
 // Git fetch tags
 // TODO: Maybe don't depend on tags?
-val fetchSyncthingTags = tasks.register<Exec>("fetchSyncthingTags") {
-	workingDir = layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
-	commandLine("git", "fetch", "--tags")
-	isIgnoreExitValue = true // Don't crash if offline
+val fetchSyncthingTags = tasks.register("fetchSyncthingTags") {
+	description = "Runs git fetch --tags in syncthing's git repo"
+	val providerFactory: ProviderFactory = providers
+	val repoDir = layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
+
+
+    doLast {
+		val targetDir = repoDir
+		var output: ExecOutput? = null
+		try {
+			providerFactory.exec {
+				workingDir = targetDir
+				commandLine("git", "fetch", "--tags")
+				isIgnoreExitValue = true // Don't crash if offline
+			}
+			output = providerFactory.exec {
+				workingDir = targetDir
+				commandLine("git", "tag")
+				isIgnoreExitValue = true
+			}
+			// If I don't evaluate them here, the whole output won't run in the correct place
+			output.standardOutput?.asText?.get()
+			output.standardError?.asText?.get()
+			output.result?.get()?.exitValue
+		} catch (_: Exception) {
+			logger.error("Git is not installed or not in PATH. Skipping tag fetch.")
+		}
+		println("stdout = ${output?.standardOutput?.asText?.get()}")
+		println("stderr = ${output?.standardError?.asText?.get()}")
+		println("return = ${output?.result?.get()?.exitValue}")
+
+		if (output?.standardOutput?.asText?.get().isNullOrBlank()) {
+			error("No Git tags were found!")
+		}
+
+	}
 }
 
 
 // stupid helper because exec didn't work
 object ShellRunner {
-	fun runShellCommand(vararg args: String, workDir: File, env: Map<String, String>) {
+	fun runShellCommand(vararg args: String, workDir: File, projectDir: File, env: Map<String, String>) {
 		val pb = ProcessBuilder(args.toList())
 		pb.directory(workDir)
 		val contextEnv = pb.environment()
@@ -113,9 +145,13 @@ object ShellRunner {
 			contextEnv[pKey] = "$localGoBin${File.pathSeparator}${contextEnv[pKey]}"
 		}
 
-		pb.inheritIO() // get output from running program
-		println("Running command:\n\t${pb.command().joinToString("\n\t")}")
+		pb.redirectErrorStream(true)
+		println("Running command:\n\t${pb.command().map { val file = File(it).absoluteFile; if (file.exists()) file.relativeTo(projectDir) else it}.joinToString("\n\t")}")
 		val process = pb.start()
+		process.inputStream.bufferedReader().useLines { lines ->
+			println("OUTPUT:")
+			lines.forEach { println(it) }
+		}
 		val exitCode = process.waitFor()
 		if (exitCode != 0) {
 			error("Command failed with exit code $exitCode: ${args.joinToString(" ")}")
@@ -187,9 +223,20 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 		// get_min_sdk(project_dir):
 		val minSdk = libs.versions.minSdk.get()
 
+		val projectDir = layout.projectDirectory
+
 		doLast {
-			val ccPath =
-				File("$ndkDir/toolchains/llvm/prebuilt/$ndkOs/bin/${ccTemplate.format(minSdk)}").absolutePath
+			println("\n===========BUILDING FOR $target===========")
+			println("Project dir: $projectDir")
+			println("syncthingSrcDir = ${syncthingSrcDir.relativeTo(projectDir.asFile)}")
+			println("pkgDir = ${pkgDir.relativeTo(projectDir.asFile)}")
+			println("jniOutDir = ${jniOutDir.relativeTo(projectDir.asFile)}")
+			println("goBin = ${goBin.relativeTo(projectDir.asFile)}")
+			println("goCache = ${goCache.relativeTo(projectDir.asFile)}")
+
+
+			val ndkBinDir = File("$ndkDir/toolchains/llvm/prebuilt/$ndkOs/bin")
+			val ccPath = File(ndkBinDir, ccTemplate.format(minSdk)).absolutePath
 
 			// Ensure build directories exist
 			pkgDir.mkdirs()
@@ -212,10 +259,9 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 				put("EXTRA_LDFLAGS", "-checklinkname=0")
 			}.toMap()
 
-			println("Building syncthing for ${target}...")
 			val goExe = goBin.absolutePath
 
-			ShellRunner.runShellCommand(goExe, "version", workDir = syncthingSrcDir, env = hostEnv)
+			ShellRunner.runShellCommand(goExe, "version", workDir = syncthingSrcDir, projectDir = projectDir.asFile, env = hostEnv)
 
 			ShellRunner.runShellCommand(
 				goExe,
@@ -223,6 +269,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 				"build.go",
 				"version",
 				workDir = syncthingSrcDir,
+				projectDir = projectDir.asFile,
 				env = hostEnv
 			)
 
@@ -239,6 +286,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 				"-build-out", artifact.absolutePath,
 				"build",
 				workDir = syncthingSrcDir,
+				projectDir = projectDir.asFile,
 				env = targetEnv
 			)
 
@@ -262,6 +310,9 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 		}
 	}
 }
+
+
+
 
 tasks.register("buildNative") {
 	dependsOn(buildNativeTasks)
