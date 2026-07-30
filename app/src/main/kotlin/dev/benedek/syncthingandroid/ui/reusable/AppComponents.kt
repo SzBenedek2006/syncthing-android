@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -217,6 +219,8 @@ fun AppTextField(
 	label: String? = null,
 	placeholder: String? = null,
 	leadingIconPainter: Painter? = null,
+	inputTransformation: InputTransformation? = null,
+	outputTransformation: OutputTransformation? = null,
 	keyboardOptions: KeyboardOptions = KeyboardOptions(
 		capitalization = KeyboardCapitalization.Words,
 		keyboardType = KeyboardType.Text
@@ -232,6 +236,8 @@ fun AppTextField(
 		leadingIcon = {
 			if (leadingIconPainter != null) Icon(leadingIconPainter, null)
 		},
+		inputTransformation = inputTransformation,
+		outputTransformation = outputTransformation,
 		keyboardOptions = keyboardOptions,
 		colors = colors
 	)
