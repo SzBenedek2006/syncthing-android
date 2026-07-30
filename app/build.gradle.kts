@@ -12,6 +12,7 @@ plugins {
 
 dependencies {
 
+	implementation(libs.androidx.compose.ui.graphics)
 	implementation(libs.androidx.profileinstaller)
 	implementation(libs.libsuperuser)
 	implementation(libs.google.material)
