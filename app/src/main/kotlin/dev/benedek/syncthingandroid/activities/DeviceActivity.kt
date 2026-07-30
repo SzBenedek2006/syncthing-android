@@ -158,7 +158,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 		if (compose) {
 			setContent {
 				SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-					dev.benedek.syncthingandroid.ui.Device(
+					dev.benedek.syncthingandroid.ui.DeviceScreen(
 						viewModel,
 						this::finish
 					)

@@ -43,7 +43,7 @@ import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
 
 @Composable
-fun Device(
+fun DeviceScreen(
 	viewModel: DeviceViewModel,
 	onFinish: () -> Unit = {}
 ) {
@@ -199,8 +199,8 @@ fun Device(
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true, uiMode = ThemeControls.UI_MODE)
-fun DevicePreview() {
+fun DeviceScreenPreview() {
 	SyncthingandroidTheme(ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-		Device(viewModel<DeviceViewModel>())
+		DeviceScreen(viewModel<DeviceViewModel>())
 	}
 }
