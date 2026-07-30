@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.net.Uri
+import android.os.Process.myUid
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -11,6 +12,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,8 +25,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Sort
@@ -66,6 +70,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -133,6 +139,7 @@ data class FolderActions(
 	val onPullOrderChange: (order: String) -> Unit = {},
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FolderScreen(
 	state: FolderUiState,
@@ -208,14 +215,45 @@ fun FolderScreen(
 						LaunchedEffect(state.path) {
 							onPathChange(state.path.text.toString())
 						}
+
+						val userId = remember { myUid() / 100000 }
+						val homePrefix = remember { "/storage/emulated/$userId" }
+						val color = MaterialTheme.colorScheme.primary
+
 						AppTextField(
 							label = stringResource(R.string.directory),
 							leadingIconPainter = rememberVectorPainter(Icons.Outlined.Folder),
 							state = state.path,
-							//value = state.folder.path ?: "",
-							//onValueChange = onPathChange,
 							modifier = Modifier.weight(1f),
-							readOnly = !state.isCreateMode
+							readOnly = !state.isCreateMode,
+							inputTransformation = InputTransformation {
+								if (
+									// If the home prefix is present and
+									originalText.startsWith(homePrefix) &&
+									// If the homePrefix was deleted as a result of the transformation
+									asCharSequence().toString() == originalText.removePrefix(homePrefix).toString()
+									) {
+									revertAllChanges()
+									delete(homePrefix.length - 1, homePrefix.length)
+								}
+							},
+							outputTransformation = OutputTransformation {
+								if (asCharSequence().toString().startsWith(homePrefix)) {
+									addStyle(
+										spanStyle = SpanStyle(
+											color = color,
+											fontWeight = FontWeight.Bold
+										),
+										start = 0,
+										end = 1
+									)
+									replace(
+										start = 0,
+										end = homePrefix.length,
+										text = "~"
+									)
+								}
+							}
 						)
 						if (state.isCreateMode) {
 
