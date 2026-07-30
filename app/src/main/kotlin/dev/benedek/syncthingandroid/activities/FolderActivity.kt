@@ -50,6 +50,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 				FolderScreen(
 					state = FolderUiState(
 						folder = viewModel.folder,
+						path = viewModel.pathTextFieldState,
 						isCreateMode = viewModel.isCreateMode,
 						isValidFolder = viewModel.isValidFolder,
 						isPathWritable = viewModel.isPathWritable,

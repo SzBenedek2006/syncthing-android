@@ -6,6 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +55,8 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	private var folderNeedsToUpdate by savedStateHandle.saveable { mutableStateOf(false) }
 	private var isInitialized: Boolean by savedStateHandle.saveable { mutableStateOf(false) }
 	var isPathWritable by mutableStateOf(false)
+
+	var pathTextFieldState: TextFieldState by savedStateHandle.saveable(stateSaver = TextFieldState.Saver) { mutableStateOf(TextFieldState(initialText = folder.path ?: "")) }
 
 	// FOLDER TYPE STUFF
 	// TODO: Move these to Constants or Util
@@ -187,6 +191,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	}
 
 	fun onPathChange(value: String) {
+		pathTextFieldState.setTextAndPlaceCursorAtEnd(value)
 		folder = folder.copy(path = value)
 		updateIsValidFolder()
 		folderNeedsToUpdate(true)
@@ -294,21 +299,23 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 				.show()
 			return
 		}
-		if (folder.path.isNullOrEmpty()) {
+		if (pathTextFieldState.text.isEmpty()) {
 			Toast.makeText(context, R.string.folder_path_required, Toast.LENGTH_LONG)
 				.show()
 			return
+		} else {
+			folder = folder.copy(path = pathTextFieldState.text.toString()) // TODO: Is copy needed here?
 		}
-		val dir = File(folder.path!!)
+		val dir = File(pathTextFieldState.text.toString())
 
 		if (!dir.exists()) {
 			val created = dir.mkdirs()
 			if (created) {
-				Log.v(this.toString(), "Created directory: ${folder.path}")
+				Log.v(this.toString(), "Created directory: ${pathTextFieldState.text}")
 			} else {
-				Log.v("FolderViewModel", "Failed to create directory: ${folder.path}")
+				Log.v("FolderViewModel", "Failed to create directory: ${pathTextFieldState.text}")
 				Toast.makeText(
-					context, "Failed to create directory: ${folder.path}." +
+					context, "Failed to create directory: ${pathTextFieldState.text}." +
 							"\nYou may ignore this if running as root", Toast.LENGTH_LONG
 				).show()
 			}
@@ -438,7 +445,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		val newFolder = Folder()
 		newFolder.label = folderLabel
 		newFolder.id = folderId ?: generateRandomFolderId()
-		newFolder.path = null
 
 		deviceId?.let { newFolder.addDevice(it) }
 		if (type != null) newFolder.type = type
@@ -456,7 +462,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		editedVersioning = newFolder.versioning!!.deepCopy()
 
 		folder = newFolder
-		checkPathAccess(folder.path)
+		checkPathAccess(pathTextFieldState.text.toString())
 		updateIsValidFolder()
 	}
 
@@ -483,7 +489,8 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 		editedVersioning = found.versioning?.deepCopy()
 		folder = found
-		checkPathAccess(folder.path)
+		pathTextFieldState.setTextAndPlaceCursorAtEnd(folder.path ?: "")
+		checkPathAccess(pathTextFieldState.text.toString())
 		updateIsValidFolder()
 	}
 
@@ -505,7 +512,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 	fun editIgnores(context: Context) {
 		try {
-			val ignoreFile = File(folder.path, IGNORE_FILE_NAME)
+			val ignoreFile = File(pathTextFieldState.text.toString(), IGNORE_FILE_NAME)
 			if (!ignoreFile.exists() && !ignoreFile.createNewFile()) {
 				Toast.makeText(context, R.string.create_ignore_file_error, Toast.LENGTH_SHORT)
 					.show()
@@ -552,7 +559,7 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 	private fun updateIsValidFolder() {
 		isValidFolder =
-			!folder.label.isNullOrEmpty() && Folder.isValidId(folder.id) && !folder.path.isNullOrEmpty()
+			!folder.label.isNullOrEmpty() && Folder.isValidId(folder.id) && pathTextFieldState.text.isNotEmpty()
 	}
 
 	private fun folderNeedsToUpdate(value: Boolean) {

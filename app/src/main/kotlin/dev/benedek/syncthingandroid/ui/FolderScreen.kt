@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Sort
@@ -47,6 +49,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -89,6 +92,7 @@ import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 @Immutable
 data class FolderUiState(
 	val folder: Folder = Folder(),
+	val path: TextFieldState = TextFieldState(),
 	val isCreateMode: Boolean = false,
 	val isValidFolder: Boolean = false,
 	val isPathWritable: Boolean = false,
@@ -201,11 +205,15 @@ fun FolderScreen(
 					Row(
 						verticalAlignment = Alignment.CenterVertically
 					) {
+						LaunchedEffect(state.path) {
+							onPathChange(state.path.text.toString())
+						}
 						AppTextField(
 							label = stringResource(R.string.directory),
 							leadingIconPainter = rememberVectorPainter(Icons.Outlined.Folder),
-							value = state.folder.path ?: "",
-							onValueChange = onPathChange,
+							state = state.path,
+							//value = state.folder.path ?: "",
+							//onValueChange = onPathChange,
 							modifier = Modifier.weight(1f),
 							readOnly = !state.isCreateMode
 						)
@@ -222,7 +230,7 @@ fun FolderScreen(
 									if (prefs.getBoolean(Constants.PREF_ADVANCED_FOLDER_PICKER, false)) {
 										val intent = FolderPickerActivity.createIntent(
 											context = context,
-											initialDirectory = state.folder.path,
+											initialDirectory = state.path.toString(),
 											rootDirectory = null // or whatever your logic requires
 										)
 										advancedDirectoryPicker.launch(intent)
@@ -230,7 +238,7 @@ fun FolderScreen(
 										directoryPicker.launch(
 											FileUtils.getPickerInitialUri(
 												context,
-												state.folder.path
+												state.path.toString()
 											)
 										)
 									}
