@@ -26,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.verticalScroll
@@ -196,6 +197,43 @@ fun AppTextField(
 		placeholder,
 		leadingIconPainter,
 		keyboardOptions
+	)
+}
+
+@Composable
+fun AppTextField(
+	@SuppressLint("ModifierParameter")
+	modifier: Modifier = Modifier.fillMaxWidth(),
+	state: TextFieldState,
+	readOnly: Boolean = false,
+	enabled: Boolean = true,
+	colors: TextFieldColors = TextFieldDefaults.colors(
+		focusedContainerColor = Color.Transparent,
+		unfocusedContainerColor = Color.Transparent,
+		focusedIndicatorColor = Color.Transparent,
+		unfocusedIndicatorColor = Color.Transparent,
+		errorIndicatorColor = Color.Transparent
+	),
+	label: String? = null,
+	placeholder: String? = null,
+	leadingIconPainter: Painter? = null,
+	keyboardOptions: KeyboardOptions = KeyboardOptions(
+		capitalization = KeyboardCapitalization.Words,
+		keyboardType = KeyboardType.Text
+	)
+) {
+	TextField(
+		state = state,
+		modifier = modifier,
+		enabled = enabled,
+		readOnly = readOnly,
+		label = { if (label != null) Text(label) },
+		placeholder = { if (placeholder != null) Text(placeholder) },
+		leadingIcon = {
+			if (leadingIconPainter != null) Icon(leadingIconPainter, null)
+		},
+		keyboardOptions = keyboardOptions,
+		colors = colors
 	)
 }
 
