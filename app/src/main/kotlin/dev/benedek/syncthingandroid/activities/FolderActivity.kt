@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.graphics.toColorInt
-import dev.benedek.syncthingandroid.ui.Folder
+import dev.benedek.syncthingandroid.ui.FolderScreen
 import dev.benedek.syncthingandroid.ui.FolderActions
 import dev.benedek.syncthingandroid.ui.FolderUiState
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -47,7 +47,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 
 		setContent {
 			SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
-				Folder(
+				FolderScreen(
 					state = FolderUiState(
 						folder = viewModel.folder,
 						isCreateMode = viewModel.isCreateMode,

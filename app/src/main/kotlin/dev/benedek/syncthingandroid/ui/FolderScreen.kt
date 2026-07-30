@@ -130,7 +130,7 @@ data class FolderActions(
 )
 
 @Composable
-fun Folder(
+fun FolderScreen(
 	state: FolderUiState,
 	actions: FolderActions
 ) {
@@ -604,9 +604,9 @@ fun VersioningDialog(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 @Preview(showSystemUi = true, showBackground = true, uiMode = ThemeControls.UI_MODE)
-fun FolderPreview() {
+fun FolderScreenPreview() {
 	SyncthingandroidTheme(ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
-		Folder(
+		FolderScreen(
 			state = FolderUiState(
 				folder = Folder(),
 				isValidFolder = true,
