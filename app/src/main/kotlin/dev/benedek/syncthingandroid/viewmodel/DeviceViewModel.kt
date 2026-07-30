@@ -205,12 +205,14 @@ class DeviceViewModel : ViewModel() {
 		device.name = value
 		device = device
 		deviceNeedsToUpdate
+		updateIsValidDevice()
 	}
 
 	fun onIdChange(value: String) {
 		device.deviceID = value
 		device = device
 		deviceNeedsToUpdate = true
+		updateIsValidDevice()
 	}
 
 	fun onAddressChange(value: String) {
@@ -221,6 +223,7 @@ class DeviceViewModel : ViewModel() {
 		device.addresses = addressList
 		device = device
 		deviceNeedsToUpdate = true
+		updateIsValidDevice()
 	}
 
 	fun onCompressionChange(value: String) {
@@ -239,6 +242,11 @@ class DeviceViewModel : ViewModel() {
 		device.paused = checked
 		device = device
 		deviceNeedsToUpdate = true
+	}
+
+	fun updateIsValidDevice() {
+		// TODO: check other things
+		isValidDevice = !device.deviceID.isNullOrEmpty()
 	}
 
 }

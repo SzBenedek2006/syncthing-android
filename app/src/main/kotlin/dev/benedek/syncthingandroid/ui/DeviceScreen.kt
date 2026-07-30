@@ -50,20 +50,6 @@ fun DeviceScreen(
 	val context = LocalContext.current
 	val focusManager = LocalFocusManager.current
 
-	LaunchedEffect( // TODO!!!
-		viewModel.device.name,
-		viewModel.device.deviceID,
-		viewModel.device.addresses
-	) {
-		val device = viewModel.device
-		//TODO: check other things
-		if (device.deviceID.isNullOrEmpty()) {
-			viewModel.isValidDevice = false
-		} else {
-			viewModel.isValidDevice = true
-		}
-	}
-
 	AppScaffold(
 		topAppBarTitle =
 			if (viewModel.isCreateMode) stringResource(R.string.add_device)
