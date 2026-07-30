@@ -95,6 +95,7 @@ fun DeviceListItem(
 				Text(
 					text = device.displayName,
 					modifier = Modifier.weight(1f).padding(end = 8.dp),
+					color = MaterialTheme.colorScheme.onSurface.copy(if (device.name.isEmpty()) 0.5f else 1f),
 					style = MaterialTheme.typography.titleMedium,
 					overflow = TextOverflow.Ellipsis,
 					maxLines = 1
