@@ -302,12 +302,12 @@ fun FolderListPreview() {
 @Composable
 fun FolderListItemPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
+		Surface {
 			FolderListItem(
 				Folder(
 					id = "fjdlaf-jfdlaf",
 					label = "Mao",
-					path = "storage/emulated/0"
+					path = "/storage/emulated/0"
 				),
 				folderStatus = FolderStatus(
 					state = "scanning",
