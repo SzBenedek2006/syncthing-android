@@ -3,6 +3,7 @@ package dev.benedek.syncthingandroid.ui.main
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Process.myUid
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
@@ -32,6 +33,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -109,9 +114,27 @@ fun FolderListItem(
 					maxLines = 1
 				)
 			}
+			val userId = remember { myUid() / 100000 }
+			val homePrefix = remember { "/storage/emulated/$userId" }
+			val color = MaterialTheme.colorScheme.primary
+
+			/**
+			 * The folder's path where the [homePrefix] was replaced with a colored `~`.
+			 */
+			val formattedPath = remember {
+				val cleanedPath = folder.path?.removePrefix(homePrefix)
+				if (cleanedPath != folder.path) {
+					buildAnnotatedString {
+						withStyle(SpanStyle(color = color)) { append('~') }
+						append(cleanedPath)
+					}
+				} else {
+					AnnotatedString(folder.path.orEmpty())
+				}
+			}
 
 			Text(
-				text = folder.path.orEmpty(),
+				text = formattedPath,
 				modifier = Modifier.padding(top = 4.dp),
 				style = MaterialTheme.typography.bodySmall
 			)
