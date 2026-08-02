@@ -655,8 +655,9 @@ fun FolderScreenPreview() {
 		FolderScreen(
 			state = FolderUiState(
 				folder = Folder(),
-				isValidFolder = true,
+				path = TextFieldState("/storage/emulated/0"),
 				isCreateMode = true,
+				isValidFolder = true,
 				deviceList = mutableStateListOf(),
 				folderType = emptyList(),
 				folderPullOrders = emptyList(),
