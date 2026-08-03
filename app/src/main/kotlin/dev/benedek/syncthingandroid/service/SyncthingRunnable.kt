@@ -1,14 +1,17 @@
 package dev.benedek.syncthingandroid.service
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Environment
 import android.os.PowerManager
 import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.util.Util
@@ -208,10 +211,23 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 
 				else -> {
 					Log.w(TAG, "Syncthing has crashed (exit code $ret)")
-					notificationHandler.showCrashedNotification(
-						R.string.notification_crash_title,
-						false
-					)
+					if (ActivityCompat.checkSelfPermission(
+							context,
+							Manifest.permission.POST_NOTIFICATIONS
+						) == PackageManager.PERMISSION_GRANTED
+					) {
+						// TODO: Consider calling
+						//    ActivityCompat#requestPermissions
+						// here to request the missing permissions, and then overriding
+						//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+						//                                          int[] grantResults)
+						// to handle the case where the user grants the permission. See the documentation
+						// for ActivityCompat#requestPermissions for more details.
+						notificationHandler.showCrashedNotification(
+							R.string.notification_crash_title,
+							false
+						)
+					}
 				}
 			}
 		} catch (e: IOException) {
