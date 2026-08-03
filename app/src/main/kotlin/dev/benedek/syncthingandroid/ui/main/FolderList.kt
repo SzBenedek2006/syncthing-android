@@ -50,6 +50,7 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util.readableFileSize
+import dev.benedek.syncthingandroid.util.openFolder
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
 import kotlin.math.roundToInt
@@ -197,29 +198,11 @@ fun FolderListItem(
 			}
 
 		}
-		val openFileManager = stringResource(R.string.open_file_manager)
+
 
 		IconButton(
 			onClick = {
-				val intent = Intent(Intent.ACTION_VIEW)
-				intent.setDataAndType(Uri.fromFile(File(folder.path!!)), "resource/folder")
-				intent.putExtra("org.openintents.extra.ABSOLUTE_PATH", folder.path)
-				intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
-				if (intent.resolveActivity(context.packageManager) != null) {
-					context.startActivity(intent)
-				} else {
-					Log.v(
-						"FolderListItem",
-						"openFolder: Fallback to application chooser to open folder."
-					)
-					intent.setDataAndType(folder.path!!.toUri(), "application/*")
-					val chooserIntent = Intent.createChooser(intent, openFileManager)
-					if (chooserIntent != null) {
-						context.startActivity(chooserIntent)
-					} else {
-						Toast.makeText(context, R.string.toast_no_file_manager, Toast.LENGTH_SHORT).show()
-					}
-				}
+				openFolder(context, Uri.fromFile(File(folder.path!!)))
 			}
 		) {
 			Icon(
@@ -317,4 +300,3 @@ fun FolderListItemPreview() {
 		}
 	}
 }
-
