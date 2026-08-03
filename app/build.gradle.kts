@@ -156,6 +156,13 @@ configure<ApplicationExtension> {
 		includeInBundle = false
 	}
 
+	@Suppress("UnstableApiUsage")
+	bundle {
+		language {
+			enableSplit = false
+		}
+	}
+
 
 }
 
