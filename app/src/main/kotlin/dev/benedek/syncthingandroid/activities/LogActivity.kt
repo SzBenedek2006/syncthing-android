@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ScrollView
 import android.widget.TextView
@@ -67,7 +68,8 @@ class LogActivity : SyncthingActivity() {
 			}
 		)
 
-		val rootView = layoutInflater.inflate(R.layout.activity_log, null)
+		val parent = findViewById<ViewGroup>(android.R.id.content)
+		val rootView = layoutInflater.inflate(R.layout.activity_log, parent, false)
 		setContentView(rootView)
 		setTitle(R.string.syncthing_log_title)
 
