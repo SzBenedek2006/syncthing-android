@@ -1,9 +1,12 @@
 package dev.benedek.syncthingandroid.service
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
+import android.os.Build
 import android.util.Log
+import androidx.core.content.ContextCompat
 
 object ReceiverManager {
 	private const val TAG = "ReceiverManager"
@@ -14,12 +17,12 @@ object ReceiverManager {
 	@Synchronized
 	fun registerReceiver(
 		context: Context,
-		receiver: BroadcastReceiver?,
-		intentFilter: IntentFilter?
+		receiver: BroadcastReceiver,
+		intentFilter: IntentFilter,
+		flags: Int = ContextCompat.RECEIVER_NOT_EXPORTED
 	) {
 		receivers.add(receiver)
-		// FIXME
-		context.registerReceiver(receiver, intentFilter)
+		ContextCompat.registerReceiver(context, receiver, intentFilter, flags)
 		Log.v(TAG, "Registered receiver: $receiver with filter: $intentFilter")
 	}
 
