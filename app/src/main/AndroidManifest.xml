@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
+	<queries>
+		<intent>
+			<action android:name="android.intent.action.VIEW" />
+			<data android:mimeType="resource/folder" />
+		</intent>
+		<intent>
+			<action android:name="android.intent.action.VIEW" />
+			<data android:mimeType="application/*" />
+		</intent>
+	</queries>
 
 	<uses-feature
 		android:name="android.software.leanback"
