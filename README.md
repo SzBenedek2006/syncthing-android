@@ -48,6 +48,7 @@ The Docker file is not needed for building, and is out of date or non-functional
        yes | ./sdkmanager "platform-tools" "build-tools;36.0.0" "platforms;android-36" "extras;android;m2repository" "ndk;29.0.14206865"
        ```
        The required tools and NDK will be downloaded automatically.
+3. You also need a C compiler for the Go build process. This is not the one included in the NDK.
 
 _(Go is downloaded automatically by Gradle when building.)_
 _(Python is not needed anymore.)_
