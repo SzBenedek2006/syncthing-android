@@ -232,4 +232,22 @@ object Util {
 	fun getAlertDialogBuilder(context: Context): AlertDialog.Builder {
 		return MaterialAlertDialogBuilder(context)
 	}
+
+
+	/**
+	 * Logs the value to DEBUG channel then returns the value.
+	 */
+	inline fun <V,T> logD(value: V, tag: T): V {
+		Log.d(tag?.toString(), value.toString())
+		return value
+	}
+
+	/**
+	 * Logs the value to DEBUG channel then returns the value.
+	 * default tag is "logd"
+	 */
+	inline fun <V> logD(value: V, tag: String? = "logd"): V {
+		Log.d(tag, value.toString())
+		return value
+	}
 }
