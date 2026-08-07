@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -53,6 +54,10 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 	private var isCreateMode = false
 
 	private var deviceNeedsToUpdate = false
+		set(value) {
+			field = value
+			onBackPressedCallback.isEnabled = value
+		}
 
 	private var deleteDialog: Dialog? = null
 	private var discardDialog: Dialog? = null
@@ -137,6 +142,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
 
 		super.onCreate(savedInstanceState)
+		onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 		enableEdgeToEdge(
 			navigationBarStyle = if (
 				ThemeControls.useDarkMode == true ||
@@ -578,12 +584,9 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 		)
 	}
 
-	// FIXME
-	override fun onBackPressed() {
-		if (isCreateMode) {
+	val onBackPressedCallback = object : OnBackPressedCallback(false) {
+		override fun handleOnBackPressed() {
 			showDiscardDialog()
-		} else {
-			super.onBackPressed()
 		}
 	}
 
