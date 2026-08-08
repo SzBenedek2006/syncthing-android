@@ -1,11 +1,25 @@
 package dev.benedek.syncthingandroid.ui.reusable
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.annotation.DrawableRes
+import androidx.annotation.FloatRange
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.SeekableTransitionState
+import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.rememberTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -18,12 +32,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
@@ -70,12 +87,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -114,7 +136,12 @@ import com.patrykandpatrick.vico.compose.common.Fill
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Duration.Companion.milliseconds
 import androidx.compose.material3.HorizontalDivider as MaterialHorizontalDivider
 
 val dialogTonalElevation = 6.dp
@@ -937,9 +964,293 @@ fun DeleteDialog(
 }
 
 
+const val dialogAnimationTimeMs = 350
+@Suppress("unused")
+const val dialogAnimationDelayMs = 50
+
+
+
+/**
+ * This is a pure Compose dialog unlike the built-in one.
+ * This one doesn't spawn a new window, doesn't use views, etc.
+ *
+ * This one can be animated and supports predictive back.
+ *
+ * Performance and bugs to be tested.
+ *
+ * TODO: Make it cleaner
+ */
+@Composable
+fun ComposeDialog(
+	onOk: () -> Unit,
+	onCancel: (() -> Unit)?,
+	modifier: Modifier = Modifier,
+	onDismiss: () -> Unit,
+	title: String? = null,
+	description: String? = null,
+	content: @Composable (() -> Unit)? = null,
+	okText: String = stringResource(android.R.string.ok),
+	cancelText: String = stringResource(android.R.string.cancel),
+	@FloatRange(0.0, 1.0) animationProgress: Float? = null,
+	shouldCancel: Boolean = false
+) {
+
+	val focusRequester = remember { FocusRequester() }
+	var localShouldCancel by remember { mutableStateOf(false) }
+	val scope = rememberCoroutineScope()
+
+	var backProgress by remember { mutableStateOf<Float?>(null) }
+
+	val currentProgress = animationProgress ?: backProgress
+	val shouldDisplay = !(shouldCancel || localShouldCancel)
+
+
+	val transitionState = remember { SeekableTransitionState(initialState = false) }
+	val transition = rememberTransition(transitionState, "DialogTransition")
+
+
+
+	fun triggerDismiss() {
+		localShouldCancel = true
+		scope.launch {
+			delay((dialogAnimationTimeMs - 150).milliseconds)
+			onDismiss()
+		}
+	}
+
+	// Request focus
+	LaunchedEffect(animationProgress) {
+		if (animationProgress == null)
+			focusRequester.requestFocus()
+	}
+
+	// TODO: Make it cleaner
+	PredictiveBackHandler(true) { backEventFlow ->
+		var isCancelled = false
+		try {
+			backEventFlow.collect {
+				backProgress = it.progress
+				if (backProgress != null && backProgress!! < 1f)
+					localShouldCancel = true
+			}
+		} catch (_: CancellationException) {
+			localShouldCancel = false
+			isCancelled = true
+		} finally {
+			backProgress = null
+			if (!isCancelled)
+				triggerDismiss()
+		}
+	}
+
+
+
+	val currentProgressState by rememberUpdatedState(currentProgress)
+	val shouldDisplayState by rememberUpdatedState(shouldDisplay)
+
+	// TODO: Make it cleaner
+	LaunchedEffect(transitionState) {
+		snapshotFlow { Pair(shouldDisplayState, currentProgressState) } // OK
+			.conflate()
+			.collect { (shouldDisplay, currentProgress) ->
+				if (currentProgress != null) {
+					transitionState.seekTo(fraction = currentProgress, targetState = shouldDisplay)
+				} else if (transitionState.currentState == shouldDisplay) {
+					transitionState.snapTo(targetState = shouldDisplay)
+				} else {
+					transitionState.animateTo(targetState = shouldDisplay)
+				}
+		}
+
+	}
+
+	// TODO: Make it cleaner
+	val currentFraction = transitionState.fraction
+	val scrimAlpha = when {
+		transitionState.currentState && transitionState.targetState -> 0.6f
+		!transitionState.currentState && !transitionState.targetState -> 0f
+		transitionState.currentState && !transitionState.targetState -> 0.6f * (1f - currentFraction)
+		else -> 0.6f * currentFraction
+	}
+
+	// Scrim and DialogCard
+	Box(
+		modifier = modifier
+			.fillMaxSize()
+			.background(
+				Color.Black.copy(
+					alpha = scrimAlpha
+				)
+			)
+			// Handles dismissOnClickOutside = true
+			.clickable(
+				interactionSource = remember { MutableInteractionSource() },
+				indication = null,
+				onClick = { triggerDismiss() }
+			)
+			.focusRequester(focusRequester)
+			.focusable(),
+		contentAlignment = Alignment.Center
+	) {
+		DialogCard(
+			onOk,
+			onCancel?.let { { localShouldCancel = false; onCancel() } },
+			Modifier,
+			title,
+			description,
+			content,
+			okText,
+			cancelText,
+			transition,
+		)
+	}
+}
+
+
+fun myEnterTransition(delay: Int = 0) =
+	expandVertically(
+		animationSpec = tween(
+			durationMillis = dialogAnimationTimeMs,
+			delayMillis = delay,
+			easing = CubicBezierEasing(0f, 1f, 0.4f, 1f)
+		),
+		clip = false
+	) + fadeIn(
+		animationSpec = tween(
+			durationMillis = dialogAnimationTimeMs,
+			delayMillis = delay,
+			easing = CubicBezierEasing(0.25f, 0.0f, 0.25f, 1f)
+		),
+	)
+
+fun myExitTransition(delay: Int = 0) =
+	shrinkVertically(
+		animationSpec = tween(
+			durationMillis = dialogAnimationTimeMs,
+			delayMillis = delay,
+			easing = CubicBezierEasing(0f, 1f, 0.4f, 1f)
+		),
+		clip = false,
+	) + fadeOut(
+		animationSpec = tween(
+			durationMillis = dialogAnimationTimeMs,
+			delayMillis = delay,
+			easing = CubicBezierEasing(0.25f, 0.0f, 0.25f, 1f)
+		)
+	)
+
+
+/**
+ * This is a Card part of the dialog. Doesn't contain the outer scrim or focus logic
+ * If onCancel is null, no cancel button is shown.
+ * Outside tap (dismiss) should be handled outside of this composable,
+ * while onCancel is still available.
+ */
+@Composable
+fun DialogCard(
+	onOk: () -> Unit,
+	onCancel: (() -> Unit)?,
+	modifier: Modifier = Modifier,
+	title: String? = null,
+	description: String? = null,
+	content: @Composable (() -> Unit)? = null,
+	okText: String = stringResource(android.R.string.ok),
+	cancelText: String = stringResource(android.R.string.cancel),
+	transition: Transition<Boolean>,
+) {
+	Surface(
+		shape = RoundedCornerShape(28.dp),
+		color = MaterialTheme.colorScheme.surfaceContainerHigh,
+		tonalElevation = 6.dp,
+		modifier = modifier
+			.widthIn(280.dp, 560.dp)
+			.padding(28.dp)
+			// Prevents inner clicks from dismissing the dialog
+			.clickable(
+				interactionSource = remember { MutableInteractionSource() },
+				indication = null,
+				onClick = {}
+			)
+	) {
+		Column(
+			modifier = Modifier
+				.padding(24.dp)
+		) {
+			// Text Body
+			if (title != null) {
+				transition.AnimatedVisibility(
+					visible = { it },
+					enter = myEnterTransition(),
+					exit = myExitTransition()
+				) {
+					Text(
+						text = title,
+						style = MaterialTheme.typography.headlineSmall,
+						color = MaterialTheme.colorScheme.onSurface
+					)
+				}
+
+			}
+			if (description != null) {
+				transition.AnimatedVisibility(
+					visible = { it },
+					enter = myEnterTransition(),
+					exit = myExitTransition()
+				) {
+					Column {
+						Spacer(modifier = Modifier.height(16.dp).fillMaxWidth())
+						Text(
+							text = description,
+							style = MaterialTheme.typography.bodyMedium,
+							color = MaterialTheme.colorScheme.onSurfaceVariant
+						)
+					}
+				}
+			}
+			if (content != null) {
+				HorizontalDivider()
+				transition.AnimatedVisibility(
+					visible = { it },
+					enter = myEnterTransition(),
+					exit = myExitTransition()
+				) {
+					content()
+				}
+			}
+
+			// Action Buttons
+			HorizontalDivider()
+			transition.AnimatedVisibility(
+				visible = { it },
+				enter = myEnterTransition(),
+				exit = myExitTransition()
+			) {
+				Column {
+					Spacer(Modifier.height(24.dp).fillMaxWidth())
+					Row(
+						modifier = Modifier.fillMaxWidth(),
+						horizontalArrangement = Arrangement.End
+					) {
+						val style = MaterialTheme.typography.labelLarge
+						// Cancel Button
+						if (onCancel != null) {
+							TextButton(onClick = onCancel) { Text(cancelText, style = style) }
+							Spacer(Modifier.width(8.dp))
+						}
+
+						// Confirm Button
+						TextButton(onClick = onOk) {
+							Text(okText, style = style)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
 // CHARTS
-
-
 @Composable
 fun ComposeBasicLineChart(
 	values: List<Number>,
@@ -1145,5 +1456,56 @@ private fun ComposeBasicLineChartPreview() {
 	}
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
 		Surface { ComposeBasicLineChart(modelProducer, 25) }
+	}
+}
+
+
+// FIXME: Interacting with the preview is broken
+@Preview
+@Composable
+fun ComposeDialogPreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		Surface(Modifier.fillMaxSize()) {
+			Box(
+				modifier = Modifier
+					.fillMaxSize()
+			) {
+				Text(
+					text = "Background Screen Content...",
+					style = MaterialTheme.typography.bodyLarge,
+					modifier = Modifier.padding(16.dp)
+				)
+				ComposeDialog(
+					onOk = {},
+					onCancel = {},
+					modifier = Modifier,
+					onDismiss = {},
+					//title = stringResource(R.string.dialog_discard_changes),
+					title = "Discard unsaved changes?",
+					description = "You have modified settings. Are you sure you want to discard your changes and go back?",
+					content = null,
+					animationProgress = 1f,
+					shouldCancel = false
+				)
+			}
+		}
+	}
+}
+
+@Preview(uiMode = ThemeControls.UI_MODE)
+@Composable
+fun DialogCardPreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		DialogCard(
+			{},
+			{},
+			Modifier,
+			"Hi",
+			"Hello",
+			null,
+			"ok",
+			"cancel",
+			rememberTransition(SeekableTransitionState(initialState = true).also { runBlocking { it.snapTo(true) } }, "DialogTransition")
+		)
 	}
 }
