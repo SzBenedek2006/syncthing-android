@@ -2,6 +2,9 @@ package dev.benedek.syncthingandroid.activities
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.BackEventCompat
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +15,7 @@ import dev.benedek.syncthingandroid.ui.FolderActions
 import dev.benedek.syncthingandroid.ui.FolderUiState
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.Util.logD
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel.Companion.EXTRA_DEVICE_ID
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel.Companion.EXTRA_FOLDER_ID
@@ -52,7 +56,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 						folder = viewModel.folder,
 						path = viewModel.pathTextFieldState,
 						isCreateMode = viewModel.isCreateMode,
-						isValidFolder = viewModel.isValidFolder,
+						isValidFolder = logD(viewModel.isValidFolder),
 						isPathWritable = viewModel.isPathWritable,
 						deviceList = viewModel.deviceList,
 						folderType = viewModel.folderType,
@@ -63,6 +67,7 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 						showFolderTypeDialog = viewModel.showFolderTypeDialog,
 						showFolderPullOrderDialog = viewModel.showFolderPullOrderDialog,
 						showVersioningDialog = viewModel.showVersioningDialog,
+						folderNeedsToUpdate = viewModel.folderNeedsToUpdate
 					),
 					actions = FolderActions(
 						onFinish = { finish() },
@@ -86,7 +91,8 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 						setEditedVersioning = { viewModel.editedVersioning = it },
 						onVersioningSave = viewModel::onVersioningSave,
 						onVersioningChange = viewModel::onVersioningChange,
-						onPullOrderChange = viewModel::onPullOrderChange
+						onPullOrderChange = viewModel::onPullOrderChange,
+						onPickerReturned = viewModel::onPickerReturned
 					)
 				)
 			}

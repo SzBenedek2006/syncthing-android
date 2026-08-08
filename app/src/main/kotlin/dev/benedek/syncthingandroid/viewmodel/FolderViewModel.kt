@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,7 @@ import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.util.Util.logD
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,11 +54,15 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 	var deviceList = mutableStateListOf<DeviceUiState>()
 		private set
-	private var folderNeedsToUpdate by savedStateHandle.saveable { mutableStateOf(false) }
+	var folderNeedsToUpdate by savedStateHandle.saveable { mutableStateOf(false) }
+		private set
 	private var isInitialized: Boolean by savedStateHandle.saveable { mutableStateOf(false) }
 	var isPathWritable by mutableStateOf(false)
 
-	var pathTextFieldState: TextFieldState by savedStateHandle.saveable(stateSaver = TextFieldState.Saver) { mutableStateOf(TextFieldState(initialText = folder.path ?: "")) }
+	var pathTextFieldState: TextFieldState by savedStateHandle.saveable(stateSaver = TextFieldState.Saver) {
+		mutableStateOf(TextFieldState(initialText = folder.path ?: ""))
+	}
+
 
 	// FOLDER TYPE STUFF
 	// TODO: Move these to Constants or Util
@@ -140,6 +146,12 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	var isValidFolder by savedStateHandle.saveable { mutableStateOf(false) }
 
 
+	init {
+
+	}
+
+
+
 	fun setService(service: SyncthingService) {
 		serviceReference = WeakReference(service)
 	}
@@ -193,8 +205,14 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	fun onPathChange(value: String) {
 		pathTextFieldState.setTextAndPlaceCursorAtEnd(value)
 		folder = folder.copy(path = value)
+		checkPathAccess(value)
 		updateIsValidFolder()
 		folderNeedsToUpdate(true)
+	}
+
+	fun onPickerReturned(value: String) {
+		pathTextFieldState.setTextAndPlaceCursorAtEnd(value)
+		onPathChange(value)
 	}
 
 	fun onFsWatcherChange(checked: Boolean) {
@@ -419,17 +437,16 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	}
 
 	fun checkPathAccess(path: String?) {
-		viewModelScope.launch {
-			isPathWritable = withContext(Dispatchers.IO) {
-				if (path.isNullOrEmpty()) return@withContext false
-				val file = File(path)
-				if (file.exists()) {
-					file.canWrite() && file.canRead()
-				} else {
-					val parentDir = file.parentFile
-					parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(file)
-				}
-			}
+		if (path.isNullOrEmpty()) {
+			isPathWritable = false
+			return
+		}
+		val file = File(path)
+		if (file.exists()) {
+			isPathWritable = file.canWrite() && file.canRead()
+		} else {
+			val parentDir = file.parentFile
+			isPathWritable = parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(file)
 		}
 	}
 
@@ -559,10 +576,11 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
 	private fun updateIsValidFolder() {
 		isValidFolder =
-			!folder.label.isNullOrEmpty() && Folder.isValidId(folder.id) && pathTextFieldState.text.isNotEmpty()
+			!folder.label.isNullOrEmpty() && Folder.isValidId(folder.id) && pathTextFieldState.text.isNotEmpty() && isPathWritable
 	}
 
 	private fun folderNeedsToUpdate(value: Boolean) {
+		logD("folderNeedsToUpdate = $value")
 		folderNeedsToUpdate = value
 	}
 
