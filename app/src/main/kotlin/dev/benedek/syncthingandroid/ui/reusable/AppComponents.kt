@@ -1137,7 +1137,7 @@ fun myExitTransition(delay: Int = 0) =
 		animationSpec = tween(
 			durationMillis = dialogAnimationTimeMs,
 			delayMillis = delay,
-			easing = CubicBezierEasing(0.25f, 0.0f, 0.25f, 1f)
+			easing = CubicBezierEasing(0f, 1.0f, 0f, 1f)
 		)
 	)
 
