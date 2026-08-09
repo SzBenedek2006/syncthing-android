@@ -395,11 +395,9 @@ fun OptionTile(
 					iconColor
 				)
 			} else if (!noIconPadding) {
-				Box(Modifier
-					.padding(14.dp)
-					.size(24.dp))
+				Spacer(Modifier.size(52.dp))
 			} else {
-				Box(Modifier.padding(start = 14.dp))
+				Spacer(Modifier.padding(start = 14.dp))
 			}
 			Column(Modifier.weight(1f)) {
 				if (title != null) {
@@ -441,6 +439,10 @@ fun OptionTile(
 						.padding(14.dp)
 						.size(24.dp)
 				)
+			} else if (!noIconPadding) {
+				Spacer(Modifier.size(52.dp))
+			} else {
+				Spacer(Modifier.padding(end= 14.dp))
 			}
 		}
 	}
@@ -1347,6 +1349,22 @@ fun AppTextFieldPreview() {
 	}
 }
 
+@Preview
+@Composable
+fun OptionTilePreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		Surface {
+			OptionTile(
+				title = "Content",
+				description = "Long content named description with" +
+						"\nmulti line text.",
+				leftIconPainter = painterResource(R.drawable.ic_label_outline_24dp),
+			)
+		}
+	}
+}
+
+
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
 fun TestSwitchPreview() {
@@ -1357,7 +1375,7 @@ fun TestSwitchPreview() {
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
-fun OptionTilePreview() {
+fun SwitchOptionTilePreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
 		Surface {
 			var checked by remember { mutableStateOf(true) }
