@@ -588,9 +588,9 @@ Wi-Fi およびネットワーク関連のデータはすべてデバイスに�
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">ファイルを共有中…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="other">ファイルリスト</item>
-	</plurals>
+
+	<string name="files_list">ファイルリスト</string>
+
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">サブフォルダー</string>

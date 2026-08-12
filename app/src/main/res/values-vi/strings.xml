@@ -594,9 +594,8 @@ Nếu bạn từ chối quyền này, bạn chỉ có thể truy cập các tín
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Đang chia sẻ các tệp…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="other">Danh sách tệp</item>
-	</plurals>
+	<string name="files_list">Danh sách tệp</string>
+
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Thư mục con</string>

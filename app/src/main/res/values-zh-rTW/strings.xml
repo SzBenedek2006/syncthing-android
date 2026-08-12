@@ -602,9 +602,8 @@
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">正在分享檔案…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="other">檔案列表</item>
-	</plurals>
+
+	<string name="files_list">檔案列表</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">子資料夾</string>

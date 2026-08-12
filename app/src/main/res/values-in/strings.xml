@@ -509,9 +509,9 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Berbagi berkas…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="other">Daftar Berkas</item>
-	</plurals>
+
+	<string name="files_list">Daftar Berkas</string>
+
 
 	<!-- Sub Folder title -->
 
