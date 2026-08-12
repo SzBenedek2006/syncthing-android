@@ -611,12 +611,8 @@
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Копирование файлов…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Имя файла</item>
-		<item quantity="few">Список файлов</item>
-		<item quantity="many">Список файлов</item>
-		<item quantity="other">Список файлов</item>
-	</plurals>
+	<string name="file_name">Имя файла</string>
+	<string name="files_list">Список файлов</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Подпапка</string>

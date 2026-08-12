@@ -597,10 +597,8 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Fájlok megosztása…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Fájlok listája</item>
-		<item quantity="other">Fájlok listája</item>
-	</plurals>
+	<string name="file_name">Fájl neve</string>
+	<string name="files_list">Fájlok listája</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Almappa</string>

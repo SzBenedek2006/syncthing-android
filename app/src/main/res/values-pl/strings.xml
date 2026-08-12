@@ -611,12 +611,8 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Udostępnianie plików…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Nazwa pliku</item>
-		<item quantity="few">Lista plików</item>
-		<item quantity="many">Lista plików</item>
-		<item quantity="other">Lista plików</item>
-	</plurals>
+	<string name="file_name">Nazwa pliku</string>
+	<string name="files_list">Lista plików</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Podfolder</string>

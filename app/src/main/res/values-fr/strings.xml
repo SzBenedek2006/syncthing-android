@@ -608,11 +608,8 @@ Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnali
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Partager des fichiers…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Nom du fichier</item>
-		<item quantity="many">Liste des fichiers</item>
-		<item quantity="other">Liste des fichiers</item>
-	</plurals>
+	<string name="file_name">Nom du fichier</string>
+	<string name="files_list">Liste des fichiers</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Sous-répertoire</string>

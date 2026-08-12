@@ -130,10 +130,12 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			binding!!.name.setFocusable(false)
 			binding!!.name.setKeyListener(null)
 		}
-		binding!!.namesTitle.text = getResources().getQuantityString(
-			R.plurals.file_name_title,
-			if (files.size > 1) 2 else 1
-		)
+		binding!!.namesTitle.text = if (files.size > 1) {
+			getString(R.string.file_name)
+		} else {
+			getString(R.string.files_list)
+		}
+
 		binding!!.shareButton.setOnClickListener { _: View? ->
 			if (files.size == 1) files.entries.iterator().next()
 				.setValue(binding!!.name.getText().toString())

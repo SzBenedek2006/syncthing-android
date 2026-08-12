@@ -609,10 +609,8 @@ If you deny this permission, you can only access these features through the web 
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Sharing files…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">File Name</item>
-		<item quantity="other">Files List</item>
-	</plurals>
+	<string name="file_name">File Name</string>
+	<string name="files_list">Files List</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Sub folder</string>

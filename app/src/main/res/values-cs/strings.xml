@@ -611,12 +611,8 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Sdílení souborů…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Název souboru</item>
-		<item quantity="few">Názvy souborů</item>
-		<item quantity="many">Seznam souborů</item>
-		<item quantity="other">Seznam souborů</item>
-	</plurals>
+	<string name="file_name">Název souboru</string>
+	<string name="files_list">Seznam souborů</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Podsložka</string>

@@ -605,10 +605,8 @@ Si denegueu aquest permís, només podreu accedir a aquestes funcions a través 
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Compartint fitxers…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Nom del fitxer</item>
-		<item quantity="other">Llista de fitxers</item>
-	</plurals>
+	<string name="file_name">Nom del fitxer</string>
+	<string name="files_list">Llista de fitxers</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Subcarpeta</string>

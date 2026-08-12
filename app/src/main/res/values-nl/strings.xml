@@ -605,10 +605,8 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Bezig met delen…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Bestandsnaam</item>
-		<item quantity="other">Bestandslijst</item>
-	</plurals>
+	<string name="file_name">Bestandsnaam</string>
+	<string name="files_list">Bestandslijst</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Onderliggende map</string>

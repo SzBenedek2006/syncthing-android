@@ -608,11 +608,8 @@ Se neghi questa autorizzazione, potrai accedere a queste funzionalità solo tram
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Condivisione file…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Nome File</item>
-		<item quantity="many">Lista File</item>
-		<item quantity="other">Lista File</item>
-	</plurals>
+	<string name="file_name">Nome File</string>
+	<string name="files_list">Lista File</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Sottocartella</string>

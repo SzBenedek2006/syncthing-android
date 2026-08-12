@@ -517,10 +517,8 @@
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Πραγματοποιείται κοινή χρήση αρχείων…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Όνομα αρχείου</item>
-		<item quantity="other">Λίστα αρχείων</item>
-	</plurals>
+	<string name="file_name">Όνομα αρχείου</string>
+	<string name="files_list">Λίστα αρχείων</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Υποφάκελος</string>

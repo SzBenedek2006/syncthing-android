@@ -406,10 +406,8 @@
 
 	<!-- Copy progress dialog text -->
 
-	<plurals name="file_name_title">
-		<item quantity="one">ගොනුවේ නම</item>
-		<item quantity="other">ගොනු ලේඛනය</item>
-	</plurals>
+	<string name="file_name">ගොනුවේ නම</string>
+	<string name="files_list">ගොනු ලේඛනය</string>
 
 	<!-- Sub Folder title -->
 

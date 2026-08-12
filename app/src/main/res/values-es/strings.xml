@@ -608,11 +608,8 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Compartir archivos…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Nombre del archivo</item>
-		<item quantity="many">Lista de Archivos</item>
-		<item quantity="other">Lista de Archivos</item>
-	</plurals>
+	<string name="file_name">Nombre del archivo</string>
+	<string name="files_list">Lista de Archivos</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Sub carpeta</string>

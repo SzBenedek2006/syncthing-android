@@ -603,10 +603,8 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Fitxategiak partekatu…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Fitxategi izena</item>
-		<item quantity="other">Fitxategi zerrenda</item>
-	</plurals>
+	<string name="file_name">Fitxategi izena</string>
+	<string name="files_list">Fitxategi zerrenda</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Azpikarpeta</string>

@@ -605,10 +605,8 @@ Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Deler filer…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Filnavn</item>
-		<item quantity="other">Filliste</item>
-	</plurals>
+	<string name="file_name">Filnavn</string>
+	<string name="files_list">Filliste</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Undermappe</string>

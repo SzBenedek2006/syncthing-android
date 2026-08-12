@@ -608,11 +608,8 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Partajare fișiere…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Nume fișier</item>
-		<item quantity="few">Nume fișiere</item>
-		<item quantity="other">Nume de fișiere</item>
-	</plurals>
+	<string name="file_name">Nume fișier</string>
+	<string name="files_list">Nume de fișiere</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Subdirector</string>

@@ -605,10 +605,8 @@
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">फाइलें साझा की जा रही हैं…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">फाइल का नाम</item>
-		<item quantity="other">फाइलों की सूची</item>
-	</plurals>
+	<string name="file_name">फाइल का नाम</string>
+	<string name="files_list">फाइलों की सूची</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">उपफोल्डर</string>

@@ -605,10 +605,8 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Dateien werden geteilt …</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Dateiname</item>
-		<item quantity="other">Liste der Dateien</item>
-	</plurals>
+	<string name="file_name">Dateiname</string>
+	<string name="files_list">Liste der Dateien</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Unterordner</string>

@@ -611,12 +611,8 @@
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Спільний доступ до файлів…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Ім\'я файлу</item>
-		<item quantity="few">Список файлів</item>
-		<item quantity="many">Список файлів</item>
-		<item quantity="other">Список файлів</item>
-	</plurals>
+	<string name="file_name">Ім\'я файлу</string>
+	<string name="files_list">Список файлів</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Підтека</string>

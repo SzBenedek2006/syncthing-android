@@ -605,10 +605,8 @@ Bu izni reddederseniz, bu özelliklere yalnızca web arayüzü üzerinden erişe
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">Dosyalar paylaşılıyor…</string>
 
-	<plurals name="file_name_title">
-		<item quantity="one">Dosya Adı</item>
-		<item quantity="other">Dosya Listesi</item>
-	</plurals>
+	<string name="file_name">Dosya Adı</string>
+	<string name="files_list">Dosya Listesi</string>
 
 	<!-- Sub Folder title -->
 	<string name="sub_folder">Alt klasör</string>
