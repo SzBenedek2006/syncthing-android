@@ -602,7 +602,6 @@
 	<!-- Copy progress dialog text -->
 	<string name="copy_progress">正在共享文件…</string>
 
-
 	<string name="files_list">文件列表</string>
 
 	<!-- Sub Folder title -->
