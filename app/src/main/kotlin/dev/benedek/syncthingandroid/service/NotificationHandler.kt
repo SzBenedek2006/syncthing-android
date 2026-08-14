@@ -3,14 +3,12 @@ package dev.benedek.syncthingandroid.service
 import android.Manifest
 import android.app.Notification
 import android.app.PendingIntent
-import android.app.Service.STOP_FOREGROUND_DETACH
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationChannelCompat
@@ -117,13 +115,12 @@ class NotificationHandler(private val context: Context) {
 		}
 
 		// Prepare notification builder.
-		var title = R.string.syncthing_terminated
-		when (currentServiceState) {
-			SyncthingService.State.ERROR, SyncthingService.State.INIT -> {}
-			SyncthingService.State.DISABLED -> title = R.string.syncthing_disabled
-			SyncthingService.State.STARTING -> title = R.string.syncthing_starting
-			SyncthingService.State.ACTIVE -> title = R.string.syncthing_active
-			//else -> {}
+		val title = when (currentServiceState) {
+			SyncthingService.State.DISABLED -> R.string.syncthing_disabled
+			SyncthingService.State.STARTING -> R.string.syncthing_starting
+			SyncthingService.State.ACTIVE -> R.string.syncthing_active
+			SyncthingService.State.ERROR, SyncthingService.State.INIT -> R.string.syncthing_terminated
+			//else -> R.string.syncthing_terminated
 		}
 
 		/**
