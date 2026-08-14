@@ -218,7 +218,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 		}
 		val piAccept = PendingIntent.getActivity(
 			context, notificationId,
-			intentAccept, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+			intentAccept, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 		)
 
 		// Prepare "ignore" action.
@@ -231,7 +231,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 		}
 		val piIgnore = PendingIntent.getService(
 			context, 0,
-			intentIgnore, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+			intentIgnore, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 		)
 
 		// Show notification.
@@ -264,7 +264,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 		}
 		val piAccept = PendingIntent.getActivity(
 			context, notificationId,
-			intentAccept, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+			intentAccept, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 		)
 
 		// Prepare "ignore" action.
@@ -277,7 +277,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 		}
 		val piIgnore = PendingIntent.getService(
 			context, 0,
-			intentIgnore, Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+			intentIgnore, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 		)
 
 		// Show notification.

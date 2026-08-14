@@ -145,7 +145,7 @@ class NotificationHandler(private val context: Context) {
 					context,
 					0,
 					intent,
-					Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+					PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 				)
 			)
 		if (!appShutdownInProgress) {
@@ -191,7 +191,7 @@ class NotificationHandler(private val context: Context) {
 						context,
 						0,
 						intent,
-						Constants.FLAG_IMMUTABLE
+						PendingIntent.FLAG_IMMUTABLE
 					)
 				)
 				.setAutoCancel(true)
@@ -264,7 +264,7 @@ class NotificationHandler(private val context: Context) {
 					context,
 					0,
 					intent,
-					Constants.FLAG_IMMUTABLE
+					PendingIntent.FLAG_IMMUTABLE
 				)
 			)
 			.setAutoCancel(true)
@@ -291,7 +291,7 @@ class NotificationHandler(private val context: Context) {
 				PendingIntent.getActivity(
 					context, 0,
 					Intent(context, MainActivity::class.java),
-					Constants.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+					PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 				)
 			)
 
