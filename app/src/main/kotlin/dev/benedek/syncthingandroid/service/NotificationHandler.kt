@@ -27,49 +27,43 @@ class NotificationHandler(private val context: Context) {
 	private val preferences: SharedPreferences by lazy {
 		PreferenceManager.getDefaultSharedPreferences(context)
 	}
-	private val notificationManager: NotificationManagerCompat =
-		NotificationManagerCompat.from(context) //context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManagerCompat
-	private val persistentChannel: NotificationChannelCompat
-	private val persistentChannelWaiting: NotificationChannelCompat
-	private val infoChannel: NotificationChannelCompat
+	private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
+	private val persistentChannel: NotificationChannelCompat = NotificationChannelCompat.Builder(
+		CHANNEL_PERSISTENT,
+		NotificationManagerCompat.IMPORTANCE_MIN
+	)
+		.setName(context.getString(R.string.notifications_persistent_channel))
+		.setLightsEnabled(false)
+		.setVibrationEnabled(false)
+		.setSound(null, null)
+		.setShowBadge(false)
+		.build()
+	private val persistentChannelWaiting: NotificationChannelCompat = NotificationChannelCompat.Builder(
+		CHANNEL_PERSISTENT_WAITING,
+		NotificationManagerCompat.IMPORTANCE_MIN
+	)
+		.setName(context.getString(R.string.notification_persistent_waiting_channel))
+		.setLightsEnabled(false)
+		.setVibrationEnabled(false)
+		.setSound(null, null)
+		.setShowBadge(false)
+		.build()
+	private val infoChannel: NotificationChannelCompat = NotificationChannelCompat.Builder(
+		CHANNEL_INFO,
+		NotificationManagerCompat.IMPORTANCE_LOW
+	)
+		.setName(context.getString(R.string.notifications_other_channel))
+		.setVibrationEnabled(false)
+		.setSound(null, null)
+		.setShowBadge(true)
+		.build()
 
 	private var lastStartForegroundService = false
 	private var appShutdownInProgress = false
 
 	init {
-		persistentChannel = NotificationChannelCompat.Builder(
-			CHANNEL_PERSISTENT,
-			NotificationManagerCompat.IMPORTANCE_MIN
-		)
-			.setName(context.getString(R.string.notifications_persistent_channel))
-			.setLightsEnabled(false)
-			.setVibrationEnabled(false)
-			.setSound(null, null)
-			.setShowBadge(false)
-			.build()
 		notificationManager.createNotificationChannel(persistentChannel)
-
-		persistentChannelWaiting = NotificationChannelCompat.Builder(
-			CHANNEL_PERSISTENT_WAITING,
-			NotificationManagerCompat.IMPORTANCE_MIN
-		)
-			.setName(context.getString(R.string.notification_persistent_waiting_channel))
-			.setLightsEnabled(false)
-			.setVibrationEnabled(false)
-			.setSound(null, null)
-			.setShowBadge(false)
-			.build()
 		notificationManager.createNotificationChannel(persistentChannelWaiting)
-
-		infoChannel = NotificationChannelCompat.Builder(
-			CHANNEL_INFO,
-			NotificationManagerCompat.IMPORTANCE_LOW
-		)
-			.setName(context.getString(R.string.notifications_other_channel))
-			.setVibrationEnabled(false)
-			.setSound(null, null)
-			.setShowBadge(true)
-			.build()
 		notificationManager.createNotificationChannel(infoChannel)
 	}
 
