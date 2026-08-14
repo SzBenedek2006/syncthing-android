@@ -38,6 +38,7 @@ class NotificationHandler(private val context: Context) {
 		.setSound(null, null)
 		.setShowBadge(false)
 		.build()
+
 	private val persistentChannelWaiting: NotificationChannelCompat = NotificationChannelCompat.Builder(
 		CHANNEL_PERSISTENT_WAITING,
 		NotificationManagerCompat.IMPORTANCE_MIN
@@ -48,6 +49,7 @@ class NotificationHandler(private val context: Context) {
 		.setSound(null, null)
 		.setShowBadge(false)
 		.build()
+
 	private val infoChannel: NotificationChannelCompat = NotificationChannelCompat.Builder(
 		CHANNEL_INFO,
 		NotificationManagerCompat.IMPORTANCE_LOW
