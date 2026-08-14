@@ -10,11 +10,13 @@ import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.ServiceCompat
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
@@ -110,11 +112,7 @@ class NotificationHandler(private val context: Context) {
 		if (startForegroundService != lastStartForegroundService) {
 			if (!startForegroundService) {
 				Log.v(TAG, "Stopping foreground service")
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-					service.stopForeground(STOP_FOREGROUND_DETACH)
-				else
-					service.stopForeground(false)
-
+				ServiceCompat.stopForeground(service, ServiceCompat.STOP_FOREGROUND_DETACH)
 			}
 		}
 
@@ -153,15 +151,12 @@ class NotificationHandler(private val context: Context) {
 		if (!appShutdownInProgress) {
 			if (startForegroundService) {
 				Log.v(TAG, "Starting foreground service or updating notification")
-				if (Build.VERSION.SDK_INT >= 34) {
-					service.startForeground(
-						idToShow,
-						builder.build(),
-						ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
-					)
+				val serviceType = if (Build.VERSION.SDK_INT >= 34) {
+					ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 				} else {
-					service.startForeground(idToShow, builder.build())
+					0 // ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE
 				}
+				ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)
 			} else {
 				Log.v(TAG, "Updating notification")
 				notificationManager.notify(idToShow, builder.build())
