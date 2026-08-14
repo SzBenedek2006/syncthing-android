@@ -181,10 +181,6 @@ object Constants {
 		return Build.VERSION.SDK_INT > Build.VERSION_CODES.N // fixed comparison operator
 	}
 
-	@JvmField
-	var FLAG_IMMUTABLE: Int =
-		PendingIntent.FLAG_IMMUTABLE // deleted check as now android 6 is the min
-
 	/**
 	 * These are the request codes used when requesting the permissions.
 	 */
