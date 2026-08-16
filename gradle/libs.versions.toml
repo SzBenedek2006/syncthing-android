@@ -2,7 +2,7 @@
 # Android SDK setup
 compileSdk = "37"
 minSdk = "23"
-targetSdk = "36"
+targetSdk = "37"
 buildTools = "36.0.0"
 ndk = "29.0.14206865"
 
