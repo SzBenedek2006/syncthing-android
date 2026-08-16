@@ -259,17 +259,21 @@ class MainActivity : StateDialogActivity() {
 		}
 
 		restApi.getUsageReport { report: String? ->
-			@SuppressLint("InflateParams") val v = LayoutInflater.from(this@MainActivity)
-				.inflate(R.layout.dialog_usage_reporting, null)
-			val tv = v.findViewById<TextView>(R.id.example)
-			tv.text = report
-			Util.getAlertDialogBuilder(this@MainActivity)
-				.setTitle(R.string.usage_reporting_dialog_title)
-				.setView(v)
-				.setPositiveButton(R.string.yes, listener)
-				.setNegativeButton(R.string.no, listener)
-				.setNeutralButton(R.string.open_website, listener)
-				.show()
+			if (!this@MainActivity.isFinishing && !this@MainActivity.isDestroyed) {
+				@SuppressLint("InflateParams")
+				val view = LayoutInflater.from(this@MainActivity)
+					.inflate(R.layout.dialog_usage_reporting, null)
+				val textView = view.findViewById<TextView>(R.id.example)
+				textView.text = report
+
+				Util.getAlertDialogBuilder(this@MainActivity)
+					.setTitle(R.string.usage_reporting_dialog_title)
+					.setView(view)
+					.setPositiveButton(R.string.yes, listener)
+					.setNegativeButton(R.string.no, listener)
+					.setNeutralButton(R.string.open_website, listener)
+					.show()
+			}
 		}
 	}
 
