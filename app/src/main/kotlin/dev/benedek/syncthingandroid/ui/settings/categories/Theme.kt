@@ -20,6 +20,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import me.zhanghai.compose.preference.listPreference
 import me.zhanghai.compose.preference.switchPreference
 
@@ -60,10 +61,11 @@ fun Theme(contentPadding: PaddingValues) {
 				}
 			},
 			summary = {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-					Text(stringResource(R.string.blur_description))
-				else
-					Text(stringResource(R.string.only_available_on_android_or_higher, minVersion))
+				atLeastSdk(
+					Build.VERSION_CODES.S,
+					{ Text(stringResource(R.string.blur_description)) },
+					{ Text(stringResource(R.string.only_available_on_android_or_higher, minVersion)) }
+				)
 			},
 			defaultValue = false,
 			enabled = { Build.VERSION.SDK_INT >= Build.VERSION_CODES.S }
@@ -83,10 +85,11 @@ fun Theme(contentPadding: PaddingValues) {
 				}
 			},
 			summary = {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-					Text(stringResource(R.string.dynamic_colors_description))
-				else
-					Text(stringResource(R.string.only_available_on_android_or_higher, minVersion))
+				atLeastSdk(
+					Build.VERSION_CODES.S,
+					{ Text(stringResource(R.string.dynamic_colors_description)) },
+					{ Text(stringResource(R.string.only_available_on_android_or_higher, minVersion)) }
+				)
 			},
 			defaultValue = false,
 			enabled = { Build.VERSION.SDK_INT >= Build.VERSION_CODES.S }

@@ -20,6 +20,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.activities.LogActivity
 import dev.benedek.syncthingandroid.activities.MainActivity
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import kotlin.math.absoluteValue
 
 class NotificationHandler(private val context: Context) {
@@ -83,27 +84,30 @@ class NotificationHandler(private val context: Context) {
 		var startForegroundService = false
 
 		if (!appShutdownInProgress) {
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-				/**
-				 * Android 7 and lower:
-				 * The app may run in background and monitor run conditions even if it is not
-				 * running as a foreground service. For that reason, we can use a normal
-				 * notification if syncthing is DISABLED.
-				 */
-				startForegroundService =
+			startForegroundService = atLeastSdk(
+				apiLevel = Build.VERSION_CODES.O,
+				block = {
+					/**
+					 * Android 8+:
+					 * Always use startForeground.
+					 * This makes sure the app is not killed, and we don't miss run condition events.
+					 * On Android 8+, this behaviour is mandatory to receive broadcasts.
+					 * https://stackoverflow.com/a/44505719/1837158
+					 * Foreground priority requires a notification so this ensures that we either have a
+					 * "default" or "low_priority" notification, but not "none".
+					 */
+					true
+				},
+				otherwise = {
+					/**
+					 * Android 7 and lower:
+					 * The app may run in background and monitor run conditions even if it is not
+					 * running as a foreground service. For that reason, we can use a normal
+					 * notification if syncthing is DISABLED.
+					 */
 					syncthingRunning // Behavior change for 2.0.15.7 (or whatever is gonna be the next version)
-			} else {
-				/**
-				 * Android 8+:
-				 * Always use startForeground.
-				 * This makes sure the app is not killed, and we don't miss run condition events.
-				 * On Android 8+, this behaviour is mandatory to receive broadcasts.
-				 * https://stackoverflow.com/a/44505719/1837158
-				 * Foreground priority requires a notification so this ensures that we either have a
-				 * "default" or "low_priority" notification, but not "none".
-				 */
-				startForegroundService = true
-			}
+				}
+			)
 		}
 
 		// Check if we have to stopForeground.
@@ -148,11 +152,9 @@ class NotificationHandler(private val context: Context) {
 		if (!appShutdownInProgress) {
 			if (startForegroundService) {
 				Log.v(TAG, "Starting foreground service or updating notification")
-				val serviceType = if (Build.VERSION.SDK_INT >= 34) {
+				val serviceType = atLeastSdk(34) {
 					ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
-				} else {
-					0 // ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE
-				}
+				} ?: 0
 				ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)
 			} else {
 				Log.v(TAG, "Updating notification")

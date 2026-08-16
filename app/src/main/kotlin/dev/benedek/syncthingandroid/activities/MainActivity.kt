@@ -34,6 +34,7 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import dev.benedek.syncthingandroid.viewmodel.MainViewModel
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -153,11 +154,11 @@ class MainActivity : StateDialogActivity() {
 		// SyncthingService needs to be started from this activity as the user
 		// can directly launch this activity from the recent activity switcher.
 		val serviceIntent = Intent(this, SyncthingService::class.java)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			startForegroundService(serviceIntent)
-		} else {
-			startService(serviceIntent)
-		}
+		atLeastSdk(
+			Build.VERSION_CODES.O,
+			{ startForegroundService(serviceIntent) },
+			{ startService(serviceIntent) }
+		)
 
 
 		onNewIntent(intent)

@@ -21,6 +21,7 @@ import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.model.CompletionInfo
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.service.RestApi.OnReceiveEventListener
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import dev.benedek.syncthingandroid.viewmodel.FolderViewModel
 import java.io.File
 import kotlin.concurrent.Volatile
@@ -138,7 +139,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 					// as it can race with the creation of the same file and thus delete it. See:
 					// https://github.com/syncthing/syncthing-android/issues/1801
 					// https://github.com/syncthing/syncthing/issues/7974
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+					atLeastSdk(Build.VERSION_CODES.Q) {
 						return
 					}
 					// https://stackoverflow.com/a/29881556/1837158

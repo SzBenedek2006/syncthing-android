@@ -20,6 +20,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
 import dev.benedek.syncthingandroid.util.Languages
+import dev.benedek.syncthingandroid.util.atMostSdk
 import me.zhanghai.compose.preference.listPreference
 import me.zhanghai.compose.preference.preference
 import me.zhanghai.compose.preference.switchPreference
@@ -29,14 +30,12 @@ fun Behaviour(contentPadding: PaddingValues) {
 	val context = LocalContext.current
 
 	val languageData = remember {
-		if (Build.VERSION.SDK_INT < 24) {
+		atMostSdk(23) {
 			val languages = Languages(context)
 			val codes = languages.supportedLocales.toList()
 			val names = languages.allNames.toList()
 			val map = codes.zip(names).toMap()
 			Triple(codes, map, languages)
-		} else {
-			null
 		}
 	}
 
@@ -80,21 +79,23 @@ fun Behaviour(contentPadding: PaddingValues) {
 			summary = { Text(stringResource(R.string.advanced_folder_picker_summary)) },
 			defaultValue = false
 		)
-		if (Build.VERSION.SDK_INT < 24 && languageData != null) {
-			val (codes, map, _) = languageData
-			listPreference(
-				key = Languages.PREFERENCE_LANGUAGE,
-				title = { Text(stringResource(R.string.preference_language_title)) },
-				values = codes,
-				defaultValue = Languages.USE_SYSTEM_DEFAULT,
-				valueToText = { value ->
-					AnnotatedString(
-						map[value!!] ?: value
-					)
-				},
-				summary = { value -> Text(map[value!!] ?: value) }
+		atMostSdk(23) {
+			if (languageData != null) {
+				val (codes, map, _) = languageData
+				listPreference(
+					key = Languages.PREFERENCE_LANGUAGE,
+					title = { Text(stringResource(R.string.preference_language_title)) },
+					values = codes,
+					defaultValue = Languages.USE_SYSTEM_DEFAULT,
+					valueToText = { value ->
+						AnnotatedString(
+							map[value!!] ?: value
+						)
+					},
+					summary = { value -> Text(map[value!!] ?: value) }
 
-			)
+				)
+			}
 		}
 		switchPreference(
 			key = Constants.PREF_START_INTO_WEB_GUI,

@@ -37,7 +37,10 @@ object Util {
 		val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 		val clip = ClipData.newPlainText(context.getString(R.string.device_id), id)
 		clipboard.setPrimaryClip(clip)
-		if (Build.VERSION.SDK_INT < 33) {
+		/**
+		 * From android 13, a system shows when app copied to clipboard
+		 */
+		atMostSdk(32) {
 			Toast.makeText(context, R.string.device_id_copied_to_clipboard, Toast.LENGTH_SHORT)
 				.show()
 		}

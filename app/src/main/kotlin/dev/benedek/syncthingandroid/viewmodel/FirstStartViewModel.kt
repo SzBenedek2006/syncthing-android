@@ -18,6 +18,7 @@ import dev.benedek.syncthingandroid.util.PermissionUtil
 import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForBatteryOptimization
 import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForLocationPermission
 import dev.benedek.syncthingandroid.util.PermissionUtil.shouldAskForNotificationPermission
+import dev.benedek.syncthingandroid.util.atMostSdk
 
 class FirstStartViewModel(
 	context: Context,
@@ -113,8 +114,9 @@ class FirstStartViewModel(
 			}
 
 			Slide.NOTIFICATION -> {
-				if (Build.VERSION.SDK_INT < 33) true
-				else !shouldAskForNotificationPermission(context)
+				atMostSdk(32, { true }) {
+					!shouldAskForNotificationPermission(context)
+				}
 			}
 
 			Slide.BATTERY ->  !shouldAskForBatteryOptimization(context)

@@ -21,6 +21,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -178,11 +179,11 @@ class WebGuiActivity : StateDialogActivity() {
 		// SyncthingService needs to be started from this activity as the user
 		// can directly launch this activity from the recent activity switcher.
 		val serviceIntent = Intent(this, SyncthingService::class.java)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			startForegroundService(serviceIntent)
-		} else {
-			startService(serviceIntent)
-		}
+		atLeastSdk(
+			Build.VERSION_CODES.O,
+			{ startForegroundService(serviceIntent) },
+			{ startService(serviceIntent) }
+		)
 	}
 
 	override fun onServiceConnected(componentName: ComponentName?, iBinder: IBinder?) {
@@ -263,9 +264,7 @@ class WebGuiActivity : StateDialogActivity() {
 	}
 
 	private fun getX509Certificate(sslCertificate: android.net.http.SslCertificate): X509Certificate? {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-			return sslCertificate.x509Certificate
-		} else {
+		atLeastSdk(Build.VERSION_CODES.Q, { return sslCertificate.x509Certificate }) {
 			// Pre-API 29 workaround to extract the certificate
 			val bundle = android.net.http.SslCertificate.saveState(sslCertificate)
 			val bytes = bundle.getByteArray("x509-certificate")

@@ -20,6 +20,7 @@ import dev.benedek.syncthingandroid.service.SyncthingRunnable.OnSyncthingKilled
 import dev.benedek.syncthingandroid.util.ConfigXml
 import dev.benedek.syncthingandroid.util.ConfigXml.OpenConfigException
 import dev.benedek.syncthingandroid.util.PermissionUtil.haveStoragePermission
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -292,12 +293,12 @@ class SyncthingService : Service() {
 			} catch (_: OpenConfigException) {
 				handler!!.post {
 					val areEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
-					val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+					val hasPermission = atLeastSdk(Build.VERSION_CODES.TIRAMISU) {
 						ContextCompat.checkSelfPermission(
 							this,
 							android.Manifest.permission.POST_NOTIFICATIONS
 						) == PackageManager.PERMISSION_GRANTED
-					} else true
+					} ?: true
 
 					if (hasPermission || areEnabled) {
 						notificationHandler.showCrashedNotification(
@@ -596,11 +597,11 @@ class SyncthingService : Service() {
 		@JvmStatic
 		fun startServiceCompat(context: Context) {
 			val intent = Intent(context, SyncthingService::class.java)
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-				context.startForegroundService(intent)
-			} else {
-				context.startService(intent)
-			}
+			atLeastSdk(
+				Build.VERSION_CODES.O,
+				{ context.startForegroundService(intent) },
+				{ context.startService(intent) }
+			)
 		}
 		private const val TAG = "SyncthingService"
 

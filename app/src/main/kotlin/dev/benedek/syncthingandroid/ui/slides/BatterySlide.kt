@@ -24,6 +24,8 @@ import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.reusable.TextLayout
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.atLeastSdk
+import dev.benedek.syncthingandroid.util.atLeastSdkFull
 
 @Composable
 fun BatterySlide(
@@ -44,11 +46,11 @@ fun BatterySlide(
 		},
 		Modifier,
 		{
-			if (Build.VERSION.SDK_INT_FULL > Build.VERSION_CODES_FULL.BAKLAVA) {
-				SlideImage(rememberVectorPainter(battery_android_full))
-			} else {
-				SlideImage(rememberVectorPainter(Icons.Outlined.BatteryStd))
-			}
+			atLeastSdkFull(
+				Build.VERSION_CODES_FULL.BAKLAVA_1,
+				{ SlideImage(rememberVectorPainter(battery_android_full)) },
+				{ SlideImage(rememberVectorPainter(Icons.Outlined.BatteryStd)) }
+			)
 		},
 		{
 			Button(

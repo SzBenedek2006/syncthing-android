@@ -70,6 +70,7 @@ import dev.benedek.syncthingandroid.ui.slides.LocationSlide
 import dev.benedek.syncthingandroid.ui.slides.NotificationSlide
 import dev.benedek.syncthingandroid.ui.slides.StorageSlide
 import dev.benedek.syncthingandroid.util.PermissionUtil
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import dev.benedek.syncthingandroid.viewmodel.FirstStartViewModel
 import kotlinx.coroutines.launch
 
@@ -345,31 +346,35 @@ fun SlideContent(
 	val context = LocalContext.current
 
 	fun askForStoragePermission() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-			// Android 11+ All Files Access
-			try {
-				val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-				intent.data = "package:${context.packageName}".toUri()
-				activity.startActivity(intent)
-			} catch (_: Exception) {
-				Toast.makeText(
-					context,
-					R.string.dialog_all_files_access_not_supported,
-					Toast.LENGTH_LONG
-				).show()
+		atLeastSdk(
+			apiLevel = Build.VERSION_CODES.R,
+			block = {
+				// Android 11+ All Files Access
+				try {
+					val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+					intent.data = "package:${context.packageName}".toUri()
+					activity.startActivity(intent)
+				} catch (_: Exception) {
+					Toast.makeText(
+						context,
+						R.string.dialog_all_files_access_not_supported,
+						Toast.LENGTH_LONG
+					).show()
 
-				// TODO: Low priority: Test this
-				Toast.makeText(
-					context,
-					"EXPERIMENTAL: Launching old write external storage permission instead.",
-					Toast.LENGTH_LONG
-				).show()
+					// TODO: Low priority: Test this
+					Toast.makeText(
+						context,
+						"EXPERIMENTAL: Launching old write external storage permission instead.",
+						Toast.LENGTH_LONG
+					).show()
+					permissionLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+				}
+			},
+			otherwise = {
+				// Android 10 and below
 				permissionLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
 			}
-		} else {
-			// Android 10 and below
-			permissionLauncher.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-		}
+		)
 	}
 
 	fun askForLocationPermission() {
@@ -378,7 +383,7 @@ fun SlideContent(
 	}
 
 	fun askForNotificationPermission() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // SDK 33
+		atLeastSdk(Build.VERSION_CODES.TIRAMISU) {
 			permissionLauncher.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
 		}
 	}

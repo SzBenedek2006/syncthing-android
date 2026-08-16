@@ -16,7 +16,7 @@ object PermissionUtil {
 		 * on the respective Android version.
 		 */
 		get() {
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) { // before android 9
+			atMostSdk(Build.VERSION_CODES.O_MR1) { // before android 9
 				return arrayOf(
 					Manifest.permission.ACCESS_COARSE_LOCATION,
 				)
@@ -28,7 +28,7 @@ object PermissionUtil {
 
 	@JvmStatic
 	fun haveStoragePermission(context: Context): Boolean {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+		atLeastSdk(Build.VERSION_CODES.R) {
 			return Environment.isExternalStorageManager()
 		}
 		val permissionState = ContextCompat.checkSelfPermission(
@@ -57,7 +57,7 @@ object PermissionUtil {
 
 
 	fun hasNotificationPermission(context: Context): Boolean {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+		atLeastSdk(Build.VERSION_CODES.TIRAMISU) {
 			return ContextCompat.checkSelfPermission(
 				context,
 				Manifest.permission.POST_NOTIFICATIONS

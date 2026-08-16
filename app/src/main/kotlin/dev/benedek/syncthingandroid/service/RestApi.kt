@@ -30,6 +30,8 @@ import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
 import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.model.SystemVersion
+import dev.benedek.syncthingandroid.util.atLeastSdk
+import dev.benedek.syncthingandroid.util.atMostSdk
 import java.lang.reflect.Type
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -712,11 +714,15 @@ class RestApi(
 	companion object {
 		private const val TAG = "RestApi"
 
-		private val dateFormat: SimpleDateFormat = if (Build.VERSION.SDK_INT < 24) {
-			SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-		} else {
-			SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US)
-		}
+		private val dateFormat: SimpleDateFormat = atMostSdk(
+			23,
+			{
+				SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+			},
+			{
+				SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US)
+			}
+		)
 
 		/**
 		 * Compares folders by labels, uses the folder ID as fallback if the label is empty

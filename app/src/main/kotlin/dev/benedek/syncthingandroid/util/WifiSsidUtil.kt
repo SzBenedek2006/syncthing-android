@@ -84,7 +84,7 @@ object WifiSsidUtil {
 			context.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
 		var wifiInfo: WifiInfo? = null
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+		atLeastSdk(Build.VERSION_CODES.S) {
 			// Android 12+ (API 31+): Use ConnectivityManager
 			val connManager =
 				context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

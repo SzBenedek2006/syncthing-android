@@ -13,6 +13,7 @@ import com.google.android.material.color.DynamicColorsOptions
 import dev.benedek.syncthingandroid.model.PackageInfo
 import dev.benedek.syncthingandroid.util.Languages
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.atMostSdk
 import java.io.File
 import java.io.FileOutputStream
 
@@ -48,7 +49,7 @@ class SyncthingApp : Application() {
 	private fun setupLegacySsl(context: Context) {
 		// We only need this hack for Android 7.0 (API 24) and below.
 		// Android 7.1 (API 25) supports these certs natively.
-		if (Build.VERSION.SDK_INT <= 24) {
+		atMostSdk(24) {
 			try {
 				val certName = "isrgrootx1.pem"
 				// Result: /data/user/0/dev.benedek.syncthingandroid.debug/files/isrgrootx1.pem

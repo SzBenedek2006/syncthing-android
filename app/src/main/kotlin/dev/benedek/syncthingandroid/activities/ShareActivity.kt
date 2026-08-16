@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import androidx.activity.result.component1
 import androidx.activity.result.component2
 import androidx.activity.result.contract.ActivityResultContracts
@@ -127,22 +128,26 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 		if (Intent.ACTION_SEND == intent.action) {
 
-			val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-				intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
-			} else {
-				@Suppress("DEPRECATION")
-				intent.getParcelableExtra(Intent.EXTRA_STREAM)
-			}
+			val uri: Uri? = atLeastSdk(
+				Build.VERSION_CODES.TIRAMISU,
+				{ intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java) },
+				{
+					@Suppress("DEPRECATION")
+					intent.getParcelableExtra(Intent.EXTRA_STREAM)
+				}
+			)
 			if (uri != null) extrasToCopy!!.add(uri)
 
 		} else if (Intent.ACTION_SEND_MULTIPLE == intent.action) {
 
-			val extras: ArrayList<Uri?>? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-				intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java)
-			} else {
-				@Suppress("DEPRECATION")
-				intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM)
-			}
+			val extras: ArrayList<Uri?>? = atLeastSdk(
+				Build.VERSION_CODES.TIRAMISU,
+				{ intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java) },
+				{
+					@Suppress("DEPRECATION")
+					intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM)
+				}
+			)
 			if (extras != null) extrasToCopy = extras
 
 		}
