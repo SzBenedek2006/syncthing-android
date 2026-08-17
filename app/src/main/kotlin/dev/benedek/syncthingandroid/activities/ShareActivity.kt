@@ -211,12 +211,12 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 
 		binding!!.browseButton.setOnClickListener { _: View? ->
-			val folder = foldersSpinner!!.selectedItem as Folder
-			val initialDirectory = File(folder.path, savedSubDirectory)
+			val folder = foldersSpinner?.selectedItem as? Folder
+			val initialDirectory = folder?.let { File(folder.path, savedSubDirectory) }
 			folderPickerLauncher.launch(
 				createIntent(
 					applicationContext,
-					initialDirectory.absolutePath, folder.path
+					initialDirectory?.absolutePath, folder?.path
 				)
 			)
 		}
