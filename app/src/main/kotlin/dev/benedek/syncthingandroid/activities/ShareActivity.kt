@@ -173,7 +173,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			binding!!.name.setFocusable(false)
             binding!!.name.keyListener = null
 		}
-		binding!!.namesTitle.text = if (files.size > 1) {
+		binding!!.namesTitle.text = if (files.size == 1) {
 			getString(R.string.file_name)
 		} else {
 			getString(R.string.files_list)
