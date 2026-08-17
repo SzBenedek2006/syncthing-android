@@ -1,7 +1,6 @@
 package dev.benedek.syncthingandroid.activities
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,20 +9,15 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.os.PowerManager
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.edit
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import dev.benedek.syncthingandroid.R
@@ -43,65 +37,9 @@ import java.util.concurrent.TimeUnit
 class MainActivity : StateDialogActivity() {
 	private val viewModel: MainViewModel by viewModels()
 
-	private var batteryOptimizationsDialog: AlertDialog? = null
-
-	private var batteryOptimizationDialogDismissed = false
-
 	private var drawerToggle: ActionBarDrawerToggle? = null
 
 
-	private fun showBatteryOptimizationDialogIfNecessary() {
-		val pm = getSystemService(POWER_SERVICE) as PowerManager
-		val dontShowAgain =
-			sharedPreferences.getBoolean("battery_optimization_dont_show_again", false)
-		if (
-			dontShowAgain || batteryOptimizationsDialog != null ||
-			pm.isIgnoringBatteryOptimizations(packageName) || batteryOptimizationDialogDismissed
-		) {
-			return
-		}
-
-		batteryOptimizationsDialog = Util.getAlertDialogBuilder(this)
-			.setTitle(R.string.disable_battery_optimization_title)
-			.setMessage(R.string.disable_battery_optimization_message)
-			.setPositiveButton(
-				R.string.dialog_disable_battery_optimization_turn_off
-			) { _: DialogInterface?, _: Int ->
-				val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-				intent.setData(("package:$packageName").toUri())
-				try {
-					startActivity(intent)
-				} catch (e: ActivityNotFoundException) {
-					// Some devices don't seem to support this request (according to Google Play
-					// crash reports).
-					Log.w(TAG, "Request ignore battery optimizations not supported", e)
-					Toast.makeText(
-						this,
-						R.string.dialog_disable_battery_optimizations_not_supported,
-						Toast.LENGTH_LONG
-					).show()
-					sharedPreferences.edit {
-						putBoolean("battery_optimization_dont_show_again", true)
-					}
-				}
-			}
-			.setNeutralButton(
-				R.string.later
-			) { _: DialogInterface?, _: Int ->
-				batteryOptimizationDialogDismissed = true
-			}
-			.setNegativeButton(
-				R.string.dont_show_again
-			) { _: DialogInterface?, _: Int ->
-				sharedPreferences.edit {
-					putBoolean("battery_optimization_dont_show_again", true)
-				}
-			}
-			.setOnCancelListener { _: DialogInterface? ->
-				batteryOptimizationDialogDismissed = true
-			}
-			.show()
-	}
 
 	private val firstStartTime: Long
 		/**
@@ -148,7 +86,6 @@ class MainActivity : StateDialogActivity() {
 			}
 
 		}
-		//showBatteryOptimizationDialogIfNecessary()
 
 
 		// SyncthingService needs to be started from this activity as the user
@@ -291,11 +228,6 @@ class MainActivity : StateDialogActivity() {
 
 	companion object {
 		private const val TAG = "MainActivity"
-		private const val IS_SHOWING_RESTART_DIALOG = "RESTART_DIALOG_STATE"
-		private const val BATTERY_DIALOG_DISMISSED = "BATTERY_DIALOG_STATE"
-		private const val IS_QRCODE_DIALOG_DISPLAYED = "QRCODE_DIALOG_STATE"
-		private const val QRCODE_BITMAP_KEY = "QRCODE_BITMAP"
-		private const val DEVICEID_KEY = "DEVICEID"
 		const val EXTRA_KEY_GENERATION_IN_PROGRESS: String =
 			"dev.benedek.syncthing-android.SyncthingActivity.KEY_GENERATION_IN_PROGRESS"
 
