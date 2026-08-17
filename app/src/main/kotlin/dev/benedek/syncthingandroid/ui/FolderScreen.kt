@@ -260,6 +260,11 @@ fun FolderScreen(
 						},
 						outputTransformation = OutputTransformation {
 							if (asCharSequence().toString().startsWith(homePrefix)) {
+								replace(
+									start = 0,
+									end = homePrefix.length,
+									text = "~"
+								)
 								addStyle(
 									spanStyle = SpanStyle(
 										color = color,
@@ -267,11 +272,6 @@ fun FolderScreen(
 									),
 									start = 0,
 									end = 1
-								)
-								replace(
-									start = 0,
-									end = homePrefix.length,
-									text = "~"
 								)
 							}
 						}
