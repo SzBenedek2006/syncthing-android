@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
@@ -225,7 +226,8 @@ fun FolderScreen(
 				)
 				HorizontalDivider()
 				Row(
-					verticalAlignment = Alignment.CenterVertically
+					verticalAlignment = Alignment.CenterVertically,
+					modifier = Modifier.height(IntrinsicSize.Min)
 				) {
 					val userId = remember { myUid() / 100000 }
 					val homePrefix = remember { "/storage/emulated/$userId" }
@@ -315,8 +317,7 @@ fun FolderScreen(
 								disabledContainerColor = ButtonDefaults.buttonColors().disabledContainerColor,
 								disabledContentColor = ButtonDefaults.buttonColors().disabledContentColor
 							),
-							modifier = Modifier
-								.height(intrinsicSize = IntrinsicSize.Max)
+							modifier = Modifier.fillMaxHeight()
 						) {
 							Text(stringResource(R.string.select))
 
