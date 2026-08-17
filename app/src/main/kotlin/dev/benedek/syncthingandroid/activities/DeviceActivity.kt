@@ -21,6 +21,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
@@ -65,6 +67,19 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
 	fun serviceStateChangeListener(currentState: SyncthingService.State?) {
 		this@DeviceActivity.onServiceStateChange(currentState)
+	}
+
+	/**
+	 * Receives value of scanned QR code and sets it as device ID.
+	 */
+	val qrScanLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+		if (result.resultCode == RESULT_OK) {
+			val scanResult = intent?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
+			if (scanResult != null) {
+				device!!.deviceID = scanResult
+				binding?.id?.setText(device!!.deviceID)
+			}
+		}
 	}
 
 	private val compressionEntrySelectedListener: DialogInterface.OnClickListener =
@@ -470,22 +485,6 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 			.create()
 	}
 
-	/**
-	 * Receives value of scanned QR code and sets it as device ID.
-	 */
-	public override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-		super.onActivityResult(requestCode, resultCode, intent)
-
-		if (requestCode == QR_SCAN_REQUEST_CODE) {
-			if (resultCode == RESULT_OK) {
-				val scanResult = intent?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
-				if (scanResult != null) {
-					device!!.deviceID = scanResult
-					binding?.id?.setText(device!!.deviceID)
-				}
-			}
-		}
-	}
 
 	private fun initDevice() {
 		device = Device()
@@ -544,7 +543,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 
 			binding?.qrButton -> {
 				val qrIntent = QRScannerActivity.intent(this)
-				startActivityForResult(qrIntent, QR_SCAN_REQUEST_CODE)
+				qrScanLauncher.launch(qrIntent)
 			}
 
 			binding?.idContainer -> {
