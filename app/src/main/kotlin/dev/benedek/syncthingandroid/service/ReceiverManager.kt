@@ -1,10 +1,8 @@
 package dev.benedek.syncthingandroid.service
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
-import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 
