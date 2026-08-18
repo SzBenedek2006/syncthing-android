@@ -24,7 +24,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -500,7 +500,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 		if (!compose) {
 			window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
-			val dr = ContextCompat.getDrawable(this, R.drawable.ic_content_copy_24dp)
+			val dr = AppCompatResources.getDrawable(this, R.drawable.ic_content_copy_24dp)
 			binding?.id?.setCompoundDrawablesWithIntrinsicBounds(null, null, dr, null)
 			binding?.id?.setEnabled(false)
 			binding?.qrButton?.setVisibility(View.GONE)
