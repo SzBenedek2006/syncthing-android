@@ -158,16 +158,10 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 			var lWarn: Thread? = null
 			if (returnStdOut) {
 				try {
-					BufferedReader(
-						InputStreamReader(
-							process.inputStream,
-							StandardCharsets.UTF_8
-						)
-					).use { br ->
-						var line: String?
-						while ((br.readLine().also { line = it }) != null) {
-							Log.println(Log.INFO, TAG_NATIVE, line!!)
-							capturedStdOut.append(line).append("\n")
+					process.inputStream.bufferedReader().use { bufferedReader ->
+						bufferedReader.forEachLine { line ->
+							Log.println(Log.INFO, TAG_NATIVE, line)
+							capturedStdOut.appendLine(line)
 						}
 					}
 				} catch (e: IOException) {
@@ -417,37 +411,33 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 	/**
 	 * Logs the outputs of a stream to logcat and nativeLog.
 	 *
-	 * @param is The stream to log.
+	 * @param inputStream The stream to log.
 	 * @param priority The priority level.
 	 * @param saveLog True if the log should be stored to [.logFile].
 	 */
 	@Suppress("SameParameterValue")
-	private fun log(`is`: InputStream?, priority: Int, saveLog: Boolean): Thread {
-		val thread = Thread {
+	private fun log(inputStream: InputStream?, priority: Int, saveLog: Boolean): Thread {
+		return Thread {
+			if (inputStream == null) return@Thread
 			try {
-				BufferedReader(InputStreamReader(`is`, StandardCharsets.UTF_8)).use { br ->
-					val fileWriter = if (saveLog) FileWriter(logFile, true) else null
-					val bufferedWriter = if (fileWriter != null) BufferedWriter(fileWriter) else null
+				inputStream.bufferedReader().use { streamReader ->
+					val logFileWriter =
+						if (saveLog) FileWriter(logFile, true).buffered()
+						else null
 
-					bufferedWriter.use { writer ->
-						var line: String?
-						while ((br.readLine().also { line = it } != null)) {
-							Log.println(priority, TAG_NATIVE, line!!)
+					logFileWriter.use {
+						streamReader.forEachLine { line ->
+							Log.println(priority, TAG_NATIVE, line)
 
-							if (writer != null) {
-								writer.write(line)
-								writer.write("\n")
-								writer.flush()
-							}
+							it?.write(line + '\n')
+							it?.flush()
 						}
 					}
 				}
 			} catch (e: IOException) {
 				Log.w(TAG, "Failed to read Syncthing's command line output", e)
 			}
-		}
-		thread.start()
-		return thread
+		}.apply { start() }
 	}
 
 	/**
@@ -466,28 +456,19 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		}
 
 		try {
-			val lineNumberReader = LineNumberReader(FileReader(logFile))
-			lineNumberReader.skip(Long.MAX_VALUE)
-
-			val lineCount = lineNumberReader.lineNumber
-			lineNumberReader.close()
-
-			val tempFile = File(context.getExternalFilesDir(null), "syncthing.log.tmp")
-
-			val reader = BufferedReader(FileReader(logFile))
-			val writer = BufferedWriter(FileWriter(tempFile))
-
-			var currentLine: String?
-			val startFrom: Int = lineCount - LOG_FILE_MAX_LINES
-			var i = 0
-			while ((reader.readLine().also { currentLine = it }) != null) {
-				if (i > startFrom) {
-					writer.write(currentLine + "\n")
-				}
-				i++
+			/**
+			 * Read lines and keep only the last [LOG_FILE_MAX_LINES]
+			 */
+			val lines = logFile.useLines { sequence ->
+				sequence.toList().takeLast(LOG_FILE_MAX_LINES)
 			}
-			writer.close()
-			reader.close()
+
+			val tempFile = File(
+				context.getExternalFilesDir(null),
+				"syncthing.log.tmp"
+			)
+			tempFile.writeText(lines.joinToString("\n", postfix = "\n"))
+
 			if (!tempFile.renameTo(logFile)) {
 				Log.w(TAG, "Failed to rename $tempFile to $logFile.")
 			}
