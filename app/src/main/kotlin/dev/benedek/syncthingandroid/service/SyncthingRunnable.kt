@@ -446,7 +446,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 	private fun trimLogFile() {
 		if (!logFile.exists()) return
 
-		if (logFile.length() > 2 * 1024 * 1024) { // > 2 MiB
+		if (logFile.length() > LOG_FILE_MAX_SIZE_BYTES) {
 			logFile.delete()
 			Log.w(
 				TAG, "Logfile somehow became larger than 2 MiB, so deleting.\n" +
@@ -556,6 +556,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		private const val TAG_NATIVE = "SyncthingNativeCode"
 		private const val TAG_NICE = "SyncthingRunnableIoNice"
 		private const val LOG_FILE_MAX_LINES = 10
+		private const val LOG_FILE_MAX_SIZE_BYTES = 2 * 1024 * 1024 // 2 MiB
 
 		private val syncthing = AtomicReference<Process?>()
 	}
