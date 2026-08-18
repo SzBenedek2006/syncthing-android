@@ -62,7 +62,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 	/**
 	 * Constructs instance.
 	 *
-	 * @param command Which type of Syncthing command to execute.
+	 * [command] Which type of Syncthing command to execute.
 	 */
 	init {
 		@Suppress("REDUNDANT_ELSE_IN_WHEN")
@@ -126,9 +126,9 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		val capturedStdOut = StringBuilder()
 		// Make sure Syncthing is executable
 		try {
-			val pb = ProcessBuilder("chmod", "500", syncthingBinary.path)
-			val p = pb.start()
-			p.waitFor()
+			val processBuilder = ProcessBuilder("chmod", "500", syncthingBinary.path)
+			val process: Process = processBuilder.start()
+			process.waitFor()
 		} catch (e: IOException) {
 			Log.w(TAG, "Failed to chmod Syncthing", e)
 		} catch (e: InterruptedException) {
@@ -137,9 +137,9 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		// Loop Syncthing
 		var process: Process? = null
 		// Potential fix for #498, keep the CPU running while native binary is running
-		val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+		val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
 		val wakeLock = if (useWakeLock())
-			pm.newWakeLock(
+			powerManager.newWakeLock(
 				PowerManager.PARTIAL_WAKE_LOCK,
 				context.getString(R.string.app_name) + ":" + TAG
 			)
@@ -270,24 +270,24 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		get() {
 			val syncthingPIDs: MutableList<String?> =
 				ArrayList()
-			var ps: Process? = null
-			var psOut: DataOutputStream? = null
-			var br: BufferedReader? = null
+			var process: Process? = null
+			var dataOutputStream: DataOutputStream? = null
+			var bufferedReader: BufferedReader? = null
 			try {
-				ps = Runtime.getRuntime().exec(if (useRoot) "su" else "sh")
-				psOut = DataOutputStream(ps.outputStream)
-				psOut.writeBytes("ps\n")
-				psOut.writeBytes("exit\n")
-				psOut.flush()
-				ps.waitFor()
-				br = BufferedReader(
+				process = Runtime.getRuntime().exec(if (useRoot) "su" else "sh")
+				dataOutputStream = DataOutputStream(process.outputStream)
+				dataOutputStream.writeBytes("ps\n")
+				dataOutputStream.writeBytes("exit\n")
+				dataOutputStream.flush()
+				process.waitFor()
+				bufferedReader = BufferedReader(
 					InputStreamReader(
-						ps.inputStream,
+						process.inputStream,
 						StandardCharsets.UTF_8
 					)
 				)
 				var line: String?
-				while ((br.readLine().also { line = it }) != null) {
+				while ((bufferedReader.readLine().also { line = it }) != null) {
 					if (line!!.contains(Constants.FILENAME_SYNCTHING_BINARY)) {
 						val syncthingPID: String =
 							line.trim { it <= ' ' }.split("\\s+".toRegex())
@@ -313,8 +313,8 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				)
 			} finally {
 				try {
-					br?.close()
-					psOut?.close()
+					bufferedReader?.close()
+					dataOutputStream?.close()
 				} catch (e: IOException) {
 					Log.w(
 						TAG,
@@ -322,7 +322,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 						e
 					)
 				}
-				ps?.destroy()
+				process?.destroy()
 			}
 			return syncthingPIDs
 		}
@@ -423,21 +423,21 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 	 */
 	@Suppress("SameParameterValue")
 	private fun log(`is`: InputStream?, priority: Int, saveLog: Boolean): Thread {
-		val t = Thread {
+		val thread = Thread {
 			try {
 				BufferedReader(InputStreamReader(`is`, StandardCharsets.UTF_8)).use { br ->
-					val fw = if (saveLog) FileWriter(logFile, true) else null
-					val bw = if (fw != null) BufferedWriter(fw) else null
+					val fileWriter = if (saveLog) FileWriter(logFile, true) else null
+					val bufferedWriter = if (fileWriter != null) BufferedWriter(fileWriter) else null
 
-					bw.use { bw ->
+					bufferedWriter.use { writer ->
 						var line: String?
 						while ((br.readLine().also { line = it } != null)) {
 							Log.println(priority, TAG_NATIVE, line!!)
 
-							if (bw != null) {
-								bw.write(line)
-								bw.write("\n")
-								bw.flush()
+							if (writer != null) {
+								writer.write(line)
+								writer.write("\n")
+								writer.flush()
 							}
 						}
 					}
@@ -446,8 +446,8 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				Log.w(TAG, "Failed to read Syncthing's command line output", e)
 			}
 		}
-		t.start()
-		return t
+		thread.start()
+		return thread
 	}
 
 	/**
@@ -466,11 +466,11 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		}
 
 		try {
-			val lnr = LineNumberReader(FileReader(logFile))
-			lnr.skip(Long.MAX_VALUE)
+			val lineNumberReader = LineNumberReader(FileReader(logFile))
+			lineNumberReader.skip(Long.MAX_VALUE)
 
-			val lineCount = lnr.lineNumber
-			lnr.close()
+			val lineCount = lineNumberReader.lineNumber
+			lineNumberReader.close()
 
 			val tempFile = File(context.getExternalFilesDir(null), "syncthing.log.tmp")
 
@@ -545,8 +545,8 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 	@Throws(IOException::class)
 	private fun setupAndLaunch(env: HashMap<String?, String?>): Process {
 		if (useRoot) {
-			val pb = ProcessBuilder("su")
-			val process = pb.start()
+			val processBuilder = ProcessBuilder("su")
+			val process = processBuilder.start()
 			// The su binary prohibits the inheritance of environment variables.
 			// Even with --preserve-environment the environment gets messed up.
 			// We therefore start a root shell, and set all the environment variables manually.
@@ -564,9 +564,9 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 			suOut.flush()
 			return process
 		} else {
-			val pb = ProcessBuilder(*command)
-			pb.environment().putAll(env)
-			return pb.start()
+			val processBuilder = ProcessBuilder(*command)
+			processBuilder.environment().putAll(env)
+			return processBuilder.start()
 		}
 	}
 
