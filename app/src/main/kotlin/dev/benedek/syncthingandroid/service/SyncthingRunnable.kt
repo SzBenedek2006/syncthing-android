@@ -17,15 +17,12 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.util.Util
 import eu.chainfire.libsuperuser.Shell
 import java.io.BufferedReader
-import java.io.BufferedWriter
 import java.io.DataOutputStream
 import java.io.File
-import java.io.FileReader
 import java.io.FileWriter
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.io.LineNumberReader
 import java.nio.charset.StandardCharsets
 import java.security.InvalidParameterException
 import java.util.concurrent.atomic.AtomicReference
@@ -265,57 +262,32 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 			val syncthingPIDs: MutableList<String?> =
 				ArrayList()
 			var process: Process? = null
-			var dataOutputStream: DataOutputStream? = null
-			var bufferedReader: BufferedReader? = null
+
 			try {
 				process = Runtime.getRuntime().exec(if (useRoot) "su" else "sh")
-				dataOutputStream = DataOutputStream(process.outputStream)
-				dataOutputStream.writeBytes("ps\n")
-				dataOutputStream.writeBytes("exit\n")
-				dataOutputStream.flush()
+
+
+				process.outputStream.bufferedWriter().use { writer ->
+					writer.write("ps\nexit\n")
+				}
+
+				process.inputStream.bufferedReader().useLines { lines ->
+					val found = lines
+						.filter { it.contains(Constants.FILENAME_SYNCTHING_BINARY) }
+						.mapNotNull { line ->
+							val parts = line.trim().split(Regex("\\s+"))
+							parts.getOrNull(1)?.also { pid ->
+								Log.v(TAG, "getSyncthingPIDs: Found process PID [$pid]")
+							}
+						}
+					syncthingPIDs.addAll(found)
+				}
 				process.waitFor()
-				bufferedReader = BufferedReader(
-					InputStreamReader(
-						process.inputStream,
-						StandardCharsets.UTF_8
-					)
-				)
-				var line: String?
-				while ((bufferedReader.readLine().also { line = it }) != null) {
-					if (line!!.contains(Constants.FILENAME_SYNCTHING_BINARY)) {
-						val syncthingPID: String =
-							line.trim { it <= ' ' }.split("\\s+".toRegex())
-								.dropLastWhile { it.isEmpty() }.toTypedArray()[1]
-						Log.v(
-							TAG,
-							"getSyncthingPIDs: Found process PID [$syncthingPID]"
-						)
-						syncthingPIDs.add(syncthingPID)
-					}
-				}
-			} catch (e: IOException) {
-				Log.w(
-					TAG,
-					"Failed to list Syncthing processes",
-					e
-				)
-			} catch (e: InterruptedException) {
-				Log.w(
-					TAG,
-					"Failed to list Syncthing processes",
-					e
-				)
+			} catch (e: Exception) {
+				if (e is IOException || e is InterruptedException) {
+					Log.w(TAG, "Failed to list Syncthing processes", e)
+				} else throw e
 			} finally {
-				try {
-					bufferedReader?.close()
-					dataOutputStream?.close()
-				} catch (e: IOException) {
-					Log.w(
-						TAG,
-						"Failed to close psOut stream",
-						e
-					)
-				}
 				process?.destroy()
 			}
 			return syncthingPIDs
