@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 
 object PermissionUtil {
@@ -31,8 +30,7 @@ object PermissionUtil {
 		atLeastSdk(Build.VERSION_CODES.R) {
 			return Environment.isExternalStorageManager()
 		}
-		val permissionState = ContextCompat.checkSelfPermission(
-			context,
+		val permissionState = context.checkSelfPermission(
 			Manifest.permission.WRITE_EXTERNAL_STORAGE
 		)
 		return permissionState == PackageManager.PERMISSION_GRANTED
@@ -44,8 +42,7 @@ object PermissionUtil {
 	fun hasLocationPermissions(context: Context): Boolean {
 		val perms: Array<String> = locationPermissions
 		for (i in perms.indices) {
-			if (ContextCompat.checkSelfPermission(
-					context,
+			if (context.checkSelfPermission(
 					perms[i]
 				) != PackageManager.PERMISSION_GRANTED
 			) {
@@ -58,8 +55,7 @@ object PermissionUtil {
 
 	fun hasNotificationPermission(context: Context): Boolean {
 		atLeastSdk(Build.VERSION_CODES.TIRAMISU) {
-			return ContextCompat.checkSelfPermission(
-				context,
+			return context.checkSelfPermission(
 				Manifest.permission.POST_NOTIFICATIONS
 			) == PackageManager.PERMISSION_GRANTED
 		}

@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.color.MaterialColors
@@ -99,7 +98,7 @@ class FoldersAdapter(private val context: Context) : ArrayAdapter<Folder?>(
 		binding.override.visibility = if (overrideButtonVisible) View.VISIBLE else View.GONE
 		if (outOfSync) {
 			binding.state.text = context.getString(R.string.status_outofsync)
-			binding.state.setTextColor(ContextCompat.getColor(context, R.color.text_red))
+			binding.state.setTextColor(context.getColor(R.color.text_red))
 		} else {
 			if (folder.paused) {
 				binding.state.text = context.getString(R.string.state_paused)
@@ -114,29 +113,25 @@ class FoldersAdapter(private val context: Context) : ArrayAdapter<Folder?>(
 				binding.state.text = getLocalizedState(context, folderStatus)
 				when (folderStatus.state) {
 					"idle" -> binding.state.setTextColor(
-						ContextCompat.getColor(
-							context,
+						context.getColor(
 							R.color.text_green
 						)
 					)
 
 					"scanning", "syncing" -> binding.state.setTextColor(
-						ContextCompat.getColor(
-							context,
+						context.getColor(
 							R.color.md_theme_onPrimaryContainer
 						)
 					)
 
 					"error" -> binding.state.setTextColor(
-						ContextCompat.getColor(
-							context,
+						context.getColor(
 							R.color.text_red
 						)
 					)
 
 					else -> binding.state.setTextColor(
-						ContextCompat.getColor(
-							context,
+						context.getColor(
 							R.color.text_red
 						)
 					)

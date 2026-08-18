@@ -11,7 +11,6 @@ import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -120,8 +119,7 @@ class QRScannerActivity : ThemedAppCompatActivity(), BarcodeCallback {
 	// endregion
 	// region === Private Methods ===
 	private fun checkPermissionAndStartScanner() {
-		if (ContextCompat.checkSelfPermission(
-				this,
+		if (this.checkSelfPermission(
 				Manifest.permission.CAMERA
 			) != PackageManager.PERMISSION_GRANTED
 		) {

@@ -21,8 +21,7 @@ class AppConfigReceiver : BroadcastReceiver() {
 		when (intent.action) {
 			ACTION_START -> SyncthingService.startServiceCompat(context)
 			ACTION_STOP -> if (startServiceOnBoot(context)) {
-				if (ActivityCompat.checkSelfPermission(
-						context,
+				if (context.checkSelfPermission(
 						Manifest.permission.POST_NOTIFICATIONS
 					) == PackageManager.PERMISSION_GRANTED
 				) {

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.google.android.material.color.MaterialColors
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Device
@@ -48,7 +47,7 @@ class DevicesAdapter(context: Context) : ArrayAdapter<Device?>(context, R.layout
 			download.text = Util.readableTransferRate(context, 0)
 			upload.text = Util.readableTransferRate(context, 0)
 			status.text = r.getString(R.string.device_state_unknown)
-			status.setTextColor(ContextCompat.getColor(context, R.color.text_red))
+			status.setTextColor(context.getColor(R.color.text_red))
 			return convertView
 		}
 
@@ -71,14 +70,11 @@ class DevicesAdapter(context: Context) : ArrayAdapter<Device?>(context, R.layout
 			upload.text = Util.readableTransferRate(context, conn.outBits)
 			if (conn.completion == 100) {
 				status.text = r.getString(R.string.device_up_to_date)
-				status.setTextColor(ContextCompat.getColor(context, R.color.text_green))
+				status.setTextColor(context.getColor(R.color.text_green))
 			} else {
 				status.text = r.getString(R.string.device_syncing, conn.completion)
 				status.setTextColor(
-					ContextCompat.getColor(
-						context,
-						R.color.md_theme_onPrimaryContainer
-					)
+					context.getColor(R.color.md_theme_onPrimaryContainer)
 				)
 			}
 			return convertView
@@ -88,7 +84,7 @@ class DevicesAdapter(context: Context) : ArrayAdapter<Device?>(context, R.layout
 		download.text = Util.readableTransferRate(context, 0)
 		upload.text = Util.readableTransferRate(context, 0)
 		status.text = r.getString(R.string.device_disconnected)
-		status.setTextColor(ContextCompat.getColor(context, R.color.text_red))
+		status.setTextColor(context.getColor(R.color.text_red))
 		return convertView
 	}
 

@@ -11,7 +11,6 @@ import android.os.PowerManager
 import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.util.Util
@@ -199,10 +198,9 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 
 				else -> {
 					Log.w(TAG, "Syncthing has crashed (exit code $ret)")
-					if (ActivityCompat.checkSelfPermission(
-							context,
-							Manifest.permission.POST_NOTIFICATIONS
-						) == PackageManager.PERMISSION_GRANTED
+					if (
+						context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) ==
+						PackageManager.PERMISSION_GRANTED
 					) {
 						// TODO: Consider calling
 						//    ActivityCompat#requestPermissions

@@ -24,7 +24,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -298,7 +297,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 				R.color.md_theme_onPrimary
 			else
 				R.color.md_theme_onTertiary
-			title.setTextColor(ContextCompat.getColor(context, textColor))
+			title.setTextColor(context.getColor(textColor))
 
 			return convertView
 		}

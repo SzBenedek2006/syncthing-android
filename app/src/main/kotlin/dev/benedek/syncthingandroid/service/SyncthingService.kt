@@ -10,7 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
@@ -293,8 +292,7 @@ class SyncthingService : Service() {
 				handler!!.post {
 					val areEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
 					val hasPermission = atLeastSdk(Build.VERSION_CODES.TIRAMISU) {
-						ContextCompat.checkSelfPermission(
-							this,
+						this.checkSelfPermission(
 							android.Manifest.permission.POST_NOTIFICATIONS
 						) == PackageManager.PERMISSION_GRANTED
 					} ?: true
