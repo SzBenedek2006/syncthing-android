@@ -446,7 +446,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 	private fun trimLogFile() {
 		if (!logFile.exists()) return
 
-		if (logFile.length() > 2 * 2024 * 1024) { // > 2 MiB
+		if (logFile.length() > 2 * 1024 * 1024) { // > 2 MiB
 			logFile.delete()
 			Log.w(
 				TAG, "Logfile somehow became larger than 2 MiB, so deleting.\n" +
