@@ -366,9 +366,6 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		}
 	}
 
-	fun interface OnSyncthingKilled {
-		fun onKilled()
-	}
 
 	/**
 	 * Look for running libsyncthing.so processes and kill them.

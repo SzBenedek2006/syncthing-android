@@ -442,7 +442,7 @@ class SyncthingService : Service() {
 	 *
 	 * Sets [.currentState] to newState, and calls onKilledListener once Syncthing is killed.
 	 */
-	private fun shutdown(newState: State, onKilledListener: OnSyncthingKilled) {
+	private fun shutdown(newState: State, onKilledListener: () -> Unit) {
 		Log.i(TAG, "Shutting down background service")
 		synchronized(stateLock) {
 			onServiceStateChange(newState)
@@ -481,7 +481,7 @@ class SyncthingService : Service() {
 			startupFuture!!.cancel(true)
 			startupFuture = null
 		}
-		onKilledListener.onKilled()
+		onKilledListener()
 	}
 
 	/**
