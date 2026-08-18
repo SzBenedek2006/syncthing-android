@@ -68,7 +68,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		@Suppress("REDUNDANT_ELSE_IN_WHEN")
 		when (command) {
 			Command.DeviceId ->                 // CHANGED: "device-id" is now a subcommand
-				this@SyncthingRunnable.command = arrayOf<String?>(
+				this@SyncthingRunnable.command = arrayOf(
 					syncthingBinary.path,
 					"device-id",
 					"--home",
@@ -76,7 +76,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				)
 
 			Command.Generate ->                 // CHANGED: "generate" is now a subcommand, and "-logflags" is removed
-				this@SyncthingRunnable.command = arrayOf<String?>(
+				this@SyncthingRunnable.command = arrayOf(
 					syncthingBinary.path,
 					"generate",
 					"--home",
@@ -84,7 +84,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				)
 
 			Command.Main ->                 // CHANGED: "-logflags" is removed. The default logging is fine.
-				this@SyncthingRunnable.command = arrayOf<String?>(
+				this@SyncthingRunnable.command = arrayOf(
 					syncthingBinary.path,
 					"--home",
 					context.filesDir.toString(),
@@ -92,7 +92,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				)
 
 			Command.ResetDatabase ->                 // CHANGED: "reset-database" is now a CLI subcommand
-				this@SyncthingRunnable.command = arrayOf<String?>(
+				this@SyncthingRunnable.command = arrayOf(
 					syncthingBinary.path,
 					"cli",
 					"database",
@@ -102,7 +102,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				)
 
 			Command.ResetDeltas ->                 // CHANGED: "reset-deltas" is now a CLI subcommand
-				this@SyncthingRunnable.command = arrayOf<String?>(
+				this@SyncthingRunnable.command = arrayOf(
 					syncthingBinary.path,
 					"cli",
 					"deltas",
@@ -502,7 +502,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		targetEnv["HOME"] = Environment.getExternalStorageDirectory().absolutePath
 		targetEnv["STTRACE"] = TextUtils.join(
 			" ",
-			preferences!!.getStringSet(
+			preferences.getStringSet(
 				Constants.PREF_DEBUG_FACILITIES_ENABLED,
 				HashSet()
 			)!!
@@ -515,11 +515,11 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		// Disable hash benchmark for faster startup.
 		// https://github.com/syncthing/syncthing/issues/4348
 		targetEnv["STHASHING"] = "minio"
-		if (preferences!!.getBoolean(Constants.PREF_USE_TOR, false)) {
+		if (preferences.getBoolean(Constants.PREF_USE_TOR, false)) {
 			targetEnv["all_proxy"] = "socks5://localhost:9050"
 			targetEnv["ALL_PROXY_NO_FALLBACK"] = "1"
 		} else {
-			val socksProxyAddress: String = preferences!!.getString(
+			val socksProxyAddress: String = preferences.getString(
 				Constants.PREF_SOCKS_PROXY_ADDRESS,
 				""
 			)!!
@@ -527,7 +527,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				targetEnv["all_proxy"] = socksProxyAddress
 			}
 
-			val httpProxyAddress: String = preferences!!.getString(
+			val httpProxyAddress: String = preferences.getString(
 				Constants.PREF_HTTP_PROXY_ADDRESS,
 				""
 			)!!
@@ -536,9 +536,9 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				targetEnv["https_proxy"] = httpProxyAddress
 			}
 		}
-		if (preferences!!.getBoolean("use_legacy_hashing", false)) targetEnv["STHASHING"] =
+		if (preferences.getBoolean("use_legacy_hashing", false)) targetEnv["STHASHING"] =
 			"standard"
-		putCustomEnvironmentVariables(targetEnv, preferences!!)
+		putCustomEnvironmentVariables(targetEnv, preferences)
 		return targetEnv
 	}
 
