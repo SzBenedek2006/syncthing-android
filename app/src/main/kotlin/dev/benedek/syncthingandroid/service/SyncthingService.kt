@@ -16,7 +16,6 @@ import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.http.PollWebGuiAvailableTask
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
-import dev.benedek.syncthingandroid.service.SyncthingRunnable.OnSyncthingKilled
 import dev.benedek.syncthingandroid.util.ConfigXml
 import dev.benedek.syncthingandroid.util.ConfigXml.OpenConfigException
 import dev.benedek.syncthingandroid.util.PermissionUtil.haveStoragePermission
