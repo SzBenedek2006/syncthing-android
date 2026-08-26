@@ -1,11 +1,14 @@
 package dev.benedek.syncthingandroid.ui
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,7 +17,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Label
-import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.FolderZip
@@ -22,13 +24,10 @@ import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.VpnKey
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,13 +42,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.activities.DeviceActivity
-import dev.benedek.syncthingandroid.activities.FolderPickerActivity
-import dev.benedek.syncthingandroid.activities.MainActivity
 import dev.benedek.syncthingandroid.activities.QRScannerActivity
-import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.AppTextField
 import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
@@ -58,7 +52,6 @@ import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression
-import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
 
@@ -70,13 +63,17 @@ fun DeviceScreen(
 	val context = LocalContext.current
 	val focusManager = LocalFocusManager.current
 
-	class StubLauncher {
-		fun launch(vararg arg: Any?) {
-			TODO()
+	/**
+	 * Receives value of scanned QR code and sets it as device ID.
+	 */
+	val qrScannerLauncher: ActivityResultLauncher<Intent> = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+		if (result.resultCode == RESULT_OK) {
+			val scanResult = result.data?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
+			if (scanResult != null) {
+				viewModel.updateDeviceId(scanResult)
+			}
 		}
 	}
-	val qrScannerLauncher = StubLauncher()
-	val directoryPicker = StubLauncher()
 
 
 	AppScaffold(
@@ -119,7 +116,8 @@ fun DeviceScreen(
 				if (viewModel.isCreateMode) {
 					val context = LocalContext.current
 					IconButton(
-						onClick = { qrScannerLauncher.launch(QRScannerActivity.intent(context)) }
+						onClick = { qrScannerLauncher.launch(QRScannerActivity.intent(context)) },
+						modifier = Modifier.padding(horizontal = 14.dp)
 					) {
 						Icon(Icons.Outlined.QrCodeScanner, stringResource(R.string.scan_qr_code_description))
 					}
