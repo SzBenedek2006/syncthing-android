@@ -66,7 +66,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 	private var compressionDialog: Dialog? = null
 
 	fun serviceStateChangeListener(currentState: SyncthingService.State?) {
-		this@DeviceActivity.onServiceStateChange(currentState)
+		this.onServiceStateChange(currentState)
 	}
 
 	/**
