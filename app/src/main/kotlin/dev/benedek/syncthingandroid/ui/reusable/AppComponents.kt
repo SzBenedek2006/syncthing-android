@@ -107,6 +107,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -1321,7 +1322,19 @@ private fun ComposeBasicLineChart(
 @Composable
 fun AppScaffoldPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		AppScaffold(Modifier, "Preview") { innerPadding ->
+		AppScaffold(
+			Modifier,
+			"Preview",
+			{},
+			{},
+			{},
+			topNavigationOnClick = {},
+			topNavigationActive = true,
+			topNavigationIcon = Icons.AutoMirrored.Outlined.ArrowBack,
+			topActionOnClick = {},
+			topActionActive = true,
+
+		) { innerPadding ->
 			Box(
 				Modifier
 					.padding(innerPadding)
