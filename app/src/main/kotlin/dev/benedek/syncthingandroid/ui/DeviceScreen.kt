@@ -2,15 +2,27 @@ package dev.benedek.syncthingandroid.ui
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.util.Log
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.FloatRange
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -28,12 +40,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -46,6 +62,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.QRScannerActivity
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.AppTextField
+import dev.benedek.syncthingandroid.ui.reusable.ComposeDialog
 import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
 import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
@@ -53,8 +70,13 @@ import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.Util.logD
 import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
+import kotlin.coroutines.cancellation.CancellationException
+import kotlin.math.ln
+import kotlin.toString
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DeviceScreen(
 	viewModel: DeviceViewModel,
@@ -221,6 +243,57 @@ fun DeviceScreen(
 			{ viewModel.showDeleteDialog = false },
 			stringResource(R.string.delete_device),
 			null // TODO: Add description
+		)
+	}
+
+	/**
+	 * This is needed due another horrible bug in Android
+	 */
+	val imeBottom = WindowInsets.ime.getBottom(LocalDensity.current)
+	val isSoftwareKeyboardVisible = WindowInsets.isImeVisible // && imeBottom > 0 TODO: (maybe needed?)
+
+	var backProgress by remember { mutableStateOf<Float?>(null) } // FIXME
+
+	fun backProgressMultiplier(value: Float, @FloatRange(0.0) multiplier: Float): Float {
+		return ln(1 + multiplier * value) / ln(1 + multiplier)
+	}
+
+	/*
+	 * Without checking IME visibility check, it activates for the first swipe!
+	 */
+	PredictiveBackHandler(viewModel.deviceNeedsToUpdate && !isSoftwareKeyboardVisible) { backEventFlow ->
+		logD("PredictiveBackHandler ran!")
+		try {
+			backEventFlow.collect {
+				backProgress = backProgressMultiplier(it.progress, 10f)
+				if (backProgress != null && backProgress!! > 0f)
+					viewModel.showDiscardDialog = true
+				Log.d("BackProgress", backProgress.toString())
+			}
+			viewModel.showDiscardDialog = true
+		} catch (_: CancellationException) {
+			viewModel.showDiscardDialog = false
+		} finally {
+			backProgress = null
+		}
+	}
+
+	val animatedProgress = backProgress?.let { animateFloatAsState(
+		targetValue = it,
+		animationSpec = spring(),
+		label = "animatedProgress"
+	) }
+
+	AnimatedVisibility(viewModel.showDiscardDialog, enter = fadeIn(), exit = fadeOut()) {
+		ComposeDialog(
+			onOk = onFinish,
+			onCancel = { viewModel.showDiscardDialog = false },
+
+			modifier = Modifier,
+			onDismiss = { viewModel.showDiscardDialog = false },
+			title = stringResource(R.string.dialog_discard_changes),
+			animationProgress = animatedProgress?.value,
+			shouldCancel = !viewModel.showDiscardDialog
 		)
 	}
 }
