@@ -102,7 +102,7 @@ import dev.benedek.syncthingandroid.ui.reusable.AppTextField
 import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
 import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
 import dev.benedek.syncthingandroid.ui.reusable.ComposeDialog
-import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
+import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -211,14 +211,14 @@ fun FolderScreen(
 					.verticalScroll(rememberScrollState())
 					.padding(paddingValues),
 			) {
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				AppTextField(
 					label = R.string.folder_label,
 					leadingIconPainter = R.drawable.ic_label_outline_24dp,
 					value = state.folder.label ?: "",
 					onValueChange = onLabelChange
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				AppTextField(
 					label = stringResource(R.string.folder_id),
 					leadingIconPainter = rememberVectorPainter(Icons.Outlined.VpnKey),
@@ -230,7 +230,7 @@ fun FolderScreen(
 					),
 					readOnly = !state.isCreateMode
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				Row(
 					verticalAlignment = Alignment.CenterVertically,
 					modifier = Modifier.height(IntrinsicSize.Min)
@@ -324,7 +324,7 @@ fun FolderScreen(
 						}
 					}
 				}
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 
 				var showItems by rememberSaveable { mutableStateOf(false) }
 				Surface(tonalElevation = if (showItems) 4.dp else 0.dp) {
@@ -345,7 +345,7 @@ fun FolderScreen(
 						)
 					}
 				}
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				OptionTile(
 					title = stringResource(R.string.folder_type),
 					description = state.folderType.find { it.value == state.folder.type }?.titleRes?.let {
@@ -356,7 +356,7 @@ fun FolderScreen(
 					leftIconPainter = painterResource(R.drawable.folder_managed_24px),
 					onClick = { setShowFolderTypeDialog(true) }
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 
 				OptionTile(
 					title = stringResource(R.string.folder_fileWatcher),
@@ -365,14 +365,14 @@ fun FolderScreen(
 					checked = state.folder.fsWatcherEnabled,
 					onCheckedChange = { onFsWatcherChange(!state.folder.fsWatcherEnabled) }
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				OptionTile(
 					title = stringResource(R.string.folder_pause),
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Pause),
 					checked = state.folder.paused,
 					onCheckedChange = { onPausedChange(!state.folder.paused) }
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				OptionTile(
 					title = stringResource(R.string.pull_order),
 					description = state.folderPullOrders.find { it.value == state.folder.order }?.titleRes?.let {
@@ -390,7 +390,7 @@ fun FolderScreen(
 					leftIconPainter = rememberVectorPainter(Icons.AutoMirrored.Outlined.Sort),
 					onClick = { setShowFolderPullOrderDialog(true) }
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				OptionTile(
 					title = stringResource(R.string.file_versioning),
 					description = if (state.folder.versioning?.type.isNullOrEmpty() || state.folder.versioning == null)
@@ -416,7 +416,7 @@ fun FolderScreen(
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Archive),
 					onClick = { setShowVersioningDialog(true) }
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				OptionTile(
 					title = stringResource(R.string.ignore_patterns),
 					description = stringResource(R.string.open_stignore_description),
@@ -424,7 +424,7 @@ fun FolderScreen(
 					onClick = { editIgnores(context) },
 					enabled = state.isValidFolder
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				if (!state.isCreateMode) {
 					OptionTile(
 						title = stringResource(R.string.delete_folder),
@@ -433,7 +433,7 @@ fun FolderScreen(
 						onClick = { setShowDeleteDialog(true) },
 						contentColor = MaterialTheme.colorScheme.error,
 					)
-					HorizontalDivider()
+					ThemedHorizontalDivider()
 				}
 			}
 		}

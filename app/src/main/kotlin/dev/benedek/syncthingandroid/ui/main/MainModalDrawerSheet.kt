@@ -56,7 +56,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
 import dev.benedek.syncthingandroid.ui.reusable.ComposeBasicLineChart
-import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
+import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.StatTile
 import dev.benedek.syncthingandroid.ui.reusable.topBorderWithCorners
@@ -145,7 +145,7 @@ fun MainModalDrawerSheet(
 			)
 		}
 
-		HorizontalDivider()
+		ThemedHorizontalDivider()
 
 		Column(
 			Modifier.windowInsetsPadding(
@@ -251,7 +251,7 @@ fun MainModalDrawerSheet(
 			)
 		}
 
-		HorizontalDivider()
+		ThemedHorizontalDivider()
 		Spacer(Modifier.weight(1f))
 
 		Surface(

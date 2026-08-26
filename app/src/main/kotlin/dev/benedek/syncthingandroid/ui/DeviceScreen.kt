@@ -32,13 +32,10 @@ import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeviceHub
 import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Domain
 import androidx.compose.material.icons.outlined.FolderZip
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.PropaneTank
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.VpnKey
 import androidx.compose.material3.Icon
@@ -69,7 +66,7 @@ import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.AppTextField
 import dev.benedek.syncthingandroid.ui.reusable.ComposeDialog
 import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
-import dev.benedek.syncthingandroid.ui.reusable.HorizontalDivider
+import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -122,7 +119,7 @@ fun DeviceScreen(
 				.verticalScroll(rememberScrollState())
 				.padding(paddingValues),
 		) {
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			Row(
 				verticalAlignment = Alignment.CenterVertically,
 				modifier = Modifier.height(IntrinsicSize.Min).fillMaxWidth()
@@ -150,7 +147,7 @@ fun DeviceScreen(
 					}
 				}
 			}
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			AppTextField(
 				label = stringResource(R.string.device_name),
 				leadingIconPainter = rememberVectorPainter(Icons.AutoMirrored.Outlined.Label),
@@ -158,7 +155,7 @@ fun DeviceScreen(
 				placeholder = viewModel.device.displayName,
 				onValueChange = { viewModel.onNameChange(it) }
 			)
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			AppTextField(
 				label = stringResource(R.string.addresses),
 				placeholder = "Use tcp://ip:port, tcp://host:port format or dynamic", // FIXME: TRANSLATE
@@ -170,28 +167,28 @@ fun DeviceScreen(
 					keyboardType = KeyboardType.Text
 				)
 			)
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			OptionTile(
 				title = stringResource(R.string.compression),
 				description = Compression.fromValue(context, viewModel.device.compression).getTitle(context),
 				leftIconPainter = rememberVectorPainter(Icons.Outlined.FolderZip),
 				onClick = { viewModel.showCompressionDialog = true }
 			)
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			OptionTile(
 				title = stringResource(R.string.introducer),
 				leftIconPainter = rememberVectorPainter(Icons.Outlined.Devices),
 				checked = viewModel.device.introducer,
 				onCheckedChange = { viewModel.onIntroducerChange(it) }
 			)
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			OptionTile(
 				title = stringResource(R.string.pause_device),
 				leftIconPainter = rememberVectorPainter(Icons.Outlined.Pause),
 				checked = viewModel.device.paused,
 				onCheckedChange = { viewModel.onPauseChange(it) }
 			)
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 
 
 			/*
@@ -215,7 +212,7 @@ fun DeviceScreen(
 					onClick = { viewModel.showDeleteDialog = true },
 					contentColor = MaterialTheme.colorScheme.error,
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 			}
 
 			if (!viewModel.currentAddress.isNullOrEmpty()) {
@@ -225,7 +222,7 @@ fun DeviceScreen(
 					description = viewModel.currentAddress,
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.DeviceHub),
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 			}
 
 			if (!viewModel.deviceVersion.isNullOrEmpty()) {
@@ -235,7 +232,7 @@ fun DeviceScreen(
 					description = viewModel.deviceVersion,
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Info),
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 			}
 		}
 	}

@@ -655,7 +655,7 @@ fun AppScaffold(
 					),
 					scrollBehavior = scrollBehavior
 				)
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 			}
 		},
 		bottomBar,
@@ -673,7 +673,7 @@ fun AppScaffold(
 }
 
 @Composable
-fun HorizontalDivider(
+fun ThemedHorizontalDivider(
 	modifier: Modifier = Modifier,
 	thickness: Dp = ThemeControls.dividerThickness.dp,
 	color: Color = DividerDefaults.color,
@@ -827,7 +827,7 @@ fun SingleSelectDialog(
 					}
 				}
 
-				HorizontalDivider(thickness = 1.dp)
+				ThemedHorizontalDivider(thickness = 1.dp)
 
 				// Scrollable column instead of LazyColumn to avoid overload issues
 				Column(
@@ -864,7 +864,7 @@ fun SingleSelectDialog(
 					}
 				}
 
-				HorizontalDivider(thickness = 1.dp)
+				ThemedHorizontalDivider(thickness = 1.dp)
 
 				Row(Modifier.fillMaxWidth(), Arrangement.End) {
 					TextButton(
@@ -914,7 +914,7 @@ fun CustomDialog(
 					Text(description, style = MaterialTheme.typography.bodyMedium)
 				}
 				if (content != null) Spacer(Modifier.padding(4.dp))
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				if (content != null) {
 					Surface(
 						Modifier
@@ -923,7 +923,7 @@ fun CustomDialog(
 					) {
 						content()
 					}
-					HorizontalDivider()
+					ThemedHorizontalDivider()
 					Spacer(Modifier.padding(4.dp))
 				}
 				Row(Modifier.fillMaxWidth(), Arrangement.End) {
@@ -1211,7 +1211,7 @@ fun DialogCard(
 				}
 			}
 			if (content != null) {
-				HorizontalDivider()
+				ThemedHorizontalDivider()
 				transition.AnimatedVisibility(
 					visible = { it },
 					enter = myEnterTransition(),
@@ -1222,7 +1222,7 @@ fun DialogCard(
 			}
 
 			// Action Buttons
-			HorizontalDivider()
+			ThemedHorizontalDivider()
 			transition.AnimatedVisibility(
 				visible = { it },
 				enter = myEnterTransition(),
@@ -1426,9 +1426,9 @@ fun StatTilePreview() {
 
 @Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
 @Composable
-fun HorizontalDividerPreview() {
+fun ThemedHorizontalDividerPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		Surface(Modifier.padding(16.dp)) { HorizontalDivider() }
+		Surface(Modifier.padding(16.dp)) { ThemedHorizontalDivider() }
 	}
 }
 
