@@ -218,8 +218,9 @@ fun DeviceScreen(
 				HorizontalDivider()
 			}
 
-			if (viewModel.currentAddress != null) {
+			if (!viewModel.currentAddress.isNullOrEmpty()) {
 				OptionTile(
+					enabled = false,
 					title = stringResource(R.string.current_address),
 					description = viewModel.currentAddress,
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.DeviceHub),
@@ -227,8 +228,9 @@ fun DeviceScreen(
 				HorizontalDivider()
 			}
 
-			if (viewModel.deviceVersion != null) {
+			if (!viewModel.deviceVersion.isNullOrEmpty()) {
 				OptionTile(
+					enabled = false,
 					title = stringResource(R.string.syncthing_version_title),
 					description = viewModel.deviceVersion,
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Info),
