@@ -801,7 +801,7 @@ If you deny this permission, you can only access these features through the web 
 	<string name="pure_black">Pure black</string>
 	<string name="beta">Beta</string>
 	<string name="menu">Menu</string>
-	<string name="device_already_exists">Device already exists</string>
+	<string name="device_already_added">Device already added</string>
 	<string name="device_already_added_edit_question">You have already added this device.\nWould you like to edit it instead?</string>
 
 </resources>

@@ -339,7 +339,7 @@ fun DeviceScreen(
 				viewModel.showAlreadyAddedDialog = false
 				viewModel.onIdChange(null)
 			},
-			title = stringResource(R.string.device_already_exists),
+			title = stringResource(R.string.device_already_added),
 			description = stringResource(R.string.device_already_added_edit_question),
 			shouldCancel = !viewModel.showAlreadyAddedDialog,
 			okText = stringResource(R.string.edit_device),
@@ -367,7 +367,7 @@ fun AAPreview() {
 			onCancel = { },
 
 			onDismiss = { },
-			title = stringResource(R.string.device_already_exists),
+			title = stringResource(R.string.device_already_added),
 			description = stringResource(R.string.device_already_added_edit_question),
 			shouldCancel = false,
 			okText = stringResource(R.string.edit_device),
