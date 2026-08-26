@@ -106,6 +106,7 @@ class DeviceViewModel : ViewModel() {
 		}
 		device = found
 
+		updateIsValidDevice()
 		// TODO
 	}
 
