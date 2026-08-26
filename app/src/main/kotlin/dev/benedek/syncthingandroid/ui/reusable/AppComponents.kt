@@ -143,7 +143,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
-import androidx.compose.material3.HorizontalDivider as MaterialHorizontalDivider
+import androidx.compose.material3.HorizontalDivider
 
 val dialogTonalElevation = 6.dp
 
@@ -679,7 +679,7 @@ fun ThemedHorizontalDivider(
 	color: Color = DividerDefaults.color,
 ) {
 	if (ThemeControls.showDividers) {
-		MaterialHorizontalDivider(modifier, thickness, color)
+		HorizontalDivider(modifier, thickness, color)
 	}
 }
 
