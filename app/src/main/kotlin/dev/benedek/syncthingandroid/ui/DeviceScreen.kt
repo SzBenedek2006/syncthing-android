@@ -211,7 +211,7 @@ fun DeviceScreen(
 			remember(viewModel.device.compression, context) {
 				Compression.fromValue(context, viewModel.device.compression)
 			},
-			{ viewModel.device.compression = it.getValue(context) },
+			{ viewModel.onCompressionChange(it.getValue(context)) },
 			{ viewModel.showCompressionDialog = false }
 		)
 	}
