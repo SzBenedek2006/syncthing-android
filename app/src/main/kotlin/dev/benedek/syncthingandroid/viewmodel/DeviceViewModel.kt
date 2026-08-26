@@ -204,7 +204,7 @@ class DeviceViewModel : ViewModel() {
 
 	fun onNameChange(value: String) {
 		device = device.copy(name = value)
-		deviceNeedsToUpdate
+		deviceNeedsToUpdate = true
 		updateIsValidDevice()
 	}
 
