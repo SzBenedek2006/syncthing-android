@@ -12,10 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import dev.benedek.syncthingandroid.R
@@ -27,9 +25,6 @@ import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.Util
 import dev.benedek.syncthingandroid.util.Util.logD
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import java.lang.ref.WeakReference

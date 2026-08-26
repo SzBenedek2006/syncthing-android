@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.service
 
-import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import android.os.Environment

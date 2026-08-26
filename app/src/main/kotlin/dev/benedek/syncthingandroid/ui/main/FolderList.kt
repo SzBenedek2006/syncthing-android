@@ -5,8 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Process.myUid
 import android.text.TextUtils
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,7 +37,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.model.Folder

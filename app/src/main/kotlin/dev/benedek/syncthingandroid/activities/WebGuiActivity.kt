@@ -21,7 +21,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import dev.benedek.syncthingandroid.util.atLeastSdk
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -35,6 +34,7 @@ import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.service.SyncthingServiceBinder
 import dev.benedek.syncthingandroid.util.ConfigXml
 import dev.benedek.syncthingandroid.util.ThemeControls
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import java.io.ByteArrayInputStream
 import java.io.FileInputStream
 import java.io.FileNotFoundException

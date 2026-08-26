@@ -13,6 +13,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.service.SyncthingRunnable.Companion.LOG_FILE_MAX_LINES
 import dev.benedek.syncthingandroid.util.Util
 import eu.chainfire.libsuperuser.Shell
 import java.io.DataOutputStream

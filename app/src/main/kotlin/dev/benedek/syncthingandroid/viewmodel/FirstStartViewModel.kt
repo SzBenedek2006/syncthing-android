@@ -2,7 +2,6 @@ package dev.benedek.syncthingandroid.viewmodel
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -2,7 +2,6 @@ package dev.benedek.syncthingandroid.service
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
@@ -30,7 +29,6 @@ import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
 import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.model.SystemVersion
-import dev.benedek.syncthingandroid.util.atLeastSdk
 import dev.benedek.syncthingandroid.util.atMostSdk
 import java.lang.reflect.Type
 import java.net.URL

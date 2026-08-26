@@ -56,9 +56,9 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
 import dev.benedek.syncthingandroid.ui.reusable.ComposeBasicLineChart
-import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.StatTile
+import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.topBorderWithCorners
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme

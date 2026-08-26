@@ -24,7 +24,6 @@ import dev.benedek.syncthingandroid.ui.reusable.SlideTitle
 import dev.benedek.syncthingandroid.ui.reusable.TextLayout
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
-import dev.benedek.syncthingandroid.util.atLeastSdk
 import dev.benedek.syncthingandroid.util.atLeastSdkFull
 
 @Composable

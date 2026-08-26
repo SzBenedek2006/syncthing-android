@@ -66,9 +66,9 @@ import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.AppTextField
 import dev.benedek.syncthingandroid.ui.reusable.ComposeDialog
 import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
-import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
+import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -76,7 +76,6 @@ import dev.benedek.syncthingandroid.util.Util.logD
 import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.ln
-import kotlin.toString
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

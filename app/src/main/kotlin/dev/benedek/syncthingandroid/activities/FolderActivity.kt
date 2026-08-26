@@ -2,16 +2,13 @@ package dev.benedek.syncthingandroid.activities
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.BackEventCompat
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.graphics.toColorInt
-import dev.benedek.syncthingandroid.ui.FolderScreen
 import dev.benedek.syncthingandroid.ui.FolderActions
+import dev.benedek.syncthingandroid.ui.FolderScreen
 import dev.benedek.syncthingandroid.ui.FolderUiState
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls

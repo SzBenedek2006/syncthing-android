@@ -3,7 +3,6 @@ package dev.benedek.syncthingandroid.ui.settings.categories
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn

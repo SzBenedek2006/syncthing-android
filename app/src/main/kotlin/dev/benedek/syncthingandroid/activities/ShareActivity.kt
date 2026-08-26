@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import dev.benedek.syncthingandroid.util.atLeastSdk
 import androidx.activity.result.component1
 import androidx.activity.result.component2
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,6 +32,7 @@ import dev.benedek.syncthingandroid.databinding.ActivityShareBinding
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util
+import dev.benedek.syncthingandroid.util.atLeastSdk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -3,7 +3,6 @@ package dev.benedek.syncthingandroid
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import android.os.Build
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import android.system.Os
