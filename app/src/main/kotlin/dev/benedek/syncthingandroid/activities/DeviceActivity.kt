@@ -74,7 +74,7 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 	 */
 	val qrScanLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 		if (result.resultCode == RESULT_OK) {
-			val scanResult = intent?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
+			val scanResult = result.data?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
 			if (scanResult != null) {
 				device!!.deviceID = scanResult
 				binding?.id?.setText(device!!.deviceID)
