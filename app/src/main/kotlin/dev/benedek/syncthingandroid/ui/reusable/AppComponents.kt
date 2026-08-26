@@ -341,6 +341,8 @@ fun OptionTile(
 		if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else titleColor
 	val descriptionColor =
 		if (!enabled) ButtonDefaults.buttonColors().disabledContentColor else descriptionColor
+	val iconColor =
+		if (!enabled) ButtonDefaults.buttonColors().disabledContainerColor else iconColor
 
 
 	val rightIconRotationModifier = if (rightIconRotationAmount != null) {
