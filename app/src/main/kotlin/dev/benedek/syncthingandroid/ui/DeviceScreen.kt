@@ -110,7 +110,7 @@ fun DeviceScreen(
 						capitalization = KeyboardCapitalization.Characters,
 						keyboardType = KeyboardType.Text
 					),
-					readOnly = false //isCreateMode
+					readOnly = !viewModel.isCreateMode
 				)
 
 				if (viewModel.isCreateMode) {
