@@ -341,19 +341,25 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 	/**
 	 * Sets version and current address of the device.
 	 *
-	 *
-	 * NOTE: This is only called once on startup, should be called more often to properly display
-	 * version/address changes.
+	 * TODO: This is only called once on startup, should be called more often to properly display version/address changes.
 	 */
 	private fun onReceiveConnections(deviceStatuses: DeviceStatuses) {
-		val viewsExist = binding?.syncthingVersion != null
-		if (viewsExist && deviceStatuses.connectionsMap?.containsKey(device!!.deviceID) == true) {
-			binding?.currentAddress?.visibility = View.VISIBLE
-			binding?.syncthingVersion?.visibility = View.VISIBLE
-			binding?.currentAddress?.text =
-				deviceStatuses.connectionsMap!![device!!.deviceID]!!.address
-			binding?.syncthingVersion?.text =
-				deviceStatuses.connectionsMap!![device!!.deviceID]!!.clientVersion
+		val map = deviceStatuses.connectionsMap ?: return
+		val device = device ?: return
+
+		val deviceExists = map.containsKey(device.deviceID)
+		val deviceStatus = map[device.deviceID] ?: return
+
+		if (deviceExists) {
+			if (compose) {
+				viewModel.currentAddress = deviceStatus.address
+				viewModel.deviceVersion = deviceStatus.clientVersion
+			} else {
+				binding?.currentAddress?.visibility = View.VISIBLE
+				binding?.syncthingVersion?.visibility = View.VISIBLE
+				binding?.currentAddress?.text = deviceStatus.address
+				binding?.syncthingVersion?.text = deviceStatus.clientVersion
+			}
 		}
 	}
 
