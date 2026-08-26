@@ -30,10 +30,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.DeviceHub
 import androidx.compose.material.icons.outlined.Devices
+import androidx.compose.material.icons.outlined.Dns
+import androidx.compose.material.icons.outlined.Domain
 import androidx.compose.material.icons.outlined.FolderZip
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.Pause
+import androidx.compose.material.icons.outlined.PropaneTank
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.VpnKey
 import androidx.compose.material3.Icon
@@ -209,6 +214,24 @@ fun DeviceScreen(
 					leftIconPainter = rememberVectorPainter(Icons.Outlined.Delete),
 					onClick = { viewModel.showDeleteDialog = true },
 					contentColor = MaterialTheme.colorScheme.error,
+				)
+				HorizontalDivider()
+			}
+
+			if (viewModel.currentAddress != null) {
+				OptionTile(
+					title = stringResource(R.string.current_address),
+					description = viewModel.currentAddress,
+					leftIconPainter = rememberVectorPainter(Icons.Outlined.DeviceHub),
+				)
+				HorizontalDivider()
+			}
+
+			if (viewModel.deviceVersion != null) {
+				OptionTile(
+					title = stringResource(R.string.syncthing_version_title),
+					description = viewModel.deviceVersion,
+					leftIconPainter = rememberVectorPainter(Icons.Outlined.Info),
 				)
 				HorizontalDivider()
 			}

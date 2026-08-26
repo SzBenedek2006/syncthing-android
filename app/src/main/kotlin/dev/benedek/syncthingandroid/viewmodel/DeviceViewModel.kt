@@ -38,6 +38,10 @@ class DeviceViewModel : ViewModel() {
 	var addresses by mutableStateOf("")
 	var displayName by mutableStateOf("")
 
+	var currentAddress: String? by mutableStateOf(null)
+	var deviceVersion: String? by mutableStateOf(null)
+
+
 
 	// DIALOGS
 	var showDiscardDialog by mutableStateOf(false)
@@ -251,5 +255,6 @@ class DeviceViewModel : ViewModel() {
 		updateIsValidDevice()
 		deviceNeedsToUpdate = true
 	}
+
 
 }
