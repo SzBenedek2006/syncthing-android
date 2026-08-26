@@ -786,6 +786,10 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<string name="restart_question">Újraindítás?</string>
 	<string name="restart_description">Újraindítja a Syncthinget a háttérben. Ez nem fogja bezárni az appot.</string>
 	<string name="preview">Előnézet</string>
+	<string name="pure_black">Tiszta fekete</string>
 	<string name="beta">Béta</string>
+	<string name="menu">Menü</string>
+	<string name="device_already_added">Eszköz már hozzáadva</string>
+	<string name="api_level_30_title">Frissítési információ</string>
 
 </resources>
