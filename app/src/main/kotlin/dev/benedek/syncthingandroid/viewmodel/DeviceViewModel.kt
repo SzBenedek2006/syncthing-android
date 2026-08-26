@@ -47,6 +47,7 @@ class DeviceViewModel : ViewModel() {
 	var showDiscardDialog by mutableStateOf(false)
 	var showCompressionDialog by mutableStateOf(false)
 	var showDeleteDialog by mutableStateOf(false)
+	var showAlreadyAddedDialog: Boolean by mutableStateOf(false)
 
 	fun setService(service: SyncthingService) {
 		serviceReference = WeakReference(service)
@@ -95,13 +96,15 @@ class DeviceViewModel : ViewModel() {
 		loadFolderList()
 	}
 
-	private fun loadExistingDevice(
+	fun loadExistingDevice(
 		deviceId: String,
 		onFinish: () -> Unit,
 		context: Context
 	) {
+		isInitialized = true
+		isCreateMode = false
 		val currentApi = api ?: return
-		val devices = currentApi.getDevices(false) ?: emptyList<Device>()
+		val devices = currentApi.getDevices(false) ?: emptyList()
 
 		val found = devices.find { it.deviceID == deviceId }
 		if (found == null) {
@@ -110,11 +113,14 @@ class DeviceViewModel : ViewModel() {
 		}
 		device = found
 
+		deviceNeedsToUpdate = false
 		updateIsValidDevice()
 		// TODO
 	}
 
 	private fun initNewDevice(name: String?, deviceID: String?, addresses: List<String?>?, compression: String?, introducer: Boolean, paused: Boolean) {
+		isInitialized = true
+		isCreateMode = true
 		device = Device(
 			deviceID = deviceID,
 			name = name ?: "",
@@ -207,21 +213,21 @@ class DeviceViewModel : ViewModel() {
 		}
 	}
 
-	fun onNameChange(value: String) {
-		device = device.copy(name = value)
+	fun onNameChange(name: String) {
+		device = device.copy(name = name)
 		deviceNeedsToUpdate = true
 		updateIsValidDevice()
 	}
 
-	fun onIdChange(value: String) {
-		device = device.copy(deviceID = value)
+	fun onIdChange(id: String?) {
+		device = device.copy(deviceID = id)
 		deviceNeedsToUpdate = true
 		updateIsValidDevice()
 	}
 
-	fun onAddressChange(value: String) {
-		addresses = value
-		val addressList = value.split(",")
+	fun onAddressChange(address: String) {
+		addresses = address
+		val addressList = address.split(",")
 			.map { it.trim() }
 			.filter { it.isNotEmpty() }
 		device = device.copy(addresses = addressList)
@@ -229,8 +235,8 @@ class DeviceViewModel : ViewModel() {
 		updateIsValidDevice()
 	}
 
-	fun onCompressionChange(value: String) {
-		device = device.copy(compression = value)
+	fun onCompressionChange(compression: String) {
+		device = device.copy(compression = compression)
 		deviceNeedsToUpdate = true
 	}
 
@@ -251,9 +257,16 @@ class DeviceViewModel : ViewModel() {
 	}
 
 	fun updateDeviceId(id: String) {
+		showAlreadyAddedDialog = checkIfDeviceAlreadyExists(id)
 		device = device.copy(deviceID = id)
 		updateIsValidDevice()
 		deviceNeedsToUpdate = true
+	}
+
+	private fun checkIfDeviceAlreadyExists(id: String): Boolean {
+		val currentApi = api ?: return false
+		val devices = currentApi.getDevices(false) ?: emptyList()
+		return devices.map { it.deviceID }.find { it == id } != null
 	}
 
 

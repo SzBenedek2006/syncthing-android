@@ -3,6 +3,7 @@ package dev.benedek.syncthingandroid.ui
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -317,6 +318,35 @@ fun DeviceScreen(
 			shouldCancel = !viewModel.showDiscardDialog
 		)
 	}
+
+	AnimatedVisibility(viewModel.showAlreadyAddedDialog, enter = fadeIn(), exit = fadeOut()) {
+		ComposeDialog(
+			onOk = {
+				val deviceID = viewModel.device.deviceID
+				if (deviceID == null) {
+					Toast.makeText(context, "Failed to load device", Toast.LENGTH_LONG).show()
+					return@ComposeDialog
+				}
+				viewModel.loadExistingDevice(deviceID, onFinish, context) /*Edit already existing device*/
+				viewModel.showAlreadyAddedDialog = false
+			},
+			onCancel = {
+				viewModel.showAlreadyAddedDialog = false
+				viewModel.onIdChange(null)
+			},
+
+			onDismiss = {
+				viewModel.showAlreadyAddedDialog = false
+				viewModel.onIdChange(null)
+			},
+			title = stringResource(R.string.device_already_exists),
+			description = stringResource(R.string.device_already_added_edit_question),
+			shouldCancel = !viewModel.showAlreadyAddedDialog,
+			okText = stringResource(R.string.edit_device),
+			cancelText = stringResource(android.R.string.cancel),
+		)
+	}
+
 }
 
 
@@ -327,3 +357,22 @@ fun DeviceScreenPreview() {
 		DeviceScreen(viewModel<DeviceViewModel>())
 	}
 }
+
+@Preview(showSystemUi = true, showBackground = true, uiMode = ThemeControls.UI_MODE)
+@Composable
+fun AAPreview() {
+	SyncthingandroidTheme(ThemeControls.useDarkMode, ThemeControls.isMonetEnabled) {
+		ComposeDialog(
+			onOk = { /*Edit already existing device*/ },
+			onCancel = { },
+
+			onDismiss = { },
+			title = stringResource(R.string.device_already_exists),
+			description = stringResource(R.string.device_already_added_edit_question),
+			shouldCancel = false,
+			okText = stringResource(R.string.edit_device),
+			cancelText = stringResource(android.R.string.cancel),
+		)
+	}
+}
+
