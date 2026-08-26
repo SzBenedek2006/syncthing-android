@@ -196,7 +196,7 @@ fun FolderScreen(
 			topAppBarTitle =
 				if (state.isCreateMode) stringResource(R.string.create_folder)
 				else stringResource(R.string.edit_folder),
-			topActionOnClick = { onDone(context, onFinish) },
+			topActionOnClick = if (state.folderNeedsToUpdate) {{ onDone(context, onFinish) }} else null,
 			topActionActive = state.isValidFolder,
 			topNavigationOnClick = { onCancel(onFinish) },
 			modifier = Modifier.pointerInput(Unit) {

@@ -80,7 +80,7 @@ fun DeviceScreen(
 		topAppBarTitle =
 			if (viewModel.isCreateMode) stringResource(R.string.add_device)
 			else stringResource(R.string.edit_device),
-		topActionOnClick = { viewModel.onDone(context, onFinish) },
+		topActionOnClick = if (viewModel.deviceNeedsToUpdate) {{ viewModel.onDone(context, onFinish) }} else null,
 		topActionActive = viewModel.isValidDevice,
 		topNavigationOnClick = { viewModel.onCancel(onFinish) },
 		modifier = Modifier.pointerInput(Unit) {
