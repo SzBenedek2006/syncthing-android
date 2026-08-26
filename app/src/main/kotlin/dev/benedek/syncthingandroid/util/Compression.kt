@@ -16,7 +16,7 @@ enum class Compression(val index: Int) {
 	/**
 	 * @return the [String] value used by Syncthing
 	 */
-	fun getValue(context: Context): String? {
+	fun getValue(context: Context): String {
 		return context.resources.getStringArray(R.array.compress_values)[index]
 	}
 
