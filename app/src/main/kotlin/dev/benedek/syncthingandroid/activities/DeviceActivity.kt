@@ -46,7 +46,7 @@ import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
  * Shows device details and allows changing them.
  */
 class DeviceActivity : SyncthingActivity(), View.OnClickListener {
-	val compose = false
+	val compose = true
 
 	private val viewModel: DeviceViewModel by viewModels()
 	private var device: Device? = null
