@@ -110,13 +110,14 @@ class DeviceViewModel : ViewModel() {
 	}
 
 	private fun initNewDevice(name: String?, deviceID: String?, addresses: List<String?>?, compression: String?, introducer: Boolean, paused: Boolean) {
-		device = Device()
-		device.name = name ?: ""
-		device.deviceID = deviceID
-		device.addresses = addresses
-		device.compression = compression
-		device.introducer = introducer
-		device.paused = paused
+		device = Device(
+			deviceID = deviceID,
+			name = name ?: "",
+			addresses = addresses,
+			compression = compression,
+			introducer = introducer,
+			paused = paused
+		)
 	}
 
 	fun loadFolderList() {
@@ -202,15 +203,13 @@ class DeviceViewModel : ViewModel() {
 	}
 
 	fun onNameChange(value: String) {
-		device.name = value
-		device = device
+		device = device.copy(name = value)
 		deviceNeedsToUpdate
 		updateIsValidDevice()
 	}
 
 	fun onIdChange(value: String) {
-		device.deviceID = value
-		device = device
+		device = device.copy(deviceID = value)
 		deviceNeedsToUpdate = true
 		updateIsValidDevice()
 	}
@@ -220,33 +219,36 @@ class DeviceViewModel : ViewModel() {
 		val addressList = value.split(",")
 			.map { it.trim() }
 			.filter { it.isNotEmpty() }
-		device.addresses = addressList
-		device = device
+		device = device.copy(addresses = addressList)
 		deviceNeedsToUpdate = true
 		updateIsValidDevice()
 	}
 
 	fun onCompressionChange(value: String) {
-		device.compression = value
-		device = device
+		device = device.copy(compression = value)
 		deviceNeedsToUpdate = true
 	}
 
 	fun onIntroducerChange(checked: Boolean) {
-		device.introducer = checked
-		device = device
+		device = device.copy(introducer = checked)
 		deviceNeedsToUpdate = true
 	}
 
 	fun onPauseChange(checked: Boolean) {
-		device.paused = checked
-		device = device
+		device = device.copy(paused = checked)
 		deviceNeedsToUpdate = true
 	}
 
 	fun updateIsValidDevice() {
 		// TODO: check other things
 		isValidDevice = !device.deviceID.isNullOrEmpty()
+
+	}
+
+	fun updateDeviceId(id: String) {
+		device = device.copy(deviceID = id)
+		updateIsValidDevice()
+		deviceNeedsToUpdate = true
 	}
 
 }
