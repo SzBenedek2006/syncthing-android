@@ -355,10 +355,11 @@ class DeviceActivity : SyncthingActivity(), View.OnClickListener {
 				viewModel.currentAddress = deviceStatus.address
 				viewModel.deviceVersion = deviceStatus.clientVersion
 			} else {
-				binding?.currentAddress?.visibility = View.VISIBLE
-				binding?.syncthingVersion?.visibility = View.VISIBLE
-				binding?.currentAddress?.text = deviceStatus.address
-				binding?.syncthingVersion?.text = deviceStatus.clientVersion
+				val binding = this.binding ?: return
+				binding.currentAddress.visibility = View.VISIBLE
+				binding.syncthingVersion.visibility = View.VISIBLE
+				binding.currentAddress.text = deviceStatus.address
+				binding.syncthingVersion.text = deviceStatus.clientVersion
 			}
 		}
 	}
