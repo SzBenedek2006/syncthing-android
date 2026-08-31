@@ -6,8 +6,9 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/SzBenedek2006/syncthing-android/android.yml?logo=github)](https://github.com/SzBenedek2006/syncthing-android/actions)
 [![Min SDK](https://img.shields.io/badge/minSdk-23(Android%206)-38a853?logo=android)](https://developer.android.com/about/versions/marshmallow)
 
-[![Get it on Google Play]()](https://play.google.com/store/apps/details?id=dev.benedek.syncthingandroid)
-
+<a href="https://play.google.com/store/apps/details?id=dev.benedek.syncthingandroid">
+  <img src="assets/GetItOnGooglePlay_Badge_Web_color_English.svg" alt="Get it on Google Play" width="180px" />
+</a>
 
 
 
