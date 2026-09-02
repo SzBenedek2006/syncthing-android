@@ -255,7 +255,7 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 	private fun displayFolder(folder: File?) {
 		location = folder
 		filesAdapter!!.clear()
-		var contents = location!!.listFiles()
+		var contents = location?.listFiles()
 		// In case we don't have read access to the folder, just display nothing.
 		if (contents == null) contents = arrayOf<File?>()
 
