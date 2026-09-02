@@ -1,6 +1,5 @@
 package dev.benedek.syncthingandroid.activities
 
-import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
@@ -9,7 +8,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Environment
 import android.os.IBinder
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -144,15 +142,15 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 	 * all available storage devices/folders from various APIs are inserted into
 	 * [.rootsAdapter].
 	 */
-	@SuppressLint("NewApi")
+	@Suppress("NewApi")
 	private fun populateRoots() {
 		val roots = ArrayList<File?>()
 		roots.addAll(listOf<File?>(*getExternalFilesDirs(null)))
 		roots.remove(getExternalFilesDir(null))
 
 		val rootDir = intent.getStringExtra(EXTRA_ROOT_DIRECTORY)
-		if (intent.hasExtra(EXTRA_ROOT_DIRECTORY) && !TextUtils.isEmpty(rootDir)) {
-			roots.add(File(rootDir!!))
+		if (intent.hasExtra(EXTRA_ROOT_DIRECTORY) && !rootDir.isNullOrEmpty()) {
+			roots.add(File(rootDir))
 		} else {
 			roots.add(Environment.getExternalStorageDirectory())
 
@@ -291,9 +289,9 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 			var convertView = convertView
 			convertView = super.getView(position, convertView, parent)
 			val title = convertView.findViewById<TextView>(android.R.id.text1)
-			val f = getItem(position)
-			title.text = f!!.getName()
-			val textColor = if (f.isDirectory())
+			val file = getItem(position)
+			title.text = file!!.getName()
+			val textColor = if (file.isDirectory())
 				R.color.md_theme_onPrimary
 			else
 				R.color.md_theme_onTertiary
@@ -364,11 +362,11 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 		): Intent {
 			val intent = Intent(context, FolderPickerActivity::class.java)
 
-			if (!TextUtils.isEmpty(initialDirectory)) {
+			if (!initialDirectory.isNullOrEmpty()) {
 				intent.putExtra(EXTRA_INITIAL_DIRECTORY, initialDirectory)
 			}
 
-			if (!TextUtils.isEmpty(rootDirectory)) {
+			if (!rootDirectory.isNullOrEmpty()) {
 				intent.putExtra(EXTRA_ROOT_DIRECTORY, rootDirectory)
 			}
 
