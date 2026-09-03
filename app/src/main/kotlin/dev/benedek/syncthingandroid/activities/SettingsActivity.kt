@@ -8,7 +8,11 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.toColorInt
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -48,6 +52,7 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 		registerOnServiceConnectedListener(this)
 
 
+
 		isDefaultPreferenceFlowAndroidLongSupportEnabled = true
 
 		setContent {
@@ -58,6 +63,13 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 				val navController = rememberNavController()
 				val navBackStackEntry by navController.currentBackStackEntryAsState()
 				val currentRoute = navBackStackEntry?.destination?.route
+				var page: String? by rememberSaveable { mutableStateOf(intent.getStringExtra(EXTRA_OPEN_SUB_PREF_SCREEN)) }
+
+
+				LaunchedEffect(Unit) {
+					page?.let { navController.navigate(it) }
+					page = null
+				}
 
 				AppScaffold(
 					topAppBarTitle = when (currentRoute) {
