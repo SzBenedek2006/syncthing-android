@@ -9,9 +9,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_RUN_CONDITIONS
 import dev.benedek.syncthingandroid.databinding.DialogLoadingBinding
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult.BlockerReason
+import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util.dismissDialogSafe
 import dev.benedek.syncthingandroid.util.Util.getAlertDialogBuilder
@@ -112,7 +114,7 @@ abstract class StateDialogActivity : SyncthingActivity() {
 				val intent = Intent(this, SettingsActivity::class.java)
 				intent.putExtra(
 					SettingsActivity.EXTRA_OPEN_SUB_PREF_SCREEN,
-					"category_run_conditions"
+					PREF_CATEGORY_RUN_CONDITIONS
 				)
 				startActivity(intent)
 			}

@@ -61,14 +61,14 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 
 				AppScaffold(
 					topAppBarTitle = when (currentRoute) {
-						"theme" -> stringResource(R.string.preference_theme_title)
-						"run_conditions" -> stringResource(R.string.category_run_conditions)
-						"behaviour" -> stringResource(R.string.category_behaviour)
-						"syncthing_options" -> stringResource(R.string.category_syncthing_options)
-						"backup" -> stringResource(R.string.category_backup)
-						"debug" -> stringResource(R.string.category_debug)
-						"experimental" -> stringResource(R.string.category_experimental)
-						"about" -> stringResource(R.string.category_about)
+						PREF_CATEGORY_THEME -> stringResource(R.string.preference_theme_title)
+						PREF_CATEGORY_RUN_CONDITIONS -> stringResource(R.string.category_run_conditions)
+						PREF_CATEGORY_BEHAVIOUR -> stringResource(R.string.category_behaviour)
+						PREF_CATEGORY_SYNCTHING_OPTIONS -> stringResource(R.string.category_syncthing_options)
+						PREF_CATEGORY_BACKUP -> stringResource(R.string.category_backup)
+						PREF_CATEGORY_DEBUG -> stringResource(R.string.category_debug)
+						PREF_CATEGORY_EXPERIMENTAL -> stringResource(R.string.category_experimental)
+						PREF_CATEGORY_ABOUT -> stringResource(R.string.category_about)
 						else -> stringResource(R.string.settings_title)
 					},
 					topNavigationActive = true,
@@ -118,6 +118,19 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 	companion object {
 		const val EXTRA_OPEN_SUB_PREF_SCREEN: String =
 			"activities.syncthingandroid.benedek.dev.SettingsActivity.OPEN_SUB_PREF_SCREEN"
+
+		/**
+		 * Navigation destinations
+		 */
+		const val PREF_SETTINGS: String = "settings_root"
+		const val PREF_CATEGORY_THEME: String = "category_theme"
+		const val PREF_CATEGORY_RUN_CONDITIONS: String = "category_run_conditions"
+		const val PREF_CATEGORY_BEHAVIOUR: String = "category_behaviour"
+		const val PREF_CATEGORY_SYNCTHING_OPTIONS: String = "category_syncthing_options"
+		const val PREF_CATEGORY_BACKUP: String = "category_backup"
+		const val PREF_CATEGORY_DEBUG: String = "category_debug"
+		const val PREF_CATEGORY_EXPERIMENTAL: String = "category_experimental"
+		const val PREF_CATEGORY_ABOUT: String = "category_about"
 	}
 
 

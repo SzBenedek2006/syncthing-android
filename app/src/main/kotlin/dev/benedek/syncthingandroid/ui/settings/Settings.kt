@@ -33,6 +33,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_ABOUT
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_BACKUP
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_BEHAVIOUR
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_DEBUG
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_EXPERIMENTAL
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_RUN_CONDITIONS
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_SYNCTHING_OPTIONS
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_CATEGORY_THEME
+import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_SETTINGS
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
 import dev.benedek.syncthingandroid.ui.settings.categories.About
@@ -64,8 +73,6 @@ fun Settings(
 	}
 
 	LaunchedEffect(viewModel) {
-
-
 		// --- TEXT FIELDS ---
 		launch {
 			snapshotFlow { viewModel.deviceName.value }
@@ -157,7 +164,7 @@ fun Settings(
 	ProvidePreferenceLocals {
 		NavHost(
 			navController = navController,
-			startDestination = "settings_root",
+			startDestination = PREF_SETTINGS,
 			modifier = Modifier.fillMaxSize(),
 			enterTransition = {
 				slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }) + fadeIn()
@@ -176,7 +183,7 @@ fun Settings(
 				slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth }) + fadeOut()
 			}
 		) {
-			composable("settings_root") {
+			composable(PREF_SETTINGS) {
 				Column(
 					modifier = Modifier
 						.fillMaxSize()
@@ -185,55 +192,55 @@ fun Settings(
 				) {
 					OptionTile(
 						title = stringResource(R.string.preference_theme_title),
-						onClick = { navController.navigate("theme") },
+						onClick = { navController.navigate(PREF_CATEGORY_THEME) },
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.Palette)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_run_conditions),
-						onClick = { navController.navigate("run_conditions") },
+						onClick = { navController.navigate(PREF_CATEGORY_RUN_CONDITIONS) },
 						leftIconPainter = rememberVectorPainter(Icons.AutoMirrored.Outlined.Rule)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_behaviour),
-						onClick = { navController.navigate("behaviour") },
+						onClick = { navController.navigate(PREF_CATEGORY_BEHAVIOUR)},
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.ToggleOn)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_syncthing_options),
-						onClick = { navController.navigate("syncthing_options") },
+						onClick = { navController.navigate(PREF_CATEGORY_SYNCTHING_OPTIONS) },
 						leftIconPainter = painterResource(R.drawable.ic_stat_notify)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_backup),
-						onClick = { navController.navigate("backup") },
+						onClick = { navController.navigate(PREF_CATEGORY_BACKUP) },
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.SettingsBackupRestore)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_debug),
-						onClick = { navController.navigate("debug") },
+						onClick = { navController.navigate(PREF_CATEGORY_DEBUG) },
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.BugReport)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_experimental),
-						onClick = { navController.navigate("experimental") },
+						onClick = { navController.navigate(PREF_CATEGORY_EXPERIMENTAL) },
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.Science)
 					)
 					OptionTile(
 						title = stringResource(R.string.category_about),
-						onClick = { navController.navigate("about") },
+						onClick = { navController.navigate(PREF_CATEGORY_ABOUT) },
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.Info)
 					)
 				}
 			}
 
-			composable("theme") { Theme(contentPadding) }
-			composable("run_conditions") { RunConditions(contentPadding) }
-			composable("behaviour") { Behaviour(contentPadding) }
-			composable("syncthing_options") { SyncthingOptions(contentPadding, viewModel) }
-			composable("backup") { Backup(contentPadding, viewModel) }
-			composable("debug") { Debug(contentPadding, viewModel) }
-			composable("experimental") { Experimental(contentPadding, viewModel) }
-			composable("about") { About(contentPadding, viewModel) }
+			composable(PREF_CATEGORY_THEME) { Theme(contentPadding) }
+			composable(PREF_CATEGORY_RUN_CONDITIONS) { RunConditions(contentPadding) }
+			composable(PREF_CATEGORY_BEHAVIOUR) { Behaviour(contentPadding) }
+			composable(PREF_CATEGORY_SYNCTHING_OPTIONS) { SyncthingOptions(contentPadding, viewModel) }
+			composable(PREF_CATEGORY_BACKUP) { Backup(contentPadding, viewModel) }
+			composable(PREF_CATEGORY_DEBUG) { Debug(contentPadding, viewModel) }
+			composable(PREF_CATEGORY_EXPERIMENTAL) { Experimental(contentPadding, viewModel) }
+			composable(PREF_CATEGORY_ABOUT) { About(contentPadding, viewModel) }
 		}
 	}
 }
