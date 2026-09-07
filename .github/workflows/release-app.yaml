@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 0
@@ -64,7 +64,7 @@ jobs:
           # sha256sum app-release.apk | gpg --clearsign > sha256sum.txt.asc
 
       - name: Create GitHub release
-      - uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "app/build/outputs/apk/release/*.apk,app/build/outputs/bundle/release/*.aab" #,app/build/outputs/apk/release/*.asc"
           artifactErrorsFailBuild: true
