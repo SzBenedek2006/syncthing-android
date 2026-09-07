@@ -63,6 +63,54 @@ jobs:
           # cd app/build/outputs/apk/release
           # sha256sum app-release.apk | gpg --clearsign > sha256sum.txt.asc
 
+      - name: Edit changelog
+        shell: sh
+        run: |
+          GRADLE="app/build.gradle.kts"
+          TOML="gradle/libs.versions.toml"
+
+          VER_CODE=$(sed -n 's/.*versionCode = \([0-9]*\).*/\1/p' "$GRADLE")
+          VER_NAME=$(sed -n 's/.*versionName = "\(.*\)".*/\1/p' "$GRADLE")
+          APP_ID=$(sed -n 's/.*applicationId = "\(.*\)".*/\1/p' "$GRADLE" | head -n 1)
+
+          MIN_SDK=$(sed -n 's/^minSdk = "\(.*\)".*/\1/p' "$TOML")
+          TARGET_SDK=$(sed -n 's/^targetSdk = "\(.*\)".*/\1/p' "$TOML")
+          COMPILE_SDK=$(sed -n 's/^compileSdk = "\(.*\)".*/\1/p' "$TOML")
+
+          sdk_to_android() {
+            awk -v v="$1" 'BEGIN {
+              num = v + 0
+              if (num == 23) print "Android 6"
+              else if (num == 24) print "Android 7.0"
+              else if (num == 25) print "Android 7.1"
+              else if (num == 26) print "Android 8.0"
+              else if (num == 27) print "Android 8.1"
+              else if (num == 28) print "Android 9"
+              else if (num == 29) print "Android 10"
+              else if (num == 30) print "Android 11"
+              else if (num == 31) print "Android 12"
+              else if (num == 32) print "Android 12L"
+              else printf "Android %.1f\n", (num - 20)
+            }'
+          }
+
+          MIN_LABEL=$(sdk_to_android "$MIN_SDK")
+          TARGET_LABEL=$(sdk_to_android "$TARGET_SDK")
+          COMPILE_LABEL=$(sdk_to_android "$COMPILE_SDK")
+
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null)
+
+          sed \
+            -e "s/- Version code:.*/- Version code: $VER_CODE/" \
+            -e "s/- Version name:.*/- Version name: $VER_NAME/" \
+            -e "s/- Application Id:.*/- Application Id: $APP_ID/" \
+            -e "s/- Min:.*/- Min: $MIN_SDK ($MIN_LABEL)/" \
+            -e "s/- Target:.*/- Target: $TARGET_SDK ($TARGET_LABEL)/" \
+            -e "s/- Compile:.*/- Compile: $COMPILE_SDK ($COMPILE_LABEL)/" \
+            -e "s|/compare/.*|/compare/${PREV_TAG}...${GITHUB_REF_NAME}|" \
+            RELEASE_TEMPLATE.md > RELEASE_TEMPLATE.md.tmp && mv RELEASE_TEMPLATE.md.tmp RELEASE_TEMPLATE.md
+
+
       - name: Create GitHub release
         uses: ncipollo/release-action@v1
         with:
