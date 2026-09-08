@@ -39,17 +39,6 @@ abstract class ApiRequest internal constructor(
 	private val path: String?,
 	private val apiKey: String
 ) {
-	fun interface OnSuccessListener {
-		fun onSuccess(result: String?)
-	}
-
-	fun interface OnImageSuccessListener {
-		fun onImageSuccess(result: Bitmap?)
-	}
-
-	fun interface OnErrorListener {
-		fun onError(error: VolleyError?)
-	}
 
 	private val volleyQueue: RequestQueue
 		get() {
