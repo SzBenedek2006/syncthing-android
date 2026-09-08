@@ -9,7 +9,7 @@ import org.gradle.api.file.FileSystemOperations
 import org.gradle.kotlin.dsl.support.serviceOf
 import java.util.Properties
 
-val goVersionShared = "1.26.3"
+val goVersionShared = "1.27.1"
 val syncthingSrcDir = "syncthing"
 
 
