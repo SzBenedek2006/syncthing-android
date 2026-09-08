@@ -36,31 +36,16 @@ internal class SyncthingTrustManager(private val httpsCertPath: File?) : X509Tru
 		certificates: Array<X509Certificate>,
 		authType: String?
 	) {
-		var inputStream: InputStream? = null
 		try {
-			inputStream = FileInputStream(httpsCertPath)
-			val certificateFactory = CertificateFactory.getInstance("X.509")
-			val certificate = certificateFactory.generateCertificate(inputStream) as X509Certificate
-
-			for (cert in certificates) {
-				cert.verify(certificate.publicKey)
+			httpsCertPath?.inputStream().use { inputStream ->
+				val certificateFactory = CertificateFactory.getInstance("X.509")
+				val certificate = certificateFactory.generateCertificate(inputStream) as X509Certificate
+				for (cert in certificates) {
+					cert.verify(certificate.publicKey)
+				}
 			}
-		} catch (e: FileNotFoundException) {
+		} catch (e: Exception) {
 			throw CertificateException("Untrusted Certificate!", e)
-		} catch (e: NoSuchAlgorithmException) {
-			throw CertificateException("Untrusted Certificate!", e)
-		} catch (e: InvalidKeyException) {
-			throw CertificateException("Untrusted Certificate!", e)
-		} catch (e: NoSuchProviderException) {
-			throw CertificateException("Untrusted Certificate!", e)
-		} catch (e: SignatureException) {
-			throw CertificateException("Untrusted Certificate!", e)
-		} finally {
-			try {
-				inputStream?.close()
-			} catch (e: IOException) {
-				Log.w(TAG, e)
-			}
 		}
 	}
 
