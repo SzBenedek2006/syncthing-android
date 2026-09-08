@@ -10,6 +10,8 @@ import org.gradle.kotlin.dsl.support.serviceOf
 import java.util.Properties
 
 val goVersionShared = "1.26.3"
+val syncthingSrcDir = "src/github.com/syncthing/syncthing"
+
 
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
 	description = "Set up Go inside this project to don't depend on system go version."
@@ -92,7 +94,7 @@ val buildTargets = listOf(
 val fetchSyncthingTags = tasks.register("fetchSyncthingTags") {
 	description = "Runs git fetch --tags in syncthing's git repo"
 	val providerFactory: ProviderFactory = providers
-	val repoDir = layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
+	val repoDir = layout.projectDirectory.dir(syncthingSrcDir).asFile
 
 
     doLast {
@@ -194,7 +196,7 @@ val buildNativeTasks = listOf("arm", "arm64", "x86", "x86_64").map { target ->
 
 		// Paths
 		val syncthingSrcDir =
-			layout.projectDirectory.dir("src/github.com/syncthing/syncthing").asFile
+			layout.projectDirectory.dir(syncthingSrcDir).asFile
 		val pkgDir = layout.projectDirectory.dir("gobuild/go-packages/$goArch").asFile
 		val jniOutDir = layout.projectDirectory.dir("../app/src/main/jniLibs/$jniDir").asFile
 		val goBin = layout.projectDirectory.file("go/$goVersion/go/bin/$goBinaryName").asFile
