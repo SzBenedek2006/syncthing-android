@@ -10,7 +10,7 @@ import org.gradle.kotlin.dsl.support.serviceOf
 import java.util.Properties
 
 val goVersionShared = "1.26.3"
-val syncthingSrcDir = "src/github.com/syncthing/syncthing"
+val syncthingSrcDir = "syncthing"
 
 
 val setupGo: TaskProvider<Task> = tasks.register("setupGo") {
