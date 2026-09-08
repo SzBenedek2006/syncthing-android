@@ -33,16 +33,17 @@ internal class SyncthingTrustManager(private val httpsCertPath: File?) : X509Tru
 	 */
 	@Throws(CertificateException::class)
 	override fun checkServerTrusted(
-		certs: Array<X509Certificate>,
+		certificates: Array<X509Certificate>,
 		authType: String?
 	) {
 		var inputStream: InputStream? = null
 		try {
 			inputStream = FileInputStream(httpsCertPath)
-			val cf = CertificateFactory.getInstance("X.509")
-			val ca = cf.generateCertificate(inputStream) as X509Certificate
-			for (cert in certs) {
-				cert.verify(ca.publicKey)
+			val certificateFactory = CertificateFactory.getInstance("X.509")
+			val certificate = certificateFactory.generateCertificate(inputStream) as X509Certificate
+
+			for (cert in certificates) {
+				cert.verify(certificate.publicKey)
 			}
 		} catch (e: FileNotFoundException) {
 			throw CertificateException("Untrusted Certificate!", e)
