@@ -73,8 +73,11 @@ abstract class ApiRequest internal constructor(
 	 * Opens the connection, then returns success status and response string.
 	 */
 	fun connect(
-		requestMethod: Int, uri: Uri, requestBody: String?,
-		listener: OnSuccessListener?, errorListener: OnErrorListener?
+		requestMethod: Int,
+		uri: Uri,
+		requestBody: String?,
+		listener: ((result: String?) -> Unit)?,
+		errorListener: ((error: VolleyError?) -> Unit)?
 	) {
 		Log.v(TAG, "Performing request to $uri")
 
@@ -82,10 +85,10 @@ abstract class ApiRequest internal constructor(
 			requestMethod,
 			uri.toString(),
 			Response.Listener { reply ->
-				listener?.onSuccess(reply)
+				listener?.invoke(reply)
 			},
 			Response.ErrorListener { error ->
-				errorListener?.onError(error) ?: Log.w(
+				errorListener?.invoke(error) ?: Log.w(
 					TAG,
 					"Request to " + uri + " failed, " + error!!.message
 				)
@@ -130,20 +133,21 @@ abstract class ApiRequest internal constructor(
 	 * Opens the connection, then returns success status and response bitmap.
 	 */
 	fun makeImageRequest(
-		uri: Uri, imageListener: OnImageSuccessListener?,
-		errorListener: OnErrorListener?
+		uri: Uri,
+		onImageSuccessListener: ((result: Bitmap?) -> Unit)?,
+		onErrorListener: ((error: VolleyError?) -> Unit)?
 	) {
 		val imageRequest: ImageRequest = object : ImageRequest(
 			uri.toString(),
 			Response.Listener { bitmap: Bitmap? ->
-				imageListener?.onImageSuccess(bitmap)
+				onImageSuccessListener?.invoke(bitmap)
 			},
 			0,
 			0,
 			ImageView.ScaleType.CENTER,
 			Bitmap.Config.RGB_565,
 			Response.ErrorListener { volleyError: VolleyError? ->
-				errorListener?.onError(volleyError)
+				onErrorListener?.invoke(volleyError)
 				Log.d(TAG, "onErrorResponse: $volleyError")
 			}) {
 			override fun getHeaders(): MutableMap<String, String> {

@@ -5,12 +5,15 @@ import com.android.volley.Request
 import java.net.URL
 
 class PostConfigRequest(
-	context: Context, url: URL, apiKey: String, config: String?,
-	listener: OnSuccessListener?
+	context: Context,
+	url: URL,
+	apiKey: String,
+	config: String?,
+	onSuccessListener: ((result: String?) -> Unit)?
 ) : ApiRequest(context, url, URI_CONFIG, apiKey) {
 	init {
 		val uri = buildUri(mutableMapOf())
-		connect(Request.Method.POST, uri!!, config, listener, null)
+		connect(Request.Method.POST, uri!!, config, onSuccessListener, null)
 	}
 
 	companion object {

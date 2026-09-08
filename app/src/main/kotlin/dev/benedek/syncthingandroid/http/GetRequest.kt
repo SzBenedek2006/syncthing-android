@@ -9,14 +9,18 @@ import java.net.URL
  * Performs a GET request to the Syncthing API
  */
 class GetRequest(
-	context: Context, url: URL, path: String?, apiKey: String,
-	params: MutableMap<String?, String?>?, listener: OnSuccessListener?
+	context: Context,
+	url: URL,
+	path: String?,
+	apiKey: String,
+	params: MutableMap<String?, String?>?,
+	onSuccessListener: ((result: String?) -> Unit)?
 ) : ApiRequest(context, url, path, apiKey) {
 	init {
-		val safeParams = Optional.fromNullable<MutableMap<String?, String?>>(params)
+		val safeParams = Optional.fromNullable(params)
 			.or(mutableMapOf())
 		val uri = buildUri(safeParams)
-		connect(Request.Method.GET, uri!!, null, listener, null)
+		connect(Request.Method.GET, uri!!, null, onSuccessListener, null)
 	}
 
 	companion object {

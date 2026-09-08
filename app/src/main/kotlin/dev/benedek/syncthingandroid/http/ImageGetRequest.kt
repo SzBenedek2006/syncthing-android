@@ -1,16 +1,22 @@
 package dev.benedek.syncthingandroid.http
 
 import android.content.Context
+import android.graphics.Bitmap
+import com.android.volley.VolleyError
 import com.google.common.base.Optional
 import java.net.URL
 
 class ImageGetRequest(
-	context: Context, url: URL, path: String?, apiKey: String,
+	context: Context,
+	url: URL,
+	path: String?,
+	apiKey: String,
 	params: MutableMap<String?, String?>?,
-	onSuccessListener: OnImageSuccessListener?, onErrorListener: OnErrorListener?
+	onSuccessListener: ((result: Bitmap?) -> Unit)?,
+	onErrorListener: ((error: VolleyError?) -> Unit)?
 ) : ApiRequest(context, url, path, apiKey) {
 	init {
-		val safeParams = Optional.fromNullable<MutableMap<String?, String?>>(params)
+		val safeParams = Optional.fromNullable(params)
 			.or(mutableMapOf())
 		val uri = buildUri(safeParams)
 		makeImageRequest(uri!!, onSuccessListener, onErrorListener)

@@ -13,12 +13,14 @@ import java.net.URL
  * Polls to load the web interface, until it is available.
  */
 class PollWebGuiAvailableTask(
-	context: Context, url: URL, apiKey: String,
-	listener: OnSuccessListener?
+	context: Context,
+	url: URL,
+	apiKey: String,
+	onSuccessListener: ((result: String?) -> Unit)?
 ) : ApiRequest(context, url, "", apiKey) {
 	private val handler = Handler()
 
-	private var listener: OnSuccessListener?
+	private var listener: ((result: String?) -> Unit)?
 
 	private var logIncidence = 0
 
@@ -29,7 +31,7 @@ class PollWebGuiAvailableTask(
 
 	init {
 		Log.i(TAG, "Starting to poll for web gui availability")
-		this.listener = listener
+		this.listener = onSuccessListener
 		performRequest()
 	}
 
@@ -52,7 +54,7 @@ class PollWebGuiAvailableTask(
 	private fun onSuccess(result: String?) {
 		synchronized(listenerLock) {
 			if (listener != null) {
-				listener!!.onSuccess(result)
+				listener!!.invoke(result)
 			} else {
 				Log.v(TAG, "Cancelled callback and outstanding requests")
 			}

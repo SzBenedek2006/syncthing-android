@@ -6,14 +6,18 @@ import com.google.common.base.Optional
 import java.net.URL
 
 class PostRequest(
-	context: Context, url: URL, path: String?, apiKey: String,
-	params: MutableMap<String?, String?>?, listener: OnSuccessListener?
+	context: Context,
+	url: URL,
+	path: String?,
+	apiKey: String,
+	params: MutableMap<String?, String?>?,
+	onSuccessListener: ((result: String?) -> Unit)?
 ) : ApiRequest(context, url, path, apiKey) {
 	init {
-		val safeParams = Optional.fromNullable<MutableMap<String?, String?>>(params)
+		val safeParams = Optional.fromNullable(params)
 			.or(mutableMapOf())
 		val uri = buildUri(safeParams)
-		connect(Request.Method.POST, uri!!, null, listener, null)
+		connect(Request.Method.POST, uri!!, null, onSuccessListener, null)
 	}
 
 	companion object {
