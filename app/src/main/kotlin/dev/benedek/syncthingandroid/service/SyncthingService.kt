@@ -356,7 +356,7 @@ class SyncthingService : Service() {
 	}
 
 	/**
-	 * Called when [RestApi.checkReadConfigFromRestApiCompleted] detects
+	 * Called when [RestApi.readConfigFromRestApi] detects
 	 * the RestApi class has been fully initialized.
 	 * UI stressing results in api getting null on simultaneous shutdown, so
 	 * we check it for safety.
