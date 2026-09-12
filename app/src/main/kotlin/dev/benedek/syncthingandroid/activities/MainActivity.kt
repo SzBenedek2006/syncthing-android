@@ -60,7 +60,7 @@ class MainActivity : StateDialogActivity() {
 	/**
 	 * Initializes tab navigation.
 	 */
-	public override fun onCreate(savedInstanceState: Bundle?) {
+	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
@@ -105,7 +105,7 @@ class MainActivity : StateDialogActivity() {
 		viewModel.startFetchSystemData()
 	}
 
-	public override fun onResume() {
+	override fun onResume() {
 		// Check if storage permission has been revoked at runtime.
 		if (!PermissionUtil.haveStoragePermission(this)) {
 			startActivity(Intent(this, FirstStartActivity::class.java))
@@ -123,7 +123,7 @@ class MainActivity : StateDialogActivity() {
 		viewModel.stopFetchSystemData()
 	}
 
-	public override fun onDestroy() {
+	override fun onDestroy() {
 		super.onDestroy()
 	}
 
