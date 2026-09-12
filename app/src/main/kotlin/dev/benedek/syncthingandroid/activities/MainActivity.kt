@@ -78,7 +78,6 @@ class MainActivity : StateDialogActivity() {
 			}
 		)
 
-		lifecycle.addObserver(viewModel.mainVisibilityObserver)
 
 		setContent {
 			SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {
@@ -101,6 +100,11 @@ class MainActivity : StateDialogActivity() {
 		onNewIntent(intent)
 	}
 
+	override fun onStart() {
+		super.onStart()
+		viewModel.startFetchSystemData()
+	}
+
 	public override fun onResume() {
 		// Check if storage permission has been revoked at runtime.
 		if (!PermissionUtil.haveStoragePermission(this)) {
@@ -112,6 +116,11 @@ class MainActivity : StateDialogActivity() {
 		val syncthingService = service
 		syncthingService?.evaluateRunConditions()
 		super.onResume()
+	}
+
+	override fun onStop() {
+		super.onStop()
+		viewModel.stopFetchSystemData()
 	}
 
 	public override fun onDestroy() {

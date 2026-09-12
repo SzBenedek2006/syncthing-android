@@ -33,7 +33,6 @@ import kotlin.time.Duration.Companion.milliseconds
 const val HISTORY_MAX_SIZE = 120
 
 class MainViewModel : ViewModel() {
-	val mainVisibilityObserver = MainVisibilityObserver()
 
 	private var serviceReference: WeakReference<SyncthingService>? = null
 	val api: RestApi? get() = serviceReference?.get()?.api
@@ -75,36 +74,11 @@ class MainViewModel : ViewModel() {
 
 	var apiCallDelay: Long = 100L
 	val apiCallCount: Int = 3
-	var apiRefreshDelay: Long = (1000 - apiCallDelay * apiCallCount)
 
 	fun setService(service: SyncthingService) {
 		serviceReference = WeakReference(service)
 	}
 
-	inner class MainVisibilityObserver : DefaultLifecycleObserver {
-
-
-		override fun onStart(owner: LifecycleOwner) {
-			super.onStart(owner)
-			startFetchSystemData()
-		}
-
-		override fun onResume(owner: LifecycleOwner) {
-			super.onResume(owner)
-
-		}
-
-		override fun onPause(owner: LifecycleOwner) {
-			super.onPause(owner)
-
-		}
-
-		override fun onStop(owner: LifecycleOwner) {
-			super.onStop(owner)
-			stopFetchSystemData()
-		}
-
-	}
 
 
 	init {
@@ -125,6 +99,7 @@ class MainViewModel : ViewModel() {
 
 	fun startFetchSystemData() {
 		fetchSystemDataJob = viewModelScope.launch {
+			val apiRefreshDelay: Long = (1000 - apiCallDelay * apiCallCount)
 			while (isActive) {
 
 				delay(apiRefreshDelay.milliseconds)
