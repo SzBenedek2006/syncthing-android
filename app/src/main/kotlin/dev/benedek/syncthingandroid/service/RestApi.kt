@@ -28,7 +28,6 @@ import dev.benedek.syncthingandroid.model.IgnoredFolder
 import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
 import dev.benedek.syncthingandroid.model.SystemInfo
-import dev.benedek.syncthingandroid.model.SystemVersion
 import dev.benedek.syncthingandroid.util.atMostSdk
 import java.lang.reflect.Type
 import java.net.URL
@@ -46,73 +45,49 @@ class RestApi(
 	private val onApiAvailableListener: () -> Unit,
 	private val onConfigChangedListener: () -> Unit
 ) {
-
-	/**
-	 * Returns the version name, or a (text) error message on failure.
-	 */
 	var version: String? = null
 		private set
 	private var config: Config? = null
-
-	/**
-	 * Results cached from systemInfo
-	 */
 	private var localDeviceId: String? = null
-	private var urVersionMax: Int? = null
-
-	/**
-	 * Stores the result of the last successful request to [GetRequest.URI_CONNECTIONS],
-	 * or an empty Map.
-	 */
+	private var urVersionMax: Int = 0
 	private var previousDeviceStatuses: DeviceStatuses? = null
-
 	/**
 	 * Stores the timestamp of the last successful request to [GetRequest.URI_CONNECTIONS].
 	 */
 	private var previousConnectionTime: Long = 0
-
-	/**
-	 * In the last-finishing [.readConfigFromRestApi] callback, we have to call
-	 * [SyncthingService.onApiAvailable] to indicate that the RestApi class is fully initialized.
-	 * We do this to avoid getting stuck with our main thread due to synchronous REST queries.
-	 * The correct indication of full initialization is crucial to stability as other listeners of
-	 * [SyncthingService.onServiceStateChange] needs cached config and system information available.
-	 * e.g. SettingsFragment need "localDeviceId"
-	 */
-	private var asyncQueryConfigComplete = false
-	private var asyncQueryVersionComplete = false
-	private var asyncQuerySystemInfoComplete = false
-
 	/**
 	 * Object that must be locked upon accessing the following variables:
 	 * asyncQueryConfigComplete, asyncQueryVersionComplete, asyncQuerySystemInfoComplete
 	 */
 	private val asyncQueryCompleteLock = Any()
-
 	/**
 	 * Object that must be locked upon accessing config
 	 */
 	private val configLock = Any()
-
-	/**
-	 * Stores the latest result of [.getFolderStatus] for each folder
-	 */
-	private val cachedFolderStatuses =
-		HashMap<String?, FolderStatus?>() // For some reason it's not used
-
 	/**
 	 * Stores the latest result of device and folder completion events.
 	 */
 	private val completion = Completion()
-
-
 	val notificationHandler: NotificationHandler by lazy { NotificationHandler(context) }
-
 
 	/**
 	 * Gets local device ID, syncthing version and config, then calls all OnApiAvailableListeners.
 	 */
 	fun readConfigFromRestApi() {
+		var asyncQueryConfigComplete = false
+		var asyncQueryVersionComplete = false
+		var asyncQuerySystemInfoComplete = false
+
+		/**
+		 * In the last-finishing [readConfigFromRestApi] callback call [onApiAvailableListener]
+		 */
+		fun checkReadConfigFromRestApiCompleted() {
+			if (asyncQueryVersionComplete && asyncQueryConfigComplete && asyncQuerySystemInfoComplete) {
+				Log.v(TAG, "Reading config from REST completed.")
+				onApiAvailableListener()
+			}
+		}
+
 		Log.v(TAG, "Reading config from REST ...")
 		synchronized(asyncQueryCompleteLock) {
 			asyncQueryVersionComplete = false
@@ -141,7 +116,7 @@ class RestApi(
 
 		getSystemInfo { info: SystemInfo? ->
 			localDeviceId = info?.myID
-			urVersionMax = info?.urVersionMax
+			urVersionMax = info?.urVersionMax ?: 0
 			synchronized(asyncQueryCompleteLock) {
 				asyncQuerySystemInfoComplete = true
 				checkReadConfigFromRestApiCompleted()
@@ -149,12 +124,7 @@ class RestApi(
 		}
 	}
 
-	fun checkReadConfigFromRestApiCompleted() {
-		if (asyncQueryVersionComplete && asyncQueryConfigComplete && asyncQuerySystemInfoComplete) {
-			Log.v(TAG, "Reading config from REST completed.")
-			onApiAvailableListener()
-		}
-	}
+
 
 	fun reloadConfig() {
 		GetRequest(
@@ -308,9 +278,8 @@ class RestApi(
 	 * Sends current config and restarts Syncthing.
 	 */
 	fun saveConfigAndRestart() {
-		val jsonConfig: String?
-		synchronized(configLock) {
-			jsonConfig = Gson().toJson(config)
+		val jsonConfig: String? = synchronized(configLock) {
+			Gson().toJson(config)
 		}
 		PostConfigRequest(
 			context,
@@ -374,15 +343,6 @@ class RestApi(
 	private fun removeFolderInternal(id: String?) {
 		synchronized(configLock) {
 			config?.folders?.removeAll { it?.id == id }
-
-//            val it = config!!.folders.iterator()
-//            while (it.hasNext()) {
-//                val f = it.next()
-//                if (f?.id == id) {
-//                    it.remove()
-//                    break
-//                }
-//            }
 		}
 	}
 
@@ -455,15 +415,6 @@ class RestApi(
 	private fun removeDeviceInternal(deviceId: String?) {
 		synchronized(configLock) {
 			config?.devices?.removeAll { it?.deviceID == deviceId }
-
-//            val it = config!!.devices.iterator()
-//            while (it.hasNext()) {
-//                val d = it.next()
-//                if (d.deviceID == deviceId) {
-//                    it.remove()
-//                    break
-//                }
-//            }
 		}
 	}
 
@@ -516,29 +467,6 @@ class RestApi(
 		}
 	}
 
-	val isConfigLoaded: Boolean
-		get() {
-			synchronized(configLock) {
-				return config != null
-			}
-		}
-
-	/**
-	 * Requests and parses system version information.
-	 */
-	fun getSystemVersion(listener: (SystemVersion?) -> Unit) {
-		GetRequest(
-			context,
-			this.url,
-			GetRequest.URI_VERSION,
-			apiKey,
-			null
-		) { result: String? ->
-			val systemVersion =
-				Gson().fromJson(result, SystemVersion::class.java)
-			listener(systemVersion)
-		}
-	}
 
 	/**
 	 * Returns connection info for the local device and all connected devices.
@@ -583,9 +511,8 @@ class RestApi(
 			apiKey,
 			mutableMapOf("folder" to folderId)
 		) { result: String? ->
-			val m = Gson().fromJson(result, FolderStatus::class.java)
-			cachedFolderStatuses[folderId] = m
-			listener(folderId, m)
+			val folderStatus: FolderStatus? = Gson().fromJson(result, FolderStatus::class.java)
+			listener(folderId, folderStatus)
 		}
 	}
 
@@ -700,7 +627,7 @@ class RestApi(
 	fun setUsageReporting(acceptUsageReporting: Boolean) {
 		options?.let {
 			it.urAccepted =
-				if (acceptUsageReporting) urVersionMax ?: 0 else Options.USAGE_REPORTING_DENIED
+				if (acceptUsageReporting) urVersionMax else Options.USAGE_REPORTING_DENIED
 			synchronized(configLock) {
 				config?.options = it
 			}
@@ -727,12 +654,10 @@ class RestApi(
 		 */
 		private val FOLDERS_COMPARATOR = Comparator<Folder?> { lhs, rhs ->
 			val lhsLabel =
-				if (!lhs?.label.isNullOrEmpty()) lhs.label else lhs?.id
+				if (!lhs?.label.isNullOrEmpty()) lhs.label!! else lhs?.id ?: ""
 			val rhsLabel =
-				if (!rhs?.label.isNullOrEmpty()) rhs.label else rhs?.id
+				if (!rhs?.label.isNullOrEmpty()) rhs.label!! else rhs?.id ?: ""
 
-			checkNotNull(lhsLabel)
-			checkNotNull(rhsLabel)
 			lhsLabel.compareTo(rhsLabel)
 		}
 	}
