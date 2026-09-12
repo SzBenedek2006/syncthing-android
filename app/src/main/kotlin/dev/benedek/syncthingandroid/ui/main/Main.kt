@@ -249,7 +249,11 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 						}
 				) { page ->
 					when (page) {
-						0 -> FolderList(viewModel.folders, folderStatusesMap, viewModel.isApiReady)
+						0 -> FolderList(
+							viewModel.folders,
+							folderStatusesMap,
+							viewModel.isApiReady
+						)
 						1 -> DeviceList(
 							viewModel.devices ?: emptyList(),
 							viewModel.deviceStatuses,
