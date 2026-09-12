@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import kotlin.time.Duration.Companion.milliseconds
 
 const val HISTORY_MAX_SIZE = 120
 
@@ -61,7 +62,7 @@ class MainViewModel : ViewModel() {
 	 */
 	var folderStatuses: MutableStateFlow<Map<String, FolderStatus>> = MutableStateFlow(emptyMap())
 
-	var devices by mutableStateOf<List<Device>?>(emptyList())
+	var devices by mutableStateOf<List<Device>>(emptyList())
 
 	/**
 	 * We get all the "connections" or "statuses" at once.
@@ -112,11 +113,11 @@ class MainViewModel : ViewModel() {
 				val _isApiReady = (api != null)
 
 				if (isApiReady != _isApiReady) {
-					if (!isApiReady) delay(apiCallDelay * apiCallCount)
+					if (!isApiReady) delay((apiCallDelay * apiCallCount).milliseconds)
 					isApiReady = _isApiReady
 				}
 
-				delay(if (_isApiReady) 333L else 33L)
+				delay((if (_isApiReady) 333L else 33L).milliseconds)
 			}
 		}
 	}
@@ -126,7 +127,7 @@ class MainViewModel : ViewModel() {
 		fetchSystemDataJob = viewModelScope.launch {
 			while (isActive) {
 
-				delay(apiRefreshDelay)
+				delay(apiRefreshDelay.milliseconds)
 
 				api?.getSystemInfo { info -> // api call 1
 					if (info != null) {
@@ -140,16 +141,15 @@ class MainViewModel : ViewModel() {
 						}
 					}
 				}
-				delay(apiCallDelay)
+				delay(apiCallDelay.milliseconds)
 
 				updateFolderStatuses()
-				delay(apiCallDelay)
+				delay(apiCallDelay.milliseconds)
 
-				val _devices = api?.getDevices(false) // api call 2
-				_devices?.sortWith(DEVICES_COMPARATOR)
+				val _devices = api?.getDevices(false).orEmpty().sortedWith(DEVICES_COMPARATOR)
 				devices = _devices
 
-				delay(apiCallDelay)
+				delay(apiCallDelay.milliseconds)
 
 				api?.getConnections { conn -> // api call 3
 					if (conn != null) {
@@ -189,8 +189,6 @@ class MainViewModel : ViewModel() {
 				}
 			}
 
-			// 4. Create Bitmap in one shot.
-			// RGB_565 uses exactly half the memory of ARGB_8888!
 			Bitmap.createBitmap(pixels, width, height, Bitmap.Config.RGB_565)
 
 		} catch (e: Exception) {
