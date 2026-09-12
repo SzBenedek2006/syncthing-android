@@ -40,6 +40,7 @@ work = "2.11.2"
 compose-preference = "2.2.0"
 vico = "3.3.1"
 kotlinx-serialization-json = "1.11.0"
+ktor = "3.5.2"
 
 
 [libraries]
@@ -61,6 +62,9 @@ jbcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "jbcrypt" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 annimon-stream = { group = "com.annimon", name = "stream", version.ref = "annimon-stream" }
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 
 # ZXing
 zxing-embedded = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "zxing-embedded" }
