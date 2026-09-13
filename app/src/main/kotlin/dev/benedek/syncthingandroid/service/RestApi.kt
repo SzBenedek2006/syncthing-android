@@ -157,15 +157,7 @@ class RestApi(
 		completion.updateFromConfig(getDevices(true), this.folders)
 	}
 
-	/**
-	 * Queries debug facilities available from the currently running syncthing binary
-	 * if the syncthing binary version changed. First launch of the binary is also
-	 * considered as a version change.
-	 * Precondition: [.version] read from REST
-	 *
-	 *
-	 * It's not possible as of 2.0, so always falling back to the hardcoded list.
-	 */
+
 
 	/**
 	 * Permanently ignore a device when it tries to connect.
