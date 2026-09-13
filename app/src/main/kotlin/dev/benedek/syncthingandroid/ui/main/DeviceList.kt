@@ -37,11 +37,10 @@ import dev.benedek.syncthingandroid.util.Util.readableTransferRate
 
 @Composable
 fun DeviceList(
-	devices: List<Device>,
+	devices: List<Device>?,
 	deviceStatuses: DeviceStatuses,
-	isLoaded: Boolean
 ) {
-	if (!isLoaded) {
+	if (devices == null) {
 		Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
 	} else if (devices.isEmpty()) {
 		Box(Modifier.fillMaxSize(), Alignment.Center) {
@@ -202,7 +201,7 @@ fun DeviceListPreview() {
 		dynamicColor = ThemeControls.isMonetEnabled,
 		darkTheme = ThemeControls.PREVIEW_DARK_THEME
 	) {
-		Surface { DeviceList(emptyList(), DeviceStatuses(), true) }
+		Surface { DeviceList(emptyList(), DeviceStatuses()) }
 	}
 }
 

@@ -252,15 +252,13 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 						0 -> FolderList(
 							viewModel.folders,
 							folderStatusesMap,
-							viewModel.isApiReady
 						)
 						1 -> DeviceList(
-							viewModel.devices ?: emptyList(),
+							viewModel.devices,
 							viewModel.deviceStatuses,
-							viewModel.isApiReady
 						)
 					}
-					if (viewModel.isApiReady) ReportDrawn() // Maybe there's a better place to put this.
+					if (viewModel.devices != null && viewModel.folders != null) ReportDrawn() // Maybe there's a better place to put this.
 				}
 
 				// Dialogs

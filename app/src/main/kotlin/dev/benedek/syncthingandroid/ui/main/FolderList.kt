@@ -55,11 +55,10 @@ import kotlin.math.roundToInt
 
 @Composable
 fun FolderList(
-	folders: List<Folder> = emptyList(),
+	folders: List<Folder>?,
 	folderStatuses: Map<String, FolderStatus> = emptyMap(),
-	isLoaded: Boolean
 ) {
-	if (!isLoaded) {
+	if (folders == null) {
 		Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
 	} else if (folders.isEmpty()) {
 		Box(Modifier.fillMaxSize(), Alignment.Center) {
@@ -274,7 +273,7 @@ fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
 @Composable
 fun FolderListPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		Surface { FolderList(emptyList(), emptyMap(), true) }
+		Surface { FolderList(emptyList(), emptyMap()) }
 	}
 }
 

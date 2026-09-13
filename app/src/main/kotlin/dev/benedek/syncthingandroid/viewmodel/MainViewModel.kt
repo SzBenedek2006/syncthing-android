@@ -36,8 +36,6 @@ class MainViewModel : ViewModel() {
 
 	private var serviceReference: WeakReference<SyncthingService>? = null
 	val api: RestApi? get() = serviceReference?.get()?.api
-	var isApiReady by mutableStateOf(false)
-		private set
 
 	var fetchSystemDataJob: Job? = null
 
@@ -54,14 +52,14 @@ class MainViewModel : ViewModel() {
 	var showRestartDialog by mutableStateOf(false)
 	var showExitDialog by mutableStateOf(false)
 
-	var folders by mutableStateOf<List<Folder>>(emptyList())
+	var folders by mutableStateOf<List<Folder>?>(null)
 
 	/**
 	 * MutableStateFlow is better here because of the async nature of the api.
 	 */
 	var folderStatuses: MutableStateFlow<Map<String, FolderStatus>> = MutableStateFlow(emptyMap())
 
-	var devices by mutableStateOf<List<Device>>(emptyList())
+	var devices by mutableStateOf<List<Device>?>(null)
 
 	/**
 	 * We get all the "connections" or "statuses" at once.
@@ -81,20 +79,6 @@ class MainViewModel : ViewModel() {
 
 
 
-	init {
-		viewModelScope.launch {
-			while (true) {
-				val _isApiReady = (api != null)
-
-				if (isApiReady != _isApiReady) {
-					if (!isApiReady) delay((apiCallDelay * apiCallCount).milliseconds)
-					isApiReady = _isApiReady
-				}
-
-				delay((if (_isApiReady) 333L else 33L).milliseconds)
-			}
-		}
-	}
 
 
 	fun startFetchSystemData() {
@@ -108,8 +92,8 @@ class MainViewModel : ViewModel() {
 					if (info != null) {
 						systemInfo = info
 						systemInfoHistory.add(info)
-						announceTotal = systemInfo?.discoveryMethods ?: 0
-						announceConnected = announceTotal - (systemInfo?.discoveryErrors?.size ?: 0)
+						announceTotal = systemInfo!!.discoveryMethods
+						announceConnected = announceTotal - (systemInfo!!.discoveryErrors?.size ?: 0)
 						announceConnectedHistory.add(announceConnected)
 						while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
 							announceConnectedHistory.remove(announceConnectedHistory.first())
@@ -121,7 +105,7 @@ class MainViewModel : ViewModel() {
 				updateFolderStatuses()
 				delay(apiCallDelay.milliseconds)
 
-				val _devices = api?.getDevices(false).orEmpty().sortedWith(DEVICES_COMPARATOR)
+				val _devices = api?.getDevices(false).orEmpty().sortedWith(DEVICES_COMPARATOR) // api call 2
 				devices = _devices
 
 				delay(apiCallDelay.milliseconds)
