@@ -31,8 +31,11 @@ jobs:
       with:
         cache-provider: basic
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v4
+    #- name: Setup Android SDK
+    #  uses: android-actions/setup-android@v4
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v6
 
     # Go is downloaded by gradle
     # - name: Set up Go
