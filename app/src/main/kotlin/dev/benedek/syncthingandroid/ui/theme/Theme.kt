@@ -475,7 +475,7 @@ fun SyncthingandroidTheme(
 			surfaceContainerLow = colorScheme.surfaceContainerLow.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
 			surfaceContainerHigh = colorScheme.surfaceContainerHigh.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
 			surfaceContainerLowest = colorScheme.surfaceContainerLowest.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
-// (switch)			surfaceContainerHighest = colorScheme.surfaceContainerHighest.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+// (switch)	surfaceContainerHighest = colorScheme.surfaceContainerHighest.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
 			background = Color.Black
 		)
 	}
