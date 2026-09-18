@@ -13,7 +13,6 @@ import dev.benedek.syncthingandroid.activities.SettingsActivity.Companion.PREF_C
 import dev.benedek.syncthingandroid.databinding.DialogLoadingBinding
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult
 import dev.benedek.syncthingandroid.model.RunConditionCheckResult.BlockerReason
-import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.util.Util.dismissDialogSafe
 import dev.benedek.syncthingandroid.util.Util.getAlertDialogBuilder
