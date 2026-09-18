@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -16,10 +17,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.reusable.SettingsAlertDialog
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.SettingsViewModel
+import me.zhanghai.compose.preference.ProvidePreferenceLocals
 import me.zhanghai.compose.preference.preference
 import me.zhanghai.compose.preference.switchPreference
 import me.zhanghai.compose.preference.textFieldPreference
@@ -230,4 +236,16 @@ fun SyncthingOptions(contentPadding: PaddingValues, viewModel: SettingsViewModel
 		confirmAction = { viewModel.resetIgnored(context) },
 		showDialog = showUndoDialog,
 	)
+}
+
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
+@Composable
+fun SyncthingOptionsPreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME) {
+		ProvidePreferenceLocals {
+			Scaffold { paddingValues ->
+				SyncthingOptions(paddingValues, viewModel())
+			}
+		}
+	}
 }

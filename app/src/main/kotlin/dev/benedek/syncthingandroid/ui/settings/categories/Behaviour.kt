@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -14,12 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.preference.PreferenceManager
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Languages
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.atMostSdk
+import me.zhanghai.compose.preference.ProvidePreferenceLocals
 import me.zhanghai.compose.preference.listPreference
 import me.zhanghai.compose.preference.preference
 import me.zhanghai.compose.preference.switchPreference
@@ -112,5 +118,17 @@ fun Behaviour(contentPadding: PaddingValues) {
 			title = { Text(stringResource(R.string.start_service_on_boot)) },
 			defaultValue = false
 		)
+	}
+}
+
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
+@Composable
+fun BehaviourPreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME) {
+		ProvidePreferenceLocals {
+			Scaffold { paddingValues ->
+				Behaviour(paddingValues)
+			}
+		}
 	}
 }

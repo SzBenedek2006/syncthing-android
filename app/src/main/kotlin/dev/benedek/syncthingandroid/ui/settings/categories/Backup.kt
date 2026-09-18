@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -14,11 +15,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.reusable.SettingsAlertDialog
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.SettingsViewModel
+import me.zhanghai.compose.preference.ProvidePreferenceLocals
 import me.zhanghai.compose.preference.preference
 
 @Composable
@@ -80,4 +86,16 @@ fun Backup(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 		confirmAction = { viewModel.exportConfig(context) },
 		showDialog = showExportDialog,
 	)
+}
+
+@Preview(showBackground = true, uiMode = ThemeControls.UI_MODE)
+@Composable
+fun BackupPreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME) {
+		ProvidePreferenceLocals {
+			Scaffold { paddingValues ->
+				Backup(paddingValues, viewModel())
+			}
+		}
+	}
 }
