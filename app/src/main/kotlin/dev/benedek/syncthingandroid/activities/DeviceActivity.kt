@@ -4,9 +4,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import androidx.activity.OnBackPressedCallback
@@ -18,13 +15,11 @@ import androidx.core.graphics.toColorInt
 import com.google.gson.Gson
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.databinding.ActivityDeviceBinding
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.DeviceStatuses
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression
-import dev.benedek.syncthingandroid.util.TextWatcherAdapter
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.util.Util
 import dev.benedek.syncthingandroid.viewmodel.DeviceViewModel
@@ -37,7 +32,6 @@ class DeviceActivity : SyncthingActivity() {
 	private val viewModel: DeviceViewModel by viewModels()
 	private var device: Device? = null
 
-	private var binding: ActivityDeviceBinding? = null
 
 	private var isCreateMode = false
 
@@ -56,32 +50,6 @@ class DeviceActivity : SyncthingActivity() {
 	}
 
 
-	private val idTextWatcher: TextWatcher = object : TextWatcherAdapter() {
-		override fun afterTextChanged(s: Editable?) {
-			if (s.toString() != device!!.deviceID) {
-				deviceNeedsToUpdate = true
-				device!!.deviceID = s.toString()
-			}
-		}
-	}
-
-	private val nameTextWatcher: TextWatcher = object : TextWatcherAdapter() {
-		override fun afterTextChanged(s: Editable?) {
-			if (s.toString() != device!!.name) {
-				deviceNeedsToUpdate = true
-				device!!.name = s.toString()
-			}
-		}
-	}
-
-	private val addressesTextWatcher: TextWatcher = object : TextWatcherAdapter() {
-		override fun afterTextChanged(s: Editable?) {
-			if (s.toString() != displayableAddresses()) {
-				deviceNeedsToUpdate = true
-				device!!.addresses = persistableAddresses(s)
-			}
-		}
-	}
 
 
 	public override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,9 +109,6 @@ class DeviceActivity : SyncthingActivity() {
 			)
 			syncthingService.unregisterOnServiceStateChangeListener(::serviceStateChangeListener)
 		}
-		binding?.id?.removeTextChangedListener(idTextWatcher)
-		binding?.name?.removeTextChangedListener(nameTextWatcher)
-		binding?.addresses?.removeTextChangedListener(addressesTextWatcher)
 	}
 
 	public override fun onPause() {
@@ -289,24 +254,6 @@ class DeviceActivity : SyncthingActivity() {
 			api?.editDevice(device!!)
 		}
 	}
-
-	private fun persistableAddresses(userInput: CharSequence?): MutableList<String?>? {
-		return (if (TextUtils.isEmpty(userInput))
-			DYNAMIC_ADDRESS
-		else
-			listOf<String?>(
-				*userInput.toString().split(" ".toRegex()).dropLastWhile { it.isEmpty() }
-					.toTypedArray())) as MutableList<String?>?
-	}
-
-	private fun displayableAddresses(): String? {
-		val list = if (DYNAMIC_ADDRESS == device!!.addresses)
-			DYNAMIC_ADDRESS
-		else
-			device!!.addresses
-		return TextUtils.join(" ", list!!)
-	}
-
 
 
 	val onBackPressedCallback = object : OnBackPressedCallback(false) {
