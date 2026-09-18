@@ -464,8 +464,18 @@ fun SyncthingandroidTheme(
 	}
 
 	if (darkTheme && pureBlack) {
+		val multiplier = 0.25f
 		colorScheme = colorScheme.copy(
 			surface = Color.Black,
+			surfaceDim = colorScheme.surfaceDim.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceTint = colorScheme.surfaceTint.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceBright = colorScheme.surfaceBright.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceVariant = colorScheme.surfaceVariant.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceContainer = colorScheme.surfaceContainer.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceContainerLow = colorScheme.surfaceContainerLow.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceContainerHigh = colorScheme.surfaceContainerHigh.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+			surfaceContainerLowest = colorScheme.surfaceContainerLowest.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
+// (switch)			surfaceContainerHighest = colorScheme.surfaceContainerHighest.let { it.copy(it.alpha, it.red * multiplier, it.green * multiplier, it.blue * multiplier) },
 			background = Color.Black
 		)
 	}
