@@ -1,5 +1,10 @@
 package dev.benedek.syncthingandroid.ui.icons
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.SolidColor
@@ -7,6 +12,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Suppress("CheckReturnValue")
@@ -66,3 +72,11 @@ public val battery_android_full: ImageVector
   }
 
 private var _battery_android_full: ImageVector? = null
+
+@Preview
+@Composable
+private fun Preview(): Unit {
+  Box(modifier = Modifier.padding(12.dp)) {
+    Image(imageVector = battery_android_full, contentDescription = "")
+  }
+}
