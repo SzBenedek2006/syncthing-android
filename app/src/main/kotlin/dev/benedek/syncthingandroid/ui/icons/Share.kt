@@ -1,4 +1,4 @@
-@file:Suppress("ObjectPropertyName")
+@file:Suppress("ObjectPropertyName", "BooleanLiteralArgument")
 
 package dev.benedek.syncthingandroid.ui.icons
 
