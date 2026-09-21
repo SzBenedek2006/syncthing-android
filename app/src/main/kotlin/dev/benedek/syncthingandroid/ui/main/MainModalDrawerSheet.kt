@@ -133,7 +133,7 @@ fun MainModalDrawerSheet(
 			Alignment.CenterVertically
 		) {
 			Icon(
-				painterResource(R.drawable.ic_monochrome),
+				painterResource(R.drawable.syncthing_for_android_new),
 				null,
 				Modifier.padding(8.dp).size(24.dp),
 				MaterialTheme.colorScheme.primary

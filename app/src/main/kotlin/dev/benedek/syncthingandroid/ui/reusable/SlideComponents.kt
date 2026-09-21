@@ -283,7 +283,7 @@ fun SlideDescriptionPreview() {
 @Composable
 fun SlideImagePreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		Surface { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
+		Surface { SlideImage(painterResource(R.drawable.syncthing_for_android_new)) }
 	}
 }
 
@@ -295,7 +295,7 @@ fun AdaptiveSlideLayoutPortraitPreview() {
 			AdaptiveSlideLayout(
 				title = { SlideTitle("Introduction") },
 				description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
-				image = { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
+				image = { SlideImage(painterResource(R.drawable.syncthing_for_android_new)) }
 			)
 		}
 	}
@@ -310,7 +310,7 @@ fun AdaptiveSlideLayoutLandscapePreview() {
 				AdaptiveSlideLayout(
 					title = { SlideTitle("Introduction") },
 					description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
-					image = { SlideImage(painterResource(R.drawable.ic_launcher_monochrome)) }
+					image = { SlideImage(painterResource(R.drawable.syncthing_for_android_new)) }
 				)
 			}
 		}

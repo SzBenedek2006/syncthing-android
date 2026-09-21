@@ -43,7 +43,7 @@ fun IntroSlide() {
 		},
 		Modifier,
 		{
-			SlideImage(painterResource(R.drawable.ic_monochrome))
+			SlideImage(painterResource(R.drawable.syncthing_for_android_new))
 		}
 	)
 }
