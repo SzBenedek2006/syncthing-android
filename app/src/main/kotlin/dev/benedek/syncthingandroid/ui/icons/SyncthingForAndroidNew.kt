@@ -83,25 +83,25 @@ val SyncthingForAndroidNew: ImageVector
             }
             path(fill = SolidColor(Color(0x00000000)), stroke = SolidColor(Color(0xFF000000)),
                     strokeLineWidth = 8.0f, strokeLineCap = Round, strokeLineJoin =
-                    StrokeJoin.Companion.Round, strokeLineMiter = 4.0f, pathFillType = EvenOdd) {
+                    StrokeJoin.Round, strokeLineMiter = 4.0f, pathFillType = EvenOdd) {
                 moveToRelative(78.6f, 78.68f)
                 lineToRelative(8.02f, 11.87f)
             }
             path(fill = SolidColor(Color(0x00000000)), stroke = SolidColor(Color(0xFF000000)),
                     strokeLineWidth = 8.0f, strokeLineCap = Round, strokeLineJoin =
-                    StrokeJoin.Companion.Round, strokeLineMiter = 4.0f, pathFillType = EvenOdd) {
+                    StrokeJoin.Round, strokeLineMiter = 4.0f, pathFillType = EvenOdd) {
                 moveToRelative(30.71f, 76.67f)
                 lineToRelative(32.07f, -4.91f)
             }
             path(fill = SolidColor(Color(0x00000000)), stroke = SolidColor(Color(0xFF000000)),
                     strokeLineWidth = 8.0f, strokeLineCap = Round, strokeLineJoin =
-                    StrokeJoin.Companion.Round, strokeLineMiter = 4.0f, pathFillType = EvenOdd) {
+                    StrokeJoin.Round, strokeLineMiter = 4.0f, pathFillType = EvenOdd) {
                 moveTo(80.94f, 63.94f)
                 lineTo(96.66f, 51.69f)
             }
             path(fill = SolidColor(Color(0x00000000)), stroke = SolidColor(Color(0xFF000000)),
                     fillAlpha = 0.0f, strokeLineWidth = 8.26667f, strokeLineCap = Round,
-                    strokeLineJoin = StrokeJoin.Companion.Round, strokeLineMiter = 4.0f,
+                    strokeLineJoin = StrokeJoin.Round, strokeLineMiter = 4.0f,
                     pathFillType = NonZero) {
                 moveToRelative(18.38f, 64.15f)
                 curveToRelative(-0.0f, -0.24f, 0.02f, 0.1f, 0.02f, -0.14f)
@@ -123,7 +123,7 @@ private var _syncthingForAndroidNew: ImageVector? = null
 
 @Preview
 @Composable
-private fun Preview(): Unit {
+private fun Preview() {
     Box(modifier = Modifier.padding(12.dp)) {
         Image(imageVector = SyncthingForAndroidNew, contentDescription = "")
     }

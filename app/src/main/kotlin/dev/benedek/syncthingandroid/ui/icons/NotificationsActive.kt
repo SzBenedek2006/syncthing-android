@@ -82,7 +82,7 @@ private var _notificationsActive: ImageVector? = null
 
 @Preview
 @Composable
-private fun Preview(): Unit {
+private fun Preview() {
     Box(modifier = Modifier.padding(12.dp)) {
         Image(imageVector = NotificationsActive, contentDescription = "")
     }

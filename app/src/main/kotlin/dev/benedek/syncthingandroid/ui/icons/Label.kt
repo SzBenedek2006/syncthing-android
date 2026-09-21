@@ -40,7 +40,7 @@ val Label: ImageVector
 					strokeLineCap = StrokeCap.Butt,
 					strokeLineJoin = StrokeJoin.Bevel,
 					strokeLineMiter = 1f,
-					pathFillType = PathFillType.Companion.NonZero,
+					pathFillType = PathFillType.NonZero,
 				) {
 					moveTo(4f, 20f)
 					quadTo(3.18f, 20f, 2.59f, 19.41f)
@@ -75,7 +75,7 @@ private var _label: ImageVector? = null
 
 @Preview
 @Composable
-private fun Preview(): Unit {
+private fun Preview() {
 	Box(modifier = Modifier.padding(12.dp)) {
 		Image(imageVector = Label, contentDescription = "")
 	}

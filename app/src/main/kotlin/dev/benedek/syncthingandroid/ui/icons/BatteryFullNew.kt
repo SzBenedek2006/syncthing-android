@@ -40,7 +40,7 @@ val BatteryFullNew: ImageVector
 					strokeLineCap = StrokeCap.Butt,
 					strokeLineJoin = StrokeJoin.Bevel,
 					strokeLineMiter = 1f,
-					pathFillType = PathFillType.Companion.NonZero,
+					pathFillType = PathFillType.NonZero,
 				) {
 					moveTo(4f, 18f)
 					quadTo(2.75f, 18f, 1.88f, 17.13f)
