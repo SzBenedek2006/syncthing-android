@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Suppress("CheckReturnValue")
-public val Link: ImageVector
+val Link: ImageVector
     get() {
         if (_link != null) {
             return _link!!

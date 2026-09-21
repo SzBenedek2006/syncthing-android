@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val Check: ImageVector
+val Check: ImageVector
     get() {
         if (_check != null) {
             return _check!!

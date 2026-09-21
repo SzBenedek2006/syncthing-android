@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Suppress("CheckReturnValue")
-public val BatteryFullNew: ImageVector
+val BatteryFullNew: ImageVector
 	get() {
 		if (_batteryFullNew != null) {
 			return _batteryFullNew!!

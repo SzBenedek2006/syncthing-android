@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val TagTextOutline: ImageVector
+val TagTextOutline: ImageVector
     get() {
         if (_tagTextOutline != null) {
             return _tagTextOutline!!

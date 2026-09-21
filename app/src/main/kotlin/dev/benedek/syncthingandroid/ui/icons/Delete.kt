@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val Delete: ImageVector
+val Delete: ImageVector
     get() {
         if (_delete != null) {
             return _delete!!

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val FolderManaged: ImageVector
+val FolderManaged: ImageVector
     get() {
         if (_folderManaged != null) {
             return _folderManaged!!

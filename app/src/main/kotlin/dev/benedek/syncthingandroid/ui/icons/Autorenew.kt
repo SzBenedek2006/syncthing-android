@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Suppress("CheckReturnValue")
-public val Autorenew: ImageVector
+val Autorenew: ImageVector
 	get() {
 		if (_autorenew != null) {
 			return _autorenew!!

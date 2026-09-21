@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val Phonelink: ImageVector
+val Phonelink: ImageVector
     get() {
         if (_phonelink != null) {
             return _phonelink!!

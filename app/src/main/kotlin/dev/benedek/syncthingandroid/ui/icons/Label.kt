@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Suppress("CheckReturnValue")
-public val Label: ImageVector
+val Label: ImageVector
 	get() {
 		if (_label != null) {
 			return _label!!

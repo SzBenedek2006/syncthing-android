@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val QrCode: ImageVector
+val QrCode: ImageVector
     get() {
         if (_qrCode != null) {
             return _qrCode!!

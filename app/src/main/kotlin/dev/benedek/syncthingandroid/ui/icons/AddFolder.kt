@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val AddFolder: ImageVector
+val AddFolder: ImageVector
     get() {
         if (_addFolder != null) {
             return _addFolder!!

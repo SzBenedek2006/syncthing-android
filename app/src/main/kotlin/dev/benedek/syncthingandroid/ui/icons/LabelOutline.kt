@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-public val LabelOutline: ImageVector
+val LabelOutline: ImageVector
     get() {
         if (_labelOutline != null) {
             return _labelOutline!!
