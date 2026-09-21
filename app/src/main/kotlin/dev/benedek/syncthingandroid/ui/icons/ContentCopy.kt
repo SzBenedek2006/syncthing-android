@@ -23,11 +23,23 @@ val ContentCopy: ImageVector
         if (_contentCopy != null) {
             return _contentCopy!!
         }
-        _contentCopy = Builder(name = "ContentCopy", defaultWidth = 24.0.dp, defaultHeight =
-                24.0.dp, viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _contentCopy = Builder(
+            name = "ContentCopy",
+            defaultWidth = 24.0.dp,
+            defaultHeight =
+                24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(16.0f, 1.0f)
                 lineTo(4.0f, 1.0f)
                 curveToRelative(-1.1f, 0.0f, -2.0f, 0.9f, -2.0f, 2.0f)
@@ -54,8 +66,7 @@ val ContentCopy: ImageVector
                 verticalLineToRelative(14.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _contentCopy!!
     }
 

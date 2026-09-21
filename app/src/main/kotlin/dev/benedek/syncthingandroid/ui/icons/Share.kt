@@ -23,11 +23,22 @@ val Share: ImageVector
         if (_share != null) {
             return _share!!
         }
-        _share = Builder(name = "Share", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
-                viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _share = Builder(
+            name = "Share",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(18.0f, 16.08f)
                 curveToRelative(-0.76f, 0.0f, -1.44f, 0.3f, -1.96f, 0.77f)
                 lineTo(8.91f, 12.7f)
@@ -51,8 +62,7 @@ val Share: ImageVector
                 reflectiveCurveToRelative(-1.31f, -2.92f, -2.92f, -2.92f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _share!!
     }
 

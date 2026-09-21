@@ -23,12 +23,22 @@ val NotificationsActive: ImageVector
         if (_notificationsActive != null) {
             return _notificationsActive!!
         }
-        _notificationsActive = Builder(name = "NotificationsActive",
-                defaultWidth = 24.0.dp, defaultHeight = 24.0.dp, viewportWidth = 24.0f,
-                viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _notificationsActive = Builder(
+            name = "NotificationsActive",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(7.58f, 4.08f)
                 lineTo(6.15f, 2.65f)
                 curveTo(3.75f, 4.48f, 2.17f, 7.3f, 2.03f, 10.5f)
@@ -64,8 +74,7 @@ val NotificationsActive: ImageVector
                 curveToRelative(0.01f, 1.1f, 0.9f, 2.0f, 2.01f, 2.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _notificationsActive!!
     }
 

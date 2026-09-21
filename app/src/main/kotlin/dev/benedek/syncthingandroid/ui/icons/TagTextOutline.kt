@@ -23,12 +23,23 @@ val TagTextOutline: ImageVector
         if (_tagTextOutline != null) {
             return _tagTextOutline!!
         }
-        _tagTextOutline = Builder(name = "TagTextOutline", defaultWidth = 24.0.dp,
-                defaultHeight = 24.0.dp, viewportWidth = 27.810644f, viewportHeight =
-                27.862204f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.35277775f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _tagTextOutline = Builder(
+            name = "TagTextOutline",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 27.810644f,
+            viewportHeight =
+                27.862204f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.35277775f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveToRelative(14.4639f, 27.6967f)
                 curveToRelative(-0.388f, -0.1638f, -3.8012f, -3.4082f, -7.5847f, -7.2097f)
                 lineToRelative(-6.8792f, -6.9118f)
@@ -81,8 +92,7 @@ val TagTextOutline: ImageVector
                 curveToRelative(0.5544f, 0.0f, 1.2574f, -0.2495f, 1.5623f, -0.5544f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _tagTextOutline!!
     }
 

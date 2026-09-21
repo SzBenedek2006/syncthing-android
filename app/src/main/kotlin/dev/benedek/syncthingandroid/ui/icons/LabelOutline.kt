@@ -23,11 +23,22 @@ val LabelOutline: ImageVector
         if (_labelOutline != null) {
             return _labelOutline!!
         }
-        _labelOutline = Builder(name = "LabelOutline", defaultWidth = 24.0.dp, defaultHeight =
-                24.0.dp, viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _labelOutline = Builder(
+            name = "LabelOutline",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(17.63f, 5.84f)
                 curveTo(17.27f, 5.33f, 16.67f, 5.0f, 16.0f, 5.0f)
                 lineTo(5.0f, 5.01f)
@@ -47,8 +58,7 @@ val LabelOutline: ImageVector
                 lineTo(16.0f, 17.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _labelOutline!!
     }
 

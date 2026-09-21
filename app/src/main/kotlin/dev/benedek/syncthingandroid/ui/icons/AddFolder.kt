@@ -23,11 +23,22 @@ val AddFolder: ImageVector
         if (_addFolder != null) {
             return _addFolder!!
         }
-        _addFolder = Builder(name = "AddFolder", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
-                viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _addFolder = Builder(
+            name = "AddFolder",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(20.0f, 6.0f)
                 horizontalLineToRelative(-8.0f)
                 lineToRelative(-2.0f, -2.0f)
@@ -55,8 +66,7 @@ val AddFolder: ImageVector
                 verticalLineToRelative(2.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _addFolder!!
     }
 

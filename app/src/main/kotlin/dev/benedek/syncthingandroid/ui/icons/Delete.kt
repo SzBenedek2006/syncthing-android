@@ -23,11 +23,22 @@ val Delete: ImageVector
         if (_delete != null) {
             return _delete!!
         }
-        _delete = Builder(name = "Delete", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
-                viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _delete = Builder(
+            name = "Delete",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(6.0f, 19.0f)
                 curveToRelative(0.0f, 1.1f, 0.9f, 2.0f, 2.0f, 2.0f)
                 horizontalLineToRelative(8.0f)
@@ -47,8 +58,7 @@ val Delete: ImageVector
                 verticalLineTo(4.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _delete!!
     }
 

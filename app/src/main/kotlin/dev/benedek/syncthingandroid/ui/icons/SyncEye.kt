@@ -23,11 +23,23 @@ val SyncEye: ImageVector
         if (_syncEye != null) {
             return _syncEye!!
         }
-        _syncEye = Builder(name = "SyncEye", defaultWidth = 24.0.dp, defaultHeight =
-                24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _syncEye = Builder(
+            name = "SyncEye",
+            defaultWidth = 24.0.dp,
+            defaultHeight =
+                24.0.dp,
+            viewportWidth = 960.0f,
+            viewportHeight = 960.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(628.29f, 692.68f)
                 quadTo(614.63f, 679.02f, 614.63f, 659.51f)
                 quadToRelative(0.0f, -19.51f, 13.66f, -33.17f)
@@ -87,8 +99,7 @@ val SyncEye: ImageVector
                 quadToRelative(27.5f, 51.0f, 35.5f, 111.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _syncEye!!
     }
 

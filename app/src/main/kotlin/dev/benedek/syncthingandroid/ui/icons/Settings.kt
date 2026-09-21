@@ -23,11 +23,22 @@ val Settings: ImageVector
         if (_settings != null) {
             return _settings!!
         }
-        _settings = Builder(name = "Settings", defaultWidth = 24.0.dp, defaultHeight = 24.0.dp,
-                viewportWidth = 24.0f, viewportHeight = 24.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _settings = Builder(
+            name = "Settings",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 24.0f,
+            viewportHeight = 24.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(19.43f, 12.98f)
                 curveToRelative(0.04f, -0.32f, 0.07f, -0.64f, 0.07f, -0.98f)
                 reflectiveCurveToRelative(-0.03f, -0.66f, -0.07f, -0.98f)
@@ -75,8 +86,7 @@ val Settings: ImageVector
                 reflectiveCurveToRelative(-1.57f, 3.5f, -3.5f, 3.5f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _settings!!
     }
 

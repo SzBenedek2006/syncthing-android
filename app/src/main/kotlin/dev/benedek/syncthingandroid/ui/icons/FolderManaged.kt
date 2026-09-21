@@ -23,11 +23,22 @@ val FolderManaged: ImageVector
         if (_folderManaged != null) {
             return _folderManaged!!
         }
-        _folderManaged = Builder(name = "FolderManaged", defaultWidth = 24.0.dp, defaultHeight =
-                24.0.dp, viewportWidth = 960.0f, viewportHeight = 960.0f).apply {
-            path(fill = SolidColor(Color(0xFF000000)), stroke = null, strokeLineWidth = 0.0f,
-                    strokeLineCap = Butt, strokeLineJoin = Miter, strokeLineMiter = 4.0f,
-                    pathFillType = NonZero) {
+        _folderManaged = Builder(
+            name = "FolderManaged",
+            defaultWidth = 24.0.dp,
+            defaultHeight = 24.0.dp,
+            viewportWidth = 960.0f,
+            viewportHeight = 960.0f
+        ).apply {
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+                stroke = null,
+                strokeLineWidth = 0.0f,
+                strokeLineCap = Butt,
+                strokeLineJoin = Miter,
+                strokeLineMiter = 4.0f,
+                pathFillType = NonZero
+            ) {
                 moveTo(680.0f, 880.0f)
                 lineTo(668.0f, 820.0f)
                 quadTo(656.0f, 815.0f, 645.5f, 809.5f)
@@ -121,8 +132,7 @@ val FolderManaged: ImageVector
                 lineTo(160.0f, 800.0f)
                 close()
             }
-        }
-        .build()
+        }.build()
         return _folderManaged!!
     }
 
