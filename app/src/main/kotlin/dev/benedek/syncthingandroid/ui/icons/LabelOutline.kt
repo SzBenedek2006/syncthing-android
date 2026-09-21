@@ -1,3 +1,5 @@
+@file:Suppress("ObjectPropertyName")
+
 package dev.benedek.syncthingandroid.ui.icons
 
 import androidx.compose.foundation.Image
