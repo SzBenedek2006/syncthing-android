@@ -55,6 +55,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.SettingsActivity
 import dev.benedek.syncthingandroid.activities.WebGuiActivity
+import dev.benedek.syncthingandroid.ui.icons.Autorenew
+import dev.benedek.syncthingandroid.ui.icons.QrCode
+import dev.benedek.syncthingandroid.ui.icons.SyncthingForAndroidNew
 import dev.benedek.syncthingandroid.ui.reusable.ComposeBasicLineChart
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.StatTile
@@ -133,7 +136,7 @@ fun MainModalDrawerSheet(
 			Alignment.CenterVertically
 		) {
 			Icon(
-				painterResource(R.drawable.syncthing_for_android_new),
+				rememberVectorPainter(SyncthingForAndroidNew),
 				null,
 				Modifier.padding(8.dp).size(24.dp),
 				MaterialTheme.colorScheme.primary
@@ -280,7 +283,7 @@ fun MainModalDrawerSheet(
 				)
 				OptionTile(
 					title = stringResource(R.string.show_device_id),
-					leftIconPainter = painterResource(R.drawable.ic_qrcode_24dp),
+					leftIconPainter = rememberVectorPainter(QrCode),
 					onClick = {
 						scope.launch { drawerState().close() }
 						viewModel.showDeviceIdDialog = true
@@ -308,7 +311,7 @@ fun MainModalDrawerSheet(
 			) {
 				OptionTile(
 					title = stringResource(R.string.restart),
-					leftIconPainter = painterResource(R.drawable.ic_autorenew_24dp),
+					leftIconPainter = rememberVectorPainter(Autorenew),
 					onClick = {
 						scope.launch { drawerState().close() }
 						viewModel.showRestartDialog = true

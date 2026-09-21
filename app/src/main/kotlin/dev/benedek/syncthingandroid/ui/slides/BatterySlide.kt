@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.AndroidUiModes
 import androidx.compose.ui.tooling.preview.Preview
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
-import dev.benedek.syncthingandroid.ui.icons.battery_android_full
+import dev.benedek.syncthingandroid.ui.icons.BatteryFullNew
 import dev.benedek.syncthingandroid.ui.reusable.AdaptiveSlideLayout
 import dev.benedek.syncthingandroid.ui.reusable.DenyButton
 import dev.benedek.syncthingandroid.ui.reusable.SlideDescription
@@ -47,7 +47,7 @@ fun BatterySlide(
 		{
 			atLeastSdkFull(
 				Build.VERSION_CODES_FULL.BAKLAVA_1,
-				{ SlideImage(rememberVectorPainter(battery_android_full)) },
+				{ SlideImage(rememberVectorPainter(BatteryFullNew)) },
 				{ SlideImage(rememberVectorPainter(Icons.Outlined.BatteryStd)) }
 			)
 		},

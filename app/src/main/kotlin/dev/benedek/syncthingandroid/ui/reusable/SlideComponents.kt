@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.LocalIsLandscape
+import dev.benedek.syncthingandroid.ui.icons.SyncthingForAndroidNew
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 
@@ -283,7 +285,7 @@ fun SlideDescriptionPreview() {
 @Composable
 fun SlideImagePreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		Surface { SlideImage(painterResource(R.drawable.syncthing_for_android_new)) }
+		Surface { SlideImage(rememberVectorPainter(SyncthingForAndroidNew)) }
 	}
 }
 
@@ -295,7 +297,7 @@ fun AdaptiveSlideLayoutPortraitPreview() {
 			AdaptiveSlideLayout(
 				title = { SlideTitle("Introduction") },
 				description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
-				image = { SlideImage(painterResource(R.drawable.syncthing_for_android_new)) }
+				image = { SlideImage(rememberVectorPainter(SyncthingForAndroidNew)) }
 			)
 		}
 	}
@@ -310,7 +312,7 @@ fun AdaptiveSlideLayoutLandscapePreview() {
 				AdaptiveSlideLayout(
 					title = { SlideTitle("Introduction") },
 					description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
-					image = { SlideImage(painterResource(R.drawable.syncthing_for_android_new)) }
+					image = { SlideImage(rememberVectorPainter(SyncthingForAndroidNew)) }
 				)
 			}
 		}

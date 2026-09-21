@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
@@ -43,6 +44,7 @@ import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderStatus
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
+import dev.benedek.syncthingandroid.ui.icons.Folder
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -202,7 +204,7 @@ fun FolderListItem(
 			}
 		) {
 			Icon(
-				painterResource(R.drawable.ic_folder_24dp),
+				rememberVectorPainter(Folder),
 				stringResource(R.string.open_file_manager)
 			)
 		}

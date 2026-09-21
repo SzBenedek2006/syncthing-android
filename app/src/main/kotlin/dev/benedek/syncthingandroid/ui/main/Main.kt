@@ -52,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ClipEntry
@@ -71,6 +72,8 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.service.SyncthingService
+import dev.benedek.syncthingandroid.ui.icons.ContentCopy
+import dev.benedek.syncthingandroid.ui.icons.Share
 import dev.benedek.syncthingandroid.ui.reusable.AppScaffold
 import dev.benedek.syncthingandroid.ui.reusable.CustomDialog
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -329,7 +332,7 @@ fun QrCodeDialog(
 					scope.launch { clipboard.setClipEntry(clipEntry) }
 				}) {
 					Icon(
-						painterResource(R.drawable.ic_content_copy_24dp),
+						rememberVectorPainter(ContentCopy),
 						stringResource(android.R.string.copy)
 					)
 				}
@@ -341,7 +344,7 @@ fun QrCodeDialog(
 				val shareIntent = Intent.createChooser(sendIntent, null)
 				IconButton({ context.startActivity(shareIntent) }) {
 					Icon(
-						painterResource(R.drawable.ic_share_24dp),
+						rememberVectorPainter(Share),
 						stringResource(R.string.share_title)
 					)
 				}

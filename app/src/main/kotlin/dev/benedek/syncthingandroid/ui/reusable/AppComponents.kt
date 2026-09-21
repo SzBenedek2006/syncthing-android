@@ -108,6 +108,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -135,6 +136,7 @@ import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.common.Fill
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.ui.icons.LabelOutline
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import kotlinx.coroutines.delay
@@ -1372,7 +1374,7 @@ fun OptionTilePreview() {
 				title = "Content",
 				description = "Long content named description with" +
 						"\nmulti line text.",
-				leftIconPainter = painterResource(R.drawable.ic_label_outline_24dp),
+				leftIconPainter = rememberVectorPainter(LabelOutline),
 			)
 		}
 	}
@@ -1395,7 +1397,7 @@ fun SwitchOptionTilePreview() {
 			var checked by remember { mutableStateOf(true) }
 			OptionTile(
 				title = "Content",
-				leftIconPainter = painterResource(R.drawable.ic_label_outline_24dp),
+				leftIconPainter = rememberVectorPainter(LabelOutline),
 				checked = checked,
 				onCheckedChange = { checked = !checked }
 			)
@@ -1413,7 +1415,7 @@ fun StatTilePreview() {
 				title = "Content",
 				leftIcon = {
 					Icon(
-						painterResource(R.drawable.ic_label_outline_24dp),
+						rememberVectorPainter(LabelOutline),
 						null,
 						Modifier.padding(14.dp)
 					)
