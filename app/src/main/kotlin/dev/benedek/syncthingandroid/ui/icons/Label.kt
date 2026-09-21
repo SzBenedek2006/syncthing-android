@@ -16,14 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Suppress("CheckReturnValue")
-public val battery_android_full: ImageVector
+public val Label: ImageVector
   get() {
-    if (_battery_android_full != null) {
-      return _battery_android_full!!
+    if (_label != null) {
+      return _label!!
     }
-    _battery_android_full =
+    _label =
       ImageVector.Builder(
-          name = "battery_android_full",
+          name = "Label",
           defaultWidth = 24.dp,
           defaultHeight = 24.dp,
           viewportWidth = 24f,
@@ -41,42 +41,42 @@ public val battery_android_full: ImageVector
             strokeLineMiter = 1f,
             pathFillType = PathFillType.Companion.NonZero,
           ) {
-            moveTo(4f, 18f)
-            quadTo(2.75f, 18f, 1.88f, 17.13f)
-            reflectiveQuadTo(1f, 15f)
-            verticalLineTo(9f)
-            quadTo(1f, 7.75f, 1.88f, 6.88f)
-            reflectiveQuadTo(4f, 6f)
-            horizontalLineTo(17.5f)
-            quadToRelative(1.25f, 0f, 2.13f, 0.88f)
-            reflectiveQuadTo(20.5f, 9f)
-            verticalLineToRelative(6f)
-            quadToRelative(0f, 1.25f, -0.88f, 2.13f)
-            reflectiveQuadTo(17.5f, 18f)
+            moveTo(4f, 20f)
+            quadTo(3.18f, 20f, 2.59f, 19.41f)
+            reflectiveQuadTo(2f, 18f)
+            verticalLineTo(6f)
+            quadTo(2f, 5.18f, 2.59f, 4.59f)
+            reflectiveQuadTo(4f, 4f)
+            horizontalLineTo(15f)
+            quadToRelative(0.48f, 0f, 0.9f, 0.21f)
+            reflectiveQuadTo(16.6f, 4.8f)
+            lineTo(22f, 12f)
+            lineToRelative(-5.4f, 7.2f)
+            quadToRelative(-0.28f, 0.38f, -0.7f, 0.59f)
+            reflectiveQuadTo(15f, 20f)
             horizontalLineTo(4f)
             close()
-            moveTo(21.5f, 14.5f)
-            verticalLineToRelative(-5f)
-            horizontalLineTo(22f)
-            quadToRelative(0.43f, 0f, 0.71f, 0.29f)
-            reflectiveQuadTo(23f, 10.5f)
-            verticalLineToRelative(3f)
-            quadToRelative(0f, 0.42f, -0.29f, 0.71f)
-            reflectiveQuadTo(22f, 14.5f)
-            horizontalLineTo(21.5f)
+            moveTo(4f, 18f)
+            horizontalLineTo(15f)
+            lineToRelative(4.5f, -6f)
+            lineTo(15f, 6f)
+            horizontalLineTo(4f)
+            verticalLineTo(18f)
+            close()
+            moveTo(9.5f, 12f)
             close()
           }
         }
         .build()
-    return _battery_android_full!!
+    return _label!!
   }
 
-private var _battery_android_full: ImageVector? = null
+private var _label: ImageVector? = null
 
 @Preview
 @Composable
 private fun Preview(): Unit {
   Box(modifier = Modifier.padding(12.dp)) {
-    Image(imageVector = battery_android_full, contentDescription = "")
+    Image(imageVector = Label, contentDescription = "")
   }
 }
