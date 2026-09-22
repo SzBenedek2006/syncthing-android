@@ -1,6 +1,7 @@
 package dev.benedek.syncthingandroid.service
 
 import android.Manifest
+import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
@@ -21,6 +22,7 @@ import dev.benedek.syncthingandroid.activities.FirstStartActivity
 import dev.benedek.syncthingandroid.activities.LogActivity
 import dev.benedek.syncthingandroid.activities.MainActivity
 import dev.benedek.syncthingandroid.util.atLeastSdk
+import dev.benedek.syncthingandroid.util.atMostSdk
 import kotlin.math.absoluteValue
 
 class NotificationHandler(private val context: Context) {
@@ -155,7 +157,16 @@ class NotificationHandler(private val context: Context) {
 				val serviceType = atLeastSdk(34) {
 					ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 				} ?: 0
-				ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)
+				atMostSdk(
+					Build.VERSION_CODES.S,
+					{ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)}
+				) {
+					try {
+						ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)
+					} catch (e: ForegroundServiceStartNotAllowedException) {
+						Log.w("SyncthingService", "Unable to start foreground service from background", e)
+					}
+				}
 			} else {
 				Log.v(TAG, "Updating notification")
 				notificationManager.notify(idToShow, builder.build())
