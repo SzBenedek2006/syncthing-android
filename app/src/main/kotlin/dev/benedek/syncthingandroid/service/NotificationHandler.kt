@@ -133,10 +133,20 @@ class NotificationHandler(private val context: Context) {
 		 * Reason for two separate IDs: if one of the notification channels is hidden then
 		 * the startForeground() below won't update the notification but use the old one.
 		 */
+
 		val idToShow: Int = if (syncthingRunning) ID_PERSISTENT else ID_PERSISTENT_WAITING
 		val idToCancel: Int = if (syncthingRunning) ID_PERSISTENT_WAITING else ID_PERSISTENT
 		val intent = Intent(context, MainActivity::class.java)
 		val channel = (if (syncthingRunning) persistentChannel else persistentChannelWaiting)
+		val stopIntent = Intent(context, SyncthingService::class.java).apply {
+			action = SyncthingService.ACTION_STOP
+		}
+		val stopPendingIntent = PendingIntent.getService(
+			context,
+			0,
+			stopIntent,
+			PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+		)
 		val builder = getNotificationBuilder(channel)
 			.setContentTitle(context.getString(title))
 			.setSmallIcon(R.drawable.ic_stat_notify)
@@ -150,6 +160,11 @@ class NotificationHandler(private val context: Context) {
 					intent,
 					PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
 				)
+			)
+			.addAction(
+				R.drawable.power_settings_new_24px,
+				context.getString(R.string.stop),
+				stopPendingIntent
 			)
 		if (!appShutdownInProgress) {
 			if (startForegroundService) {
