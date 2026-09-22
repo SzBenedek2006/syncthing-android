@@ -163,7 +163,7 @@ class NotificationHandler(private val context: Context) {
 			)
 			.addAction(
 				R.drawable.power_settings_new_24px,
-				context.getString(R.string.stop),
+				context.getString(R.string.exit),
 				stopPendingIntent
 			)
 		if (!appShutdownInProgress) {
