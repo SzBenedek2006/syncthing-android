@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.Process.killProcess
+import android.os.Process.myPid
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
@@ -24,6 +26,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.atomic.AtomicReference
+import kotlin.system.exitProcess
 
 /**
  * Holds the native syncthing instance and provides an API to access it.
@@ -173,7 +176,14 @@ class SyncthingService : Service() {
 		}
 		notificationHandler.updatePersistentNotification(this)
 
-		if (ACTION_RESTART == action && this.currentState == State.ACTIVE) {
+		if (ACTION_STOP == action) {
+			shutdown(State.DISABLED) {
+				Log.i(TAG, "Stopping android service!")
+				stopSelf()
+				Log.i(TAG, "Stopping app process!")
+				exitProcess(0)
+			}
+		} else if (ACTION_RESTART == action && this.currentState == State.ACTIVE) {
 			shutdown(State.INIT) { this.launchStartupTask() }
 		} else if (ACTION_RESET_DATABASE == action) {
 			shutdown(State.INIT) {
@@ -601,6 +611,12 @@ class SyncthingService : Service() {
 			)
 		}
 		private const val TAG = "SyncthingService"
+
+		/**
+		 * Intent action to stop SyncthingService.
+		 */
+		const val ACTION_STOP: String =
+			"${BuildConfig.APPLICATION_ID}.service.SyncthingService.STOP"
 
 		/**
 		 * Intent action to perform a Syncthing restart.
