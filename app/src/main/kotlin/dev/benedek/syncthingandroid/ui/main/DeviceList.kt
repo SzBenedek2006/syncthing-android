@@ -50,7 +50,6 @@ fun DeviceList(
 		LazyColumn(Modifier.fillMaxSize()) {
 			items(
 				devices,
-				key = { it.deviceID ?: it.hashCode() } // TODO: Test performance
 			) { device ->
 				DeviceListItem(
 					device,

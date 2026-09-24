@@ -70,7 +70,6 @@ fun FolderList(
 		LazyColumn(Modifier.fillMaxSize()) {
 			items(
 				folders,
-				key = { it.id ?: it.hashCode() } // TODO: Test perf.
 			) { folder ->
 				folderStatuses[folder.id]?.let { FolderListItem(folder, it) }
 			}
