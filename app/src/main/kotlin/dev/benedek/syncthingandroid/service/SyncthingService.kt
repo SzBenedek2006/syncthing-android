@@ -1,6 +1,6 @@
 package dev.benedek.syncthingandroid.service
 
-import android.app.Service // TODO: Move to androidx
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,8 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.os.Process.killProcess
-import android.os.Process.myPid
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager

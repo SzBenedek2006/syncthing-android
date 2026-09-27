@@ -33,7 +33,6 @@ import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import dev.benedek.syncthingandroid.viewmodel.SettingsViewModel
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
-import me.zhanghai.compose.preference.preference
 
 @Composable
 fun About(contentPadding: PaddingValues, viewModel: SettingsViewModel) {

@@ -1,8 +1,8 @@
 package dev.benedek.syncthingandroid.http.dto
 
+import dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_CONNECTIONS
 import dev.benedek.syncthingandroid.model.DeviceState
 import kotlin.math.max
-import dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_CONNECTIONS
 
 /**
  *

@@ -15,8 +15,8 @@ import androidx.core.graphics.toColorInt
 import com.google.gson.Gson
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
-import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.http.dto.SystemConnections
+import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression

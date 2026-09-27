@@ -15,15 +15,15 @@ import dev.benedek.syncthingandroid.activities.ShareActivity
 import dev.benedek.syncthingandroid.http.GetRequest
 import dev.benedek.syncthingandroid.http.PostConfigRequest
 import dev.benedek.syncthingandroid.http.PostRequest
+import dev.benedek.syncthingandroid.http.dto.DbStatus
+import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Completion
 import dev.benedek.syncthingandroid.model.CompletionInfo
 import dev.benedek.syncthingandroid.model.Config
 import dev.benedek.syncthingandroid.model.Config.Gui
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.model.Folder
-import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.model.IgnoredFolder
 import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice

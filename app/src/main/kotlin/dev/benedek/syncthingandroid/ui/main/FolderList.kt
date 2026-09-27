@@ -39,8 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FolderActivity
-import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.http.dto.DbStatus
+import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.icons.Folder
