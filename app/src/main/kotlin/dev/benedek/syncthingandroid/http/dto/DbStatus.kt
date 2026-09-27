@@ -5,7 +5,7 @@ import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_CONNECTIONS
 
 /**
- * This contains the data returned by [URI_CONNECTIONS] (`/rest/system/connections` )
+ * This contains the data returned by GET [URI_CONNECTIONS] (`/rest/system/connections` )
  * This is up to date as of Syncthing version 2.1
  */
 data class DbStatus(
