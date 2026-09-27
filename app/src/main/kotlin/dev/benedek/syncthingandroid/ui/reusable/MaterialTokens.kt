@@ -16,6 +16,87 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 
+object ElevationTokens {
+	val Level0 = 0.0.dp
+	val Level1 = 1.0.dp
+	val Level2 = 3.0.dp
+	val Level3 = 6.0.dp
+	val Level4 = 8.0.dp
+	val Level5 = 12.0.dp
+}
+
+enum class TypographyKeyTokens {
+	BodyLarge,
+	BodyMedium,
+	BodySmall,
+	DisplayLarge,
+	DisplayMedium,
+	DisplaySmall,
+	HeadlineLarge,
+	HeadlineMedium,
+	HeadlineSmall,
+	LabelLarge,
+	LabelMedium,
+	LabelSmall,
+	TitleLarge,
+	TitleMedium,
+	TitleSmall,
+	// TODO update with the generated tokens once available
+	BodyLargeEmphasized,
+	BodyMediumEmphasized,
+	BodySmallEmphasized,
+	DisplayLargeEmphasized,
+	DisplayMediumEmphasized,
+	DisplaySmallEmphasized,
+	HeadlineLargeEmphasized,
+	HeadlineMediumEmphasized,
+	HeadlineSmallEmphasized,
+	LabelLargeEmphasized,
+	LabelMediumEmphasized,
+	LabelSmallEmphasized,
+	TitleLargeEmphasized,
+	TitleMediumEmphasized,
+	TitleSmallEmphasized,
+}
+
+
+internal object AssistChipTokens {
+	val ContainerHeight = 32.0.dp
+	val ContainerShape = ShapeKeyTokens.CornerSmall
+	val DisabledLabelTextColor = ColorSchemeKeyTokens.OnSurface
+	const val DisabledLabelTextOpacity = 0.38f
+	val DraggedContainerElevation = ElevationTokens.Level4
+	val DraggedLabelTextColor = ColorSchemeKeyTokens.OnSurface
+	val ElevatedContainerColor = ColorSchemeKeyTokens.SurfaceContainerLow
+	val ElevatedContainerElevation = ElevationTokens.Level1
+	val ElevatedDisabledContainerColor = ColorSchemeKeyTokens.OnSurface
+	val ElevatedDisabledContainerElevation = ElevationTokens.Level0
+	const val ElevatedDisabledContainerOpacity = 0.12f
+	val ElevatedFocusContainerElevation = ElevationTokens.Level1
+	val ElevatedHoverContainerElevation = ElevationTokens.Level2
+	val ElevatedPressedContainerElevation = ElevationTokens.Level1
+	val FlatContainerElevation = ElevationTokens.Level0
+	val FlatDisabledOutlineColor = ColorSchemeKeyTokens.OnSurface
+	const val FlatDisabledOutlineOpacity = 0.12f
+	val FlatFocusOutlineColor = ColorSchemeKeyTokens.OnSurface
+	val FlatOutlineColor = ColorSchemeKeyTokens.OutlineVariant
+	val FlatOutlineWidth = 1.0.dp
+	val FocusIndicatorColor = ColorSchemeKeyTokens.Secondary
+	val FocusLabelTextColor = ColorSchemeKeyTokens.OnSurface
+	val HoverLabelTextColor = ColorSchemeKeyTokens.OnSurface
+	val LabelTextColor = ColorSchemeKeyTokens.OnSurface
+	val LabelTextFont = TypographyKeyTokens.LabelLarge
+	val PressedLabelTextColor = ColorSchemeKeyTokens.OnSurface
+	val DisabledIconColor = ColorSchemeKeyTokens.OnSurface
+	const val DisabledIconOpacity = 0.38f
+	val DraggedIconColor = ColorSchemeKeyTokens.Primary
+	val FocusIconColor = ColorSchemeKeyTokens.Primary
+	val HoverIconColor = ColorSchemeKeyTokens.Primary
+	val IconColor = ColorSchemeKeyTokens.Primary
+	val IconSize = 18.0.dp
+	val PressedIconColor = ColorSchemeKeyTokens.Primary
+}
+
 enum class ColorSchemeKeyTokens {
 	Background,
 	Error,
