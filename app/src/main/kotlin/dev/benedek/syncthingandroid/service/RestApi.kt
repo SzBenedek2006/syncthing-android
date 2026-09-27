@@ -116,7 +116,7 @@ class RestApi(
 
 		getSystemInfo { info: SystemInfo? ->
 			localDeviceId = info?.myID
-			urVersionMax = info?.urVersionMax ?: 0
+			urVersionMax = 0 // FIXME
 			synchronized(asyncQueryCompleteLock) {
 				asyncQuerySystemInfoComplete = true
 				checkReadConfigFromRestApiCompleted()

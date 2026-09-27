@@ -95,7 +95,7 @@ class SettingsViewModel : ViewModel() {
 		if (currentApi == null) return
 
 		currentApi.getSystemInfo { info ->
-			cachedUrVersionMax = info?.urVersionMax ?: 0
+			cachedUrVersionMax = 0 // FIXME
 
 			val options = currentApi.options
 			if (options != null) {

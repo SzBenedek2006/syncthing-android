@@ -20,7 +20,6 @@ class SystemInfo {
 	)
 	var discoveryErrors: MutableMap<String, String>? = null
 	var discoveryStatus: Map<String, DiscoveryEntry>? = null
-	var urVersionMax: Int = 0
 
 	data class DiscoveryEntry(
 		val error: String? = null
