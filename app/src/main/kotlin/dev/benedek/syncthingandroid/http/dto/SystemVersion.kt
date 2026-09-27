@@ -1,4 +1,4 @@
-package dev.benedek.syncthingandroid.model
+package dev.benedek.syncthingandroid.http.dto
 
 /**
  * This contains the data returned by GET /rest/system/version
