@@ -613,9 +613,7 @@ fun AppScaffold(
 	topNavigationOnClick: (() -> Unit)? = null,
 	topNavigationActive: Boolean = true,
 	topNavigationIcon: ImageVector? = null,
-	topActionOnClick: (() -> Unit)? = null,
-	topActionActive: Boolean = true,
-
+	topActions: @Composable () -> Unit = {},
 	content: @Composable (PaddingValues) -> Unit,
 ) {
 	val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -641,16 +639,7 @@ fun AppScaffold(
 							}
 						}
 					},
-					actions = {
-						if (topActionOnClick != null) {
-							IconButton(
-								onClick = topActionOnClick,
-								enabled = topActionActive
-							) {
-								Icon(Icons.Filled.Done, "Localized description")
-							}
-						}
-					},
+					actions = { topActions() },
 					colors = TopAppBarDefaults.topAppBarColors(
 						containerColor = MaterialTheme.colorScheme.background,
 						titleContentColor = MaterialTheme.colorScheme.onBackground,
@@ -1334,8 +1323,12 @@ fun AppScaffoldPreview() {
 			topNavigationOnClick = {},
 			topNavigationActive = true,
 			topNavigationIcon = Icons.AutoMirrored.Outlined.ArrowBack,
-			topActionOnClick = {},
-			topActionActive = true,
+			topActions = { IconButton(
+				onClick = {},
+				enabled = true
+			) {
+				Icon(Icons.Filled.Done, "Localized description")
+			} },
 
 		) { innerPadding ->
 			Box(

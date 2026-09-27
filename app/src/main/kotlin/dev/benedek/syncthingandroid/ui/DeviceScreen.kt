@@ -30,6 +30,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Label
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeviceHub
 import androidx.compose.material.icons.outlined.Devices
@@ -104,8 +105,16 @@ fun DeviceScreen(
 		topAppBarTitle =
 			if (viewModel.isCreateMode) stringResource(R.string.add_device)
 			else stringResource(R.string.edit_device),
-		topActionOnClick = if (viewModel.deviceNeedsToUpdate) {{ viewModel.onDone(context, onFinish) }} else null,
-		topActionActive = viewModel.isValidDevice,
+		topActions = {
+			if (viewModel.deviceNeedsToUpdate) {
+				IconButton(
+					onClick = { viewModel.onDone(context, onFinish) },
+					enabled = viewModel.isValidDevice
+				) {
+					Icon(Icons.Filled.Done, "Localized description")
+				}
+			}
+		},
 		topNavigationOnClick = { viewModel.onCancel(onFinish) },
 		modifier = Modifier.pointerInput(Unit) {
 			detectTapGestures(onTap = {
