@@ -21,22 +21,31 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Devices
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ChipColors
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
@@ -51,6 +60,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -59,7 +70,6 @@ import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -71,6 +81,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.activities.FolderActivity
+import dev.benedek.syncthingandroid.model.DeviceSort
+import dev.benedek.syncthingandroid.model.FolderSort
+import dev.benedek.syncthingandroid.model.Sort
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.icons.ContentCopy
 import dev.benedek.syncthingandroid.ui.icons.Share
@@ -174,6 +187,101 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 				topNavigationOnClick = {
 					scope.launch {
 						drawerState.apply { if (isClosed) open() else close() }
+					}
+				},
+				topActions = {
+					val contentColor = MaterialTheme.colorScheme.onSurface
+					val isFolderPage = pagerState.currentPage == 0
+					/**
+					 * Size according to https://m3.material.io/components/chips/specs
+					 */
+					val iconSize = 18.dp
+					val scaleY = if (if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending) -1f else 1f
+
+					val currentSortedByResId =
+						if (isFolderPage) viewModel.foldersSortedBy.resId
+						else viewModel.devicesSortedBy.resId
+
+					var expanded by remember { mutableStateOf(false) }
+
+					AssistChip(
+						onClick = { expanded = !expanded},
+						label = { Text(stringResource(currentSortedByResId)) },
+						leadingIcon = {
+							Icon(
+								Icons.AutoMirrored.Outlined.Sort,
+								null,
+								Modifier.size(iconSize).scale(1f, scaleY),
+								tint = contentColor
+							)
+						},
+						colors = ChipColors(
+							containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 1/3f),
+							labelColor = MaterialTheme.colorScheme.onSurface,
+							leadingIconContentColor = MaterialTheme.colorScheme.primary,
+							trailingIconContentColor = MaterialTheme.colorScheme.primary,
+							disabledContainerColor = Color.Transparent,
+							disabledLabelColor = MaterialTheme.colorScheme.onSurface
+									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledLabelTextOpacity),
+							disabledLeadingIconContentColor =
+								MaterialTheme.colorScheme.onSurface
+									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
+							disabledTrailingIconContentColor =
+								MaterialTheme.colorScheme.onSurface
+									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
+						),
+						border = null
+					)
+					DropdownMenu(
+						expanded = expanded,
+						onDismissRequest = { expanded = false }
+					) {
+						val isAscending = if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending
+						val toggleAscending = {
+							if (isFolderPage) viewModel.folderAscending = !viewModel.folderAscending
+							else viewModel.deviceAscending = !viewModel.deviceAscending
+						}
+						val sortEntries: List<Sort> =
+							if (isFolderPage) FolderSort.entries
+							else DeviceSort.entries
+
+						val setSortedBy: (Sort) -> Unit = { sort ->
+							if (isFolderPage) viewModel.foldersSortedBy = sort as FolderSort
+							else viewModel.devicesSortedBy = sort as DeviceSort
+						}
+						val sortedBy: Sort = if (isFolderPage) viewModel.foldersSortedBy else viewModel.devicesSortedBy
+
+						for (sort in sortEntries)
+							DropdownMenuItem(
+								text = { Text(stringResource(sort.resId)) },
+								onClick = {
+									setSortedBy(sort)
+									expanded = false
+								},
+								trailingIcon = {
+									RadioButton(
+										selected = sort == sortedBy,
+										onClick = {
+											setSortedBy(sort)
+										}
+									)
+								}
+							)
+
+						HorizontalDivider()
+						DropdownMenuItem(
+							trailingIcon = {
+								Checkbox(
+									checked = isAscending,
+									onCheckedChange = { toggleAscending() }
+								)
+							},
+							text = { Text("Ascending") },
+							onClick = {
+								toggleAscending()
+								expanded = false
+							}
+						)
 					}
 				},
 				floatingActionButton = {

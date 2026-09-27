@@ -3,6 +3,7 @@
 package dev.benedek.syncthingandroid.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -13,8 +14,10 @@ import androidx.lifecycle.viewModelScope
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import dev.benedek.syncthingandroid.model.Device
+import dev.benedek.syncthingandroid.model.DeviceSort
 import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Folder
+import dev.benedek.syncthingandroid.model.FolderSort
 import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.service.RestApi
@@ -26,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import java.util.Collections.reverseOrder
 import kotlin.time.Duration.Companion.milliseconds
 
 const val HISTORY_MAX_SIZE = 120
@@ -76,7 +80,49 @@ class MainViewModel : ViewModel() {
 	}
 
 
+	var foldersSortedBy by mutableStateOf(FolderSort.LABEL)
+	var folderAscending by mutableStateOf(false)
 
+
+	var devicesSortedBy by mutableStateOf(DeviceSort.NAME)
+	var deviceAscending by mutableStateOf(false)
+
+
+	private fun getFolderComparator(): Comparator<Folder> {
+		val statuses = dbStatuses.value
+		Log.d("stateChanged", statuses.values.toList().getOrNull(0)?.stateChanged.toString())
+		Log.d("state", statuses.values.toList().getOrNull(0)?.state.toString())
+
+		val comparator: Comparator<Folder> = when (foldersSortedBy) {
+			FolderSort.LABEL -> compareBy(String.CASE_INSENSITIVE_ORDER) { it.label ?: it.id ?: "" }
+			FolderSort.DATE -> compareByDescending { statuses[it.id]?.stateChanged ?: "" }
+			FolderSort.STATE -> compareBy { statuses[it.id]?.state }
+			FolderSort.PAUSED -> compareByDescending { it.paused }
+			FolderSort.LOCAL_SIZE -> compareByDescending { statuses[it.id]?.localBytes ?: 0L }
+			FolderSort.GLOBAL_SIZE -> compareByDescending { statuses[it.id]?.globalBytes ?: 0L }
+		}
+
+		// TODO: comparator.reversed() when min API level 24 is set
+		return if (!folderAscending) reverseOrder(comparator) else comparator
+	}
+
+	private fun getDeviceComparator(): Comparator<Device> {
+		val connections = systemConnections.connections ?: emptyMap()
+
+		val comparator: Comparator<Device> = when (devicesSortedBy) {
+			DeviceSort.NAME -> compareBy(String.CASE_INSENSITIVE_ORDER) { it.name }
+			// For strings in ISO-8601 format like "at" (timestamp), alphabetical descending works perfectly for dates
+			DeviceSort.DATE -> compareByDescending { connections[it.deviceID]?.at ?: "" }
+			DeviceSort.STATE -> compareBy { systemConnections.connections?.get(it.deviceID)?.state }
+			// Map boolean to sort paused devices first
+			DeviceSort.PAUSED -> compareByDescending { connections[it.deviceID]?.paused ?: false }
+			DeviceSort.DOWNLOAD_SPEED -> compareByDescending { connections[it.deviceID]?.inBits ?: 0L }
+			DeviceSort.UPLOAD_SPEED -> compareByDescending { connections[it.deviceID]?.outBits ?: 0L }
+		}
+
+		// TODO: comparator.reversed() when min API level 24 is set
+		return if (!folderAscending) reverseOrder(comparator) else comparator
+	}
 
 
 	fun startFetchSystemData() {
@@ -103,7 +149,7 @@ class MainViewModel : ViewModel() {
 				updateFolderStatuses()
 				delay(apiCallDelay.milliseconds)
 
-				val _devices = api?.getDevices(false).orEmpty().sortedWith(DEVICES_COMPARATOR) // api call 2
+				val _devices = api?.getDevices(false).orEmpty().sortedWith(getDeviceComparator()) // api call 2
 				devices = _devices
 
 				delay(apiCallDelay.milliseconds)
@@ -156,7 +202,7 @@ class MainViewModel : ViewModel() {
 
 
 	private fun updateFolderStatuses() {
-		val folders = api?.folders?.filterNotNull() ?: return
+		val folders = api?.folders?.filterNotNull()?.sortedWith(getFolderComparator()) ?: return
 		this.folders = folders
 
 		for (folder in folders) {
