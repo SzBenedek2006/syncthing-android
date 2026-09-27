@@ -804,5 +804,11 @@ If you deny this permission, you can only access these features through the web 
 	<string name="device_already_added">Device already added</string>
 	<string name="device_already_added_edit_question">You have already added this device.\nWould you like to edit it instead?</string>
 	<string name="stop">Stop</string>
+	<string name="modified">Modified</string>
+	<string name="local_size">Local size</string>
+	<string name="global_size">Global size</string>
+	<string name="download_speed">Download speed</string>
+	<string name="upload_speed">Upload speed</string>
+	<string name="state">State</string>
 
 </resources>
