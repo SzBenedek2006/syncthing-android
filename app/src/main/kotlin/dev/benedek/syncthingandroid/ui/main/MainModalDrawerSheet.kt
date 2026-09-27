@@ -211,7 +211,7 @@ fun MainModalDrawerSheet(
 				titleWeight = titleWeight,
 				description = Util.readableTransferRate(
 					context,
-					viewModel.deviceStatuses.total?.inBits ?: 0
+					viewModel.systemConnections.total?.inBits ?: 0
 				),
 				descriptionWeight = descriptionWeight,
 				color = color,
@@ -221,7 +221,7 @@ fun MainModalDrawerSheet(
 				shape = shape,
 				chart = {
 					ComposeBasicLineChart(
-						values = viewModel.deviceStatusesHistory
+						values = viewModel.systemConnectionsHistory
 							.map { it.total?.inBits ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
 						modifier = Modifier.weight(0.3f).height(tileHeight)
@@ -235,7 +235,7 @@ fun MainModalDrawerSheet(
 				titleWeight = titleWeight,
 				description = Util.readableTransferRate(
 					context,
-					viewModel.deviceStatuses.total?.outBits ?: 0
+					viewModel.systemConnections.total?.outBits ?: 0
 				),
 				descriptionWeight = descriptionWeight,
 				color = color,
@@ -245,7 +245,7 @@ fun MainModalDrawerSheet(
 				shape = shape,
 				chart = {
 					ComposeBasicLineChart(
-						values = viewModel.deviceStatusesHistory
+						values = viewModel.systemConnectionsHistory
 							.map { it.total?.outBits ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
 						modifier = Modifier.weight(0.3f).height(tileHeight)

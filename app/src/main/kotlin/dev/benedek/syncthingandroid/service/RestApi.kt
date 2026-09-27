@@ -20,10 +20,10 @@ import dev.benedek.syncthingandroid.model.CompletionInfo
 import dev.benedek.syncthingandroid.model.Config
 import dev.benedek.syncthingandroid.model.Config.Gui
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.model.DeviceStatuses
+import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.model.Folder
-import dev.benedek.syncthingandroid.model.FolderStatus
+import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.model.IgnoredFolder
 import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
@@ -50,7 +50,7 @@ class RestApi(
 	private var config: Config? = null
 	private var localDeviceId: String? = null
 	private var urVersionMax: Int = 0
-	private var previousDeviceStatuses: DeviceStatuses? = null
+	private var previousSystemConnections: SystemConnections? = null
 	/**
 	 * Stores the timestamp of the last successful request to [GetRequest.URI_CONNECTIONS].
 	 */
@@ -463,39 +463,39 @@ class RestApi(
 	/**
 	 * Returns connection info for the local device and all connected devices.
 	 */
-	fun getConnections(listener: (DeviceStatuses?) -> Unit) {
+	fun getConnections(listener: (SystemConnections?) -> Unit) {
 		GetRequest(context, this.url, GetRequest.URI_CONNECTIONS, apiKey, null) { result: String? ->
 			val now = System.currentTimeMillis()
 			val msElapsed = now - previousConnectionTime
 
-			if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousDeviceStatuses != null) {
-				listener(deepCopy(previousDeviceStatuses, DeviceStatuses::class.java))
+			if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousSystemConnections != null) {
+				listener(deepCopy(previousSystemConnections, SystemConnections::class.java))
 				return@GetRequest
 			}
 
 			previousConnectionTime = now
-			val deviceStatuses = Gson().fromJson(result, DeviceStatuses::class.java)
+			val systemConnections = Gson().fromJson(result, SystemConnections::class.java)
 
 
-			deviceStatuses.connectionsMap?.forEach { (key, value) ->
+			systemConnections.connections?.forEach { (key, value) ->
 				value?.completion = completion.getDeviceCompletion(key)
-				val prev = previousDeviceStatuses?.connectionsMap?.get(key)
-					?: DeviceStatuses.DeviceStatus()
+				val prev = previousSystemConnections?.connections?.get(key)
+					?: SystemConnections.DeviceStatus()
 				value?.setTransferRate(prev, msElapsed)
 			}
 
-			val prevTotal = previousDeviceStatuses?.total ?: DeviceStatuses.DeviceStatus()
-			deviceStatuses.total?.setTransferRate(prevTotal, msElapsed)
-			previousDeviceStatuses = deviceStatuses
+			val prevTotal = previousSystemConnections?.total ?: SystemConnections.TotalStatus()
+			systemConnections.total?.setTransferRate(prevTotal, msElapsed)
+			previousSystemConnections = systemConnections
 
-			listener(deepCopy(deviceStatuses, DeviceStatuses::class.java))
+			listener(deepCopy(systemConnections, SystemConnections::class.java))
 		}
 	}
 
 	/**
 	 * Returns status information about the folder with the given id.
 	 */
-	fun getFolderStatus(folderId: String, listener: (String?, FolderStatus?) -> Unit) {
+	fun getFolderStatus(folderId: String, listener: (String?, DbStatus?) -> Unit) {
 		GetRequest(
 			context,
 			this.url,
@@ -503,8 +503,8 @@ class RestApi(
 			apiKey,
 			mutableMapOf("folder" to folderId)
 		) { result: String? ->
-			val folderStatus: FolderStatus? = Gson().fromJson(result, FolderStatus::class.java)
-			listener(folderId, folderStatus)
+			val dbStatus: DbStatus? = Gson().fromJson(result, DbStatus::class.java)
+			listener(folderId, dbStatus)
 		}
 	}
 
@@ -613,7 +613,7 @@ class RestApi(
 				)
 				return true
 			}
-			return options.isUsageReportingDecided(urVersionMax ?: 0)
+			return options.isUsageReportingDecided(urVersionMax)
 		}
 
 	fun setUsageReporting(acceptUsageReporting: Boolean) {

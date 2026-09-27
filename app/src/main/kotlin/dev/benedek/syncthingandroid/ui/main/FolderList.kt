@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -41,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.FolderActivity
 import dev.benedek.syncthingandroid.model.Folder
-import dev.benedek.syncthingandroid.model.FolderStatus
+import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.service.Constants
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.icons.Folder
@@ -58,7 +57,7 @@ import kotlin.math.roundToInt
 @Composable
 fun FolderList(
 	folders: List<Folder>?,
-	folderStatuses: Map<String, FolderStatus> = emptyMap(),
+	dbStatuses: Map<String, DbStatus> = emptyMap(),
 ) {
 	if (folders == null) {
 		Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
@@ -71,7 +70,7 @@ fun FolderList(
 			items(
 				folders,
 			) { folder ->
-				folderStatuses[folder.id]?.let { FolderListItem(folder, it) }
+				dbStatuses[folder.id]?.let { FolderListItem(folder, it) }
 			}
 		}
 	}
@@ -81,7 +80,7 @@ fun FolderList(
 @Composable
 fun FolderListItem(
 	folder: Folder,
-	folderStatus: FolderStatus
+	dbStatus: DbStatus
 ) {
 	val context = LocalContext.current
 	Row(
@@ -137,9 +136,9 @@ fun FolderListItem(
 				style = MaterialTheme.typography.bodySmall
 			)
 
-			val neededItems = folderStatus.needFiles + folderStatus.needDirectories +
-					folderStatus.needSymlinks + folderStatus.needDeletes
-			val outOfSync = folderStatus.state == "idle" && neededItems > 0
+			val neededItems = dbStatus.needFiles + dbStatus.needDirectories +
+					dbStatus.needSymlinks + dbStatus.needDeletes
+			val outOfSync = dbStatus.state == "idle" && neededItems > 0
 			val showOverride = folder.type == Constants.FOLDER_TYPE_SEND_ONLY && outOfSync
 			val context = LocalContext.current
 			if (showOverride) {
@@ -159,9 +158,9 @@ fun FolderListItem(
 			Text(
 				text = LocalResources.current.getQuantityString(
 					R.plurals.files,
-					folderStatus.inSyncFiles.toInt(),
-					folderStatus.inSyncFiles,
-					folderStatus.globalFiles
+					dbStatus.inSyncFiles.toInt(),
+					dbStatus.inSyncFiles,
+					dbStatus.globalFiles
 				),
 				modifier = Modifier.padding(top = 4.dp),
 				style = MaterialTheme.typography.bodySmall
@@ -169,22 +168,22 @@ fun FolderListItem(
 			Text(
 				text = LocalResources.current.getString(
 					R.string.folder_size_format,
-					readableFileSize(LocalContext.current, folderStatus.inSyncBytes),
-					readableFileSize(LocalContext.current, folderStatus.globalBytes)
+					readableFileSize(LocalContext.current, dbStatus.inSyncBytes),
+					readableFileSize(LocalContext.current, dbStatus.globalBytes)
 				),
 				style = MaterialTheme.typography.bodySmall
 			)
 
 			Column {
-				val state = getLocalizedState(context, folderStatus)
-				val color = getStatusColor(folderStatus)
+				val state = getLocalizedState(context, dbStatus)
+				val color = getStatusColor(dbStatus)
 				Text(
 					text = state,
 					color = color,
 					style = MaterialTheme.typography.labelMedium
 				)
 				// Invalid state
-				val invalidMsg = folderStatus.invalid ?: folder.invalid
+				val invalidMsg = dbStatus.invalid ?: folder.invalid
 				if (!invalidMsg.isNullOrEmpty()) {
 					Text(
 						text = invalidMsg,
@@ -211,7 +210,7 @@ fun FolderListItem(
 }
 
 @Composable
-fun getStatusColor(folderStatus: FolderStatus): Color {
+fun getStatusColor(dbStatus: DbStatus): Color {
 	val blue = MaterialTheme.extendedColorScheme.blue.color
 	val green = MaterialTheme.extendedColorScheme.green.color
 	val red = MaterialTheme.extendedColorScheme.red.color
@@ -219,13 +218,13 @@ fun getStatusColor(folderStatus: FolderStatus): Color {
 
 
 
-	return remember(folderStatus) {
+	return remember(dbStatus) {
 		val neededItems =
-			folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
-		val outOfSync = folderStatus.state == "idle" && neededItems > 0
+			dbStatus.needFiles + dbStatus.needDirectories + dbStatus.needSymlinks + dbStatus.needDeletes
+		val outOfSync = dbStatus.state == "idle" && neededItems > 0
 
 		if (outOfSync) Color.Red else
-			when (folderStatus.state) {
+			when (dbStatus.state) {
 				"idle" -> green
 				"scanning", "syncing" -> blue
 				"error" -> red
@@ -235,13 +234,13 @@ fun getStatusColor(folderStatus: FolderStatus): Color {
 }
 
 @Composable
-fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
-	return remember(folderStatus, context) {
+fun getLocalizedState(context: Context, dbStatus: DbStatus): String {
+	return remember(dbStatus, context) {
 		val neededItems =
-			folderStatus.needFiles + folderStatus.needDirectories + folderStatus.needSymlinks + folderStatus.needDeletes
-		val outOfSync = folderStatus.state == "idle" && neededItems > 0
+			dbStatus.needFiles + dbStatus.needDirectories + dbStatus.needSymlinks + dbStatus.needDeletes
+		val outOfSync = dbStatus.state == "idle" && neededItems > 0
 
-		when (folderStatus.state) {
+		when (dbStatus.state) {
 			"idle" -> {
 				if (outOfSync) context.getString(R.string.status_outofsync)
 				else context.getString(R.string.state_idle)
@@ -249,22 +248,22 @@ fun getLocalizedState(context: Context, folderStatus: FolderStatus): String {
 
 			"scanning" -> context.getString(R.string.state_scanning)
 			"syncing" -> {
-				val percentage = if (folderStatus.globalBytes != 0L)
-					(100f * folderStatus.inSyncBytes / folderStatus.globalBytes).roundToInt()
+				val percentage = if (dbStatus.globalBytes != 0L)
+					(100f * dbStatus.inSyncBytes / dbStatus.globalBytes).roundToInt()
 				else
 					100
 				context.getString(R.string.state_syncing, percentage)
 			}
 
 			"error" -> {
-				if (TextUtils.isEmpty(folderStatus.error)) {
+				if (TextUtils.isEmpty(dbStatus.error)) {
 					context.getString(R.string.state_error)
 				}
-				context.getString(R.string.state_error) + " (" + folderStatus.error + ")"
+				context.getString(R.string.state_error) + " (" + dbStatus.error + ")"
 			}
 
 			"unknown" -> context.getString(R.string.state_unknown)
-			else -> folderStatus.state.toString()
+			else -> dbStatus.state.toString()
 		}
 	}
 }
@@ -289,7 +288,7 @@ fun FolderListItemPreview() {
 					label = "Mao",
 					path = "/storage/emulated/0"
 				),
-				folderStatus = FolderStatus(
+				dbStatus = DbStatus(
 					state = "scanning",
 					invalid = "Message here"
 				)

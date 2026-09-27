@@ -13,9 +13,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.model.DeviceStatuses
+import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Folder
-import dev.benedek.syncthingandroid.model.FolderStatus
+import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.model.SystemInfo
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
@@ -55,15 +55,15 @@ class MainViewModel : ViewModel() {
 	/**
 	 * MutableStateFlow is better here because of the async nature of the api.
 	 */
-	var folderStatuses: MutableStateFlow<Map<String, FolderStatus>> = MutableStateFlow(emptyMap())
+	var dbStatuses: MutableStateFlow<Map<String, DbStatus>> = MutableStateFlow(emptyMap())
 
 	var devices by mutableStateOf<List<Device>?>(null)
 
 	/**
 	 * We get all the "connections" or "statuses" at once.
 	 */
-	var deviceStatuses by mutableStateOf(DeviceStatuses())
-	val deviceStatusesHistory = mutableStateListOf<DeviceStatuses>()
+	var systemConnections by mutableStateOf(SystemConnections())
+	val systemConnectionsHistory = mutableStateListOf<SystemConnections>()
 
 	private val DEVICES_COMPARATOR =
 		Comparator { lhs: Device?, rhs: Device? -> lhs!!.name.compareTo(rhs!!.name) }
@@ -110,8 +110,8 @@ class MainViewModel : ViewModel() {
 
 				api?.getConnections { conn -> // api call 3
 					if (conn != null) {
-						deviceStatuses = conn
-						deviceStatusesHistory.add(conn)
+						systemConnections = conn
+						systemConnectionsHistory.add(conn)
 						while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
 							announceConnectedHistory.remove(announceConnectedHistory.first())
 						}
@@ -163,9 +163,9 @@ class MainViewModel : ViewModel() {
 			val folderId = folder.id ?: continue
 
 			api?.getFolderStatus(folderId) { returnedId, status ->
-				folderStatuses.update { currentMap ->
+				dbStatuses.update { currentMap ->
 					currentMap + ((returnedId ?: "") to (status
-						?: FolderStatus())) // FIXME: Find a more robust way of doing this
+						?: DbStatus())) // FIXME: Find a more robust way of doing this
 				}
 			}
 

@@ -16,7 +16,7 @@ import com.google.gson.Gson
 import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.model.DeviceStatuses
+import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.service.SyncthingService
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Compression
@@ -178,8 +178,8 @@ class DeviceActivity : SyncthingActivity() {
 	 *
 	 * TODO: This is only called once on startup, should be called more often to properly display version/address changes.
 	 */
-	private fun onReceiveConnections(deviceStatuses: DeviceStatuses) {
-		val map = deviceStatuses.connectionsMap ?: return
+	private fun onReceiveConnections(systemConnections: SystemConnections) {
+		val map = systemConnections.connections ?: return
 		val device = device ?: return
 
 		val deviceExists = map.containsKey(device.deviceID)
@@ -213,9 +213,9 @@ class DeviceActivity : SyncthingActivity() {
 			}
 		}
 
-		api?.getConnections { deviceStatuses: DeviceStatuses? ->
+		api?.getConnections { systemConnections: SystemConnections? ->
 			this.onReceiveConnections(
-				deviceStatuses!!
+				systemConnections!!
 			)
 		}
 

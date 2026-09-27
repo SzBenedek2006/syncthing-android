@@ -221,7 +221,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 				}
 			) { paddingValues ->
 
-				val folderStatusesMap by viewModel.folderStatuses.collectAsStateWithLifecycle()
+				val folderStatusesMap by viewModel.dbStatuses.collectAsStateWithLifecycle()
 
 				HorizontalPager(
 					state = pagerState,
@@ -258,7 +258,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 						)
 						1 -> DeviceList(
 							viewModel.devices,
-							viewModel.deviceStatuses,
+							viewModel.systemConnections,
 						)
 					}
 					if (viewModel.devices != null && viewModel.folders != null) ReportDrawn() // Maybe there's a better place to put this.

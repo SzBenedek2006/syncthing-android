@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.model.Device
-import dev.benedek.syncthingandroid.model.DeviceStatuses
+import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -38,7 +38,7 @@ import dev.benedek.syncthingandroid.util.Util.readableTransferRate
 @Composable
 fun DeviceList(
 	devices: List<Device>?,
-	deviceStatuses: DeviceStatuses,
+	systemConnections: SystemConnections,
 ) {
 	if (devices == null) {
 		Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
@@ -53,7 +53,7 @@ fun DeviceList(
 			) { device ->
 				DeviceListItem(
 					device,
-					deviceStatuses.connectionsMap?.get(device.deviceID)
+					systemConnections.connections?.get(device.deviceID)
 				)
 			}
 		}
@@ -64,7 +64,7 @@ fun DeviceList(
 @Composable
 fun DeviceListItem(
 	device: Device,
-	deviceStatus: DeviceStatuses.DeviceStatus?
+	deviceStatus: SystemConnections.DeviceStatus?
 ) {
 	val context = LocalContext.current
 	val localizedDeviceStatus = getLocalizedDeviceStatus(deviceStatus, context)
@@ -142,7 +142,7 @@ data class LocalizedDeviceStatus(
 
 @Composable
 fun getLocalizedDeviceStatus(
-	deviceStatus: DeviceStatuses.DeviceStatus?,
+	deviceStatus: SystemConnections.DeviceStatus?,
 	context: Context
 ): LocalizedDeviceStatus {
 	val onSurface = MaterialTheme.colorScheme.onSurface
@@ -200,7 +200,7 @@ fun DeviceListPreview() {
 		dynamicColor = ThemeControls.isMonetEnabled,
 		darkTheme = ThemeControls.PREVIEW_DARK_THEME
 	) {
-		Surface { DeviceList(emptyList(), DeviceStatuses()) }
+		Surface { DeviceList(emptyList(), SystemConnections()) }
 	}
 }
 
@@ -211,6 +211,6 @@ fun DeviceListItemPreview() {
 		dynamicColor = ThemeControls.isMonetEnabled,
 		darkTheme = ThemeControls.PREVIEW_DARK_THEME
 	) {
-		Surface { DeviceListItem(Device(), DeviceStatuses.DeviceStatus()) }
+		Surface { DeviceListItem(Device(), SystemConnections.DeviceStatus()) }
 	}
 }
