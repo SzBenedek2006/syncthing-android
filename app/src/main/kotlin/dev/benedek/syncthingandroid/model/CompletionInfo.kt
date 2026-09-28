@@ -15,10 +15,10 @@ package dev.benedek.syncthingandroid.model
  * TODO: Implement the ui for them.
  *
  * @param globalBytes TODO
- * @param globalItems TODO
  * @param needBytes TODO
- * @param needDeletes TODO
+ * @param globalItems TODO
  * @param needItems TODO
+ * @param needDeletes TODO
  * @param remoteState TODO
  * @param sequence TODO
  */
@@ -26,10 +26,10 @@ data class CompletionInfo (
 	var completion: Double = 0.0, // CompletionPct float64
 
 	var globalBytes: Long = 0L, // GlobalBytes   int64
-	var globalItems: Int = 0, // GlobalItems   int
 	var needBytes: Long = 0L, // NeedBytes     int64
-	var needDeletes: Int = 0, // NeedDeletes   int
+	var globalItems: Int = 0, // GlobalItems   int
 	var needItems: Int = 0, // NeedItems     int
+	var needDeletes: Int = 0, // NeedDeletes   int
 	var remoteState: RemoteState = RemoteState.UNKNOWN, // RemoteState   remoteFolderState
 	var sequence: Long = 0L, // Sequence      int64
 
