@@ -1,6 +1,6 @@
 package dev.benedek.syncthingandroid.http.dto
 
-import dev.benedek.syncthingandroid.model.RemoteState
+import com.google.gson.annotations.SerializedName
 
 /**
  * This contains the data returned by GET `/rest/db/completion`
@@ -36,5 +36,36 @@ data class DbCompletion (
 	var needDeletes: Int = 0, // NeedDeletes   int
 	var remoteState: RemoteState = RemoteState.UNKNOWN, // RemoteState   remoteFolderState
 	var sequence: Long = 0L, // Sequence      int64
-
-)
+) {
+	/**
+	 * This is up to date as of Syncthing version 2.1
+	 *
+	 * The only place where I found a list of values is this snippet from *folderstate.go*
+	 * ```Go
+	 * func (s remoteFolderState) String() string {
+	 * 	switch s {
+	 * 	case remoteFolderUnknown:
+	 * 		return "unknown"
+	 * 	case remoteFolderNotSharing:
+	 * 		return "notSharing"
+	 * 	case remoteFolderPaused:
+	 * 		return "paused"
+	 * 	case remoteFolderValid:
+	 * 		return "valid"
+	 * 	default:
+	 * 		return "unknown"
+	 * 	}
+	 * }
+	 * ```
+	 */
+	enum class RemoteState {
+		@SerializedName("unknown")
+		UNKNOWN,
+		@SerializedName("notSharing")
+		NOT_SHARING,
+		@SerializedName("paused")
+		PAUSED,
+		@SerializedName("valid")
+		VALID
+	}
+}
