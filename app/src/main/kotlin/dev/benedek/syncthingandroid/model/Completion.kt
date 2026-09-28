@@ -1,16 +1,17 @@
 package dev.benedek.syncthingandroid.model
 
 import android.util.Log
+import dev.benedek.syncthingandroid.http.dto.DbCompletion
 import kotlin.math.floor
 
 /**
  * This class caches remote folder and device synchronization
- * completion indicators defined in [CompletionInfo.CompletionInfo]
+ * completion indicators defined in [dev.benedek.syncthingandroid.http.dto.DbCompletion.CompletionInfo]
  * according to syncthing's REST "/completion" JSON result schema.
  * Completion model of syncthing's web UI is completion[deviceId][folderId]
  */
 class Completion {
-	var deviceFolderMap: HashMap<String?, HashMap<String?, CompletionInfo?>> =
+	var deviceFolderMap: HashMap<String?, HashMap<String?, DbCompletion?>> =
 		HashMap()
 
 	/**
@@ -30,7 +31,7 @@ class Completion {
 	 * after a config update.
 	 */
 	fun updateFromConfig(newDevices: MutableList<Device>?, newFolders: MutableList<Folder?>?) {
-		var folderMap: HashMap<String?, CompletionInfo?>?
+		var folderMap: HashMap<String?, DbCompletion?>?
 
 		// Handle devices that were removed from the config.
 		val removedDevices: MutableList<String?> = ArrayList()
@@ -103,7 +104,7 @@ class Completion {
 								TAG, "updateFromConfig: Add folder '" + folder.id +
 										"' shared with device '" + device.deviceID + "' to cache model."
 							)
-							folderMap[folder.id] = CompletionInfo()
+							folderMap[folder.id] = DbCompletion()
 						}
 					}
 				}
@@ -137,14 +138,14 @@ class Completion {
 	 */
 	fun setCompletionInfo(
 		deviceId: String?, folderId: String?,
-		completionInfo: CompletionInfo?
+		dbCompletion: DbCompletion?
 	) {
 		// Add device parent node if it does not exist.
 		if (!deviceFolderMap.containsKey(deviceId)) {
 			deviceFolderMap[deviceId] = HashMap()
 		}
 		// Add folder or update existing folder entry.
-		deviceFolderMap[deviceId]!![folderId] = completionInfo
+		deviceFolderMap[deviceId]!![folderId] = dbCompletion
 	}
 
 	companion object {

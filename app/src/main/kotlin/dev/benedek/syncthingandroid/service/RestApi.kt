@@ -18,7 +18,7 @@ import dev.benedek.syncthingandroid.http.PostRequest
 import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Completion
-import dev.benedek.syncthingandroid.model.CompletionInfo
+import dev.benedek.syncthingandroid.http.dto.DbCompletion
 import dev.benedek.syncthingandroid.model.Config
 import dev.benedek.syncthingandroid.model.Config.Gui
 import dev.benedek.syncthingandroid.model.Device
@@ -581,8 +581,8 @@ class RestApi(
 	/**
 	 * Updates cached folder and device completion info according to event data.
 	 */
-	fun setCompletionInfo(deviceId: String?, folderId: String?, completionInfo: CompletionInfo?) {
-		completion.setCompletionInfo(deviceId, folderId, completionInfo)
+	fun setCompletionInfo(deviceId: String?, folderId: String?, dbCompletion: DbCompletion?) {
+		completion.setCompletionInfo(deviceId, folderId, dbCompletion)
 	}
 
 	/**

@@ -1,10 +1,11 @@
-package dev.benedek.syncthingandroid.model
+package dev.benedek.syncthingandroid.http.dto
 
-// TODO
+import dev.benedek.syncthingandroid.model.RemoteState
+
 /**
  * According to syncthing REST API
  * https://docs.syncthing.net/rest/db-completion-get.html
- * 
+ *
  * completion is also returned by the events API
  * https://docs.syncthing.net/events/foldercompletion.html
  *
@@ -22,7 +23,7 @@ package dev.benedek.syncthingandroid.model
  * @param remoteState TODO
  * @param sequence TODO
  */
-data class CompletionInfo (
+data class DbCompletion (
 	var completion: Double = 0.0, // CompletionPct float64
 
 	var globalBytes: Long = 0L, // GlobalBytes   int64

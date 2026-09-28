@@ -18,7 +18,7 @@ import dev.benedek.syncthingandroid.BuildConfig
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.activities.DeviceActivity
 import dev.benedek.syncthingandroid.activities.FolderActivity
-import dev.benedek.syncthingandroid.model.CompletionInfo
+import dev.benedek.syncthingandroid.http.dto.DbCompletion
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.service.RestApi.OnReceiveEventListener
 import dev.benedek.syncthingandroid.util.atLeastSdk
@@ -97,13 +97,13 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 
 			"FolderCompletion" -> {
 				if (mapData != null) {
-					val completionInfo = CompletionInfo().apply {
+					val dbCompletion = DbCompletion().apply {
 						completion = mapData["completion"] as? Double ?: 0.0
 					}
 					api?.setCompletionInfo(
 						mapData["device"] as String?,  // deviceId
 						mapData["folder"] as String?,  // folderId
-						completionInfo
+						dbCompletion
 					)
 				}
 			}
