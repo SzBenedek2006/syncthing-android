@@ -27,7 +27,7 @@ import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.IgnoredFolder
 import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
-import dev.benedek.syncthingandroid.model.SystemStatus
+import dev.benedek.syncthingandroid.http.dto.SystemStatus
 import dev.benedek.syncthingandroid.util.atMostSdk
 import java.lang.reflect.Type
 import java.net.URL

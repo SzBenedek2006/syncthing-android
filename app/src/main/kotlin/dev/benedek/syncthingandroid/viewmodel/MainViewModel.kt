@@ -19,7 +19,7 @@ import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.DeviceSort
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderSort
-import dev.benedek.syncthingandroid.model.SystemStatus
+import dev.benedek.syncthingandroid.http.dto.SystemStatus
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import kotlinx.coroutines.Job

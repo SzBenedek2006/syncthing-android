@@ -1,9 +1,7 @@
-package dev.benedek.syncthingandroid.model
-
-import dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_SYSTEM
+package dev.benedek.syncthingandroid.http.dto
 
 /**
- * This contains the data returned by GET [URI_SYSTEM] (`/rest/system/status` )
+ * This contains the data returned by GET [dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_SYSTEM] (`/rest/system/status` )
  * This is up to date as of Syncthing version 2.1
  *
  * @property sys RAM used in bytes
