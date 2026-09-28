@@ -3,6 +3,9 @@ package dev.benedek.syncthingandroid.http.dto
 import dev.benedek.syncthingandroid.model.RemoteState
 
 /**
+ * This contains the data returned by GET `/rest/db/completion`
+ * This is up to date as of Syncthing version 2.1
+ *
  * According to syncthing REST API
  * https://docs.syncthing.net/rest/db-completion-get.html
  *

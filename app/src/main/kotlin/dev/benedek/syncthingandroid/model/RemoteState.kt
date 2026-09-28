@@ -4,6 +4,8 @@ import kotlinx.serialization.SerialName
 
 
 /**
+ * This is up to date as of Syncthing version 2.1
+ *
  * The only place where I found a list of values is this snippet from *folderstate.go*
  * ```Go
  * func (s remoteFolderState) String() string {
