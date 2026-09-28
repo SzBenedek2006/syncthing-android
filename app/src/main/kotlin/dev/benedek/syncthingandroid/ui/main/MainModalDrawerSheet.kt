@@ -187,7 +187,7 @@ fun MainModalDrawerSheet(
 				modifier = modifier,
 				title = stringResource(R.string.ram_usage),
 				titleWeight = titleWeight,
-				description = Util.readableFileSize(context, viewModel.systemInfo?.sys ?: 0),
+				description = Util.readableFileSize(context, viewModel.systemStatus?.sys ?: 0),
 				descriptionWeight = descriptionWeight,
 				color = color,
 				noIconPadding = true,
@@ -196,7 +196,7 @@ fun MainModalDrawerSheet(
 				shape = shape,
 				chart = {
 					ComposeBasicLineChart(
-						values = viewModel.systemInfoHistory
+						values = viewModel.systemStatusHistory
 							.map { it?.sys ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
 						modifier = Modifier.weight(0.3f).height(tileHeight)

@@ -27,7 +27,7 @@ import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.IgnoredFolder
 import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
-import dev.benedek.syncthingandroid.model.SystemInfo
+import dev.benedek.syncthingandroid.model.SystemStatus
 import dev.benedek.syncthingandroid.util.atMostSdk
 import java.lang.reflect.Type
 import java.net.URL
@@ -114,7 +114,7 @@ class RestApi(
 			}
 		}
 
-		getSystemInfo { info: SystemInfo? ->
+		getSystemInfo { info: SystemStatus? ->
 			localDeviceId = info?.myID
 			urVersionMax = 0 // FIXME
 			synchronized(asyncQueryCompleteLock) {
@@ -448,13 +448,13 @@ class RestApi(
 	/**
 	 * Requests and parses information about current system status and resource usage.
 	 */
-	fun getSystemInfo(listener: (SystemInfo?) -> Unit) {
+	fun getSystemInfo(listener: (SystemStatus?) -> Unit) {
 		GetRequest(
 			context,
 			this.url, GetRequest.URI_SYSTEM, apiKey, null
 		) { result: String? ->
 			listener(
-				Gson().fromJson(result, SystemInfo::class.java)
+				Gson().fromJson(result, SystemStatus::class.java)
 			)
 		}
 	}

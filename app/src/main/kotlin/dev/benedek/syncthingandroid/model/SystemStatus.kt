@@ -8,7 +8,7 @@ import dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_SYSTEM
  *
  * @property sys RAM used in bytes
  */
-class SystemInfo {
+class SystemStatus {
 	var alloc: Long = 0
 	var cpuPercent: Double = 0.0
 	var discoveryEnabled: Boolean = false

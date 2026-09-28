@@ -19,7 +19,7 @@ import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.DeviceSort
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.FolderSort
-import dev.benedek.syncthingandroid.model.SystemInfo
+import dev.benedek.syncthingandroid.model.SystemStatus
 import dev.benedek.syncthingandroid.service.RestApi
 import dev.benedek.syncthingandroid.service.SyncthingService
 import kotlinx.coroutines.Job
@@ -41,8 +41,8 @@ class MainViewModel : ViewModel() {
 
 	var fetchSystemDataJob: Job? = null
 
-	var systemInfo by mutableStateOf<SystemInfo?>(null)
-	val systemInfoHistory = mutableStateListOf<SystemInfo?>()
+	var systemStatus by mutableStateOf<SystemStatus?>(null)
+	val systemStatusHistory = mutableStateListOf<SystemStatus?>()
 
 	var announceTotal: Int by mutableIntStateOf(0)
 	var announceConnected: Int by mutableIntStateOf(0)
@@ -134,10 +134,10 @@ class MainViewModel : ViewModel() {
 
 				api?.getSystemInfo { info -> // api call 1
 					if (info != null) {
-						systemInfo = info
-						systemInfoHistory.add(info)
-						announceTotal = systemInfo!!.discoveryMethods
-						announceConnected = announceTotal - (systemInfo!!.discoveryErrors?.size ?: 0)
+						systemStatus = info
+						systemStatusHistory.add(info)
+						announceTotal = systemStatus!!.discoveryMethods
+						announceConnected = announceTotal - (systemStatus!!.discoveryErrors?.size ?: 0)
 						announceConnectedHistory.add(announceConnected)
 						while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
 							announceConnectedHistory.remove(announceConnectedHistory.first())

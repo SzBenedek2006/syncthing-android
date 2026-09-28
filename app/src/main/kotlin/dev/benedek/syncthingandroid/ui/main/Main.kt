@@ -374,11 +374,11 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 				// Dialogs
 				if (viewModel.showDeviceIdDialog) {
-					if (viewModel.systemInfo?.myID != null) {
+					if (viewModel.systemStatus?.myID != null) {
 						QrCodeDialog(
-							viewModel.systemInfo!!.myID!!,
+							viewModel.systemStatus!!.myID!!,
 							{ viewModel.showDeviceIdDialog = false },
-							remember { viewModel.generateQrBitmap(viewModel.systemInfo!!.myID)!! }
+							remember { viewModel.generateQrBitmap(viewModel.systemStatus!!.myID)!! }
 						)
 					} else {
 						viewModel.showDeviceIdDialog = false
