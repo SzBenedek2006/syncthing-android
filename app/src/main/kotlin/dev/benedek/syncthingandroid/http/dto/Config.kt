@@ -1,14 +1,19 @@
 package dev.benedek.syncthingandroid.http.dto
 
+import dev.benedek.syncthingandroid.http.GetRequest.Companion.URI_CONFIG
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.model.Options
 import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
 
+/**
+ * This contains the data returned by GET [URI_CONFIG] (`/rest/config`)
+ * This is up to date as of Syncthing version 2.1
+ */
 class Config {
 	var version: Int = 0
-	var devices: MutableList<Device?>? = null
 	var folders: MutableList<Folder?>? = null
+	var devices: MutableList<Device?>? = null
 	var gui: Gui? = null
 	var options: Options? = null
 	var remoteIgnoredDevices: MutableList<RemoteIgnoredDevice?>? = null
