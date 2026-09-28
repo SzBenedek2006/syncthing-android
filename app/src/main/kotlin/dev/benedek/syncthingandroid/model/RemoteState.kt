@@ -20,7 +20,7 @@ package dev.benedek.syncthingandroid.model
  * }
  * ```
  */
-enum class RemoteFolderState {
+enum class RemoteState {
 	UNKNOWN,
 	NOT_SHARING,
 	PAUSED,

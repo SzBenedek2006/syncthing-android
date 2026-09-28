@@ -19,7 +19,7 @@ package dev.benedek.syncthingandroid.model
  * @param needBytes TODO
  * @param needDeletes TODO
  * @param needItems TODO
- * @param remoteFolderState TODO
+ * @param remoteState TODO
  * @param sequence TODO
  */
 data class CompletionInfo (
@@ -30,10 +30,7 @@ data class CompletionInfo (
 	var needBytes: Long = 0L, // NeedBytes     int64
 	var needDeletes: Int = 0, // NeedDeletes   int
 	var needItems: Int = 0, // NeedItems     int
-	var remoteFolderState: RemoteFolderState = RemoteFolderState.UNKNOWN, // RemoteState   remoteFolderState
+	var remoteState: RemoteState = RemoteState.UNKNOWN, // RemoteState   remoteFolderState
 	var sequence: Long = 0L, // Sequence      int64
 
 )
-
-
-
