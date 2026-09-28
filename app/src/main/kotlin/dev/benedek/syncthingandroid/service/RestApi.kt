@@ -19,8 +19,8 @@ import dev.benedek.syncthingandroid.http.dto.DbStatus
 import dev.benedek.syncthingandroid.http.dto.SystemConnections
 import dev.benedek.syncthingandroid.model.Completion
 import dev.benedek.syncthingandroid.http.dto.DbCompletion
-import dev.benedek.syncthingandroid.model.Config
-import dev.benedek.syncthingandroid.model.Config.Gui
+import dev.benedek.syncthingandroid.http.dto.Config
+import dev.benedek.syncthingandroid.http.dto.Config.Gui
 import dev.benedek.syncthingandroid.model.Device
 import dev.benedek.syncthingandroid.model.Event
 import dev.benedek.syncthingandroid.model.Folder

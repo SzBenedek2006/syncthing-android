@@ -1,4 +1,9 @@
-package dev.benedek.syncthingandroid.model
+package dev.benedek.syncthingandroid.http.dto
+
+import dev.benedek.syncthingandroid.model.Device
+import dev.benedek.syncthingandroid.model.Folder
+import dev.benedek.syncthingandroid.model.Options
+import dev.benedek.syncthingandroid.model.RemoteIgnoredDevice
 
 class Config {
 	var version: Int = 0
