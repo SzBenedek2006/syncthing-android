@@ -60,13 +60,9 @@ fun ShareScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                if (isMultipleFiles)
-                    Text(fileNames[0])
-                else {
-                    Column() {
-                        fileNames.forEach { fileName ->
-                            Text(fileName)
-                        }
+                Column() {
+                    fileNames.forEach { fileName ->
+                        Text(fileName)
                     }
                 }
 
