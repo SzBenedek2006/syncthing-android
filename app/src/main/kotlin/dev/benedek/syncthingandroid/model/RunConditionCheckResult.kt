@@ -29,11 +29,11 @@ class RunConditionCheckResult(blockReasons: MutableList<BlockerReason?>) {
 	private constructor() : this(mutableListOf<BlockerReason?>())
 
 
-	override fun equals(o: Any?): Boolean {
-		if (this === o) return true
-		if (o == null || javaClass != o.javaClass) return false
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other == null || javaClass != other.javaClass) return false
 
-		val that = o as RunConditionCheckResult
+		val that = other as RunConditionCheckResult
 
 		if (this.isShouldRun != that.isShouldRun) return false
 		return this.blockReasons == that.blockReasons
