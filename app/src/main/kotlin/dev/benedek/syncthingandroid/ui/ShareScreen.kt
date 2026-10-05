@@ -25,7 +25,7 @@ import dev.benedek.syncthingandroid.R
 @Composable
 fun ShareScreen(
     // State
-    fileName: String,
+    fileNames: List<String>,
     folders: List<String>,
     selectedFolder: String,
     subDirectory: String,
@@ -56,17 +56,20 @@ fun ShareScreen(
             // File Name Section
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
-                    text = if (isMultipleFiles) "Files list" else "File name",
+                    text = if (isMultipleFiles) stringResource(R.string.files_list) else stringResource(R.string.file_name),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                OutlinedTextField(
-                    value = fileName,
-                    onValueChange = onFileNameChange,
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 1,
-                    maxLines = 5,
-                )
+                if (isMultipleFiles)
+                    Text(fileNames[0])
+                else {
+                    Column() {
+                        fileNames.forEach { fileName ->
+                            Text(fileName)
+                        }
+                    }
+                }
+
             }
 
             // Folders Spinner Section
@@ -174,7 +177,7 @@ fun ShareScreen(
 fun ShareScreenPreview() {
     SyncthingandroidTheme(ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
         ShareScreen(
-            fileName = "test.txt",
+            fileNames = listOf("test.txt"),
             folders = listOf("Folder 1", "Folder 2", "Folder 3"),
             selectedFolder = "Folder 1",
             subDirectory = "Sub folder",

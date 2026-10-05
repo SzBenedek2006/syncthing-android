@@ -136,7 +136,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			setContent {
 				SyncthingandroidTheme() {
 					ShareScreen(
-						fileName = "test.txt",
+						fileNames = listOf("test.txt"),
 						folders = listOf("Folder 1", "Folder 2", "Folder 3"),
 						selectedFolder = "Folder 1",
 						subDirectory = "Sub folder",
@@ -207,6 +207,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			}
 			files[sourceUri] = displayName
 		}
+		if (files.isEmpty()) finish()
 
 		if (!compose) {
 			binding!!.name.setText(TextUtils.join("\n", files.values))
@@ -219,8 +220,9 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			} else {
 				getString(R.string.files_list)
 			}
+		}
 
-
+		if (!compose) {
 			binding!!.shareButton.setOnClickListener { _: View? ->
 				val folder = foldersSpinner?.selectedItem as? Folder
 				// TODO: Better ui for this
