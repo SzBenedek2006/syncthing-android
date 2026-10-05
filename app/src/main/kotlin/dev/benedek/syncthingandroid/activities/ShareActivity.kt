@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.result.component1
 import androidx.activity.result.component2
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +32,8 @@ import dev.benedek.syncthingandroid.activities.SyncthingActivity.OnServiceConnec
 import dev.benedek.syncthingandroid.databinding.ActivityShareBinding
 import dev.benedek.syncthingandroid.model.Folder
 import dev.benedek.syncthingandroid.service.SyncthingService
+import dev.benedek.syncthingandroid.ui.ShareScreen
+import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Util
 import dev.benedek.syncthingandroid.util.atLeastSdk
 import kotlinx.coroutines.Dispatchers
@@ -115,8 +118,8 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			)
 
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding!!.folders.adapter = adapter
-			binding!!.folders.setSelection(folderIndex)
+            binding?.folders?.adapter = adapter
+			binding?.folders?.setSelection(folderIndex)
 		}
 	}
 
@@ -128,15 +131,37 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		binding = ActivityShareBinding.inflate(layoutInflater)
-		setContentView(binding!!.getRoot())
 
-		window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+		if (compose) {
+			setContent {
+				SyncthingandroidTheme() {
+					ShareScreen(
+						fileName = "test.txt",
+						folders = listOf("Folder 1", "Folder 2", "Folder 3"),
+						selectedFolder = "Folder 1",
+						subDirectory = "Sub folder",
+						isMultipleFiles = false,
+						onFileNameChange = {},
+						onFolderSelect = {},
+						onBrowseClick = {},
+						onCancelClick = {},
+						onSaveClick = {}
+					)
+				}
+			}
+		} else {
+			binding = ActivityShareBinding.inflate(layoutInflater)
+			setContentView(binding!!.getRoot())
+		}
+
+		if (!compose) window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
 		registerOnServiceConnectedListener(this)
 
-		subDirectoryTextView = findViewById(R.id.sub_directory_Textview)
-		foldersSpinner = findViewById(R.id.folders)
+		if (!compose) {
+			subDirectoryTextView = findViewById(R.id.sub_directory_Textview)
+			foldersSpinner = findViewById(R.id.folders)
+		}
 
 		// TODO: add support for EXTRA_TEXT (notes, memos sharing)
 		var extrasToCopy: ArrayList<Uri?>? = ArrayList()
@@ -183,61 +208,65 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			files[sourceUri] = displayName
 		}
 
-		binding!!.name.setText(TextUtils.join("\n", files.values))
-		if (files.size > 1) {
-			binding!!.name.setFocusable(false)
-            binding!!.name.keyListener = null
-		}
-		binding!!.namesTitle.text = if (files.size == 1) {
-			getString(R.string.file_name)
-		} else {
-			getString(R.string.files_list)
-		}
-
-		binding!!.shareButton.setOnClickListener { _: View? ->
-			val folder = foldersSpinner?.selectedItem as? Folder
-			// TODO: Better ui for this
-			if (folder == null) {
-				Toast.makeText(this, R.string.api_loading, Toast.LENGTH_SHORT).show()
-				return@setOnClickListener
+		if (!compose) {
+			binding!!.name.setText(TextUtils.join("\n", files.values))
+			if (files.size > 1) {
+				binding!!.name.setFocusable(false)
+				binding!!.name.keyListener = null
+			}
+			binding!!.namesTitle.text = if (files.size == 1) {
+				getString(R.string.file_name)
+			} else {
+				getString(R.string.files_list)
 			}
 
 
-			if (files.size == 1) files.entries.iterator().next()
-				.setValue(binding!!.name.text.toString())
-			val directory = File(folder.path, savedSubDirectory)
-			copyFiles(files, folder, directory)
-		}
+			binding!!.shareButton.setOnClickListener { _: View? ->
+				val folder = foldersSpinner?.selectedItem as? Folder
+				// TODO: Better ui for this
+				if (folder == null) {
+					Toast.makeText(this, R.string.api_loading, Toast.LENGTH_SHORT).show()
+					return@setOnClickListener
+				}
 
-		foldersSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-			override fun onItemSelected(
-				parent: AdapterView<*>?,
-				view: View?,
-				position: Int,
-				id: Long
-			) {
-				subDirectoryTextView?.text = savedSubDirectory
+
+				if (files.size == 1) files.entries.iterator().next()
+					.setValue(binding!!.name.text.toString())
+				val directory = File(folder.path, savedSubDirectory)
+				copyFiles(files, folder, directory)
 			}
 
-			override fun onNothingSelected(parent: AdapterView<*>?) {
+
+			foldersSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+				override fun onItemSelected(
+					parent: AdapterView<*>?,
+					view: View?,
+					position: Int,
+					id: Long
+				) {
+					subDirectoryTextView?.text = savedSubDirectory
+				}
+
+				override fun onNothingSelected(parent: AdapterView<*>?) {
+				}
 			}
-		}
 
 
 
-		binding!!.browseButton.setOnClickListener { _: View? ->
-			val folder = foldersSpinner?.selectedItem as? Folder
-			val initialDirectory = folder?.let { File(folder.path, savedSubDirectory) }
-			folderPickerLauncher.launch(
-				createIntent(
-					applicationContext,
-					initialDirectory?.absolutePath, folder?.path
+			binding!!.browseButton.setOnClickListener { _: View? ->
+				val folder = foldersSpinner?.selectedItem as? Folder
+				val initialDirectory = folder?.let { File(folder.path, savedSubDirectory) }
+				folderPickerLauncher.launch(
+					createIntent(
+						applicationContext,
+						initialDirectory?.absolutePath, folder?.path
+					)
 				)
-			)
-		}
+			}
 
-		binding!!.cancelButton.setOnClickListener { _: View? -> finish() }
-		subDirectoryTextView?.text = savedSubDirectory
+			binding!!.cancelButton.setOnClickListener { _: View? -> finish() }
+			subDirectoryTextView?.text = savedSubDirectory
+		}
 	}
 
 	/**
