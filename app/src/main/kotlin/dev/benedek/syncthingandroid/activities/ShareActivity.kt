@@ -63,12 +63,27 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 	val folderPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { (resultCode, data) ->
 		if (resultCode == RESULT_OK) {
-			val selectedFolder = foldersSpinner!!.selectedItem as Folder
-			val folderDirectory: String = Util.formatPath(selectedFolder.path!!)!!
-			var subDirectory = data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
+
+			val selectedFolder = foldersSpinner?.selectedItem as? Folder
+			if (selectedFolder?.path == null) {
+				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
+				return@registerForActivityResult
+			}
+
+			val folderDirectory: String? = Util.formatPath(selectedFolder.path!!)
+			if (folderDirectory == null) {
+				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
+				return@registerForActivityResult
+			}
+
+			var subDirectory: String? = data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
+			if (subDirectory == null) {
+				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
+				return@registerForActivityResult
+			}
 			//Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
-			subDirectory = subDirectory!!.replace(folderDirectory, "")
-			subDirectoryTextView!!.text = subDirectory
+			subDirectory = subDirectory.replace(folderDirectory, "")
+			subDirectoryTextView?.text = subDirectory
 
 			preferences.edit {
 				putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
@@ -85,9 +100,8 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 			// Get the index of the previously selected folder.
 			var folderIndex = 0
-			val savedFolderId: String = preferences.getString(
-				PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, ""
-			)!!
+			val savedFolderId: String =
+				preferences.getString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, "")!!
 			for (folder in folders!!) {
 				if (folder?.id == savedFolderId) {
 					folderIndex = folders.indexOf(folder)
@@ -95,7 +109,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 				}
 			}
 
-			val adapter: ArrayAdapter<Folder?> = ArrayAdapter<Folder?>(
+			val adapter: ArrayAdapter<Folder?> = ArrayAdapter(
 				this, android.R.layout.simple_spinner_item, folders
 			)
 
