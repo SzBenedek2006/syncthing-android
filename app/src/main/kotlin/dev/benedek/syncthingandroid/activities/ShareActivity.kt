@@ -52,6 +52,7 @@ import java.util.Date
  */
 class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
+	private val compose = false
 	private val preferences: SharedPreferences by lazy {
 		PreferenceManager.getDefaultSharedPreferences(this)
 	}
