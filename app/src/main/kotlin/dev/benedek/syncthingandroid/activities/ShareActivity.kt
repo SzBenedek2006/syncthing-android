@@ -22,6 +22,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.component1
 import androidx.activity.result.component2
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -36,6 +37,7 @@ import dev.benedek.syncthingandroid.ui.ShareScreen
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.Util
 import dev.benedek.syncthingandroid.util.atLeastSdk
+import dev.benedek.syncthingandroid.viewmodel.ShareViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -55,6 +57,7 @@ import java.util.Date
  */
 class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
+	private val viewModel: ShareViewModel by viewModels()
 	private val compose = false
 	private val preferences: SharedPreferences by lazy {
 		PreferenceManager.getDefaultSharedPreferences(this)
