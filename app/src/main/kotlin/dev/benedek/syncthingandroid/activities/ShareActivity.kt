@@ -58,7 +58,7 @@ import java.util.Date
 class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 	private val viewModel: ShareViewModel by viewModels()
-	private val compose = false
+	private val compose = true
 	private val preferences: SharedPreferences by lazy {
 		PreferenceManager.getDefaultSharedPreferences(this)
 	}
@@ -139,11 +139,11 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			setContent {
 				SyncthingandroidTheme() {
 					ShareScreen(
-						fileNames = listOf("test.txt"),
+						fileNames = viewModel.files.values.toList(),
 						folders = listOf("Folder 1", "Folder 2", "Folder 3"),
 						selectedFolder = "Folder 1",
 						subDirectory = "Sub folder",
-						isMultipleFiles = false,
+						isMultipleFiles = viewModel.files.size > 1,
 						onFileNameChange = {},
 						onFolderSelect = {},
 						onBrowseClick = {},
@@ -200,8 +200,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			finish()
 			return
 		}
-
-		val files: MutableMap<Uri, String> = HashMap()
+		val files = viewModel.files
 		for (sourceUri in extrasToCopy) {
 			if (sourceUri == null) continue
 			var displayName = getDisplayNameForUri(sourceUri)
