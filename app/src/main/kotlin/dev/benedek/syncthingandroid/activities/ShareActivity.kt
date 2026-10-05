@@ -122,7 +122,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 	override fun onPostCreate(savedInstanceState: Bundle?) {
 		super.onPostCreate(savedInstanceState)
 
-		supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+		supportActionBar?.setDisplayHomeAsUpEnabled(false)
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,7 +208,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			copyFiles(files, folder, directory)
 		}
 
-		foldersSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+		foldersSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 			override fun onItemSelected(
 				parent: AdapterView<*>?,
 				view: View?,
@@ -236,7 +236,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 		}
 
 		binding!!.cancelButton.setOnClickListener { _: View? -> finish() }
-		subDirectoryTextView!!.text = savedSubDirectory
+		subDirectoryTextView?.text = savedSubDirectory
 	}
 
 	/**
@@ -323,7 +323,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 		 */
 		get() {
 			val selectedFolder =
-				foldersSpinner!!.selectedItem as Folder?
+				foldersSpinner?.selectedItem as Folder?
 			var savedSubDirectory = ""
 
 			if (selectedFolder != null) {
@@ -426,7 +426,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 	override fun onPause() {
 		super.onPause()
-		if (foldersSpinner!!.selectedItem != null) {
+		if (foldersSpinner?.selectedItem != null) {
 			val selectedFolder = foldersSpinner!!.selectedItem as Folder
 			preferences.edit {
 				putString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, selectedFolder.id)
