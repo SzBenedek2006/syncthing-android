@@ -19,7 +19,7 @@ class RunConditionCheckResult(blockReasons: MutableList<BlockerReason?>) {
 
 	val isShouldRun: Boolean = blockReasons.isEmpty()
 	val blockReasons: MutableList<BlockerReason?> =
-		Collections.unmodifiableList<BlockerReason?>(blockReasons)
+		Collections.unmodifiableList(blockReasons)
 
 	/**
 	 * Use SHOULD_RUN instead.
@@ -35,9 +35,8 @@ class RunConditionCheckResult(blockReasons: MutableList<BlockerReason?>) {
 
 		val that = other as RunConditionCheckResult
 
-		if (this.isShouldRun != that.isShouldRun) return false
-		return this.blockReasons == that.blockReasons
-	}
+        return this.isShouldRun == that.isShouldRun && this.blockReasons == that.blockReasons
+    }
 
 	override fun hashCode(): Int {
 		var result = (if (this.isShouldRun) 1 else 0)
