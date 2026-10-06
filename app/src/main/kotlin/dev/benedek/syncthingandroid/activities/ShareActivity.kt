@@ -50,7 +50,7 @@ import java.util.Date
 
 /**
  * Shares incoming files to syncthing folders.
- * 
+ * Todo: Fix folder sharing
  * 
  * [.getDisplayNameForUri] and [.getDisplayNameFromContentResolver] are taken from
  * ownCloud Android {@see https://github.com/owncloud/android/blob/79664304fdb762b2e04f1ac505f50d0923ddd212/src/com/owncloud/android/utils/UriUtils.java#L193}

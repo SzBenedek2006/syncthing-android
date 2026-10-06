@@ -30,8 +30,7 @@ import dev.benedek.syncthingandroid.ui.reusable.ComposeDialog
 import dev.benedek.syncthingandroid.viewmodel.ShareViewModel
 
 /**
- * Share screen.
- * First draft was made by an LLM, based on activity_share.xml
+ * New share screen based (and improved) upon activity_share.xml
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
