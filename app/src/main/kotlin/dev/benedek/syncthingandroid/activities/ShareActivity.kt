@@ -71,7 +71,9 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 	val folderPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { (resultCode, data) ->
 		if (resultCode == RESULT_OK) {
 
-			val selectedFolder = foldersSpinner?.selectedItem as? Folder
+			val selectedFolder =
+				if (compose) viewModel.folders[viewModel.selectedFolderIndex]
+				else foldersSpinner?.selectedItem as? Folder
 			if (selectedFolder?.path == null) {
 				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
 				return@registerForActivityResult
@@ -90,7 +92,8 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			}
 			//Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
 			subDirectory = subDirectory.replace(folderDirectory, "")
-			subDirectoryTextView?.text = subDirectory
+			if (compose) viewModel.subDirectory = subDirectory else subDirectoryTextView?.text = subDirectory
+
 
 			preferences.edit {
 				putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
@@ -143,13 +146,23 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 						files = viewModel.files,
 						folders = viewModel.folders,
 						selectedFolder = viewModel.selectedFolderIndex,
-						subDirectory = "Sub folder",
+						subDirectory = viewModel.subDirectory,
 						isMultipleFiles = viewModel.files.size > 1,
 						showProgressDialog = viewModel.showProgressDialog,
 						copyResult = viewModel.copyResult,
 						onFolderSelect = { viewModel.selectedFolderIndex = it },
 						onFileRemove = viewModel::removeFile,
-						onBrowseClick = {},
+						onBrowseClick = {
+                            val path: String = viewModel.folders[viewModel.selectedFolderIndex].path
+                                ?: return@ShareScreen
+                            val initialDirectory = File(path, savedSubDirectory)
+							folderPickerLauncher.launch(
+								createIntent(
+									applicationContext,
+                                    initialDirectory.absolutePath, path
+								)
+							)
+						},
 						onSaveClick = { viewModel.copyFiles(contentResolver) },
 						onFinish = ::finish
 					)
