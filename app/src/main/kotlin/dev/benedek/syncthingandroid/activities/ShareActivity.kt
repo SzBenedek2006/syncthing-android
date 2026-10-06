@@ -304,20 +304,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			displayName = getDisplayNameFromContentResolver(uri)
 			if (displayName == null) {
 				// last chance to have a name
-				displayName = uri.lastPathSegment!!.replace("\\s".toRegex(), "")
-			}
-
-			// Add the best possible extension
-			val index = displayName.lastIndexOf(".")
-			if (index == -1 || MimeTypeMap.getSingleton()
-					.getMimeTypeFromExtension(displayName.substring(index + 1)) == null
-			) {
-				val mimeType = this.contentResolver.getType(uri)
-				val extension = MimeTypeMap.getSingleton()
-					.getExtensionFromMimeType(mimeType)
-				if (extension != null) {
-					displayName += ".$extension"
-				}
+				displayName = uri.lastPathSegment?.replace("\\s".toRegex(), "")
 			}
 		}
 
