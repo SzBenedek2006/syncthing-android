@@ -118,7 +118,7 @@ fun ShareScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Folder",
+                    text = stringResource(R.string.folder_title),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -164,7 +164,7 @@ fun ShareScreen(
             if (folders.isNotEmpty())
                 Column(Modifier.padding(horizontal = 16.dp), Arrangement.spacedBy(8.dp)) {
                     Text(
-                        text = "Sub folder",
+                        text = stringResource(R.string.sub_folder),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -187,7 +187,7 @@ fun ShareScreen(
                         }
 
                         Button(onClick = onBrowseClick) {
-                            Text("Browse")
+                            Text(stringResource(R.string.browse))
                         }
                     }
                 }
@@ -201,9 +201,9 @@ fun ShareScreen(
                 Arrangement.End,
                 Alignment.CenterVertically
             ) {
-                TextButton(onFinish) { Text("Cancel") }
+                TextButton(onFinish) { Text(stringResource(R.string.cancel_title)) }
                 Spacer(Modifier.width(8.dp))
-                TextButton(onSaveClick) { Text("Save") }
+                TextButton(onSaveClick) { Text(stringResource(R.string.save_title)) }
             }
         }
     }
