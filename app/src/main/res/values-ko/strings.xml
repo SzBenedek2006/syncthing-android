@@ -602,7 +602,7 @@
 	<string name="copy_exception">공유 중 오류가 발생했으니 응용 프로그램 기록을 확인하십시오</string>
 
 	<!-- Copy progress dialog text -->
-	<string name="copy_progress">파일 공유 중…</string>
+	<string name="sharing_files_progress">파일 공유 중…</string>
 
 	<string name="files_list">파일 목록</string>
 

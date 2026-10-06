@@ -391,7 +391,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			// shareActivity cannot be null before the task executes.
 			progress = ProgressDialog.show(
 				this@ShareActivity, null,
-				getString(R.string.copy_progress), true
+				getString(R.string.sharing_files_progress), true
 			)
 			val isError = withContext(Dispatchers.IO) {
 				// Get a reference to the activity if it is still there.

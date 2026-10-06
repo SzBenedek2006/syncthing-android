@@ -606,7 +606,7 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 	<string name="copy_exception">A survenit o eroare în timpul partajării, verificați jurnalele de erori</string>
 
 	<!-- Copy progress dialog text -->
-	<string name="copy_progress">Partajare fișiere…</string>
+	<string name="sharing_files_progress">Partajare fișiere…</string>
 
 	<string name="file_name">Nume fișier</string>
 	<string name="files_list">Nume de fișiere</string>

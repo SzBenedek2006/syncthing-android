@@ -603,7 +603,7 @@ Om du nekar denna behörighet kan du endast komma åt dessa funktioner via webbg
 	<string name="copy_exception">Det uppstod ett fel under delning, kontrollera applikationsloggar</string>
 
 	<!-- Copy progress dialog text -->
-	<string name="copy_progress">Delar filer…</string>
+	<string name="sharing_files_progress">Delar filer…</string>
 
 	<string name="file_name">Filnamn</string>
 	<string name="files_list">Fillista</string>
