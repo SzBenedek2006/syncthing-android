@@ -194,7 +194,6 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 				}
 			) ?: arrayListOf()
 		} else arrayListOf()
-		Log.d(null, "filesToCopy: $filesToCopy")
 
 		if (filesToCopy.isEmpty()) {
 			Toast.makeText(this, getString(R.string.nothing_share), Toast.LENGTH_SHORT).show()
@@ -211,7 +210,6 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			files[sourceUri] = displayName
 		}
 		if (files.isEmpty()) finish()
-		Log.d(null, "files: $files")
 
 		if (!compose) {
 			binding!!.name.setText(TextUtils.join("\n", files.values))
