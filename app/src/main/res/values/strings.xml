@@ -810,5 +810,6 @@ If you deny this permission, you can only access these features through the web 
 	<string name="download_speed">Download speed</string>
 	<string name="upload_speed">Upload speed</string>
 	<string name="state">State</string>
+	<string name="saving_files_progress">Saving files...</string>
 
 </resources>

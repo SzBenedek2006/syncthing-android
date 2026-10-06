@@ -227,7 +227,7 @@ fun ShareScreen(
             onOk = null,
             onCancel = null,
             onDismiss = {},
-            title = stringResource(R.string.copy_progress),
+            title = stringResource(R.string.saving_files_progress),
             content = {
                 Row(
                     horizontalArrangement = Arrangement.Center,
