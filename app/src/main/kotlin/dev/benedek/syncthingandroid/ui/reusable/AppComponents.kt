@@ -977,7 +977,7 @@ const val dialogAnimationDelayMs = 50
  */
 @Composable
 fun ComposeDialog(
-	onOk: () -> Unit,
+	onOk: (() -> Unit)?,
 	onCancel: (() -> Unit)?,
 	modifier: Modifier = Modifier,
 	onDismiss: () -> Unit,
@@ -1143,7 +1143,7 @@ fun myExitTransition(delay: Int = 0) =
  */
 @Composable
 fun DialogCard(
-	onOk: () -> Unit,
+	onOk: (() -> Unit)?,
 	onCancel: (() -> Unit)?,
 	modifier: Modifier = Modifier,
 	title: String? = null,
@@ -1234,8 +1234,10 @@ fun DialogCard(
 						}
 
 						// Confirm Button
-						TextButton(onClick = onOk) {
-							Text(okText, style = style)
+						if (onOk != null) {
+							TextButton(onClick = onOk) {
+								Text(okText, style = style)
+							}
 						}
 					}
 				}
