@@ -13,7 +13,7 @@ junit = "1.3.0"
 uiautomator = "2.4.0"
 play-publisher = "4.1.1"
 android-gradle-plugin = "9.4.1"
-gradle-versions-plugin = "0.63.1"
+gradle-versions-plugin = "0.64.0"
 kotlin = "2.4.20"
 
 # Library Versions
