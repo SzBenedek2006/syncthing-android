@@ -162,39 +162,28 @@ fun ShareScreen(
 
             // Sub-directory Section
             if (folders.isNotEmpty())
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Column(Modifier.padding(horizontal = 16.dp), Arrangement.spacedBy(8.dp)) {
                     Text(
                         text = "Sub folder",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.titleLarge
                     )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.weight(1f),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Folder,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Text(
-                                text = subDirectory.ifEmpty { "No sub folder is selected" },
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (subDirectory.isEmpty())
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                else
-                                    MaterialTheme.colorScheme.onSurface
-                            )
+                    Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(16.dp), Alignment.CenterVertically) {
+                        Row(Modifier.weight(1f), Arrangement.spacedBy(12.dp), Alignment.CenterVertically) {
+                            Icon(Icons.Outlined.Folder, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (subDirectory.isEmpty())
+                                Text(
+                                    stringResource(R.string.no_sub_folder_is_selected),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            else
+                                Text(
+                                    subDirectory,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
                         }
 
                         Button(onClick = onBrowseClick) {
@@ -204,21 +193,17 @@ fun ShareScreen(
                 }
 
             // Pushes the action buttons to the bottom of the screen if there is empty space
-            Spacer(modifier = Modifier.fillMaxWidth().weight(1f))
+            Spacer(Modifier.fillMaxWidth().weight(1f))
 
             // Action Buttons
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
+                Modifier.fillMaxWidth(),
+                Arrangement.End,
+                Alignment.CenterVertically
             ) {
-                TextButton(onClick = onFinish) {
-                    Text("Cancel")
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                TextButton(onClick = onSaveClick) {
-                    Text("Save")
-                }
+                TextButton(onFinish) { Text("Cancel") }
+                Spacer(Modifier.width(8.dp))
+                TextButton(onSaveClick) { Text("Save") }
             }
         }
     }
