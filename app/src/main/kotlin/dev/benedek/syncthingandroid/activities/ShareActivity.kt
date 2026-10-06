@@ -103,14 +103,15 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 		service?.registerOnServiceStateChangeListener { currentState ->
 			if (currentState != SyncthingService.State.ACTIVE || api == null) return@registerOnServiceStateChangeListener
 
-			val folders = api!!.folders
+			viewModel.folders = api?.folders?.toList()?.filterNotNull() ?: emptyList()
+			val folders = viewModel.folders
 
 			// Get the index of the previously selected folder.
 			var folderIndex = 0
 			val savedFolderId: String =
 				preferences.getString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, "")!!
-			for (folder in folders!!) {
-				if (folder?.id == savedFolderId) {
+			for (folder in folders) {
+				if (folder.id == savedFolderId) {
 					folderIndex = folders.indexOf(folder)
 					break
 				}
@@ -139,16 +140,18 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			setContent {
 				SyncthingandroidTheme() {
 					ShareScreen(
-						fileNames = viewModel.files.values.toList(),
-						folders = listOf("Folder 1", "Folder 2", "Folder 3"),
-						selectedFolder = "Folder 1",
+						files = viewModel.files,
+						folders = viewModel.folders,
+						selectedFolder = viewModel.selectedFolderIndex,
 						subDirectory = "Sub folder",
 						isMultipleFiles = viewModel.files.size > 1,
-						onFileNameChange = {},
-						onFolderSelect = {},
+						showProgressDialog = viewModel.showProgressDialog,
+						copyResult = viewModel.copyResult,
+						onFolderSelect = { viewModel.selectedFolderIndex = it },
+						onFileRemove = viewModel::removeFile,
 						onBrowseClick = {},
-						onCancelClick = {},
-						onSaveClick = {}
+						onSaveClick = { viewModel.copyFiles(contentResolver) },
+						onFinish = ::finish
 					)
 				}
 			}
@@ -229,7 +232,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 				val folder = foldersSpinner?.selectedItem as? Folder
 				// TODO: Better ui for this
 				if (folder == null) {
-					Toast.makeText(this, R.string.api_loading, Toast.LENGTH_SHORT).show()
+					Toast.makeText(this, R.string.state_error, Toast.LENGTH_SHORT).show()
 					return@setOnClickListener
 				}
 
