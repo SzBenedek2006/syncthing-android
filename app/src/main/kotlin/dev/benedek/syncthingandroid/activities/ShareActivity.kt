@@ -74,26 +74,17 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			val selectedFolder =
 				if (compose) viewModel.folders[viewModel.selectedFolderIndex]
 				else foldersSpinner?.selectedItem as? Folder
-			if (selectedFolder?.path == null) {
-				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
-				return@registerForActivityResult
-			}
 
-			val folderDirectory: String? = Util.formatPath(selectedFolder.path!!)
-			if (folderDirectory == null) {
-				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
-				return@registerForActivityResult
-			}
+            val folderDirectory: String = selectedFolder?.path?.let { Util.formatPath(it) }
+				?: return@registerForActivityResult
 
-			var subDirectory: String? = data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
-			if (subDirectory == null) {
-				Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
-				return@registerForActivityResult
-			}
-			//Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
-			subDirectory = subDirectory.replace(folderDirectory, "")
-			if (compose) viewModel.subDirectory = subDirectory else subDirectoryTextView?.text = subDirectory
+            var subDirectory: String =
+				data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
+				?.replace(folderDirectory, "")
+				?: return@registerForActivityResult
 
+            //Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
+            if (compose) viewModel.subDirectory = subDirectory else subDirectoryTextView?.text = subDirectory
 
 			preferences.edit {
 				putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
