@@ -12,7 +12,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.webkit.MimeTypeMap
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -174,41 +173,36 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 		}
 
 		// TODO: add support for EXTRA_TEXT (notes, memos sharing)
-		var extrasToCopy: ArrayList<Uri?>? = ArrayList()
-
-		if (Intent.ACTION_SEND == intent.action) {
-
-			val uri: Uri? = atLeastSdk(
-				Build.VERSION_CODES.TIRAMISU,
-				{ intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java) },
-				{
-					@Suppress("DEPRECATION")
-					intent.getParcelableExtra(Intent.EXTRA_STREAM)
-				}
+		val filesToCopy: ArrayList<Uri?> = if (Intent.ACTION_SEND == intent.action) {
+			arrayListOf(
+				atLeastSdk(
+					Build.VERSION_CODES.TIRAMISU,
+					{ intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java) },
+					{
+						@Suppress("DEPRECATION")
+						intent.getParcelableExtra(Intent.EXTRA_STREAM)
+					}
+				)
 			)
-			if (uri != null) extrasToCopy!!.add(uri)
-
 		} else if (Intent.ACTION_SEND_MULTIPLE == intent.action) {
-
-			val extras: ArrayList<Uri?>? = atLeastSdk(
+			atLeastSdk(
 				Build.VERSION_CODES.TIRAMISU,
 				{ intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM, Uri::class.java) },
 				{
 					@Suppress("DEPRECATION")
 					intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM)
 				}
-			)
-			if (extras != null) extrasToCopy = extras
+			) ?: arrayListOf()
+		} else arrayListOf()
+		Log.d(null, "filesToCopy: $filesToCopy")
 
-		}
-
-		if (extrasToCopy!!.isEmpty()) {
+		if (filesToCopy.isEmpty()) {
 			Toast.makeText(this, getString(R.string.nothing_share), Toast.LENGTH_SHORT).show()
 			finish()
 			return
 		}
 		val files = viewModel.files
-		for (sourceUri in extrasToCopy) {
+		for (sourceUri in filesToCopy) {
 			if (sourceUri == null) continue
 			var displayName = getDisplayNameForUri(sourceUri)
 			if (displayName == null) {
@@ -217,6 +211,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			files[sourceUri] = displayName
 		}
 		if (files.isEmpty()) finish()
+		Log.d(null, "files: $files")
 
 		if (!compose) {
 			binding!!.name.setText(TextUtils.join("\n", files.values))
@@ -351,7 +346,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 		 */
 		get() {
 			val selectedFolder =
-				foldersSpinner?.selectedItem as Folder?
+				foldersSpinner?.selectedItem as? Folder?
 			var savedSubDirectory = ""
 
 			if (selectedFolder != null) {
@@ -455,9 +450,9 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 	override fun onPause() {
 		super.onPause()
 		if (foldersSpinner?.selectedItem != null) {
-			val selectedFolder = foldersSpinner!!.selectedItem as Folder
+			val selectedFolder = foldersSpinner?.selectedItem as? Folder
 			preferences.edit {
-				putString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, selectedFolder.id)
+				putString(PREF_PREVIOUSLY_SELECTED_SYNCTHING_FOLDER, selectedFolder?.id)
 			}
 		}
 	}
