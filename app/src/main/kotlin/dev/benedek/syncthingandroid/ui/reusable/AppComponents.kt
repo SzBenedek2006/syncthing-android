@@ -432,7 +432,11 @@ fun OptionTile(
 			}
 
 			if (checked != null) {
-				Switch(checked = checked, onCheckedChange = null, modifier = Modifier.padding(14.dp))
+				Switch(
+					checked = checked,
+					onCheckedChange = null,
+					modifier = Modifier.padding(14.dp)
+				)
 			} else if (rightIconPainter != null) {
 				Icon(
 					painter = rightIconPainter,
@@ -446,7 +450,7 @@ fun OptionTile(
 			} else if (!noIconPadding) {
 				Spacer(Modifier.size(52.dp))
 			} else {
-				Spacer(Modifier.padding(end= 14.dp))
+				Spacer(Modifier.padding(end = 14.dp))
 			}
 		}
 	}
@@ -550,15 +554,19 @@ fun StatTile(
 				if (leftIcon != null) {
 					leftIcon()
 				} else if (!noIconPadding) {
-					Box(Modifier
-						.padding(14.dp)
-						.size(24.dp))
+					Box(
+						Modifier
+							.padding(14.dp)
+							.size(24.dp)
+					)
 				} else {
 					Box(Modifier.padding(start = 14.dp))
 				}
-				Column(Modifier
-					.weight(1f)
-					.padding(4.dp)) {
+				Column(
+					Modifier
+						.weight(1f)
+						.padding(4.dp)
+				) {
 					if (title != null) {
 						Text(
 							text = title,
@@ -587,7 +595,11 @@ fun StatTile(
 				}
 
 				if (checked != null) {
-					Switch(checked = checked, onCheckedChange = null, modifier = Modifier.padding(14.dp))
+					Switch(
+						checked = checked,
+						onCheckedChange = null,
+						modifier = Modifier.padding(14.dp)
+					)
 				} else {
 					rightIcon?.invoke()
 				}
@@ -720,7 +732,8 @@ fun AppDropDownMenu(
 
 // Buttons
 
-@Composable fun DenyButton(
+@Composable
+fun DenyButton(
 	onClick: () -> Unit,
 	modifier: Modifier = Modifier,
 	enabled: Boolean = true,
@@ -732,7 +745,7 @@ fun AppDropDownMenu(
 	interactionSource: MutableInteractionSource? = null,
 	content: @Composable RowScope.() -> Unit,
 ) {
-	OutlinedButton (
+	OutlinedButton(
 		onClick = onClick,
 		modifier = modifier,
 		enabled = enabled,
@@ -772,7 +785,8 @@ fun <K> SingleSelectDialog(
 	onSelect: (K) -> Unit,
 	onDismiss: () -> Unit
 ) {
-	val entryList: List<Map.Entry<K, String>>? = remember(items) { items?.entries?.toList() } // Convert to list efficiently
+	val entryList: List<Map.Entry<K, String>>? =
+		remember(items) { items?.entries?.toList() } // Convert to list efficiently
 	val initialIndex: Int? = remember(entryList, initialSelectedKey) {
 		entryList?.indexOfFirst { it.key == initialSelectedKey }?.takeIf { it >= 0 }
 	}
@@ -960,9 +974,9 @@ fun DeleteDialog(
 
 
 const val dialogAnimationTimeMs = 350
+
 @Suppress("unused")
 const val dialogAnimationDelayMs = 50
-
 
 
 /**
@@ -1004,7 +1018,6 @@ fun ComposeDialog(
 	val transition = rememberTransition(transitionState, "DialogTransition")
 
 
-
 	fun triggerDismiss() {
 		localShouldCancel = true
 		scope.launch {
@@ -1039,7 +1052,6 @@ fun ComposeDialog(
 	}
 
 
-
 	val currentProgressState by rememberUpdatedState(currentProgress)
 	val shouldDisplayState by rememberUpdatedState(shouldDisplay)
 
@@ -1055,7 +1067,7 @@ fun ComposeDialog(
 				} else {
 					transitionState.animateTo(targetState = shouldDisplay)
 				}
-		}
+			}
 
 	}
 
@@ -1193,7 +1205,9 @@ fun DialogCard(
 					exit = myExitTransition()
 				) {
 					Column {
-						Spacer(modifier = Modifier.height(16.dp).fillMaxWidth())
+						Spacer(modifier = Modifier
+							.height(16.dp)
+							.fillMaxWidth())
 						Text(
 							text = description,
 							style = MaterialTheme.typography.bodyMedium,
@@ -1221,7 +1235,9 @@ fun DialogCard(
 				exit = myExitTransition()
 			) {
 				Column {
-					Spacer(Modifier.height(24.dp).fillMaxWidth())
+					Spacer(Modifier
+						.height(24.dp)
+						.fillMaxWidth())
 					Row(
 						modifier = Modifier.fillMaxWidth(),
 						horizontalArrangement = Arrangement.End
@@ -1325,14 +1341,16 @@ fun AppScaffoldPreview() {
 			topNavigationOnClick = {},
 			topNavigationActive = true,
 			topNavigationIcon = Icons.AutoMirrored.Outlined.ArrowBack,
-			topActions = { IconButton(
-				onClick = {},
-				enabled = true
-			) {
-				Icon(Icons.Filled.Done, "Localized description")
-			} },
+			topActions = {
+				IconButton(
+					onClick = {},
+					enabled = true
+				) {
+					Icon(Icons.Filled.Done, "Localized description")
+				}
+			},
 
-		) { innerPadding ->
+			) { innerPadding ->
 			Box(
 				Modifier
 					.padding(innerPadding)
@@ -1534,7 +1552,13 @@ fun DialogCardPreview() {
 			null,
 			"ok",
 			"cancel",
-			rememberTransition(SeekableTransitionState(initialState = true).also { runBlocking { it.snapTo(true) } }, "DialogTransition")
+			rememberTransition(SeekableTransitionState(initialState = true).also {
+				runBlocking {
+					it.snapTo(
+						true
+					)
+				}
+			}, "DialogTransition")
 		)
 	}
 }

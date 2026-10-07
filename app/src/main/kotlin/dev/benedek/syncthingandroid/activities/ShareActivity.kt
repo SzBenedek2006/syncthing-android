@@ -67,29 +67,31 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 
 	private var binding: ActivityShareBinding? = null
 
-	val folderPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { (resultCode, data) ->
-		if (resultCode == RESULT_OK) {
+	val folderPickerLauncher =
+		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { (resultCode, data) ->
+			if (resultCode == RESULT_OK) {
 
-			val selectedFolder =
-				if (compose) viewModel.folders[viewModel.selectedFolderIndex]
-				else foldersSpinner?.selectedItem as? Folder
+				val selectedFolder =
+					if (compose) viewModel.folders[viewModel.selectedFolderIndex]
+					else foldersSpinner?.selectedItem as? Folder
 
-            val folderDirectory: String = selectedFolder?.path?.let { Util.formatPath(it) }
-				?: return@registerForActivityResult
+				val folderDirectory: String = selectedFolder?.path?.let { Util.formatPath(it) }
+					?: return@registerForActivityResult
 
-            var subDirectory: String =
-				data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
-				?.replace(folderDirectory, "")
-				?: return@registerForActivityResult
+				var subDirectory: String =
+					data?.getStringExtra(FolderPickerActivity.EXTRA_RESULT_DIRECTORY)
+						?.replace(folderDirectory, "")
+						?: return@registerForActivityResult
 
-            //Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
-            if (compose) viewModel.subDirectory = subDirectory else subDirectoryTextView?.text = subDirectory
+				//Remove the parent directory from the string, so it is only the Sub directory that is displayed to the user.
+				if (compose) viewModel.subDirectory = subDirectory else subDirectoryTextView?.text =
+					subDirectory
 
-			preferences.edit {
-				putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
+				preferences.edit {
+					putString(PREF_FOLDER_SAVED_SUBDIRECTORY + selectedFolder.id, subDirectory)
+				}
 			}
 		}
-	}
 
 
 	override fun onServiceConnected() {
@@ -115,7 +117,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			)
 
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding?.folders?.adapter = adapter
+			binding?.folders?.adapter = adapter
 			binding?.folders?.setSelection(folderIndex)
 		}
 	}
@@ -143,13 +145,13 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 						onFolderSelect = { viewModel.selectedFolderIndex = it },
 						onFileRemove = viewModel::removeFile,
 						onBrowseClick = {
-                            val path: String = viewModel.folders[viewModel.selectedFolderIndex].path
-                                ?: return@ShareScreen
-                            val initialDirectory = File(path, savedSubDirectory)
+							val path: String = viewModel.folders[viewModel.selectedFolderIndex].path
+								?: return@ShareScreen
+							val initialDirectory = File(path, savedSubDirectory)
 							folderPickerLauncher.launch(
 								createIntent(
 									applicationContext,
-                                    initialDirectory.absolutePath, path
+									initialDirectory.absolutePath, path
 								)
 							)
 						},
@@ -376,7 +378,7 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 			val isError = withContext(Dispatchers.IO) {
 				// Get a reference to the activity if it is still there.
 				if (this@ShareActivity.isFinishing) {
-                    return@withContext true
+					return@withContext true
 				}
 
 				var errorFlag = false
@@ -416,16 +418,17 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 						}
 					}
 				}
-                return@withContext errorFlag
+				return@withContext errorFlag
 			}
 
 
 			if (isFinishing) {
-                return@launch
+				return@launch
 			}
 			Util.dismissDialogSafe(progress, this@ShareActivity)
 			Toast.makeText(
-				this@ShareActivity, if (ignored > 0) this@ShareActivity.getResources().getQuantityString(
+				this@ShareActivity,
+				if (ignored > 0) this@ShareActivity.getResources().getQuantityString(
 					R.plurals.copy_success_partially, copied,
 					copied, folder.label, ignored
 				) else this@ShareActivity.getResources().getQuantityString(

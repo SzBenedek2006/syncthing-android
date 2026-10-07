@@ -608,6 +608,7 @@ class SyncthingService : Service() {
 				{ context.startService(intent) }
 			)
 		}
+
 		private const val TAG = "SyncthingService"
 
 		/**

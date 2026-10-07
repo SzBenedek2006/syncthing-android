@@ -31,7 +31,7 @@ fun BatterySlide(
 	onGrantPermissionClick: () -> Unit,
 	isPermissionGranted: Boolean,
 	onDenyClick: () -> Unit
-	) {
+) {
 	AdaptiveSlideLayout(
 		{
 			SlideTitle(stringResource(R.string.disable_battery_optimization_title))
@@ -87,7 +87,12 @@ fun BatterySlidePreview() {
 	}
 }
 
-@Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
+@Preview(
+	showBackground = true,
+	uiMode = AndroidUiModes.UI_MODE_NIGHT_YES,
+	widthDp = 800,
+	heightDp = 400
+)
 @Composable
 fun BatterySlideLandscapePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {

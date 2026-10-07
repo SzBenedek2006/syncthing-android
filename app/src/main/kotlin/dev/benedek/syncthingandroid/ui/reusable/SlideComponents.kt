@@ -102,7 +102,7 @@ fun SlideDescription(
 	fontSize: TextUnit = dimensionResource(R.dimen.slide_desc).value.sp,
 	lineHeight: TextUnit = 16.sp,
 	textLayout: TextLayout = TextLayout.Fixed
-	) {
+) {
 
 	var expanded by retain { mutableStateOf(textLayout == TextLayout.Fixed) }
 
@@ -133,7 +133,10 @@ fun SlideDescription(
 				IconButton(
 					onClick = { expanded = !expanded }
 				) {
-					Icon(if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore, null)
+					Icon(
+						if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+						null
+					)
 				}
 			}
 		}
@@ -295,7 +298,12 @@ fun AdaptiveSlideLayoutPortraitPreview() {
 		Surface {
 			AdaptiveSlideLayout(
 				title = { SlideTitle("Introduction") },
-				description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
+				description = {
+					SlideDescription(
+						"Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.",
+						""
+					)
+				},
 				image = { SlideImage(rememberVectorPainter(SyncthingForAndroidNew)) }
 			)
 		}
@@ -310,7 +318,12 @@ fun AdaptiveSlideLayoutLandscapePreview() {
 			Surface {
 				AdaptiveSlideLayout(
 					title = { SlideTitle("Introduction") },
-					description = { SlideDescription("Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.", "") },
+					description = {
+						SlideDescription(
+							"Syncthing replaces proprietary cloud and data services with something open, trustworthy and decentralized.",
+							""
+						)
+					},
 					image = { SlideImage(rememberVectorPainter(SyncthingForAndroidNew)) }
 				)
 			}

@@ -3,10 +3,11 @@ package dev.benedek.syncthingandroid.model
 import androidx.annotation.StringRes
 import dev.benedek.syncthingandroid.R
 
-interface Sort{
+interface Sort {
 	@get:StringRes
 	val resId: Int
 }
+
 enum class FolderSort(@StringRes override val resId: Int) : Sort {
 	LABEL(R.string.folder_label),
 	DATE(R.string.modified),

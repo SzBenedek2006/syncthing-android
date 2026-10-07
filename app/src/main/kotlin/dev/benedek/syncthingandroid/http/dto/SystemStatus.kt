@@ -10,12 +10,14 @@ class SystemStatus {
 	var alloc: Long = 0
 	var cpuPercent: Double = 0.0
 	var discoveryEnabled: Boolean = false
+
 	@Deprecated(
 		message = "Deprecated in Syncthing v1.18.0: use discoveryStatus instead.",
 		replaceWith = ReplaceWith("discoveryStatus?.mapValues { it.value.error }?.filterValues { it != null }")
 	)
 	var discoveryErrors: MutableMap<String, String>? = null
 	var discoveryStatus: Map<String, DiscoveryEntry>? = null
+
 	@Deprecated(
 		message = "Deprecated in Syncthing v1.18.0: use discoveryStatus.size instead.",
 		replaceWith = ReplaceWith("discoveryStatus?.size ?: 0")

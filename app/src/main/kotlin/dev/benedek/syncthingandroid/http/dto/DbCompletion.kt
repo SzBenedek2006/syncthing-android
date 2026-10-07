@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName
  * @param remoteState TODO
  * @param sequence TODO
  */
-data class DbCompletion (
+data class DbCompletion(
 	var completion: Double = 0.0, // CompletionPct float64
 
 	var globalBytes: Long = 0L, // GlobalBytes   int64
@@ -61,10 +61,13 @@ data class DbCompletion (
 	enum class RemoteState {
 		@SerializedName("unknown")
 		UNKNOWN,
+
 		@SerializedName("notSharing")
 		NOT_SHARING,
+
 		@SerializedName("paused")
 		PAUSED,
+
 		@SerializedName("valid")
 		VALID
 	}

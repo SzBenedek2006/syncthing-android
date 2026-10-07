@@ -137,7 +137,9 @@ fun MainModalDrawerSheet(
 			Icon(
 				rememberVectorPainter(SyncthingForAndroidNew),
 				null,
-				Modifier.padding(8.dp).size(24.dp),
+				Modifier
+					.padding(8.dp)
+					.size(24.dp),
 				MaterialTheme.colorScheme.primary
 			)
 			Text(
@@ -162,7 +164,11 @@ fun MainModalDrawerSheet(
 			val titleWeight = FontWeight.Normal
 
 			StatTile(
-				modifier = modifier.onSizeChanged { with(density) { tileHeight = it.height.toDp() } },
+				modifier = modifier.onSizeChanged {
+					with(density) {
+						tileHeight = it.height.toDp()
+					}
+				},
 				title = stringResource(R.string.announce_server),
 				titleWeight = titleWeight,
 				description = "${viewModel.announceConnected}/${viewModel.announceTotal}",
@@ -199,7 +205,9 @@ fun MainModalDrawerSheet(
 						values = viewModel.systemStatusHistory
 							.map { it?.sys ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
-						modifier = Modifier.weight(0.3f).height(tileHeight)
+						modifier = Modifier
+							.weight(0.3f)
+							.height(tileHeight)
 					)
 				}
 			)
@@ -223,7 +231,9 @@ fun MainModalDrawerSheet(
 						values = viewModel.systemConnectionsHistory
 							.map { it.total?.inBits ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
-						modifier = Modifier.weight(0.3f).height(tileHeight)
+						modifier = Modifier
+							.weight(0.3f)
+							.height(tileHeight)
 					)
 				}
 			)
@@ -247,7 +257,9 @@ fun MainModalDrawerSheet(
 						values = viewModel.systemConnectionsHistory
 							.map { it.total?.outBits ?: 0L }
 							.let { if (it.size < 2) listOf(0L, 0L) else it },
-						modifier = Modifier.weight(0.3f).height(tileHeight)
+						modifier = Modifier
+							.weight(0.3f)
+							.height(tileHeight)
 					)
 				}
 			)

@@ -50,8 +50,6 @@ class DeviceActivity : SyncthingActivity() {
 	}
 
 
-
-
 	public override fun onCreate(savedInstanceState: Bundle?) {
 		isCreateMode = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
 		registerOnServiceConnectedListener { this.onServiceConnected() }

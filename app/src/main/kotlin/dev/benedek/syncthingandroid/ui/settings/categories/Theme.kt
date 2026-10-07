@@ -68,7 +68,14 @@ fun Theme(contentPadding: PaddingValues) {
 				atLeastSdk(
 					Build.VERSION_CODES.S,
 					{ Text(stringResource(R.string.blur_description)) },
-					{ Text(stringResource(R.string.only_available_on_android_or_higher, minVersion)) }
+					{
+						Text(
+							stringResource(
+								R.string.only_available_on_android_or_higher,
+								minVersion
+							)
+						)
+					}
 				)
 			},
 			defaultValue = false,
@@ -92,7 +99,14 @@ fun Theme(contentPadding: PaddingValues) {
 				atLeastSdk(
 					Build.VERSION_CODES.S,
 					{ Text(stringResource(R.string.dynamic_colors_description)) },
-					{ Text(stringResource(R.string.only_available_on_android_or_higher, minVersion)) }
+					{
+						Text(
+							stringResource(
+								R.string.only_available_on_android_or_higher,
+								minVersion
+							)
+						)
+					}
 				)
 			},
 			defaultValue = false,

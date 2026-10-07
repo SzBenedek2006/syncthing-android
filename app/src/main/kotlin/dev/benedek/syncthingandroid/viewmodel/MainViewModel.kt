@@ -116,8 +116,13 @@ class MainViewModel : ViewModel() {
 			DeviceSort.STATE -> compareBy { systemConnections.connections?.get(it.deviceID)?.state }
 			// Map boolean to sort paused devices first
 			DeviceSort.PAUSED -> compareByDescending { connections[it.deviceID]?.paused ?: false }
-			DeviceSort.DOWNLOAD_SPEED -> compareByDescending { connections[it.deviceID]?.inBits ?: 0L }
-			DeviceSort.UPLOAD_SPEED -> compareByDescending { connections[it.deviceID]?.outBits ?: 0L }
+			DeviceSort.DOWNLOAD_SPEED -> compareByDescending {
+				connections[it.deviceID]?.inBits ?: 0L
+			}
+
+			DeviceSort.UPLOAD_SPEED -> compareByDescending {
+				connections[it.deviceID]?.outBits ?: 0L
+			}
 		}
 
 		// TODO: comparator.reversed() when min API level 24 is set
@@ -137,7 +142,8 @@ class MainViewModel : ViewModel() {
 						systemStatus = info
 						systemStatusHistory.add(info)
 						announceTotal = systemStatus!!.discoveryMethods
-						announceConnected = announceTotal - (systemStatus!!.discoveryErrors?.size ?: 0)
+						announceConnected =
+							announceTotal - (systemStatus!!.discoveryErrors?.size ?: 0)
 						announceConnectedHistory.add(announceConnected)
 						while (announceConnectedHistory.size > HISTORY_MAX_SIZE) {
 							announceConnectedHistory.remove(announceConnectedHistory.first())
@@ -149,7 +155,8 @@ class MainViewModel : ViewModel() {
 				updateFolderStatuses()
 				delay(apiCallDelay.milliseconds)
 
-				val _devices = api?.getDevices(false).orEmpty().sortedWith(getDeviceComparator()) // api call 2
+				val _devices =
+					api?.getDevices(false).orEmpty().sortedWith(getDeviceComparator()) // api call 2
 				devices = _devices
 
 				delay(apiCallDelay.milliseconds)

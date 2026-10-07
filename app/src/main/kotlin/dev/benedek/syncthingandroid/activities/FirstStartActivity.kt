@@ -170,11 +170,13 @@ class FirstStartActivity : ThemedAppCompatActivity() {
 			putBoolean("battery_optimization_dont_show_again", true) // TODO: make const
 		}
 	}
+
 	fun denyNotificationAccess() {
 		sharedPreferences.edit {
 			putBoolean("send_notification_permission_dont_show_again", true) // TODO: make const
 		}
 	}
+
 	fun denyLocationAccess() {
 		sharedPreferences.edit {
 			putBoolean("location_permission_dont_show_again", true) // TODO: make const

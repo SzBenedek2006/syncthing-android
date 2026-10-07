@@ -40,7 +40,6 @@ class MainActivity : StateDialogActivity() {
 	private var drawerToggle: ActionBarDrawerToggle? = null
 
 
-
 	private val firstStartTime: Long
 		/**
 		 * Returns the unix timestamp at which the app was first installed.

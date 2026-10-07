@@ -2,7 +2,7 @@ package dev.benedek.syncthingandroid.model
 
 import kotlin.math.min
 
-data class Device (
+data class Device(
 	var deviceID: String? = null,
 	var name: String = "",
 	var addresses: List<String?>? = null,

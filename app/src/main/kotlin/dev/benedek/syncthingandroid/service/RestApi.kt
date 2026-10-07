@@ -51,19 +51,23 @@ class RestApi(
 	private var localDeviceId: String? = null
 	private var urVersionMax: Int = 0
 	private var previousSystemConnections: SystemConnections? = null
+
 	/**
 	 * Stores the timestamp of the last successful request to [GetRequest.URI_CONNECTIONS].
 	 */
 	private var previousConnectionTime: Long = 0
+
 	/**
 	 * Object that must be locked upon accessing the following variables:
 	 * asyncQueryConfigComplete, asyncQueryVersionComplete, asyncQuerySystemInfoComplete
 	 */
 	private val asyncQueryCompleteLock = Any()
+
 	/**
 	 * Object that must be locked upon accessing config
 	 */
 	private val configLock = Any()
+
 	/**
 	 * Stores the latest result of device and folder completion events.
 	 */
@@ -125,7 +129,6 @@ class RestApi(
 	}
 
 
-
 	fun reloadConfig() {
 		GetRequest(
 			context,
@@ -156,7 +159,6 @@ class RestApi(
 		// Update cached device and folder information stored in the completion model.
 		completion.updateFromConfig(getDevices(true), this.folders)
 	}
-
 
 
 	/**

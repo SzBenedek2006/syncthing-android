@@ -63,7 +63,13 @@ class SettingsActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnect
 				val navController = rememberNavController()
 				val navBackStackEntry by navController.currentBackStackEntryAsState()
 				val currentRoute = navBackStackEntry?.destination?.route
-				var page: String? by rememberSaveable { mutableStateOf(intent.getStringExtra(EXTRA_OPEN_SUB_PREF_SCREEN)) }
+				var page: String? by rememberSaveable {
+					mutableStateOf(
+						intent.getStringExtra(
+							EXTRA_OPEN_SUB_PREF_SCREEN
+						)
+					)
+				}
 
 
 				LaunchedEffect(Unit) {

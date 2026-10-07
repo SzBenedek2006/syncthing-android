@@ -30,7 +30,8 @@ class NotificationHandler(private val context: Context) {
 	private val preferences: SharedPreferences by lazy {
 		PreferenceManager.getDefaultSharedPreferences(context)
 	}
-	private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
+	private val notificationManager: NotificationManagerCompat =
+		NotificationManagerCompat.from(context)
 	private val persistentChannel: NotificationChannelCompat = NotificationChannelCompat.Builder(
 		CHANNEL_PERSISTENT,
 		NotificationManagerCompat.IMPORTANCE_MIN
@@ -42,16 +43,17 @@ class NotificationHandler(private val context: Context) {
 		.setShowBadge(false)
 		.build()
 
-	private val persistentChannelWaiting: NotificationChannelCompat = NotificationChannelCompat.Builder(
-		CHANNEL_PERSISTENT_WAITING,
-		NotificationManagerCompat.IMPORTANCE_MIN
-	)
-		.setName(context.getString(R.string.notification_persistent_waiting_channel))
-		.setLightsEnabled(false)
-		.setVibrationEnabled(false)
-		.setSound(null, null)
-		.setShowBadge(false)
-		.build()
+	private val persistentChannelWaiting: NotificationChannelCompat =
+		NotificationChannelCompat.Builder(
+			CHANNEL_PERSISTENT_WAITING,
+			NotificationManagerCompat.IMPORTANCE_MIN
+		)
+			.setName(context.getString(R.string.notification_persistent_waiting_channel))
+			.setLightsEnabled(false)
+			.setVibrationEnabled(false)
+			.setSound(null, null)
+			.setShowBadge(false)
+			.build()
 
 	private val infoChannel: NotificationChannelCompat = NotificationChannelCompat.Builder(
 		CHANNEL_INFO,
@@ -174,12 +176,28 @@ class NotificationHandler(private val context: Context) {
 				} ?: 0
 				atMostSdk(
 					Build.VERSION_CODES.S,
-					{ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)}
+					{
+						ServiceCompat.startForeground(
+							service,
+							idToShow,
+							builder.build(),
+							serviceType
+						)
+					}
 				) {
 					try {
-						ServiceCompat.startForeground(service, idToShow, builder.build(), serviceType)
+						ServiceCompat.startForeground(
+							service,
+							idToShow,
+							builder.build(),
+							serviceType
+						)
 					} catch (e: ForegroundServiceStartNotAllowedException) {
-						Log.w("SyncthingService", "Unable to start foreground service from background", e)
+						Log.w(
+							"SyncthingService",
+							"Unable to start foreground service from background",
+							e
+						)
 					}
 				}
 			} else {

@@ -80,14 +80,16 @@ object PermissionUtil {
 
 	fun shouldAskForNotificationPermission(context: Context): Boolean {
 		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-		val dontShowAgain = sharedPreferences.getBoolean("send_notification_permission_dont_show_again", false)
+		val dontShowAgain =
+			sharedPreferences.getBoolean("send_notification_permission_dont_show_again", false)
 		val isGranted = hasNotificationPermission(context)
 		return !isGranted && !dontShowAgain
 	}
 
 	fun shouldAskForLocationPermission(context: Context): Boolean {
 		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-		val dontShowAgain = sharedPreferences.getBoolean("location_permission_dont_show_again", false)
+		val dontShowAgain =
+			sharedPreferences.getBoolean("location_permission_dont_show_again", false)
 		val isGranted = hasLocationPermissions(context)
 		return !isGranted && !dontShowAgain
 	}

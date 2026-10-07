@@ -63,7 +63,10 @@ fun About(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 				Icon(
 					rememberVectorPainter(SyncthingForAndroidNew),
 					null,
-					Modifier.fillMaxWidth(0.5f).aspectRatio(1f).padding(16.dp),
+					Modifier
+						.fillMaxWidth(0.5f)
+						.aspectRatio(1f)
+						.padding(16.dp),
 					MaterialTheme.colorScheme.primary
 				)
 				Text(
@@ -83,7 +86,10 @@ fun About(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 				Icon(
 					rememberVectorPainter(SyncthingForAndroidNew),
 					null,
-					Modifier.fillMaxWidth(0.25f).aspectRatio(1f).padding(16.dp),
+					Modifier
+						.fillMaxWidth(0.25f)
+						.aspectRatio(1f)
+						.padding(16.dp),
 					MaterialTheme.colorScheme.primary
 				)
 				Text(

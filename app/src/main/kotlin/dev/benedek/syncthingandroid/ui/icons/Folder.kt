@@ -19,49 +19,49 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 val Folder: ImageVector
-    get() {
-        if (_folder != null) {
-            return _folder!!
-        }
-        _folder = Builder(
-            name = "Folder",
-            defaultWidth = 24.0.dp,
-            defaultHeight = 24.0.dp,
-            viewportWidth = 24.0f,
-            viewportHeight = 24.0f
-        ).apply {
-            path(
-                fill = SolidColor(Color(0xFF000000)),
-                stroke = null,
-                strokeLineWidth = 0.0f,
-                strokeLineCap = Butt,
-                strokeLineJoin = Miter,
-                strokeLineMiter = 4.0f,
-                pathFillType = NonZero
-            ) {
-                moveTo(10.0f, 4.0f)
-                horizontalLineTo(4.0f)
-                curveToRelative(-1.1f, 0.0f, -1.99f, 0.9f, -1.99f, 2.0f)
-                lineTo(2.0f, 18.0f)
-                curveToRelative(0.0f, 1.1f, 0.9f, 2.0f, 2.0f, 2.0f)
-                horizontalLineToRelative(16.0f)
-                curveToRelative(1.1f, 0.0f, 2.0f, -0.9f, 2.0f, -2.0f)
-                verticalLineTo(8.0f)
-                curveToRelative(0.0f, -1.1f, -0.9f, -2.0f, -2.0f, -2.0f)
-                horizontalLineToRelative(-8.0f)
-                lineToRelative(-2.0f, -2.0f)
-                close()
-            }
-        }.build()
-        return _folder!!
-    }
+	get() {
+		if (_folder != null) {
+			return _folder!!
+		}
+		_folder = Builder(
+			name = "Folder",
+			defaultWidth = 24.0.dp,
+			defaultHeight = 24.0.dp,
+			viewportWidth = 24.0f,
+			viewportHeight = 24.0f
+		).apply {
+			path(
+				fill = SolidColor(Color(0xFF000000)),
+				stroke = null,
+				strokeLineWidth = 0.0f,
+				strokeLineCap = Butt,
+				strokeLineJoin = Miter,
+				strokeLineMiter = 4.0f,
+				pathFillType = NonZero
+			) {
+				moveTo(10.0f, 4.0f)
+				horizontalLineTo(4.0f)
+				curveToRelative(-1.1f, 0.0f, -1.99f, 0.9f, -1.99f, 2.0f)
+				lineTo(2.0f, 18.0f)
+				curveToRelative(0.0f, 1.1f, 0.9f, 2.0f, 2.0f, 2.0f)
+				horizontalLineToRelative(16.0f)
+				curveToRelative(1.1f, 0.0f, 2.0f, -0.9f, 2.0f, -2.0f)
+				verticalLineTo(8.0f)
+				curveToRelative(0.0f, -1.1f, -0.9f, -2.0f, -2.0f, -2.0f)
+				horizontalLineToRelative(-8.0f)
+				lineToRelative(-2.0f, -2.0f)
+				close()
+			}
+		}.build()
+		return _folder!!
+	}
 
 private var _folder: ImageVector? = null
 
 @Preview
 @Composable
 private fun Preview() {
-    Box(Modifier.padding(12.dp)) {
-        Image(Folder, null)
-    }
+	Box(Modifier.padding(12.dp)) {
+		Image(Folder, null)
+	}
 }

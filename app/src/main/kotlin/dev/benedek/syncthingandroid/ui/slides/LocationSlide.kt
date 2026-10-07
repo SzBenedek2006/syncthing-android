@@ -58,13 +58,13 @@ fun LocationSlide(
 				)
 			}
 			if (!isPermissionGranted)
-			DenyButton(
-				onClick = onDenyClick
-			) {
-				Text(
-					stringResource(R.string.dont_show_again)
-				)
-			}
+				DenyButton(
+					onClick = onDenyClick
+				) {
+					Text(
+						stringResource(R.string.dont_show_again)
+					)
+				}
 		}
 	)
 }
@@ -79,7 +79,12 @@ fun LocationSlidePreview() {
 	}
 }
 
-@Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
+@Preview(
+	showBackground = true,
+	uiMode = AndroidUiModes.UI_MODE_NIGHT_YES,
+	widthDp = 800,
+	heightDp = 400
+)
 @Composable
 fun LocationSlideLandscapePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {

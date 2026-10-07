@@ -205,7 +205,7 @@ fun Settings(
 					)
 					OptionTile(
 						title = stringResource(R.string.category_behaviour),
-						onClick = { navController.navigate(PREF_CATEGORY_BEHAVIOUR)},
+						onClick = { navController.navigate(PREF_CATEGORY_BEHAVIOUR) },
 						leftIconPainter = rememberVectorPainter(Icons.Outlined.ToggleOn)
 					)
 					OptionTile(
@@ -239,7 +239,12 @@ fun Settings(
 			composable(PREF_CATEGORY_THEME) { Theme(contentPadding) }
 			composable(PREF_CATEGORY_RUN_CONDITIONS) { RunConditions(contentPadding) }
 			composable(PREF_CATEGORY_BEHAVIOUR) { Behaviour(contentPadding) }
-			composable(PREF_CATEGORY_SYNCTHING_OPTIONS) { SyncthingOptions(contentPadding, viewModel) }
+			composable(PREF_CATEGORY_SYNCTHING_OPTIONS) {
+				SyncthingOptions(
+					contentPadding,
+					viewModel
+				)
+			}
 			composable(PREF_CATEGORY_BACKUP) { Backup(contentPadding, viewModel) }
 			composable(PREF_CATEGORY_DEBUG) { Debug(contentPadding, viewModel) }
 			composable(PREF_CATEGORY_EXPERIMENTAL) { Experimental(contentPadding, viewModel) }

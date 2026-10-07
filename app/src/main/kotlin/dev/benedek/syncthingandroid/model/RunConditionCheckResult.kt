@@ -35,8 +35,8 @@ class RunConditionCheckResult(blockReasons: MutableList<BlockerReason?>) {
 
 		val that = other as RunConditionCheckResult
 
-        return this.isShouldRun == that.isShouldRun && this.blockReasons == that.blockReasons
-    }
+		return this.isShouldRun == that.isShouldRun && this.blockReasons == that.blockReasons
+	}
 
 	override fun hashCode(): Int {
 		var result = (if (this.isShouldRun) 1 else 0)

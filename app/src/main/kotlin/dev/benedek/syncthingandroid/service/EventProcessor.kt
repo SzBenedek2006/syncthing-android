@@ -32,7 +32,10 @@ import kotlin.time.Duration.Companion.seconds
  *
  * It uses [RestApi.getEvents] to read the pending events and wait for new events.
  */
-class EventProcessor(private val context: Context, private val api: RestApi?) : Runnable, OnReceiveEventListener {
+class EventProcessor(
+	private val context: Context,
+	private val api: RestApi?
+) : Runnable, OnReceiveEventListener {
 	/**
 	 * Use the MainThread for all callbacks and message handling,
 	 * or we have to track down nasty threading problems.
@@ -203,7 +206,7 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 		val deviceId = added["deviceID"] ?: return
 		val deviceName = added["name"]
 		val deviceAddress = added["address"]
-		
+
 		Log.d(TAG, "Unknown device $deviceName($deviceId) wants to connect")
 
 		val shortName = if (deviceName.isNullOrEmpty()) deviceId.take(7) else deviceName
@@ -244,13 +247,15 @@ class EventProcessor(private val context: Context, private val api: RestApi?) : 
 		val deviceId = added["deviceID"] ?: return
 		val folderId = added["folderID"] ?: return
 		val folderLabel = added["folderLabel"]
-		
+
 		Log.d(TAG, "Device $deviceId wants to share folder $folderLabel ($folderId)")
 
 		// Find the deviceName corresponding to the deviceId
-		val deviceName = api?.getDevices(false)?.firstOrNull { it.deviceID == deviceId }?.displayName
+		val deviceName =
+			api?.getDevices(false)?.firstOrNull { it.deviceID == deviceId }?.displayName
 
-		val folderDisplayName = if (folderLabel.isNullOrEmpty()) folderId else "$folderLabel ($folderId)"
+		val folderDisplayName =
+			if (folderLabel.isNullOrEmpty()) folderId else "$folderLabel ($folderId)"
 		val title = context.getString(R.string.folder_rejected, deviceName, folderDisplayName)
 		val notificationId = notificationHandler.getNotificationIdFromText(title)
 

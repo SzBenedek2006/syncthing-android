@@ -55,7 +55,8 @@ class FirstStartViewModel(
 		isStorageGranted = PermissionUtil.haveStoragePermission(context)
 		isLocationGranted = PermissionUtil.hasLocationPermissions(context)
 		isNotificationGranted = PermissionUtil.hasNotificationPermission(context)
-		isBatteryOptimizationIgnoreGranted = PermissionUtil.hasBatteryOptimizationIgnoreGranted(context)
+		isBatteryOptimizationIgnoreGranted =
+			PermissionUtil.hasBatteryOptimizationIgnoreGranted(context)
 	}
 
 	fun initApiUpgradeState(prefs: SharedPreferences) {
@@ -118,7 +119,7 @@ class FirstStartViewModel(
 				}
 			}
 
-			Slide.BATTERY ->  !shouldAskForBatteryOptimization(context)
+			Slide.BATTERY -> !shouldAskForBatteryOptimization(context)
 		}
 	}
 }

@@ -37,7 +37,12 @@ fun IntroSlide() {
 				AnnotatedString(stringResource(R.string.welcome_subtitle)),
 				AnnotatedString.fromHtml(
 					stringResource(R.string.welcome_text),
-					TextLinkStyles(SpanStyle(color = MaterialTheme.colorScheme.primary, textDecoration = TextDecoration.Underline))
+					TextLinkStyles(
+						SpanStyle(
+							color = MaterialTheme.colorScheme.primary,
+							textDecoration = TextDecoration.Underline
+						)
+					)
 				),
 				textLayout = TextLayout.Expandable
 			)
@@ -59,7 +64,12 @@ fun IntroSlidePreview() {
 	}
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
+@Preview(
+	showBackground = true,
+	uiMode = Configuration.UI_MODE_NIGHT_YES,
+	widthDp = 800,
+	heightDp = 400
+)
 @Composable
 fun IntroSlideLandscapePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {

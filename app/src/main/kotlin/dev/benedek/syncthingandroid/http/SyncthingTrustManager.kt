@@ -30,7 +30,8 @@ internal class SyncthingTrustManager(private val httpsCertPath: File?) : X509Tru
 		try {
 			httpsCertPath?.inputStream().use { inputStream ->
 				val certificateFactory = CertificateFactory.getInstance("X.509")
-				val certificate = certificateFactory.generateCertificate(inputStream) as X509Certificate
+				val certificate =
+					certificateFactory.generateCertificate(inputStream) as X509Certificate
 				for (cert in certificates) {
 					cert.verify(certificate.publicKey)
 				}

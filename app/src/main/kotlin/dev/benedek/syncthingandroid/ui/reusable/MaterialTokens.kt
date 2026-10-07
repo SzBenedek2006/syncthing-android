@@ -41,6 +41,7 @@ enum class TypographyKeyTokens {
 	TitleLarge,
 	TitleMedium,
 	TitleSmall,
+
 	// TODO update with the generated tokens once available
 	BodyLargeEmphasized,
 	BodyMediumEmphasized,
@@ -147,6 +148,7 @@ enum class ColorSchemeKeyTokens {
 	TertiaryFixed,
 	TertiaryFixedDim,
 }
+
 @Immutable
 class ColorScheme(
 	val primary: Color,
@@ -371,6 +373,7 @@ enum class ShapeKeyTokens {
 	CornerNone,
 	CornerSmall,
 }
+
 object ButtonSmallTokens {
 	val ContainerHeight = 40.0.dp
 	val ContainerShapeRound = ShapeKeyTokens.CornerFull
@@ -427,6 +430,7 @@ object OutlinedButtonTokens {
 	val UnselectedPressedLabelTextColor = ColorSchemeKeyTokens.OnSurfaceVariant
 	val UnselectedPressedOutlineColor = ColorSchemeKeyTokens.OutlineVariant
 }
+
 val ColorSchemeKeyTokens.value: Color
 	@ReadOnlyComposable @Composable get() = MaterialTheme.colorScheme.fromToken(this)
 

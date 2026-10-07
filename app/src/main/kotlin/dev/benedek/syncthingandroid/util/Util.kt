@@ -239,7 +239,7 @@ object Util {
 	/**
 	 * Logs the value to DEBUG channel then returns the value.
 	 */
-	inline fun <V,T> logD(value: V, tag: T): V {
+	inline fun <V, T> logD(value: V, tag: T): V {
 		Log.d(tag?.toString(), value.toString())
 		return value
 	}

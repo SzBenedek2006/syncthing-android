@@ -42,7 +42,6 @@ class DeviceViewModel : ViewModel() {
 	var deviceVersion: String? by mutableStateOf(null)
 
 
-
 	// DIALOGS
 	var showDiscardDialog by mutableStateOf(false)
 	var showCompressionDialog by mutableStateOf(false)
@@ -118,7 +117,14 @@ class DeviceViewModel : ViewModel() {
 		// TODO
 	}
 
-	private fun initNewDevice(name: String?, deviceID: String?, addresses: List<String?>?, compression: String?, introducer: Boolean, paused: Boolean) {
+	private fun initNewDevice(
+		name: String?,
+		deviceID: String?,
+		addresses: List<String?>?,
+		compression: String?,
+		introducer: Boolean,
+		paused: Boolean
+	) {
 		isInitialized = true
 		isCreateMode = true
 		device = Device(

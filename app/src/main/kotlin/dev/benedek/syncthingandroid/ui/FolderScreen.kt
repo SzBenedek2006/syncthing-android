@@ -250,7 +250,7 @@ fun FolderScreen(
 						readOnly = !state.isCreateMode,
 						inputTransformation = InputTransformation {
 							if (
-								// If the home prefix is present and
+							// If the home prefix is present and
 								originalText.startsWith(homePrefix) &&
 								// If the homePrefix was deleted as a result of the transformation
 								asCharSequence().toString() == originalText.removePrefix(
@@ -320,7 +320,9 @@ fun FolderScreen(
 
 							},
 							shape = MaterialTheme.shapes.medium,
-							modifier = Modifier.fillMaxHeight().padding(horizontal = 14.dp, vertical = 18.dp)
+							modifier = Modifier
+								.fillMaxHeight()
+								.padding(horizontal = 14.dp, vertical = 18.dp)
 						) {
 							Text(stringResource(R.string.select))
 
@@ -445,7 +447,8 @@ fun FolderScreen(
 		 * This is needed due another horrible bug in Android
 		 */
 		val imeBottom = WindowInsets.ime.getBottom(LocalDensity.current)
-		val isSoftwareKeyboardVisible = WindowInsets.isImeVisible // && imeBottom > 0 TODO: (maybe needed?)
+		val isSoftwareKeyboardVisible =
+			WindowInsets.isImeVisible // && imeBottom > 0 TODO: (maybe needed?)
 
 		var backProgress by remember { mutableStateOf<Float?>(null) } // FIXME
 
@@ -473,11 +476,13 @@ fun FolderScreen(
 			}
 		}
 
-		val animatedProgress = backProgress?.let { animateFloatAsState(
-			targetValue = it,
-			animationSpec = spring(),
-			label = "animatedProgress"
-		) }
+		val animatedProgress = backProgress?.let {
+			animateFloatAsState(
+				targetValue = it,
+				animationSpec = spring(),
+				label = "animatedProgress"
+			)
+		}
 
 		AnimatedVisibility(state.showDiscardDialog, enter = fadeIn(), exit = fadeOut()) {
 			ComposeDialog(
@@ -567,10 +572,15 @@ fun DeviceListSection(
 		exit = shrinkVertically() + fadeOut()
 	) {
 		if (deviceList.isEmpty()) {
-			Box(modifier = Modifier
-				.fillMaxWidth()
-				.padding(16.dp), Alignment.Center) {
-				Text(stringResource(R.string.devices_list_empty), style = MaterialTheme.typography.titleMedium)
+			Box(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(16.dp), Alignment.Center
+			) {
+				Text(
+					stringResource(R.string.devices_list_empty),
+					style = MaterialTheme.typography.titleMedium
+				)
 			}
 		} else {
 			Column {

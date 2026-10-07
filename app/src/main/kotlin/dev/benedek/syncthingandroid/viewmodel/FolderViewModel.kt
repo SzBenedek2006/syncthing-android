@@ -146,7 +146,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	}
 
 
-
 	fun setService(service: SyncthingService) {
 		serviceReference = WeakReference(service)
 	}
@@ -276,11 +275,12 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	}
 
 	fun onVersioningSave() {
-		val changedVersioning: Folder.Versioning = if (editedVersioning?.type.isNullOrEmpty() || editedVersioning!!.type == Constants.FVER_TYPE_NONE) {
-			Folder.Versioning()
-		} else {
-			editedVersioning!!.deepCopy()
-		}
+		val changedVersioning: Folder.Versioning =
+			if (editedVersioning?.type.isNullOrEmpty() || editedVersioning!!.type == Constants.FVER_TYPE_NONE) {
+				Folder.Versioning()
+			} else {
+				editedVersioning!!.deepCopy()
+			}
 		folder = folder.copy(versioning = changedVersioning)
 		folderNeedsToUpdate(true)
 		Log.i(
@@ -317,7 +317,8 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 				.show()
 			return
 		} else {
-			folder = folder.copy(path = pathTextFieldState.text.toString()) // TODO: Is copy needed here?
+			folder =
+				folder.copy(path = pathTextFieldState.text.toString()) // TODO: Is copy needed here?
 		}
 		val dir = File(pathTextFieldState.text.toString())
 
@@ -441,7 +442,10 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 			isPathWritable = file.canWrite() && file.canRead()
 		} else {
 			val parentDir = file.parentFile
-			isPathWritable = parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(file)
+			isPathWritable =
+				parentDir != null && parentDir.canWrite() && parentDir.canRead() && checkFileName(
+					file
+				)
 		}
 	}
 

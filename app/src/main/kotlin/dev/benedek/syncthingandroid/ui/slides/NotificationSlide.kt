@@ -57,13 +57,13 @@ fun NotificationSlide(
 				)
 			}
 			if (!isPermissionGranted)
-			DenyButton(
-				onClick = onDenyClick,
-			) {
-				Text(
-					stringResource(R.string.dont_show_again) // Todo: Change to deny
-				)
-			}
+				DenyButton(
+					onClick = onDenyClick,
+				) {
+					Text(
+						stringResource(R.string.dont_show_again) // Todo: Change to deny
+					)
+				}
 		}
 	)
 }
@@ -78,7 +78,12 @@ fun NotificationSlidePreview() {
 	}
 }
 
-@Preview(showBackground = true, uiMode = AndroidUiModes.UI_MODE_NIGHT_YES, widthDp = 800, heightDp = 400)
+@Preview(
+	showBackground = true,
+	uiMode = AndroidUiModes.UI_MODE_NIGHT_YES,
+	widthDp = 800,
+	heightDp = 400
+)
 @Composable
 fun NotificationSlideLandscapePreview() {
 	SyncthingandroidTheme(dynamicColor = ThemeControls.isMonetEnabled) {

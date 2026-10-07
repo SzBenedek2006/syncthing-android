@@ -192,11 +192,13 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 				topActions = {
 					val contentColor = MaterialTheme.colorScheme.onSurface
 					val isFolderPage = pagerState.currentPage == 0
+
 					/**
 					 * Size according to https://m3.material.io/components/chips/specs
 					 */
 					val iconSize = 18.dp
-					val scaleY = if (if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending) -1f else 1f
+					val scaleY =
+						if (if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending) -1f else 1f
 
 					val currentSortedByResId =
 						if (isFolderPage) viewModel.foldersSortedBy.resId
@@ -205,24 +207,26 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 					var expanded by remember { mutableStateOf(false) }
 
 					AssistChip(
-						onClick = { expanded = !expanded},
+						onClick = { expanded = !expanded },
 						label = { Text(stringResource(currentSortedByResId)) },
 						leadingIcon = {
 							Icon(
 								Icons.AutoMirrored.Outlined.Sort,
 								null,
-								Modifier.size(iconSize).scale(1f, scaleY),
+								Modifier
+									.size(iconSize)
+									.scale(1f, scaleY),
 								tint = contentColor
 							)
 						},
 						colors = ChipColors(
-							containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 1/3f),
+							containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 1 / 3f),
 							labelColor = MaterialTheme.colorScheme.onSurface,
 							leadingIconContentColor = MaterialTheme.colorScheme.primary,
 							trailingIconContentColor = MaterialTheme.colorScheme.primary,
 							disabledContainerColor = Color.Transparent,
 							disabledLabelColor = MaterialTheme.colorScheme.onSurface
-									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledLabelTextOpacity),
+								.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledLabelTextOpacity),
 							disabledLeadingIconContentColor =
 								MaterialTheme.colorScheme.onSurface
 									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
@@ -236,7 +240,8 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 						expanded = expanded,
 						onDismissRequest = { expanded = false }
 					) {
-						val isAscending = if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending
+						val isAscending =
+							if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending
 						val toggleAscending = {
 							if (isFolderPage) viewModel.folderAscending = !viewModel.folderAscending
 							else viewModel.deviceAscending = !viewModel.deviceAscending
@@ -249,7 +254,8 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 							if (isFolderPage) viewModel.foldersSortedBy = sort as FolderSort
 							else viewModel.devicesSortedBy = sort as DeviceSort
 						}
-						val sortedBy: Sort = if (isFolderPage) viewModel.foldersSortedBy else viewModel.devicesSortedBy
+						val sortedBy: Sort =
+							if (isFolderPage) viewModel.foldersSortedBy else viewModel.devicesSortedBy
 
 						for (sort in sortEntries)
 							DropdownMenuItem(
@@ -292,11 +298,13 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 									.putExtra(FolderViewModel.EXTRA_IS_CREATE, true)
 								context.startActivity(intent)
 							}
+
 							1 -> {
 								val intent = Intent(context, DeviceActivity::class.java)
 									.putExtra(DeviceActivity.EXTRA_IS_CREATE, true)
 								context.startActivity(intent)
 							}
+
 							else -> {
 								Toast.makeText(
 									context,
@@ -316,13 +324,23 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 						NavigationBarItem(
 							pagerState.currentPage == 0,
 							{ scope.launch { pagerState.animateScrollToPage(0) } },
-							{ Icon(Icons.Outlined.Folder, stringResource(R.string.folders_fragment_title)) },
+							{
+								Icon(
+									Icons.Outlined.Folder,
+									stringResource(R.string.folders_fragment_title)
+								)
+							},
 							label = { Text(stringResource(R.string.folders_fragment_title)) }
 						)
 						NavigationBarItem(
 							pagerState.currentPage == 1,
 							{ scope.launch { pagerState.animateScrollToPage(1) } },
-							{ Icon(Icons.Outlined.Devices, stringResource(R.string.devices_fragment_title)) },
+							{
+								Icon(
+									Icons.Outlined.Devices,
+									stringResource(R.string.devices_fragment_title)
+								)
+							},
 							label = { Text(stringResource(R.string.devices_fragment_title)) }
 						)
 					}
@@ -364,6 +382,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 							viewModel.folders,
 							folderStatusesMap,
 						)
+
 						1 -> DeviceList(
 							viewModel.devices,
 							viewModel.systemConnections,
@@ -428,14 +447,17 @@ fun QrCodeDialog(
 			Row(Modifier.fillMaxWidth()) {
 				Text(
 					deviceId,
-					Modifier.weight(1f).padding(vertical = 6.dp),
+					Modifier
+						.weight(1f)
+						.padding(vertical = 6.dp),
 					fontSize = MaterialTheme.typography.bodySmall.fontSize,
 					fontFamily = FontFamily.Monospace,
 					lineHeight = 15.sp,
 					letterSpacing = 0.25.sp
 				)
 				IconButton({
-					val clipData = ClipData.newPlainText(context.getString(R.string.device_id), deviceId)
+					val clipData =
+						ClipData.newPlainText(context.getString(R.string.device_id), deviceId)
 					val clipEntry = ClipEntry(clipData)
 					scope.launch { clipboard.setClipEntry(clipEntry) }
 				}) {
@@ -461,7 +483,9 @@ fun QrCodeDialog(
 			Image(
 				qrCode.asImageBitmap(),
 				null,
-				Modifier.padding(vertical = 10.dp).fillMaxWidth(0.8f),
+				Modifier
+					.padding(vertical = 10.dp)
+					.fillMaxWidth(0.8f),
 				contentScale = ContentScale.FillWidth
 			)
 		}

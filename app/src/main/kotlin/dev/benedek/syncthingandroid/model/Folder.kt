@@ -41,9 +41,11 @@ data class Folder(
 
 		fun isValidDefaultId(id: String?): Boolean =
 			if (id.isNullOrEmpty()) false else validDefaultRegex.matches(id)
+
 		fun isValidId(id: String?): Boolean =
 			if (id.isNullOrEmpty()) false else validRegex.matches(id)
 	}
+
 	@Parcelize
 	data class Versioning(
 		var type: String? = null,

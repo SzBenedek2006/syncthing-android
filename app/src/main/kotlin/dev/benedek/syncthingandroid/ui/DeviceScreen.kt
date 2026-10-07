@@ -91,14 +91,15 @@ fun DeviceScreen(
 	/**
 	 * Receives value of scanned QR code and sets it as device ID.
 	 */
-	val qrScannerLauncher: ActivityResultLauncher<Intent> = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-		if (result.resultCode == RESULT_OK) {
-			val scanResult = result.data?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
-			if (scanResult != null) {
-				viewModel.updateDeviceId(scanResult)
+	val qrScannerLauncher: ActivityResultLauncher<Intent> =
+		rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+			if (result.resultCode == RESULT_OK) {
+				val scanResult = result.data?.getStringExtra(QRScannerActivity.QR_RESULT_ARG)
+				if (scanResult != null) {
+					viewModel.updateDeviceId(scanResult)
+				}
 			}
 		}
-	}
 
 
 	AppScaffold(
@@ -131,7 +132,9 @@ fun DeviceScreen(
 			ThemedHorizontalDivider()
 			Row(
 				verticalAlignment = Alignment.CenterVertically,
-				modifier = Modifier.height(IntrinsicSize.Min).fillMaxWidth()
+				modifier = Modifier
+					.height(IntrinsicSize.Min)
+					.fillMaxWidth()
 			) {
 				AppTextField(
 					modifier = Modifier.weight(1f),
@@ -152,7 +155,10 @@ fun DeviceScreen(
 						onClick = { qrScannerLauncher.launch(QRScannerActivity.intent(context)) },
 						modifier = Modifier.padding(horizontal = 14.dp)
 					) {
-						Icon(Icons.Outlined.QrCodeScanner, stringResource(R.string.scan_qr_code_description))
+						Icon(
+							Icons.Outlined.QrCodeScanner,
+							stringResource(R.string.scan_qr_code_description)
+						)
 					}
 				}
 			}
@@ -179,7 +185,8 @@ fun DeviceScreen(
 			ThemedHorizontalDivider()
 			OptionTile(
 				title = stringResource(R.string.compression),
-				description = Compression.fromValue(context, viewModel.device.compression).getTitle(context),
+				description = Compression.fromValue(context, viewModel.device.compression)
+					.getTitle(context),
 				leftIconPainter = rememberVectorPainter(Icons.Outlined.FolderZip),
 				onClick = { viewModel.showCompressionDialog = true }
 			)
@@ -281,7 +288,8 @@ fun DeviceScreen(
 	 * This is needed due another horrible bug in Android
 	 */
 	val imeBottom = WindowInsets.ime.getBottom(LocalDensity.current)
-	val isSoftwareKeyboardVisible = WindowInsets.isImeVisible // && imeBottom > 0 TODO: (maybe needed?)
+	val isSoftwareKeyboardVisible =
+		WindowInsets.isImeVisible // && imeBottom > 0 TODO: (maybe needed?)
 
 	var backProgress by remember { mutableStateOf<Float?>(null) } // FIXME
 
@@ -309,11 +317,13 @@ fun DeviceScreen(
 		}
 	}
 
-	val animatedProgress = backProgress?.let { animateFloatAsState(
-		targetValue = it,
-		animationSpec = spring(),
-		label = "animatedProgress"
-	) }
+	val animatedProgress = backProgress?.let {
+		animateFloatAsState(
+			targetValue = it,
+			animationSpec = spring(),
+			label = "animatedProgress"
+		)
+	}
 
 	AnimatedVisibility(viewModel.showDiscardDialog, enter = fadeIn(), exit = fadeOut()) {
 		ComposeDialog(
@@ -336,7 +346,11 @@ fun DeviceScreen(
 					Toast.makeText(context, "Failed to load device", Toast.LENGTH_LONG).show()
 					return@ComposeDialog
 				}
-				viewModel.loadExistingDevice(deviceID, onFinish, context) /*Edit already existing device*/
+				viewModel.loadExistingDevice(
+					deviceID,
+					onFinish,
+					context
+				) /*Edit already existing device*/
 				viewModel.showAlreadyAddedDialog = false
 			},
 			onCancel = {
