@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -206,88 +207,91 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 					var expanded by remember { mutableStateOf(false) }
 
-					AssistChip(
-						onClick = { expanded = !expanded },
-						label = { Text(stringResource(currentSortedByResId)) },
-						leadingIcon = {
-							Icon(
-								Icons.AutoMirrored.Outlined.Sort,
-								null,
-								Modifier
-									.size(iconSize)
-									.scale(1f, scaleY),
-								tint = contentColor
-							)
-						},
-						colors = ChipColors(
-							containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 1 / 3f),
-							labelColor = MaterialTheme.colorScheme.onSurface,
-							leadingIconContentColor = MaterialTheme.colorScheme.primary,
-							trailingIconContentColor = MaterialTheme.colorScheme.primary,
-							disabledContainerColor = Color.Transparent,
-							disabledLabelColor = MaterialTheme.colorScheme.onSurface
-								.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledLabelTextOpacity),
-							disabledLeadingIconContentColor =
-								MaterialTheme.colorScheme.onSurface
-									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
-							disabledTrailingIconContentColor =
-								MaterialTheme.colorScheme.onSurface
-									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
-						),
-						border = null
-					)
-					DropdownMenu(
-						expanded = expanded,
-						onDismissRequest = { expanded = false }
-					) {
-						val isAscending =
-							if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending
-						val toggleAscending = {
-							if (isFolderPage) viewModel.folderAscending = !viewModel.folderAscending
-							else viewModel.deviceAscending = !viewModel.deviceAscending
-						}
-						val sortEntries: List<Sort> =
-							if (isFolderPage) FolderSort.entries
-							else DeviceSort.entries
-
-						val setSortedBy: (Sort) -> Unit = { sort ->
-							if (isFolderPage) viewModel.foldersSortedBy = sort as FolderSort
-							else viewModel.devicesSortedBy = sort as DeviceSort
-						}
-						val sortedBy: Sort =
-							if (isFolderPage) viewModel.foldersSortedBy else viewModel.devicesSortedBy
-
-						for (sort in sortEntries)
-							DropdownMenuItem(
-								text = { Text(stringResource(sort.resId)) },
-								onClick = {
-									setSortedBy(sort)
-									expanded = false
-								},
-								trailingIcon = {
-									RadioButton(
-										selected = sort == sortedBy,
-										onClick = {
-											setSortedBy(sort)
-										}
-									)
-								}
-							)
-
-						HorizontalDivider()
-						DropdownMenuItem(
-							trailingIcon = {
-								Checkbox(
-									checked = isAscending,
-									onCheckedChange = { toggleAscending() }
+					Box(Modifier.wrapContentSize(Alignment.TopStart)) {
+						AssistChip(
+							onClick = { expanded = !expanded },
+							label = { Text(stringResource(currentSortedByResId)) },
+							leadingIcon = {
+								Icon(
+									Icons.AutoMirrored.Outlined.Sort,
+									null,
+									Modifier
+										.size(iconSize)
+										.scale(1f, scaleY),
+									tint = contentColor
 								)
 							},
-							text = { Text("Ascending") },
-							onClick = {
-								toggleAscending()
-								expanded = false
-							}
+							colors = ChipColors(
+								containerColor = MaterialTheme.colorScheme.primaryContainer.copy(
+									alpha = 1 / 3f
+								),
+								labelColor = MaterialTheme.colorScheme.onSurface,
+								leadingIconContentColor = MaterialTheme.colorScheme.primary,
+								trailingIconContentColor = MaterialTheme.colorScheme.primary,
+								disabledContainerColor = Color.Transparent,
+								disabledLabelColor = MaterialTheme.colorScheme.onSurface
+									.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledLabelTextOpacity),
+								disabledLeadingIconContentColor =
+									MaterialTheme.colorScheme.onSurface
+										.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
+								disabledTrailingIconContentColor =
+									MaterialTheme.colorScheme.onSurface
+										.copy(alpha = dev.benedek.syncthingandroid.ui.reusable.AssistChipTokens.DisabledIconOpacity),
+							),
+							border = null
 						)
+						DropdownMenu(
+							expanded = expanded,
+							onDismissRequest = { expanded = false }
+						) {
+							val isAscending =
+								if (isFolderPage) viewModel.folderAscending else viewModel.deviceAscending
+							val toggleAscending = {
+								if (isFolderPage) viewModel.folderAscending =
+									!viewModel.folderAscending
+								else viewModel.deviceAscending = !viewModel.deviceAscending
+							}
+							val sortEntries: List<Sort> =
+								if (isFolderPage) FolderSort.entries
+								else DeviceSort.entries
+
+							val setSortedBy: (Sort) -> Unit = { sort ->
+								if (isFolderPage) viewModel.foldersSortedBy = sort as FolderSort
+								else viewModel.devicesSortedBy = sort as DeviceSort
+							}
+							val sortedBy: Sort =
+								if (isFolderPage) viewModel.foldersSortedBy else viewModel.devicesSortedBy
+
+							for (sort in sortEntries)
+								DropdownMenuItem(
+									text = { Text(stringResource(sort.resId)) },
+									onClick = {
+										setSortedBy(sort)
+										expanded = false
+									},
+									trailingIcon = {
+										RadioButton(
+											selected = sort == sortedBy,
+											onClick = null
+										)
+									}
+								)
+
+							HorizontalDivider()
+							DropdownMenuItem(
+								trailingIcon = {
+									Checkbox(
+										checked = isAscending,
+										onCheckedChange = null
+									)
+								},
+								text = { Text("Ascending") },
+								onClick = {
+									toggleAscending()
+									expanded = false
+								}
+							)
+						}
 					}
 				},
 				floatingActionButton = {
