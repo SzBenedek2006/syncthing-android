@@ -1205,9 +1205,11 @@ fun DialogCard(
 					exit = myExitTransition()
 				) {
 					Column {
-						Spacer(modifier = Modifier
-							.height(16.dp)
-							.fillMaxWidth())
+						Spacer(
+							modifier = Modifier
+								.height(16.dp)
+								.fillMaxWidth()
+						)
 						Text(
 							text = description,
 							style = MaterialTheme.typography.bodyMedium,
@@ -1235,9 +1237,11 @@ fun DialogCard(
 				exit = myExitTransition()
 			) {
 				Column {
-					Spacer(Modifier
-						.height(24.dp)
-						.fillMaxWidth())
+					Spacer(
+						Modifier
+							.height(24.dp)
+							.fillMaxWidth()
+					)
 					Row(
 						modifier = Modifier.fillMaxWidth(),
 						horizontalArrangement = Arrangement.End

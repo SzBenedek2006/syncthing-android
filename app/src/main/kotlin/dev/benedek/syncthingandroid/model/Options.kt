@@ -47,11 +47,16 @@ data class Options(
 	 */
 	data class MinHomeDiskFree(var value: Float, var unit: MinHomeDiskFreeUnit) {
 		enum class MinHomeDiskFreeUnit {
-			@SerializedName("%") PERCENT,
-			@SerializedName("kB") KB,
-			@SerializedName("MB") MB,
-			@SerializedName("GB") GB,
-			@SerializedName("TB") TB
+			@SerializedName("%")
+			PERCENT,
+			@SerializedName("kB")
+			KB,
+			@SerializedName("MB")
+			MB,
+			@SerializedName("GB")
+			GB,
+			@SerializedName("TB")
+			TB
 		}
 	}
 

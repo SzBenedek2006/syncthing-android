@@ -234,9 +234,11 @@ fun ShareScreen(
 				}
 
 			// Pushes the action buttons to the bottom of the screen if there is empty space
-			Spacer(Modifier
-				.fillMaxWidth()
-				.weight(1f))
+			Spacer(
+				Modifier
+					.fillMaxWidth()
+					.weight(1f)
+			)
 
 			// Action Buttons
 			Row(

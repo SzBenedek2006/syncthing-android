@@ -295,17 +295,18 @@ class RestApi(
 		get() {
 			synchronized(configLock) {
 				val folders = config?.folders ?: return null
-/*
-				return deepCopy(
-					folders,
-					object : TypeToken<MutableList<Folder?>>() {}.type
-						.apply {
-							folders.sortWith(FOLDERS_COMPARATOR)
-						}
-				)
-*/
+				/*
+								return deepCopy(
+									folders,
+									object : TypeToken<MutableList<Folder?>>() {}.type
+										.apply {
+											folders.sortWith(FOLDERS_COMPARATOR)
+										}
+								)
+				*/
 				// FIXME: Is sorting necessary here? So is returning a mutableList?
-				return folders.map { it?.deepCopy() }.toMutableList().apply { sortWith(FOLDERS_COMPARATOR) }
+				return folders.map { it?.deepCopy() }.toMutableList()
+					.apply { sortWith(FOLDERS_COMPARATOR) }
 
 			}
 		}
@@ -356,10 +357,10 @@ class RestApi(
 		val devices: MutableList<Device> = synchronized(configLock) {
 			val currentDevices: MutableList<Device?> = config?.devices ?: return null
 
-/*
-			deepCopy(currentDevices, object : TypeToken<MutableList<Device?>>() {}.type)
-				?.filterNotNull()?.toMutableList() ?: return null
-*/
+			/*
+						deepCopy(currentDevices, object : TypeToken<MutableList<Device?>>() {}.type)
+							?.filterNotNull()?.toMutableList() ?: return null
+			*/
 
 			currentDevices.mapNotNull { it?.deepCopy() }.toMutableList()
 		}

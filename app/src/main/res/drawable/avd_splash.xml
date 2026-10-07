@@ -90,11 +90,11 @@
 	<target android:name="Circle 1">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="7.9989"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="7.9989" />
 		</aapt:attr>
 	</target>
 
@@ -102,33 +102,33 @@
 	<target android:name="Circle 2">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="7.9989"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="7.9989" />
 		</aapt:attr>
 	</target>
 
 	<target android:name="Circle 3">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="7.9989"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="7.9989" />
 		</aapt:attr>
 	</target>
 
 	<target android:name="Circle 4">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="7.9989"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="7.9989" />
 		</aapt:attr>
 	</target>
 
@@ -136,44 +136,44 @@
 	<target android:name="Connector 1">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="8"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="8" />
 		</aapt:attr>
 	</target>
 
 	<target android:name="Connector 2">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="8"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="8" />
 		</aapt:attr>
 	</target>
 
 	<target android:name="Connector 3">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="8"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="8" />
 		</aapt:attr>
 	</target>
 
 	<target android:name="Outer circle">
 		<aapt:attr name="android:animation">
 			<objectAnimator
+				android:duration="600"
+				android:interpolator="@android:interpolator/decelerate_quint"
 				android:propertyName="strokeWidth"
 				android:valueFrom="0"
-				android:valueTo="8.26667"
-				android:duration="600"
-				android:interpolator="@android:interpolator/decelerate_quint" />
+				android:valueTo="8.26667" />
 		</aapt:attr>
 	</target>
 
