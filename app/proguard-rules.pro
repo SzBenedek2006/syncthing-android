@@ -6,6 +6,7 @@
 
 -keep class dev.benedek.syncthingandroid.model.** { *; }
 -keep class dev.benedek.syncthingandroid.service.RestApi$* { *; }
+-keep class dev.benedek.syncthingandroid.http.dto.** { *; }
 
 -keep class com.google.common.reflect.TypeToken { *; }
 -keep class com.google.common.reflect.TypeParameter { *; }
