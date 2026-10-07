@@ -81,11 +81,11 @@ class MainViewModel : ViewModel() {
 
 
 	var foldersSortedBy by mutableStateOf(FolderSort.LABEL)
-	var folderAscending by mutableStateOf(false)
+	var folderAscending by mutableStateOf(true)
 
 
 	var devicesSortedBy by mutableStateOf(DeviceSort.NAME)
-	var deviceAscending by mutableStateOf(false)
+	var deviceAscending by mutableStateOf(true)
 
 
 	private fun getFolderComparator(): Comparator<Folder> {
