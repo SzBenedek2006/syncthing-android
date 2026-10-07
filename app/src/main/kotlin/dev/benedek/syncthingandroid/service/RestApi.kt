@@ -296,9 +296,17 @@ class RestApi(
 		get() {
 			synchronized(configLock) {
 				val folders = config?.folders ?: return null
-				return deepCopy(folders, object : TypeToken<MutableList<Folder?>>() {}.type.apply {
-					folders.sortWith(FOLDERS_COMPARATOR)
-				})
+/*
+				return deepCopy(
+					folders,
+					object : TypeToken<MutableList<Folder?>>() {}.type
+						.apply {
+							folders.sortWith(FOLDERS_COMPARATOR)
+						}
+				)
+*/
+				// FIXME: Is sorting necessary here? So is returning a mutableList?
+				return folders.map { it?.deepCopy() }.toMutableList().apply { sortWith(FOLDERS_COMPARATOR) }
 
 			}
 		}
@@ -347,10 +355,14 @@ class RestApi(
 	 */
 	fun getDevices(includeLocal: Boolean): MutableList<Device>? {
 		val devices: MutableList<Device> = synchronized(configLock) {
-			val currentDevices = config?.devices ?: return null
+			val currentDevices: MutableList<Device?> = config?.devices ?: return null
 
+/*
 			deepCopy(currentDevices, object : TypeToken<MutableList<Device?>>() {}.type)
 				?.filterNotNull()?.toMutableList() ?: return null
+*/
+
+			currentDevices.mapNotNull { it?.deepCopy() }.toMutableList()
 		}
 
 		if (!includeLocal) {
@@ -415,17 +427,21 @@ class RestApi(
 	val options: Options?
 		get() {
 			synchronized(configLock) {
+/*
 				return deepCopy<Options?>(
 					config?.options,
 					Options::class.java
 				)
+*/
+				return config?.options?.deepCopy()
 			}
 		}
 
 	val gui: Gui?
 		get() {
 			synchronized(configLock) {
-				return deepCopy<Gui?>(config?.gui, Gui::class.java)
+				/*return deepCopy<Gui?>(config?.gui, Gui::class.java)*/
+				return config?.gui?.copy()
 			}
 		}
 
@@ -442,9 +458,9 @@ class RestApi(
 	 *
 	 * This method uses Gson and only works with objects that can be converted with Gson.
 	 */
-	private fun <T> deepCopy(`object`: T?, type: Type): T? {
+	private fun <T> deepCopy(source: T?, type: Type): T? {
 		val gson = Gson()
-		return gson.fromJson<T?>(gson.toJson(`object`, type), type)
+		return gson.fromJson<T?>(gson.toJson(source, type), type)
 	}
 
 	/**
@@ -471,7 +487,9 @@ class RestApi(
 			val msElapsed = now - previousConnectionTime
 
 			if (msElapsed < Constants.GUI_UPDATE_INTERVAL && previousSystemConnections != null) {
-				listener(deepCopy(previousSystemConnections, SystemConnections::class.java))
+				listener(
+					previousSystemConnections?.deepCopy()
+				)
 				return@GetRequest
 			}
 
@@ -490,7 +508,10 @@ class RestApi(
 			systemConnections.total?.setTransferRate(prevTotal, msElapsed)
 			previousSystemConnections = systemConnections
 
-			listener(deepCopy(systemConnections, SystemConnections::class.java))
+			listener(
+				//deepCopy(systemConnections, SystemConnections::class.java)
+				systemConnections.deepCopy()
+			)
 		}
 	}
 
