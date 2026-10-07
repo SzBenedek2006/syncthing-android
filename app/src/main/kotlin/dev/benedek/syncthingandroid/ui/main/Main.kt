@@ -207,7 +207,7 @@ fun Main(viewModel: MainViewModel, exit: () -> Unit) {
 
 					var expanded by remember { mutableStateOf(false) }
 
-					Box(Modifier.wrapContentSize(Alignment.TopStart)) {
+					Box(Modifier.wrapContentSize(Alignment.TopStart).padding(end = 16.dp)) {
 						AssistChip(
 							onClick = { expanded = !expanded },
 							label = { Text(stringResource(currentSortedByResId)) },
