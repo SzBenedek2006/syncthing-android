@@ -17,4 +17,11 @@ data class Device(
 	 */
 	val displayName: String
 		get() = name.ifEmpty { deviceID?.substring(0, min(7, deviceID!!.length)) ?: "" }
+
+	fun deepCopy(): Device {
+		return this.copy(
+			addresses = this.addresses?.toList(),
+			ignoredFolders = this.ignoredFolders?.map { it?.copy() }?.toMutableList()
+		)
+	}
 }

@@ -84,4 +84,12 @@ data class Folder(
 		var introducedBy: String? = null,
 		var encryptionPassword: String? = null
 	) : Parcelable
+
+	fun deepCopy(): Folder {
+		return this.copy(
+			devices = this.devices.map { it.copy() }.toMutableList(),
+			versioning = this.versioning?.deepCopy(),
+			minDiskFree = this.minDiskFree?.copy()
+		)
+	}
 }
