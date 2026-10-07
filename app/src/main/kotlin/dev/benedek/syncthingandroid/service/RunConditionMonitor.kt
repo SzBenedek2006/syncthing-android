@@ -22,7 +22,7 @@ import dev.benedek.syncthingandroid.service.ReceiverManager.registerReceiver
 
 
 /**
- * Holds information about the current wifi and charging state of the device.
+ * Holds information about the current Wi-Fi and charging state of the device.
  * 
  * This information is actively read on instance creation, and then updated from intents
  * that are passed with [.ACTION_DEVICE_STATE_CHANGED].
@@ -148,27 +148,27 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 	 */
 	private fun decideShouldRun(): RunConditionCheckResult {
 		// Get run conditions preferences.
-		val prefRunConditions = preferences!!.getBoolean(Constants.PREF_RUN_CONDITIONS, true)
+		val prefRunConditions = preferences.getBoolean(Constants.PREF_RUN_CONDITIONS, true)
 		val prefRunOnMobileData =
-			preferences!!.getBoolean(Constants.PREF_RUN_ON_MOBILE_DATA, false)
-		val prefRunOnWifi = preferences!!.getBoolean(Constants.PREF_RUN_ON_WIFI, true)
+			preferences.getBoolean(Constants.PREF_RUN_ON_MOBILE_DATA, false)
+		val prefRunOnWifi = preferences.getBoolean(Constants.PREF_RUN_ON_WIFI, true)
 		val prefRunOnMeteredWifi =
-			preferences!!.getBoolean(Constants.PREF_RUN_ON_METERED_WIFI, false)
-		val whitelistedWifiSsids: MutableSet<String?> = preferences!!.getStringSet(
+			preferences.getBoolean(Constants.PREF_RUN_ON_METERED_WIFI, false)
+		val whitelistedWifiSsids: MutableSet<String?> = preferences.getStringSet(
 			Constants.PREF_WIFI_SSID_WHITELIST,
 			java.util.HashSet()
 		)!!
-		val prefWifiWhitelistEnabled = !whitelistedWifiSsids.isEmpty()
+		val prefWifiWhitelistEnabled = whitelistedWifiSsids.isNotEmpty()
 		val prefRunInFlightMode =
-			preferences!!.getBoolean(Constants.PREF_RUN_IN_FLIGHT_MODE, false)
-		val prefPowerSource: String = preferences!!.getString(
+			preferences.getBoolean(Constants.PREF_RUN_IN_FLIGHT_MODE, false)
+		val prefPowerSource: String = preferences.getString(
 			Constants.PREF_POWER_SOURCE,
 			POWER_SOURCE_CHARGER_BATTERY
 		)!!
 		val prefRespectPowerSaving =
-			preferences!!.getBoolean(Constants.PREF_RESPECT_BATTERY_SAVING, true)
+			preferences.getBoolean(Constants.PREF_RESPECT_BATTERY_SAVING, true)
 		val prefRespectMasterSync =
-			preferences!!.getBoolean(Constants.PREF_RESPECT_MASTER_SYNC, false)
+			preferences.getBoolean(Constants.PREF_RESPECT_MASTER_SYNC, false)
 
 		if (!prefRunConditions) {
 			Log.v(TAG, "decideShouldRun: !runConditions")
@@ -211,10 +211,10 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 			return RunConditionCheckResult.SHOULD_RUN
 		}
 
-		// Run on wifi.
+		// Run on Wi-Fi.
 		if (prefRunOnWifi && this.isWifiOrEthernetConnection) {
 			if (prefRunOnMeteredWifi) {
-				// We are on non-metered or metered wifi. Reason if wifi whitelist run condition is met.
+				// We are on non-metered or metered Wi-Fi. Reason if Wi-Fi whitelist run condition is met.
 				if (wifiWhitelistConditionMet(prefWifiWhitelistEnabled, whitelistedWifiSsids)) {
 					Log.v(
 						TAG,
@@ -225,7 +225,7 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 					blockerReasons.add(BlockerReason.WIFI_SSID_NOT_WHITELISTED)
 				}
 			} else {
-				// Reason if we are on a non-metered wifi and if wifi whitelist run condition is met.
+				// Reason if we are on a non-metered Wi-Fi and if Wi-Fi whitelist run condition is met.
 				if (!this.isMeteredNetworkConnection) {
 					if (wifiWhitelistConditionMet(prefWifiWhitelistEnabled, whitelistedWifiSsids)) {
 						Log.v(
@@ -269,8 +269,8 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 	}
 
 	/**
-	 * Return whether the wifi whitelist run condition is met.
-	 * Precondition: An active wifi connection has been detected.
+	 * Return whether the Wi-Fi whitelist run condition is met.
+	 * Precondition: An active Wi-Fi connection has been detected.
 	 */
 	private fun wifiWhitelistConditionMet(
 		prefWifiWhitelistEnabled: Boolean,
@@ -328,43 +328,34 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 			val ni = cm.activeNetworkInfo ?: // In flight mode.
 			return false
-			if (!ni.isConnected) {
-				// No network connection.
-				return false
-			}
-			return cm.isActiveNetworkMetered
+			return ni.isConnected && cm.isActiveNetworkMetered
+			// No network connection.
 		}
 
 	private val isMobileDataConnection: Boolean
 		get() {
-			val cm =
+			val connectivityManager =
 				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-			val ni = cm.activeNetworkInfo ?: // In flight mode.
+			val networkInfo = connectivityManager.activeNetworkInfo ?: // In flight mode.
 			return false
-			if (!ni.isConnected) {
-				// No network connection.
-				return false
-			}
-			return when (ni.type) {
+			return networkInfo.isConnected && when (networkInfo.type) {
 				ConnectivityManager.TYPE_BLUETOOTH, ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_MOBILE_DUN, ConnectivityManager.TYPE_MOBILE_HIPRI -> true
 				else -> false
 			}
+			// No network connection.
 		}
 
 	private val isWifiOrEthernetConnection: Boolean
 		get() {
-			val cm =
+			val connectivityManager =
 				context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-			val ni = cm.activeNetworkInfo ?: // In flight mode.
+			val networkInfo = connectivityManager.activeNetworkInfo ?: // In flight mode.
 			return false
-			if (!ni.isConnected) {
-				// No network connection.
-				return false
-			}
-			return when (ni.type) {
+			return networkInfo.isConnected && when (networkInfo.type) {
 				ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_WIMAX, ConnectivityManager.TYPE_ETHERNET -> true
 				else -> false
 			}
+			// No network connection.
 		}
 
 	private fun isWifiConnectionWhitelisted(whitelistedSsids: MutableSet<String?>): Boolean {
@@ -372,7 +363,7 @@ class RunConditionMonitor(context: Context, listener: OnRunConditionChangedListe
 			.getSystemService(Context.WIFI_SERVICE) as WifiManager
 		val wifiInfo = wifiManager.connectionInfo
 		if (wifiInfo == null) {
-			// May be null, if wifi has been turned off in the meantime.
+			// May be null, if Wi-Fi has been turned off in the meantime.
 			Log.d(TAG, "isWifiConnectionWhitelisted: SSID unknown due to wifiInfo == null")
 			return false
 		}
