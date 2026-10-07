@@ -143,7 +143,10 @@ class ShareActivity : StateDialogActivity(), OnServiceConnectedListener {
 						showProgressDialog = viewModel.showProgressDialog,
 						copyResult = viewModel.copyResult,
 						onFolderSelect = { viewModel.selectedFolderIndex = it },
-						onFileRemove = viewModel::removeFile,
+						onFileRemove = {
+							viewModel.removeFile(it)
+							if (viewModel.files.isEmpty()) finish()
+						},
 						onBrowseClick = {
 							val path: String = viewModel.folders[viewModel.selectedFolderIndex].path
 								?: return@ShareScreen
