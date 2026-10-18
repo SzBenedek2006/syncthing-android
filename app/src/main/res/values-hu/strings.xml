@@ -60,8 +60,8 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<string name="back">Vissza</string>
 	<string name="cont">Folytatás</string>
 	<string name="finish">Befejezés</string>
-	<string name="generic_example">Példa</string>
-	<string name="generic_error">Hiba</string>
+	<string name="example">Példa</string>
+	<string name="error">Hiba</string>
 	<string name="grant_permission">Jogosultság megadás</string>
 	<string name="permission_granted">Jogosultság megadva</string>
 	<string name="dont_show_again">Ne jelenjen meg újra</string>

@@ -320,7 +320,7 @@ class SettingsViewModel : ViewModel() {
 		if (currentApi == null) {
 			Toast.makeText(
 				context,
-				context.getString(R.string.generic_error) + context.getString(R.string.syncthing_disabled_title),
+				context.getString(R.string.error) + context.getString(R.string.syncthing_disabled_title),
 				Toast.LENGTH_SHORT
 			).show()
 		} else {

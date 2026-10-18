@@ -68,8 +68,8 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 	<string name="back">Zurück</string>
 	<string name="cont">Weiter</string>
 	<string name="finish">Fertig</string>
-	<string name="generic_example">Beispiel</string>
-	<string name="generic_error">Fehler</string>
+	<string name="example">Beispiel</string>
+	<string name="error">Fehler</string>
 	<string name="grant_permission">Zugriff gewähren</string>
 	<string name="permission_granted">Zugriff gewährt</string>
 	<string name="dont_show_again">Nicht mehr zeigen</string>

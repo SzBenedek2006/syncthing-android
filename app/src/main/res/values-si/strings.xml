@@ -48,8 +48,8 @@
 	<string name="back">ආපසු</string>
 	<string name="cont">ඉදිරියට</string>
 	<string name="finish">අහවරයි</string>
-	<string name="generic_example">නිදසුන</string>
-	<string name="generic_error">දෝෂයකි</string>
+	<string name="example">නිදසුන</string>
+	<string name="error">දෝෂයකි</string>
 	<string name="dont_show_again">නැවත නොපෙන්වන්න</string>
 	<string name="later">පසුව</string>
 

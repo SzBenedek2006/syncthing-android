@@ -68,8 +68,8 @@
 	<string name="back">वापस</string>
 	<string name="cont">जारी</string>
 	<string name="finish">अन्त</string>
-	<string name="generic_example">उदाहरण</string>
-	<string name="generic_error">त्रुटि</string>
+	<string name="example">उदाहरण</string>
+	<string name="error">त्रुटि</string>
 	<string name="grant_permission">अनुदान अनुमति</string>
 	<string name="permission_granted">अनुमति प्रदान की गई</string>
 	<string name="dont_show_again">दोबारा मत दिखाएं</string>

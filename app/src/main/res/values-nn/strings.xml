@@ -53,8 +53,8 @@ Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via
 	<string name="back">Attende</string>
 	<string name="cont">Hald fram</string>
 	<string name="finish">Fullfør</string>
-	<string name="generic_example">Døme</string>
-	<string name="generic_error">Feil</string>
+	<string name="example">Døme</string>
+	<string name="error">Feil</string>
 	<string name="grant_permission">Gje løyve</string>
 	<string name="permission_granted">Løyve er gjeve</string>
 	<string name="later">Seinare</string>

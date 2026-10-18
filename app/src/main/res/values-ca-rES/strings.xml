@@ -68,8 +68,8 @@ Si denegueu aquest permís, només podreu accedir a aquestes funcions a través 
 	<string name="back">Torna</string>
 	<string name="cont">Continua</string>
 	<string name="finish">Finalitza</string>
-	<string name="generic_example">Exemple</string>
-	<string name="generic_error">Error</string>
+	<string name="example">Exemple</string>
+	<string name="error">Error</string>
 	<string name="grant_permission">Concedeix el permís</string>
 	<string name="permission_granted">Permís concedit</string>
 	<string name="dont_show_again">No ho tornis a mostrar</string>

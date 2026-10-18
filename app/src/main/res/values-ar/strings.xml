@@ -50,7 +50,7 @@
 
 	<!-- Generic texts used everywhere -->
 	<string name="cont">استمرار</string>
-	<string name="generic_error">خطأ</string>
+	<string name="error">خطأ</string>
 	<string name="dont_show_again">لا تظهر ثانيةً</string>
 	<string name="later">فيما بعد</string>
 

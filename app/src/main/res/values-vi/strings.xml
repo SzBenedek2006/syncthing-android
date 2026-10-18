@@ -61,8 +61,8 @@ Nếu bạn từ chối quyền này, bạn chỉ có thể truy cập các tín
 	<string name="back">Quay lại</string>
 	<string name="cont">Tiếp tục</string>
 	<string name="finish">Hoàn tất</string>
-	<string name="generic_example">Ví dụ</string>
-	<string name="generic_error">Lỗi</string>
+	<string name="example">Ví dụ</string>
+	<string name="error">Lỗi</string>
 	<string name="grant_permission">Cấp quyền</string>
 	<string name="permission_granted">Quyền đã được cấp</string>
 	<string name="dont_show_again">Không hiện lại</string>

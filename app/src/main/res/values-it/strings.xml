@@ -68,8 +68,8 @@ Se neghi questa autorizzazione, potrai accedere a queste funzionalità solo tram
 	<string name="back">Indietro</string>
 	<string name="cont">Continua</string>
 	<string name="finish">Completato</string>
-	<string name="generic_example">Esempio</string>
-	<string name="generic_error">Errore</string>
+	<string name="example">Esempio</string>
+	<string name="error">Errore</string>
 	<string name="grant_permission">Concedere l\'autorizzazione</string>
 	<string name="permission_granted">Permesso accordato</string>
 	<string name="dont_show_again">Non mostrare più</string>

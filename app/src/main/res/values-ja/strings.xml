@@ -58,8 +58,8 @@ Wi-Fi およびネットワーク関連のデータはすべてデバイスに�
 	<string name="back">戻る</string>
 	<string name="cont">続行</string>
 	<string name="finish">完了</string>
-	<string name="generic_example">例</string>
-	<string name="generic_error">エラー</string>
+	<string name="example">例</string>
+	<string name="error">エラー</string>
 	<string name="grant_permission">アクセス許可を付与する</string>
 	<string name="permission_granted">アクセス許可を付与しました</string>
 	<string name="dont_show_again">再度表示しない</string>

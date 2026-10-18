@@ -68,8 +68,8 @@ Bu izni reddederseniz, bu özelliklere yalnızca web arayüzü üzerinden erişe
 	<string name="back">Geri</string>
 	<string name="cont">Devam</string>
 	<string name="finish">Bitti</string>
-	<string name="generic_example">Örnek</string>
-	<string name="generic_error">Hata</string>
+	<string name="example">Örnek</string>
+	<string name="error">Hata</string>
 	<string name="grant_permission">İzin ver</string>
 	<string name="permission_granted">İzin verildi</string>
 	<string name="dont_show_again">Bir daha gösterme</string>

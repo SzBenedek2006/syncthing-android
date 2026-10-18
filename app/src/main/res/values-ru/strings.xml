@@ -68,8 +68,8 @@
 	<string name="back">Назад</string>
 	<string name="cont">Продолжить</string>
 	<string name="finish">Завершить</string>
-	<string name="generic_example">Пример</string>
-	<string name="generic_error">Ошибка</string>
+	<string name="example">Пример</string>
+	<string name="error">Ошибка</string>
 	<string name="grant_permission">Выдать доступ</string>
 	<string name="permission_granted">Доступ получен</string>
 	<string name="dont_show_again">Больше не показывать</string>

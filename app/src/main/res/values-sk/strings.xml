@@ -59,8 +59,8 @@ Ak toto povolenie odmietnete, k týmto funkciám budete mať prístup len prostr
 	<string name="back">Späť</string>
 	<string name="cont">Pokračovať</string>
 	<string name="finish">Dokončiť</string>
-	<string name="generic_example">Príklad</string>
-	<string name="generic_error">Chyba</string>
+	<string name="example">Príklad</string>
+	<string name="error">Chyba</string>
 	<string name="grant_permission">Udeliť prístup</string>
 	<string name="permission_granted">Prístup udelený</string>
 	<string name="dont_show_again">Už nezobrazovať</string>

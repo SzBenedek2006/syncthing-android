@@ -56,8 +56,8 @@ Hvis du nekter denne tillatelsen, kan du bare få tilgang til disse funksjonene 
 	<string name="back">Tilbake</string>
 	<string name="cont">Fortsett</string>
 	<string name="finish">Fullfør</string>
-	<string name="generic_example">Eksempel</string>
-	<string name="generic_error">Feil</string>
+	<string name="example">Eksempel</string>
+	<string name="error">Feil</string>
 	<string name="grant_permission">Gi tilgang</string>
 	<string name="permission_granted">Tilgang gitt</string>
 	<string name="dont_show_again">Ikke vis igjen</string>

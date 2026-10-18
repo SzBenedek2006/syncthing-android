@@ -68,8 +68,8 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 	<string name="back">Zpět</string>
 	<string name="cont">Pokračovat</string>
 	<string name="finish">Dokončit</string>
-	<string name="generic_example">Příklad</string>
-	<string name="generic_error">Chyba</string>
+	<string name="example">Příklad</string>
+	<string name="error">Chyba</string>
 	<string name="grant_permission">Udělit oprávnění</string>
 	<string name="permission_granted">Oprávnění uděleno</string>
 	<string name="dont_show_again">Znovu neukazovat</string>

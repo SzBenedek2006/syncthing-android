@@ -61,8 +61,8 @@
 	<string name="back">返回</string>
 	<string name="cont">繼續</string>
 	<string name="finish">完成</string>
-	<string name="generic_example">例子</string>
-	<string name="generic_error">錯誤</string>
+	<string name="example">例子</string>
+	<string name="error">錯誤</string>
 	<string name="grant_permission">授予權限</string>
 	<string name="permission_granted">權限已許可</string>
 	<string name="dont_show_again">別再顯示</string>

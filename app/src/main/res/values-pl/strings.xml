@@ -68,8 +68,8 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 	<string name="back">Wstecz</string>
 	<string name="cont">Dalej</string>
 	<string name="finish">Koniec</string>
-	<string name="generic_example">Przykład</string>
-	<string name="generic_error">Błąd</string>
+	<string name="example">Przykład</string>
+	<string name="error">Błąd</string>
 	<string name="grant_permission">Udziel dostępu</string>
 	<string name="permission_granted">Udzielono dostępu</string>
 	<string name="dont_show_again">Nie pokazuj ponownie</string>

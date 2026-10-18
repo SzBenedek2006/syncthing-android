@@ -63,8 +63,8 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 	<string name="back">Kembali</string>
 	<string name="cont">Lanjutkan</string>
 	<string name="finish">Selesai</string>
-	<string name="generic_example">Contoh</string>
-	<string name="generic_error">Kesalahan</string>
+	<string name="example">Contoh</string>
+	<string name="error">Kesalahan</string>
 	<string name="dont_show_again">Jangan tampilkan lagi</string>
 	<string name="later">Nanti</string>
 

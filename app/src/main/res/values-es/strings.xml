@@ -68,8 +68,8 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 	<string name="back">Atrás</string>
 	<string name="cont">Continuar</string>
 	<string name="finish">Finalizar</string>
-	<string name="generic_example">Ejemplo</string>
-	<string name="generic_error">Error</string>
+	<string name="example">Ejemplo</string>
+	<string name="error">Error</string>
 	<string name="grant_permission">Dar Permiso</string>
 	<string name="permission_granted">Permiso concedido</string>
 	<string name="dont_show_again">No volver a mostrar</string>

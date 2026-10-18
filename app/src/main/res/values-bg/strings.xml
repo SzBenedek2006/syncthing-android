@@ -68,8 +68,8 @@
 	<string name="back">Назад</string>
 	<string name="cont">Напред</string>
 	<string name="finish">Готово</string>
-	<string name="generic_example">Пример</string>
-	<string name="generic_error">Грешка</string>
+	<string name="example">Пример</string>
+	<string name="error">Грешка</string>
 	<string name="grant_permission">Разрешаване</string>
 	<string name="permission_granted">Разрешението е получено</string>
 	<string name="dont_show_again">Без повторно запитване</string>

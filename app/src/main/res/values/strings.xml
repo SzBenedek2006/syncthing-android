@@ -66,8 +66,8 @@ If you deny this permission, you can only access these features through the web 
 	<string name="back">Back</string>
 	<string name="cont">Continue</string>
 	<string name="finish">Finish</string>
-	<string name="generic_example">Example</string>
-	<string name="generic_error">Error</string>
+	<string name="example">Example</string>
+	<string name="error">Error</string>
 	<string name="grant_permission">Grant permission</string>
 	<string name="permission_granted">Permission granted</string>
 	<string name="dont_show_again">Don\'t show again</string>

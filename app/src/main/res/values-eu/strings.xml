@@ -68,8 +68,8 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 	<string name="back">Atzera</string>
 	<string name="cont">Jarraitu</string>
 	<string name="finish">Bukatu</string>
-	<string name="generic_example">Adibidea</string>
-	<string name="generic_error">Errorea</string>
+	<string name="example">Adibidea</string>
+	<string name="error">Errorea</string>
 	<string name="grant_permission">Baimena ematea</string>
 	<string name="permission_granted">Baimena emanda</string>
 	<string name="dont_show_again">Ez erakutsi berriro</string>

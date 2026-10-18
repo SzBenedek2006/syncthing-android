@@ -68,8 +68,8 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 	<string name="back">Înapoi</string>
 	<string name="cont">Continuare</string>
 	<string name="finish">Terminat</string>
-	<string name="generic_example">Exemplu</string>
-	<string name="generic_error">Eroare</string>
+	<string name="example">Exemplu</string>
+	<string name="error">Eroare</string>
 	<string name="grant_permission">Acordă permisiunea</string>
 	<string name="permission_granted">Permisiune acordată</string>
 	<string name="dont_show_again">Nu mai afișa</string>

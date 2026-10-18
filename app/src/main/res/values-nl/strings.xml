@@ -68,8 +68,8 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 	<string name="back">Terug</string>
 	<string name="cont">Doorgaan</string>
 	<string name="finish">Voltooien</string>
-	<string name="generic_example">Voorbeeld</string>
-	<string name="generic_error">Fout</string>
+	<string name="example">Voorbeeld</string>
+	<string name="error">Fout</string>
 	<string name="grant_permission">Machtiging verlenen</string>
 	<string name="permission_granted">Machtiging verleend</string>
 	<string name="dont_show_again">Niet meer tonen</string>

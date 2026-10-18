@@ -68,8 +68,8 @@ Se você recusar esta permissão, só poderá acessar essas funcionalidades atra
 	<string name="back">Voltar</string>
 	<string name="cont">Continuar</string>
 	<string name="finish">Finalizar</string>
-	<string name="generic_example">Exemplo</string>
-	<string name="generic_error">Erro</string>
+	<string name="example">Exemplo</string>
+	<string name="error">Erro</string>
 	<string name="grant_permission">Conceder permissão</string>
 	<string name="permission_granted">Permissão concedida</string>
 	<string name="dont_show_again">Não mostrar novamente</string>

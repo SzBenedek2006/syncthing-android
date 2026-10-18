@@ -59,7 +59,7 @@
 	<string name="back">Πίσω</string>
 	<string name="cont">Συνέχεια</string>
 	<string name="finish">Τέλος</string>
-	<string name="generic_error">Σφάλμα</string>
+	<string name="error">Σφάλμα</string>
 	<string name="dont_show_again">Να μην εμφανιστεί ξανά</string>
 	<string name="later">Αργότερα</string>
 

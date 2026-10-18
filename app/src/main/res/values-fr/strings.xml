@@ -68,8 +68,8 @@ Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnali
 	<string name="back">Retour</string>
 	<string name="cont">Continuer</string>
 	<string name="finish">Terminé</string>
-	<string name="generic_example">Exemple</string>
-	<string name="generic_error">Erreur</string>
+	<string name="example">Exemple</string>
+	<string name="error">Erreur</string>
 	<string name="grant_permission">Accorder la permission</string>
 	<string name="permission_granted">Permission accordée</string>
 	<string name="dont_show_again">Ne pas afficher la prochaine fois</string>

@@ -58,8 +58,8 @@ Jos epäät tämän luvan, nämä toiminnot ovat käytettävissä vain verkkokä
 	<string name="back">Takaisin</string>
 	<string name="cont">Jatka</string>
 	<string name="finish">Valmis</string>
-	<string name="generic_example">Esimerkki</string>
-	<string name="generic_error">Virhe</string>
+	<string name="example">Esimerkki</string>
+	<string name="error">Virhe</string>
 	<string name="permission_granted">Lupa myönnetty</string>
 	<string name="dont_show_again">Älä näytä uudelleen</string>
 	<string name="later">Myöhemmin</string>

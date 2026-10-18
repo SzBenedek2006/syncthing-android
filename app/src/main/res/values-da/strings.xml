@@ -68,8 +68,8 @@ Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via
 	<string name="back">Tilbage</string>
 	<string name="cont">Fortsæt</string>
 	<string name="finish">Færdiggør</string>
-	<string name="generic_example">Eksempel</string>
-	<string name="generic_error">Fejl</string>
+	<string name="example">Eksempel</string>
+	<string name="error">Fejl</string>
 	<string name="grant_permission">Giv tilladelse</string>
 	<string name="permission_granted">Tilladelse givet</string>
 	<string name="dont_show_again">Vis ikke igen</string>

@@ -71,7 +71,7 @@ fun Experimental(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 				if (value.isEmpty()) {
 					Text(
 						stringResource(R.string.do_not_use_proxy) + " " +
-								stringResource(R.string.generic_example) + ": " +
+								stringResource(R.string.example) + ": " +
 								stringResource(R.string.socks_proxy_address_example)
 					)
 				} else {
@@ -108,7 +108,7 @@ fun Experimental(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 				if (value.isEmpty()) {
 					Text(
 						stringResource(R.string.do_not_use_proxy) + " " +
-								stringResource(R.string.generic_example) + ": " +
+								stringResource(R.string.example) + ": " +
 								stringResource(R.string.http_proxy_address_example)
 					)
 				} else {
