@@ -100,6 +100,7 @@ import dev.benedek.syncthingandroid.ui.reusable.DeleteDialog
 import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SingleSelectDialog
 import dev.benedek.syncthingandroid.ui.reusable.ThemedHorizontalDivider
+import dev.benedek.syncthingandroid.ui.reusable.WarningCard
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
 import dev.benedek.syncthingandroid.util.FileUtils
 import dev.benedek.syncthingandroid.util.ThemeControls
@@ -115,6 +116,7 @@ data class FolderUiState(
 	val isCreateMode: Boolean = false,
 	val isValidFolder: Boolean = false,
 	val isPathWritable: Boolean = false,
+	val nestedFolderWarning: Boolean = false,
 	val deviceList: List<FolderViewModel.DeviceUiState> = emptyList(),
 	val folderType: List<FolderViewModel.FolderType> = emptyList(),
 	val folderPullOrders: List<FolderViewModel.FolderPullOrder> = emptyList(),
@@ -124,7 +126,8 @@ data class FolderUiState(
 	val showFolderTypeDialog: Boolean = false,
 	val showFolderPullOrderDialog: Boolean = false,
 	val showVersioningDialog: Boolean = false,
-	val folderNeedsToUpdate: Boolean = false
+	val folderNeedsToUpdate: Boolean = false,
+	val nestedFolderWarningMessage: String = ""
 )
 
 @Immutable
@@ -328,6 +331,12 @@ fun FolderScreen(
 
 						}
 					}
+				}
+				if (state.nestedFolderWarning) {
+					WarningCard(
+						state.nestedFolderWarningMessage,
+						Modifier.fillMaxWidth().padding(16.dp)
+					)
 				}
 				ThemedHorizontalDivider()
 
@@ -733,19 +742,12 @@ fun FolderScreenPreview() {
 	SyncthingandroidTheme(ThemeControls.useDarkMode, dynamicColor = ThemeControls.isMonetEnabled) {
 		FolderScreen(
 			state = FolderUiState(
-				folder = Folder(),
 				path = TextFieldState("/storage/emulated/0"),
 				isCreateMode = true,
 				isValidFolder = true,
+				nestedFolderWarning = true,
 				deviceList = mutableStateListOf(),
-				folderType = emptyList(),
-				folderPullOrders = emptyList(),
-				editedVersioning = null,
-				showDeleteDialog = false,
-				showDiscardDialog = false,
-				showFolderTypeDialog = false,
-				showFolderPullOrderDialog = false,
-				showVersioningDialog = false,
+				nestedFolderWarningMessage = "Warning, this path is a subdirectory of an existing folder \"Example\" (~/Example)."
 			),
 			actions = FolderActions()
 		)
