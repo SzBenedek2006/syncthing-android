@@ -52,7 +52,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
@@ -94,6 +96,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusManager
@@ -138,6 +141,7 @@ import com.patrykandpatrick.vico.compose.common.Fill
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.icons.LabelOutline
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
+import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.conflate
@@ -1146,6 +1150,7 @@ fun myExitTransition(delay: Int = 0) =
 		)
 	)
 
+// CARDS
 
 /**
  * This is a Card part of the dialog. Doesn't contain the outer scrim or focus logic
@@ -1257,6 +1262,71 @@ fun DialogCard(
 						if (onOk != null) {
 							TextButton(onClick = onOk) {
 								Text(okText, style = style)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@Composable
+fun WarningCard(
+	description: String,
+	modifier: Modifier = Modifier,
+	isError: Boolean = false,
+	options: @Composable (() -> Unit)? = null,
+	advancedOptions: @Composable (() -> Unit)? = null,
+
+) {
+
+	val errorColor = MaterialTheme.extendedColorScheme.red.color
+	val warningColor = MaterialTheme.extendedColorScheme.yellow.color
+
+	val cardColor = if (isError) errorColor else warningColor
+
+	Box(modifier) {
+		val factor = 0.15f
+		MaterialTheme(
+			MaterialTheme.colorScheme.copy(
+				primary = cardColor,
+				onPrimary = cardColor.copy(red = cardColor.red * factor, green = cardColor.green * factor, blue = cardColor.blue * factor),
+			)
+		) {
+			Surface(
+				modifier = Modifier.clip(MaterialTheme.shapes.extraLarge).fillMaxWidth(),
+				color = cardColor.copy(factor),
+				contentColor = cardColor
+			) {
+				Column(Modifier.padding(16.dp)) {
+					val text = stringResource(if (isError) R.string.error else R.string.warning)
+					Text(
+						text,
+						fontWeight = FontWeight.Bold,
+						style = MaterialTheme.typography.titleLarge
+					)
+					Spacer(Modifier.fillMaxWidth().height(8.dp))
+					ThemedHorizontalDivider(Modifier.fillMaxWidth().padding(bottom = 8.dp))
+					Text(description)
+					Row(Modifier.fillMaxWidth(), Arrangement.End) {
+						options?.invoke()
+					}
+
+					if (advancedOptions != null) {
+						var expanded by remember { mutableStateOf(false) }
+
+						IconButton({ expanded = !expanded }) {
+							Icon(
+								Icons.Outlined.ArrowDropDown,
+								if (expanded) stringResource(R.string.collapse) else stringResource(R.string.expand), // FIXME: use string resource
+								Modifier.rotate(if (expanded) 180f else 0f)
+							)
+						}
+
+						AnimatedVisibility(visible = expanded) {
+							Row(Modifier.fillMaxWidth(), Arrangement.End) {
+								advancedOptions()
 							}
 						}
 					}
@@ -1563,6 +1633,20 @@ fun DialogCardPreview() {
 					)
 				}
 			}, "DialogTransition")
+		)
+	}
+}
+
+@Preview(uiMode = ThemeControls.UI_MODE)
+@Composable
+fun WarningCardPreview() {
+	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
+		WarningCard(
+			"MAO",
+			Modifier.fillMaxWidth().padding(16.dp),
+			false,
+			{Button({}) { Text("Mao") }},
+			{Button({}) { Text("Mao") }},
 		)
 	}
 }
