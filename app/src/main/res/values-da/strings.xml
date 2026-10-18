@@ -74,10 +74,9 @@ Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via
 	<string name="permission_granted">Tilladelse givet</string>
 	<string name="dont_show_again">Vis ikke igen</string>
 	<string name="later">Senere</string>
-
 	<string name="accept">Acceptér</string>
-
 	<string name="ignore">Ignorér</string>
+
 
 	<!-- MainActivity -->
 
@@ -777,5 +776,7 @@ Hvis du afviser denne tilladelse, kan du kun få adgang til disse funktioner via
 	<string name="share_device_id_chooser">Del enheds-ID med</string>
 	<string name="enable_notification_permission">Aktivér notifikationstilladelse</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -74,10 +74,9 @@
 	<string name="permission_granted">Разрешението е получено</string>
 	<string name="dont_show_again">Без повторно запитване</string>
 	<string name="later">По-късно</string>
-
 	<string name="accept">Приемане</string>
-
 	<string name="ignore">Пренебрегване</string>
+
 
 	<!-- MainActivity -->
 
@@ -777,5 +776,7 @@
 	<string name="share_device_id_chooser">Споделяне идентификатора на устройството чрез</string>
 	<string name="enable_notification_permission">Даване на право за известия</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<string name="app_name">Syncthing</string>
 
@@ -67,7 +67,6 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 	<string name="error">Kesalahan</string>
 	<string name="dont_show_again">Jangan tampilkan lagi</string>
 	<string name="later">Nanti</string>
-
 
 
 	<!-- MainActivity -->
@@ -586,5 +585,7 @@ Jika Anda menolak izin ini, Anda hanya dapat mengakses fitur-fitur ini melalui a
 
 	<!-- error message if the deviceID/QRCode dialog for some reason cannot be displayed.-->
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

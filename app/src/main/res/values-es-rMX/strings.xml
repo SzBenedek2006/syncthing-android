@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<string name="app_name">Syncthing</string>
 
@@ -60,10 +60,9 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 	<string name="grant_permission">Conceder permiso</string>
 	<string name="permission_granted">Permiso concedido</string>
 	<string name="later">Después</string>
-
 	<string name="accept">Aceptar</string>
-
 	<string name="ignore">Ignorar</string>
+
 
 	<!-- MainActivity -->
 
@@ -555,5 +554,7 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 
 	<!-- error message if the deviceID/QRCode dialog for some reason cannot be displayed.-->
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -74,10 +74,9 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 	<string name="permission_granted">Oprávnění uděleno</string>
 	<string name="dont_show_again">Znovu neukazovat</string>
 	<string name="later">Později</string>
-
 	<string name="accept">Příjmout</string>
-
 	<string name="ignore">Ignorovat</string>
+
 
 	<!-- MainActivity -->
 
@@ -782,5 +781,7 @@ Pokud toto oprávnění odmítnete, budete mít k těmto funkcím přístup pouz
 	<string name="no_sub_folder_is_selected">Není vybrána žádná podsložka</string>
 	<string name="share_device_id_chooser">Sdílet ID zařízení s</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -74,10 +74,9 @@ Se recusar esta permissão, só poderá aceder a estas funcionalidades através 
 	<string name="permission_granted">Permissão concedida</string>
 	<string name="dont_show_again">Não apresentar novamente</string>
 	<string name="later">Mais tarde</string>
-
 	<string name="accept">Aceitar</string>
-
 	<string name="ignore">Ignorar</string>
+
 
 	<!-- MainActivity -->
 
@@ -780,5 +779,7 @@ Se recusar esta permissão, só poderá aceder a estas funcionalidades através 
 	<string name="share_device_id_chooser">Partilhe ID do dispositivo com</string>
 	<string name="enable_notification_permission">Habilitar permissão de notificação</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

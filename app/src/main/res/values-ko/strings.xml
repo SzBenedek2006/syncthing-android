@@ -74,10 +74,9 @@
 	<string name="permission_granted">권한이 부여됨</string>
 	<string name="dont_show_again">다시 보지 않기</string>
 	<string name="later">나중에</string>
-
 	<string name="accept">허용</string>
-
 	<string name="ignore">무시</string>
+
 
 	<!-- MainActivity -->
 
@@ -775,5 +774,7 @@
 	<string name="share_device_id_chooser">기기 식별자 공유</string>
 	<string name="enable_notification_permission">알림 권한 활성화</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -36,6 +36,7 @@ Ez csak a futási feltételek funkcióhoz lesz használva, semmi máshoz.\n
 Minden Wi-Fi és hálózathoz kapcsolódó adat az eszközön lesz tárolva.</string>
 
 	<!-- Api upgrade slide (will be removed) -->
+	<string name="api_level_30_title">Frissítési információ</string>
 
 
 	<!-- Notification slide -->
@@ -66,10 +67,9 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<string name="permission_granted">Jogosultság megadva</string>
 	<string name="dont_show_again">Ne jelenjen meg újra</string>
 	<string name="later">Később</string>
-
 	<string name="accept">Elfogad</string>
-
 	<string name="ignore">Elvet</string>
+
 
 	<!-- MainActivity -->
 
@@ -790,6 +790,7 @@ Ha elutasítod az engedélyt, akkor ezek a funkciók csak a webes felület segí
 	<string name="beta">Béta</string>
 	<string name="menu">Menü</string>
 	<string name="device_already_added">Eszköz már hozzáadva</string>
-	<string name="api_level_30_title">Frissítési információ</string>
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

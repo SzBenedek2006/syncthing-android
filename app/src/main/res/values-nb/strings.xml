@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<string name="app_name">Syncthing</string>
 
@@ -62,10 +62,9 @@ Hvis du nekter denne tillatelsen, kan du bare få tilgang til disse funksjonene 
 	<string name="permission_granted">Tilgang gitt</string>
 	<string name="dont_show_again">Ikke vis igjen</string>
 	<string name="later">Senere</string>
-
 	<string name="accept">Godta</string>
-
 	<string name="ignore">Ignorer</string>
+
 
 	<!-- MainActivity -->
 
@@ -689,5 +688,7 @@ Hvis du nekter denne tillatelsen, kan du bare få tilgang til disse funksjonene 
 	<string name="share_device_id_chooser">Del enhets ID med</string>
 	<string name="enable_notification_permission">Aktiver varslingsrettigheter</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<string name="app_name">Syncthing</string>
 
@@ -58,10 +58,9 @@ Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via
 	<string name="grant_permission">Gje løyve</string>
 	<string name="permission_granted">Løyve er gjeve</string>
 	<string name="later">Seinare</string>
-
 	<string name="accept">Godta</string>
-
 	<string name="ignore">Avvis</string>
+
 
 	<!-- MainActivity -->
 
@@ -558,5 +557,7 @@ Hvis du nektar dette løyvet, kan du berre få tilgang til desse funksjonane via
 
 	<!-- error message if the deviceID/QRCode dialog for some reason cannot be displayed.-->
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -74,10 +74,9 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 	<string name="permission_granted">Udzielono dostępu</string>
 	<string name="dont_show_again">Nie pokazuj ponownie</string>
 	<string name="later">Później</string>
-
 	<string name="accept">Akceptuj</string>
-
 	<string name="ignore">Ignoruj</string>
+
 
 	<!-- MainActivity -->
 
@@ -783,5 +782,7 @@ Jeśli odmówisz tego uprawnienia, będziesz mieć dostęp do tych funkcji tylko
 	<string name="share_device_id_chooser">Udostępnij identyfikator urządzenia</string>
 	<string name="enable_notification_permission">Włącz zezwolenie na powiadomienia</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

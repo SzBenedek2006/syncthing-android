@@ -74,10 +74,9 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 	<string name="permission_granted">Permiso concedido</string>
 	<string name="dont_show_again">No volver a mostrar</string>
 	<string name="later">Después</string>
-
 	<string name="accept">Aceptar</string>
-
 	<string name="ignore">Ignorar</string>
+
 
 	<!-- MainActivity -->
 
@@ -781,5 +780,7 @@ Si deniegas este permiso, solo podrás acceder a estas funciones a través de la
 	<string name="enable_notification_permission">Activar el permiso de notificación</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="default_indicator">Predeterminado</string>
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

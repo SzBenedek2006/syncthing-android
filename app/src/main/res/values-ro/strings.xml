@@ -74,10 +74,9 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 	<string name="permission_granted">Permisiune acordată</string>
 	<string name="dont_show_again">Nu mai afișa</string>
 	<string name="later">Mai târziu</string>
-
 	<string name="accept">Acceptă</string>
-
 	<string name="ignore">Ignoră</string>
+
 
 	<!-- MainActivity -->
 
@@ -780,5 +779,7 @@ Dacă refuzați această permisiune, puteți accesa aceste funcții doar prin in
 	<string name="share_device_id_chooser">Partajează ID dispozitiv cu</string>
 	<string name="enable_notification_permission">Activați permisiunea de notificare</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

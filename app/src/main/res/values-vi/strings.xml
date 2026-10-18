@@ -67,10 +67,9 @@ Nếu bạn từ chối quyền này, bạn chỉ có thể truy cập các tín
 	<string name="permission_granted">Quyền đã được cấp</string>
 	<string name="dont_show_again">Không hiện lại</string>
 	<string name="later">Để sau</string>
-
 	<string name="accept">Chấp nhận</string>
-
 	<string name="ignore">Bỏ qua</string>
+
 
 	<!-- MainActivity -->
 
@@ -764,5 +763,7 @@ Nếu bạn từ chối quyền này, bạn chỉ có thể truy cập các tín
 	<string name="no_sub_folder_is_selected">Không có thư mục con nào được chọn</string>
 	<string name="share_device_id_chooser">Chia sẻ ID thiết bị bằng</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

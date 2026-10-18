@@ -74,10 +74,9 @@ Bu izni reddederseniz, bu özelliklere yalnızca web arayüzü üzerinden erişe
 	<string name="permission_granted">İzin verildi</string>
 	<string name="dont_show_again">Bir daha gösterme</string>
 	<string name="later">Daha sonra</string>
-
 	<string name="accept">Kabul Et</string>
-
 	<string name="ignore">Yoksay</string>
+
 
 	<!-- MainActivity -->
 
@@ -777,5 +776,7 @@ Bu izni reddederseniz, bu özelliklere yalnızca web arayüzü üzerinden erişe
 	<string name="share_device_id_chooser">Cihaz kimliğini şununla paylaş</string>
 	<string name="enable_notification_permission">Bildirim İznini etkinleştir</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

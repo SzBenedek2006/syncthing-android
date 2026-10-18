@@ -74,10 +74,9 @@ Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnali
 	<string name="permission_granted">Permission accordée</string>
 	<string name="dont_show_again">Ne pas afficher la prochaine fois</string>
 	<string name="later">Plus tard</string>
-
 	<string name="accept">Accepter</string>
-
 	<string name="ignore">Ignorer</string>
+
 
 	<!-- MainActivity -->
 
@@ -780,5 +779,7 @@ Si vous refusez cette autorisation, vous ne pourrez accéder à ces fonctionnali
 	<string name="share_device_id_chooser">Partager ID de l\'appareil avec</string>
 	<string name="enable_notification_permission">Activer l\'autorisation des notifications</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -74,10 +74,9 @@ Se neghi questa autorizzazione, potrai accedere a queste funzionalità solo tram
 	<string name="permission_granted">Permesso accordato</string>
 	<string name="dont_show_again">Non mostrare più</string>
 	<string name="later">Più tardi</string>
-
 	<string name="accept">Accetta</string>
-
 	<string name="ignore">Ignora</string>
+
 
 	<!-- MainActivity -->
 
@@ -780,5 +779,7 @@ Se neghi questa autorizzazione, potrai accedere a queste funzionalità solo tram
 	<string name="share_device_id_chooser">Condividi ID dispositivo con</string>
 	<string name="enable_notification_permission">Abilita Permesso di Inviare Notifiche</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

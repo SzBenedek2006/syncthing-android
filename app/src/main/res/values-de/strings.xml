@@ -74,10 +74,9 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 	<string name="permission_granted">Zugriff gewährt</string>
 	<string name="dont_show_again">Nicht mehr zeigen</string>
 	<string name="later">Später</string>
-
 	<string name="accept">Annehmen</string>
-
 	<string name="ignore">Ignorieren</string>
+
 
 	<!-- MainActivity -->
 
@@ -778,5 +777,7 @@ Wenn Sie diese Berechtigung ablehnen, können Sie auf diese Funktionen nur über
 	<string name="enable_notification_permission">Berechtigung für Benachrichtigungen erteilen</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="default_indicator">Standard</string>
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

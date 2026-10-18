@@ -74,10 +74,9 @@
 	<string name="permission_granted">Доступ получен</string>
 	<string name="dont_show_again">Больше не показывать</string>
 	<string name="later">Позже</string>
-
 	<string name="accept">Принять</string>
-
 	<string name="ignore">Игнорировать</string>
+
 
 	<!-- MainActivity -->
 
@@ -783,5 +782,7 @@
 	<string name="share_device_id_chooser">Поделиться ID устройства</string>
 	<string name="enable_notification_permission">Включить разрешение отправки уведомлений</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

@@ -74,10 +74,9 @@
 	<string name="permission_granted">权限已授予</string>
 	<string name="dont_show_again">不再显示</string>
 	<string name="later">稍后</string>
-
 	<string name="accept">同意</string>
-
 	<string name="ignore">忽略</string>
+
 
 	<!-- MainActivity -->
 
@@ -773,5 +772,7 @@
 	<string name="share_device_id_chooser">分享设备 ID 与</string>
 	<string name="enable_notification_permission">启用通知权限</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

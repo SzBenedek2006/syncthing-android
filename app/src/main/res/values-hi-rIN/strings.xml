@@ -74,10 +74,9 @@
 	<string name="permission_granted">अनुमति प्रदान की गई</string>
 	<string name="dont_show_again">दोबारा मत दिखाएं</string>
 	<string name="later">बाद में</string>
-
 	<string name="accept">स्वीकार करें</string>
-
 	<string name="ignore">नजरअंदाज करें</string>
+
 
 	<!-- MainActivity -->
 
@@ -777,5 +776,7 @@
 	<string name="share_device_id_chooser">डिवाइस ID को इनके साथ साझा करें</string>
 	<string name="enable_notification_permission">अधिसूचना अनुमति सक्षम करें</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

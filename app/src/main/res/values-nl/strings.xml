@@ -74,10 +74,9 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 	<string name="permission_granted">Machtiging verleend</string>
 	<string name="dont_show_again">Niet meer tonen</string>
 	<string name="later">Later</string>
-
 	<string name="accept">Accepteren</string>
-
 	<string name="ignore">Negeren</string>
+
 
 	<!-- MainActivity -->
 
@@ -777,5 +776,7 @@ Als je deze machtiging weigert, heb je alleen toegang tot deze functies via de w
 	<string name="share_device_id_chooser">Apparaat-id delen met</string>
 	<string name="enable_notification_permission">Toestemming voor meldingen inschakelen</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

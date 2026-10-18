@@ -74,10 +74,9 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 	<string name="permission_granted">Baimena emanda</string>
 	<string name="dont_show_again">Ez erakutsi berriro</string>
 	<string name="later">Geroago</string>
-
 	<string name="accept">Onartu</string>
-
 	<string name="ignore">Ez ikusi egin</string>
+
 
 	<!-- MainActivity -->
 
@@ -775,5 +774,7 @@ Baimen hau ukatzen baduzu, web interfazearen bidez soilik atzitu ahal izango dit
 	<string name="share_device_id_chooser">Partekatu gailuaren IDa honekin</string>
 	<string name="enable_notification_permission">Gaitu jakinarazpen-baimena</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>

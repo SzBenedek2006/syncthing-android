@@ -74,10 +74,9 @@
 	<string name="permission_granted">Дозвіл надано</string>
 	<string name="dont_show_again">Більше не відображати</string>
 	<string name="later">Пізніше</string>
-
 	<string name="accept">Прийняти</string>
-
 	<string name="ignore">Відхилити</string>
+
 
 	<!-- MainActivity -->
 
@@ -783,5 +782,7 @@
 	<string name="share_device_id_chooser">Поділитися ідентифікатором пристрою з</string>
 	<string name="enable_notification_permission">Дозволити повідомлення</string>
 	<!-- TODO: Remove or change this placeholder text -->
+
+	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
 
 </resources>
