@@ -818,4 +818,10 @@ If you deny this permission, you can only access these features through the web 
 	<string name="warning_subdirectory_folder">This path is a subdirectory of an existing folder \"%1$s\".</string>
 	<string name="warning_subdirectory_folder_with_label">This path is a subdirectory of an existing folder \"%1$s\" (%2$s).</string>
 
+	<string name="warning_parent_directory_folder">This path is a parent directory of an existing folder \"%1$s\".</string>
+	<string name="warning_parent_directory_folder_with_label">This path is a parent directory of an existing folder \"%1$s\" (%2$s).</string>
+
+
+	<string name="nested_dir_advanced_description">Continuing can lead to data loss or unexpected behaviour</string>
+
 </resources>
