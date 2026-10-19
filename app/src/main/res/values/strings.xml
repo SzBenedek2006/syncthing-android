@@ -814,11 +814,17 @@ If you deny this permission, you can only access these features through the web 
 	<string name="state">State</string>
 	<string name="saving_files_progress">Saving files...</string>
 
-	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
+	<!-- Messages copied from syncthing. Last updated in v2.1.6 -->
+	<!-- If you want to help translate, please check if a translation already exists in syncthing/gui/default/assets/lang/ -->
+
+	<!-- lang-en.json:523 -->
 	<string name="warning_subdirectory_folder">This path is a subdirectory of an existing folder \"%1$s\".</string>
+	<!-- lang-en.json:524 -->
 	<string name="warning_subdirectory_folder_with_label">This path is a subdirectory of an existing folder \"%1$s\" (%2$s).</string>
 
+	<!-- lang-en.json:521 -->
 	<string name="warning_parent_directory_folder">This path is a parent directory of an existing folder \"%1$s\".</string>
+	<!-- lang-en.json:522 -->
 	<string name="warning_parent_directory_folder_with_label">This path is a parent directory of an existing folder \"%1$s\" (%2$s).</string>
 
 
