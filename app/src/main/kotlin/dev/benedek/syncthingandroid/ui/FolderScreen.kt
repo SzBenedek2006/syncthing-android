@@ -116,7 +116,9 @@ data class FolderUiState(
 	val isCreateMode: Boolean = false,
 	val isValidFolder: Boolean = false,
 	val isPathWritable: Boolean = false,
-	val nestedFolderWarning: Boolean = false,
+	val isParentDir: Boolean = false,
+	val isSubDir: Boolean = false,
+	val nestedWith: Folder? = null,
 	val deviceList: List<FolderViewModel.DeviceUiState> = emptyList(),
 	val folderType: List<FolderViewModel.FolderType> = emptyList(),
 	val folderPullOrders: List<FolderViewModel.FolderPullOrder> = emptyList(),
@@ -127,7 +129,6 @@ data class FolderUiState(
 	val showFolderPullOrderDialog: Boolean = false,
 	val showVersioningDialog: Boolean = false,
 	val folderNeedsToUpdate: Boolean = false,
-	val nestedFolderWarningMessage: String = ""
 )
 
 @Immutable
@@ -155,6 +156,7 @@ data class FolderActions(
 	val onVersioningChange: (type: String?, param: String?, paramValue: String?) -> Unit = { _, _, _ -> },
 	val onPullOrderChange: (order: String) -> Unit = {},
 	val onPickerReturned: (String) -> Unit = {},
+	val acceptNestedFolderRisk: () -> Unit = {}
 )
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
@@ -332,10 +334,44 @@ fun FolderScreen(
 						}
 					}
 				}
-				if (state.nestedFolderWarning) {
+				if (state.nestedWith?.path != null) {
+					var msg = ""
+					if (state.isSubDir) {
+						msg = if (state.nestedWith.label != null) {
+							stringResource(
+								R.string.warning_subdirectory_folder_with_label,
+								state.nestedWith.label!!,
+								state.nestedWith.path!!
+							)
+						} else {
+							stringResource(
+								R.string.warning_subdirectory_folder,
+								state.nestedWith.path!!
+							)
+						}
+
+					}
+					if (state.isParentDir) {
+						msg = if (state.nestedWith.label != null) {
+							stringResource(
+								R.string.warning_parent_directory_folder_with_label,
+								state.nestedWith.label!!,
+								state.nestedWith.path!!
+							)
+						} else {
+							stringResource(
+								R.string.warning_parent_directory_folder,
+								state.nestedWith.path!!
+							)
+						}
+					}
 					WarningCard(
-						state.nestedFolderWarningMessage,
-						Modifier.fillMaxWidth().padding(16.dp)
+						msg,
+						Modifier
+							.fillMaxWidth()
+							.padding(16.dp),
+						advancedDescription = stringResource(R.string.nested_dir_advanced_description),
+						advancedOptions = { Button({actions.acceptNestedFolderRisk()}) { Text(stringResource(R.string.accept)) } }
 					)
 				}
 				ThemedHorizontalDivider()
@@ -745,9 +781,8 @@ fun FolderScreenPreview() {
 				path = TextFieldState("/storage/emulated/0"),
 				isCreateMode = true,
 				isValidFolder = true,
-				nestedFolderWarning = true,
+				isParentDir = true,
 				deviceList = mutableStateListOf(),
-				nestedFolderWarningMessage = "Warning, this path is a subdirectory of an existing folder \"Example\" (~/Example)."
 			),
 			actions = FolderActions()
 		)
