@@ -53,6 +53,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -1277,6 +1278,7 @@ fun WarningCard(
 	modifier: Modifier = Modifier,
 	isError: Boolean = false,
 	options: @Composable (() -> Unit)? = null,
+	advancedDescription: String? = null,
 	advancedOptions: @Composable (() -> Unit)? = null,
 
 ) {
@@ -1288,6 +1290,7 @@ fun WarningCard(
 
 	Box(modifier) {
 		val factor = 0.15f
+		val descriptionStyle = MaterialTheme.typography.bodyMedium
 		MaterialTheme(
 			MaterialTheme.colorScheme.copy(
 				primary = cardColor,
@@ -1304,11 +1307,11 @@ fun WarningCard(
 					Text(
 						text,
 						fontWeight = FontWeight.Bold,
-						style = MaterialTheme.typography.titleLarge
+						style = MaterialTheme.typography.titleMedium
 					)
 					Spacer(Modifier.fillMaxWidth().height(8.dp))
 					ThemedHorizontalDivider(Modifier.fillMaxWidth().padding(bottom = 8.dp))
-					Text(description)
+					Text(description, style = descriptionStyle)
 					Row(Modifier.fillMaxWidth(), Arrangement.End) {
 						options?.invoke()
 					}
@@ -1316,17 +1319,24 @@ fun WarningCard(
 					if (advancedOptions != null) {
 						var expanded by remember { mutableStateOf(false) }
 
-						IconButton({ expanded = !expanded }) {
-							Icon(
-								Icons.Outlined.ArrowDropDown,
-								if (expanded) stringResource(R.string.collapse) else stringResource(R.string.expand), // FIXME: use string resource
-								Modifier.rotate(if (expanded) 180f else 0f)
-							)
+						Row(Modifier.fillMaxWidth(), Arrangement.End) {
+							IconButton({ expanded = !expanded }) {
+								Icon(
+									Icons.Outlined.KeyboardArrowDown,
+									if (expanded) stringResource(R.string.collapse) else stringResource(
+										R.string.expand
+									), // FIXME: use string resource
+									Modifier.rotate(if (expanded) 180f else 0f)
+								)
+							}
 						}
 
 						AnimatedVisibility(visible = expanded) {
-							Row(Modifier.fillMaxWidth(), Arrangement.End) {
-								advancedOptions()
+							Column(Modifier.fillMaxWidth()) {
+								advancedDescription?.let { Text(it, style = descriptionStyle) }
+								Row(Modifier.fillMaxWidth(), Arrangement.End) {
+									advancedOptions()
+								}
 							}
 						}
 					}
@@ -1646,6 +1656,7 @@ fun WarningCardPreview() {
 			Modifier.fillMaxWidth().padding(16.dp),
 			false,
 			{Button({}) { Text("Mao") }},
+			null,
 			{Button({}) { Text("Mao") }},
 		)
 	}
