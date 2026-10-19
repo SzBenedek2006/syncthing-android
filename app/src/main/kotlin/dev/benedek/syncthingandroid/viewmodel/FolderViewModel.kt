@@ -1,5 +1,6 @@
 package dev.benedek.syncthingandroid.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -57,7 +58,12 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	var pathTextFieldState: TextFieldState by savedStateHandle.saveable(stateSaver = TextFieldState.Saver) {
 		mutableStateOf(TextFieldState(initialText = folder.path ?: ""))
 	}
+	private var folderList: List<Folder> = listOf()
+	var isParentDir by mutableStateOf(false)
+	var isSubDir by mutableStateOf(false)
+	var nestedWith: Folder? by mutableStateOf(null)
 
+	var acceptedNestedFolderRisk by mutableStateOf(false)
 
 	// FOLDER TYPE STUFF
 	// TODO: Move these to Constants or Util
@@ -194,10 +200,38 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	fun onPathChange(value: String) {
 		pathTextFieldState.setTextAndPlaceCursorAtEnd(value)
 		folder = folder.copy(path = value)
+		if (!acceptedNestedFolderRisk) checkNestedFolder()
 		checkPathAccess(value)
 		updateIsValidFolder()
 		folderNeedsToUpdate(true)
 	}
+
+	// TODO: More robust algo for detection
+	@SuppressLint("SdCardPath")
+	private fun checkNestedFolder() {
+		nestedWith = null
+		if (folder.path?.isBlank() ?: true) return
+
+		fun normalizePath(path: String?): String {
+			if (path == "/" || path.isNullOrBlank()) return path ?: ""
+			return "${path.trimEnd('/')}/"
+		}
+		val folderPath = normalizePath(folder.path)
+		val ignoreCase =
+			folderPath.startsWith("/storage/", true) || folderPath.startsWith("/sdcard/", true)
+
+		isParentDir = folderList.any { item ->
+			normalizePath(item.path)
+				.startsWith(normalizePath(folder.path), ignoreCase)
+				.also { if (it) nestedWith = item }
+		}
+		if (isParentDir) return
+
+		isSubDir = folderList.any { item ->
+			item.path != null && normalizePath(folder.path).startsWith(normalizePath(item.path), ignoreCase).also { if (it) nestedWith = item }
+		}
+	}
+
 
 	fun onPickerReturned(value: String) {
 		pathTextFieldState.setTextAndPlaceCursorAtEnd(value)
@@ -475,6 +509,11 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		folder = newFolder
 		checkPathAccess(pathTextFieldState.text.toString())
 		updateIsValidFolder()
+		loadFolderList()
+	}
+
+	private fun loadFolderList() {
+		folderList = api?.folders?.mapNotNull { it } ?: emptyList()
 	}
 
 	private fun loadExistingFolder(
@@ -557,22 +596,21 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 		}
 	}
 
-	fun prettyFileName(path: String?): String {
-		if (path == null) return ""
-		val regex = Regex("^/storage/emulated/0")
-		return path.replace(regex, "~")
-	}
-
-	fun unPrettyFileName(path: String): String {
-		val regex = Regex("^~")
-		return path.replace(regex, "/storage/emulated/0")
-	}
 
 	private fun updateIsValidFolder() {
-		isValidFolder =
-			!folder.label.isNullOrEmpty() && Folder.isValidId(folder.id) && pathTextFieldState.text.isNotEmpty() && isPathWritable
+		isValidFolder = !folder.label.isNullOrEmpty()
+				&& Folder.isValidId(folder.id)
+				&& pathTextFieldState.text.isNotEmpty()
+				&& isPathWritable
+				&& (nestedWith == null || acceptedNestedFolderRisk)
 	}
 
+	fun acceptNestedFolderRisk() {
+		acceptedNestedFolderRisk = true
+		nestedWith = null
+		isParentDir = false
+		isSubDir = false
+	}
 	private fun folderNeedsToUpdate(value: Boolean) {
 		logD("folderNeedsToUpdate = $value")
 		folderNeedsToUpdate = value
