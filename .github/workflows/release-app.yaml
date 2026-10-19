@@ -7,6 +7,12 @@ on:
       - 'v[0-9]*'
       - '[0-9]*'
 
+workflow_dispatch:
+  inputs:
+    tag:
+      description: 'Tag to run against'
+      required: true
+
 env:
   # Our build metadata
   BUILD_USER: android-builder
