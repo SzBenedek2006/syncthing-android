@@ -22,6 +22,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,7 +53,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -142,7 +142,6 @@ import com.patrykandpatrick.vico.compose.common.Fill
 import dev.benedek.syncthingandroid.R
 import dev.benedek.syncthingandroid.ui.icons.LabelOutline
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
-import dev.benedek.syncthingandroid.ui.theme.extendedColorScheme
 import dev.benedek.syncthingandroid.util.ThemeControls
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.conflate
@@ -1283,24 +1282,31 @@ fun WarningCard(
 
 ) {
 
-	val errorColor = MaterialTheme.extendedColorScheme.red.color
-	val warningColor = MaterialTheme.extendedColorScheme.yellow.color
+	val darkMode = ThemeControls.useDarkMode ?: isSystemInDarkTheme()
+	val errorColor = Color(0xFFC83D2A)
+	val warningColor = if (darkMode) { Color(0xFFefcd2f) }
+	else { Color(0xFFefcd2f) }
 
 	val cardColor = if (isError) errorColor else warningColor
 
 	Box(modifier) {
-		val factor = 0.15f
+		val darkFactor = 0.15f
+		val whiteFactor = 0.25f
 		val descriptionStyle = MaterialTheme.typography.bodyMedium
 		MaterialTheme(
 			MaterialTheme.colorScheme.copy(
-				primary = cardColor,
-				onPrimary = cardColor.copy(red = cardColor.red * factor, green = cardColor.green * factor, blue = cardColor.blue * factor),
+				primary = if (isError) Color(0xFFD0282F) else cardColor,
+				onPrimary = cardColor.copy(
+					red = cardColor.red * darkFactor,
+					green = cardColor.green * darkFactor,
+					blue = cardColor.blue * darkFactor
+				)
 			)
 		) {
 			Surface(
 				modifier = Modifier.clip(MaterialTheme.shapes.extraLarge).fillMaxWidth(),
-				color = cardColor.copy(factor),
-				contentColor = cardColor
+				color = cardColor.copy(if (darkMode) darkFactor else whiteFactor),
+				contentColor = if (darkMode) { if (isError) Color(0xFFD0282F) else cardColor } else MaterialTheme.colorScheme.onSurface
 			) {
 				Column(Modifier.padding(16.dp)) {
 					val text = stringResource(if (isError) R.string.error else R.string.warning)
@@ -1651,13 +1657,15 @@ fun DialogCardPreview() {
 @Composable
 fun WarningCardPreview() {
 	SyncthingandroidTheme(ThemeControls.PREVIEW_DARK_THEME, ThemeControls.isMonetEnabled) {
-		WarningCard(
-			"MAO",
-			Modifier.fillMaxWidth().padding(16.dp),
-			false,
-			{Button({}) { Text("Mao") }},
-			null,
-			{Button({}) { Text("Mao") }},
-		)
+		Surface() {
+			WarningCard(
+				"MAO",
+				Modifier.fillMaxWidth().padding(16.dp),
+				true,
+				{ Button({}) { Text("Mao") } },
+				null,
+				{ Button({}) { Text("Mao") } },
+			)
+		}
 	}
 }
