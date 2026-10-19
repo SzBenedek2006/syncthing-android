@@ -55,6 +55,9 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 						isCreateMode = viewModel.isCreateMode,
 						isValidFolder = logD(viewModel.isValidFolder),
 						isPathWritable = viewModel.isPathWritable,
+						isParentDir = viewModel.isParentDir,
+						isSubDir = viewModel.isSubDir,
+						nestedWith = viewModel.nestedWith,
 						deviceList = viewModel.deviceList,
 						folderType = viewModel.folderType,
 						folderPullOrders = viewModel.folderPullOrders,
@@ -89,7 +92,8 @@ class FolderActivity : SyncthingActivity(), SyncthingActivity.OnServiceConnected
 						onVersioningSave = viewModel::onVersioningSave,
 						onVersioningChange = viewModel::onVersioningChange,
 						onPullOrderChange = viewModel::onPullOrderChange,
-						onPickerReturned = viewModel::onPickerReturned
+						onPickerReturned = viewModel::onPickerReturned,
+						acceptNestedFolderRisk = viewModel::acceptNestedFolderRisk
 					)
 				)
 			}
