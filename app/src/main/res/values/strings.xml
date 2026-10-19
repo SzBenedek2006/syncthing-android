@@ -815,7 +815,7 @@ If you deny this permission, you can only access these features through the web 
 	<string name="saving_files_progress">Saving files...</string>
 
 	<!-- Messages copied directly from syncthing last updated as of v2.1.6 -->
-	<string name="warning_subdirectory_folder">Warning, this path is a subdirectory of an existing folder \"%1$s\".</string>
-	<string name="warning_subdirectory_folder_with_label">Warning, this path is a subdirectory of an existing folder \"%1$s\" (%2$s).</string>
+	<string name="warning_subdirectory_folder">This path is a subdirectory of an existing folder \"%1$s\".</string>
+	<string name="warning_subdirectory_folder_with_label">This path is a subdirectory of an existing folder \"%1$s\" (%2$s).</string>
 
 </resources>
