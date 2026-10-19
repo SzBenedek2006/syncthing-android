@@ -374,17 +374,13 @@ class RestApi(
 	val localDevice: Device?
 		get() {
 			val devices = getDevices(true)
-			if (devices.isNullOrEmpty()) {
-				throw RuntimeException("RestApi.getLocalDevice: devices is empty.")
-			}
 
 			Log.v(TAG, "getLocalDevice: Looking for local device ID $localDeviceId")
 
-			return try {
-				devices.first { it.deviceID == localDeviceId }
-			} catch (_: NoSuchElementException) {
-				throw RuntimeException("RestApi.getLocalDevice: Failed to get the local device crucial to continuing execution.")
-			}
+			val device = devices?.firstOrNull { it.deviceID == localDeviceId }
+			Log.e("RestApi.getLocalDevice", "Failed to get the local device crucial to continuing execution.")
+			return device
+
 		}
 
 	fun addDevice(device: Device, errorListener: (String?) -> Unit) {
