@@ -141,11 +141,6 @@ class FolderViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 	var isValidFolder by savedStateHandle.saveable { mutableStateOf(false) }
 
 
-	init {
-
-	}
-
-
 	fun setService(service: SyncthingService) {
 		serviceReference = WeakReference(service)
 	}
