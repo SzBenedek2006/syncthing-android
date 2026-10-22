@@ -1,1 +1,0 @@
-Sincronització de fitxers oberta, confiable i descentralitzada.

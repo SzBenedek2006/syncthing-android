@@ -1,0 +1,8 @@
+- Added usage history charts using the Vico library.
+- Redesigned the navigation on the home page.
+- Introduced a beta version.
+- Adjusted UI/UX around the home screen. (Paddings, text formatting, etc.)
+- Refined intent codes. (For automation)
+- Fixed Syncthing crashes on 32-bit devices.
+- Fixed an issue where Syncthing options failed to save.
+- Fixed notification permission checking logic.

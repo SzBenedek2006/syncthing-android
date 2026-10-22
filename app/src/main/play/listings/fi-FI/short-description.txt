@@ -1,1 +1,0 @@
-Avoin, luotettava ja hajautettu tiedostojensynkronointisovellus.

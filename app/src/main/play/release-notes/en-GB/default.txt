@@ -1,3 +1,0 @@
-* Update Syncthing to v1.28.1: https://github.com/syncthing/syncthing/releases/tag/v1.28.1
-
-This is the last release of this app - see readme.

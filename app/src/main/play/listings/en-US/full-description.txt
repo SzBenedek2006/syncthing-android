@@ -1,0 +1,29 @@
+Syncthing for Android packages Syncthing to be easy to use on and integrate well with Android. It provides an Android-native UI over the web-based interface Syncthing has by default. 
+
+What is Syncthing?
+Syncthing replaces proprietary sync and cloud services with something open, trustworthy and decentralized.
+It's an open-source, free, and privacy-respecting real-time file synchronization program for almost every platform including Linux, macOS and Windows.
+
+Syncthing for Android bundles this program optimized for your device.
+
+KEY HIGHLIGHTS
+• 🎨 Material Design 3 UI. (Work in progress).
+• 📱 Broad Compatibility: Supports Android 6 through Android 17.
+•  📊 System resource usage graphs.
+• 🔋 Customizable run conditions to reduce data and battery usage.
+• 🔒 Private & Decentralized: Your data syncs directly between your devices in encrypted channels, and isn't stored in the cloud.
+
+SUPPORT & ISSUES
+If you find an issue, bug, or have a problem, you can open an issue on GitHub.
+(https://github.com/SzBenedek2006/syncthing-android)
+Do not open issues in the upstream project unless I redirect you there with a specific issue.
+
+IMPORTANT NOTICES
+
+Storage Permissions
+This is a Backup, Restore, and File Management app.
+It requires All Files Access (MANAGE_EXTERNAL_STORAGE) to perform automated, non-interactive background file synchronization and directory backups.
+
+Project Status & Affiliation
+I am not affiliated with or part of the Syncthing organization.
+This app is a fork of the archived project (https://github.com/syncthing/syncthing-android), revived as an independent project that I continue developing.

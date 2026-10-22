@@ -1,0 +1,9 @@
+
+- Használati előzmények grafikonok hozzáadása a Vico könyvtár segítségével.
+- Újratervezett navigációs a kezdőképernyőn.
+- Beta verzió bevezetése.
+- UI/UX fejlesztés a kezdőképernyő körül. (Margó, szövegek, stb)
+- Szerkesztett intent kódok. (Autómatizálás)
+- Javítva a Syncthing összeomlása 32 bites eszközökön.
+- Javítva a Syncthing beállítások mentésének hibája.
+- Értesítési engedély javítva.

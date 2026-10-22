@@ -1,0 +1,3 @@
+- Show a warning when the user tries to add a folder containing or contained by another folder.
+- Fix a crash in settings.
+- Update dependencies.

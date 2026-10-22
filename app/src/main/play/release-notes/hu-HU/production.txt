@@ -1,0 +1,3 @@
+- Figyelmeztetés megjelenítése, amikor a felhasználó olyan mappát próbál hozzáadni, amely egy másik mappát tartalmaz, vagy egy másik mappán belül található.
+- A beállításoknál fellépő összeomlás javítása.
+- Függőségek frissítése.
