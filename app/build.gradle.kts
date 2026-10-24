@@ -174,6 +174,7 @@ play {
 		file(System.getenv("SYNCTHING_RELEASE_PLAY_ACCOUNT_CONFIG_FILE") ?: "keys.json")
 	)
 	track.set("beta")
+	defaultToAppBundles.set(true)
 }
 
 base {
