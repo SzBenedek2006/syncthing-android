@@ -8,8 +8,8 @@ Syncthing for Android bundles this program optimized for your device.
 
 KEY HIGHLIGHTS
 • 🎨 Material Design 3 UI. (Work in progress).
-• 📱 Broad Compatibility: Supports Android 6 through Android 17.
-•  📊 System resource usage graphs.
+• 📱 Broad Compatibility: Supports Android versions from 6 to 17.
+• 📊 System resource usage graphs.
 • 🔋 Customizable run conditions to reduce data and battery usage.
 • 🔒 Private & Decentralized: Your data syncs directly between your devices in encrypted channels, and isn't stored in the cloud.
 
