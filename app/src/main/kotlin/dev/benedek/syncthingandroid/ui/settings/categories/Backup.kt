@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.CloudDownload
+import androidx.compose.material.icons.outlined.CloudUpload
+import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -18,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,12 +55,14 @@ fun Backup(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 			title = stringResource(R.string.export_config),
 			onClick = { showExportDialog.value = true },
 			enabled = viewModel.isApiAvailable,
+			leftIconPainter = rememberVectorPainter(Icons.Outlined.CloudUpload)
 		)
 
 		OptionTile(
 			title = stringResource(R.string.import_config),
 			onClick = { showImportDialog.value = true },
 			enabled = viewModel.isApiAvailable,
+			leftIconPainter = rememberVectorPainter(Icons.Outlined.CloudDownload)
 		)
 		Spacer(Modifier.fillMaxWidth().height(contentPadding.calculateBottomPadding()))
 	}
