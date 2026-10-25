@@ -95,10 +95,10 @@ configure<ApplicationExtension> {
 	// For release-app.yaml
 	signingConfigs {
 		create("release") {
-			storeFile = System.getenv("SYNCTHING_RELEASE_STORE_FILE")?.let(::file)
-			storePassword = System.getenv("SIGNING_PASSWORD")
-			keyAlias = System.getenv("SYNCTHING_RELEASE_KEY_ALIAS")
-			keyPassword = System.getenv("SIGNING_PASSWORD")
+			storeFile = providers.environmentVariable("SYNCTHING_RELEASE_STORE_FILE").orNull?.let(::file)
+			storePassword = providers.environmentVariable("SIGNING_PASSWORD").orNull
+			keyAlias = providers.environmentVariable("SYNCTHING_RELEASE_KEY_ALIAS").orNull
+			keyPassword = providers.environmentVariable("SIGNING_PASSWORD").orNull
 		}
 	}
 
