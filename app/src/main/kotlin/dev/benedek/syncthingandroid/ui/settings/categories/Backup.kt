@@ -1,9 +1,14 @@
 package dev.benedek.syncthingandroid.ui.settings.categories
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.benedek.syncthingandroid.R
+import dev.benedek.syncthingandroid.ui.reusable.OptionTile
 import dev.benedek.syncthingandroid.ui.reusable.SettingsAlertDialog
 import dev.benedek.syncthingandroid.ui.reusable.preventClicksWhenExiting
 import dev.benedek.syncthingandroid.ui.theme.SyncthingandroidTheme
@@ -33,46 +39,24 @@ fun Backup(contentPadding: PaddingValues, viewModel: SettingsViewModel) {
 	val showImportDialog = remember { mutableStateOf(false) }
 	val showExportDialog = remember { mutableStateOf(false) }
 
-	LazyColumn(
+	Column(
 		modifier = Modifier
 			.fillMaxSize()
 			.preventClicksWhenExiting(),
-		contentPadding = contentPadding
 	) {
-		preference(
-			key = "export_config",
-			title = {
-				Row {
-					Text(stringResource(R.string.export_config))
-					Badge(
-						containerColor = MaterialTheme.colorScheme.primaryContainer,
-						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-						modifier = Modifier.padding(start = 4.dp)
-					) {
-						Text(stringResource(R.string.beta))
-					}
-				}
-			},
+		Spacer(Modifier.fillMaxWidth().height(contentPadding.calculateTopPadding()))
+		OptionTile(
+			title = stringResource(R.string.export_config),
 			onClick = { showExportDialog.value = true },
-			enabled = viewModel.isApiAvailable
+			enabled = viewModel.isApiAvailable,
 		)
-		preference(
-			key = "import_config",
-			title = {
-				Row {
-					Text(stringResource(R.string.import_config))
-					Badge(
-						containerColor = MaterialTheme.colorScheme.primaryContainer,
-						contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-						modifier = Modifier.padding(start = 4.dp)
-					) {
-						Text(stringResource(R.string.beta))
-					}
-				}
-			},
+
+		OptionTile(
+			title = stringResource(R.string.import_config),
 			onClick = { showImportDialog.value = true },
-			enabled = viewModel.isApiAvailable
+			enabled = viewModel.isApiAvailable,
 		)
+		Spacer(Modifier.fillMaxWidth().height(contentPadding.calculateBottomPadding()))
 	}
 
 	SettingsAlertDialog(
