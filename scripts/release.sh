@@ -44,3 +44,18 @@ suffix=$((suffix + 1))
 NEW_VERSION="${prefix}.${suffix}"
 
 echo "New suggested version is $NEW_VERSION"
+echo "Press Enter if OK!"
+
+read -r answer
+
+case "$answer" in
+	[yY] | "")
+		echo "Proceeding..."
+		;;
+	*)
+		echo "Aborted."
+		exit 1
+		;;
+esac
+
+
