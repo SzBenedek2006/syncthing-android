@@ -1,4 +1,4 @@
-Verzió 2.1.7.1:
+Verzió 2.1.7.2:
 - Fejlesztések a Biztonsági mentés oldalon
 - Használati jelentés kapcsoló javítva a beállításokban
 - Függőségek frissítése
