@@ -53,15 +53,8 @@ dependencies {
 	implementation(libs.com.patrykandpatrick.vico.compose)
 }
 
-/* For testing only
-android {
-    buildTypes {
-        getByName("release") {
-            signingConfig = signingConfigs.getByName("debug")
-        }
-    }
-}
-*/
+
+
 
 
 
@@ -185,4 +178,13 @@ base {
 tasks.named("preBuild") {
 	dependsOn(":syncthing:buildNative")
 }
+
+/*//For testing only
+android {
+	buildTypes {
+		getByName("release") {
+			signingConfig = signingConfigs.getByName("debug")
+		}
+	}
+}*/
 
