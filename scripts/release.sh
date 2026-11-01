@@ -47,6 +47,7 @@ printf "[OK]\n"
 
 ## Version check
 APP_VERSION=$(awk -F'"' '/versionName =/ {print $2}' app/build.gradle.kts)
+VERSION_CODE=$(awk '/versionCode =/ {print $3}' app/build.gradle.kts)
 GIT_TAG=$(git describe --tags --abbrev=0)
 
 printf "Versions match: "
@@ -55,7 +56,6 @@ if test "$APP_VERSION" != "${GIT_TAG#v}"; then
 	exit 1
 fi
 printf "[OK]\n"
-
 ## Env vars
 printf "Testing env vars: "
 if test -z "$SYNCTHING_RELEASE_STORE_FILE"; then
@@ -93,8 +93,9 @@ suffix="${APP_VERSION##*.}"
 suffix=$((suffix + 1))
 
 NEW_VERSION="${prefix}.${suffix}"
+NEW_VERSION_CODE=$((VERSION_CODE + 1))
 
-echo "New suggested version is $NEW_VERSION"
+echo "New suggested version is $NEW_VERSION ($NEW_VERSION_CODE)"
 printf "Accept the new version? [Y/n] "
 
 prompt
@@ -104,6 +105,7 @@ echo "Accepted $NEW_VERSION"
 ## Updating build.gradle.kts (TODO BSD sed compatibility)
 printf "Updating version in build.gradle.kts: "
 sed -i "s/versionName = \"$APP_VERSION\"/versionName = \"$NEW_VERSION\"/" app/build.gradle.kts
+sed -i "s/versionCode = $VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app/build.gradle.kts
 printf "[OK]\n"
 
 # GitHub (and F-Droid) release
