@@ -94,12 +94,15 @@ class SettingsViewModel : ViewModel() {
 		isApiAvailable = currentApi != null
 		if (currentApi == null) return
 
-		currentApi.getSystemInfo { info ->
-			cachedUrVersionMax = 0 // FIXME
+		currentApi.getSystemInfo { systemStatus ->
+			cachedUrVersionMax = systemStatus?.urVersionMax ?: Constants.UR_VERSION_MAX // FIXME
+			if (systemStatus == null) Log.i("SettingsViewModel", "info is null")
 
 			val options = currentApi.options
 			if (options != null) {
 				urAccepted.value = options.isUsageReportingAccepted(cachedUrVersionMax)
+			} else {
+				Log.i("SettingsViewModel", "options is null")
 			}
 		}
 
