@@ -119,7 +119,9 @@ class RestApi(
 
 		getSystemInfo { systemStatus: SystemStatus? ->
 			localDeviceId = systemStatus?.myID
-			urVersionMax = systemStatus?.urVersionMax ?: 0
+			urVersionMax = systemStatus?.urVersionMax ?: Constants.UR_VERSION_MAX
+			if (systemStatus == null) Log.i(TAG, "systemStatus is null")
+
 			synchronized(asyncQueryCompleteLock) {
 				asyncQuerySystemInfoComplete = true
 				checkReadConfigFromRestApiCompleted()
