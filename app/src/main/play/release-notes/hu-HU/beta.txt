@@ -1,3 +1,4 @@
-Verzió 2.1.7.0:
-- Syncthing frissítése a 2.1.7-es verzióra
-- Go frissítése az 1.27.3-as verzióra
+Verzió 2.1.7.1:
+- Fejlesztések a Biztonsági mentés oldalon
+- Használati jelentés kapcsoló javítva a beállításokban
+- Függőségek frissítése
