@@ -7,6 +7,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 object Constants {
+	const val UR_VERSION_MAX: Int = 3
 	const val FILENAME_SYNCTHING_BINARY: String = "libsyncthing.so"
 
 	// Preferences - Run conditions
