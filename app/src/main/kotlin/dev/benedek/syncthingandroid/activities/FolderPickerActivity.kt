@@ -216,9 +216,11 @@ class FolderPickerActivity : SyncthingActivity(), AdapterView.OnItemClickListene
 			}
 
 			R.id.select -> {
-				val intent = Intent()
-					.putExtra(EXTRA_RESULT_DIRECTORY, Util.formatPath(location!!.absolutePath))
-				setResult(RESULT_OK, intent)
+				location?.let {
+					val intent = Intent()
+						.putExtra(EXTRA_RESULT_DIRECTORY, Util.formatPath(it.absolutePath))
+					setResult(RESULT_OK, intent)
+				}
 				finish()
 				return true
 			}
