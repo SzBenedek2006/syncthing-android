@@ -453,9 +453,13 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				HashSet()
 			)!!
 		)
-		val externalFilesDir: File = checkNotNull(context.getExternalFilesDir(null))
-		Log.d("externalFilesDir", externalFilesDir.toString())
-		targetEnv["STGUIASSETS"] = externalFilesDir.absolutePath + "/gui"
+		val externalFilesDir: File? = context.getExternalFilesDir(null)
+		if (externalFilesDir == null)
+			Log.w("externalFilesDir", "is null")
+		else
+			Log.d("externalFilesDir", externalFilesDir.toString())
+
+		targetEnv["STGUIASSETS"] = externalFilesDir?.let { it.absolutePath + "/gui" }
 		targetEnv["STMONITORED"] = "1"
 		targetEnv["STNOUPGRADE"] = "1"
 		// Disable hash benchmark for faster startup.
