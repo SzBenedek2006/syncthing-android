@@ -52,8 +52,8 @@ abstract class ApiRequest internal constructor(
 	fun buildUri(params: Map<String?, String?>): Uri? {
 		val uriBuilder = url.toString().toUri().buildUpon().path(path)
 
-		for (entry in params.entries) {
-			uriBuilder.appendQueryParameter(entry.key, entry.value)
+		for ((key, value) in params) {
+			uriBuilder.appendQueryParameter(key, value)
 		}
 		return uriBuilder.build()
 	}
