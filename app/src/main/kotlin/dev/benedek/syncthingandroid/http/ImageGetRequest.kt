@@ -2,7 +2,6 @@ package dev.benedek.syncthingandroid.http
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.android.volley.VolleyError
 import com.google.common.base.Optional
 import java.net.URL
 

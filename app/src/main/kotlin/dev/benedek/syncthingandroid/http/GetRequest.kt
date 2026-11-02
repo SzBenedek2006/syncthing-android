@@ -1,9 +1,7 @@
 package dev.benedek.syncthingandroid.http
 
 import android.content.Context
-import com.android.volley.Request
 import com.google.common.base.Optional
-import io.ktor.http.HttpMethod
 import io.ktor.http.HttpMethod.Companion.Get
 import java.net.URL
 
