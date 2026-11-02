@@ -87,10 +87,6 @@ class SyncthingService : Service() {
 
 	val notificationHandler: NotificationHandler by lazy { NotificationHandler(this) }
 
-	// FIXME
-	private val preferences: SharedPreferences by lazy {
-		PreferenceManager.getDefaultSharedPreferences(this)
-	}
 
 	/**
 	 * Object that must be locked upon accessing currentState

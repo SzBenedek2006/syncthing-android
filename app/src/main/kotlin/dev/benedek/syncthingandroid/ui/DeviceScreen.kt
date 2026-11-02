@@ -285,9 +285,8 @@ fun DeviceScreen(
 	}
 
 	/**
-	 * This is needed due another horrible bug in Android
+	 * This is needed due to another horrible bug in Android
 	 */
-	val imeBottom = WindowInsets.ime.getBottom(LocalDensity.current)
 	val isSoftwareKeyboardVisible =
 		WindowInsets.isImeVisible // && imeBottom > 0 TODO: (maybe needed?)
 
