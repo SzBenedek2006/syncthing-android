@@ -22,7 +22,6 @@ dependencies {
 	implementation(libs.jbcrypt)
 	implementation(libs.guava)
 	implementation(libs.annimon.stream)
-	implementation(libs.volley)
 	implementation(libs.ktor.client.core)
 	implementation(libs.ktor.client.android)
 
