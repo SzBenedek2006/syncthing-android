@@ -120,3 +120,10 @@ git push origin main --tags
 
 # Play release
 ./gradlew publishReleaseBundle
+
+
+GITHUB=https://github.com/SzBenedek2006/syncthing-android/releases
+CONSOLE=https://play.google.com/console
+
+xdg-open $GITHUB || open $GITHUB
+xdg-open $CONSOLE || open $CONSOLE
