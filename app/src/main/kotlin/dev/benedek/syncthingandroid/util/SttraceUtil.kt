@@ -25,34 +25,6 @@ object SttraceUtil {
 				"getDebugFacilities: Failed to get facilities from prefs, falling back to hardcoded list."
 			)
 
-			/*
-			// Syncthing v0.14.47 debug facilities.
-			retDebugFacilities.add("beacon")
-			retDebugFacilities.add("config")
-			retDebugFacilities.add("connections")
-			retDebugFacilities.add("db")
-			retDebugFacilities.add("dialer")
-			retDebugFacilities.add("discover")
-			retDebugFacilities.add("events")
-			retDebugFacilities.add("fs")
-			retDebugFacilities.add("http")
-			retDebugFacilities.add("main")
-			retDebugFacilities.add("model")
-			retDebugFacilities.add("nat")
-			retDebugFacilities.add("pmp")
-			retDebugFacilities.add("protocol")
-			retDebugFacilities.add("scanner")
-			retDebugFacilities.add("sha256")
-			retDebugFacilities.add("stats")
-			retDebugFacilities.add("sync")
-			retDebugFacilities.add("upgrade")
-			retDebugFacilities.add("upnp")
-			retDebugFacilities.add("versioner")
-			retDebugFacilities.add("walkfs")
-			retDebugFacilities.add("watchaggregator")
-			*/
-
-
 			// Syncthing v2.0.13 debug facilities.
 			retDebugFacilities.add("api")
 			retDebugFacilities.add("beacon")

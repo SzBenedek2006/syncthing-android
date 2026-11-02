@@ -207,7 +207,7 @@ class RestApi(
 				return
 			}
 
-			/*
+			/**
 			  Ignore folder by moving its corresponding "pendingFolder" entry to
 			  a newly created "ignoredFolder" entry.
 			 */
@@ -297,15 +297,7 @@ class RestApi(
 		get() {
 			synchronized(configLock) {
 				val folders = config?.folders ?: return null
-				/*
-								return deepCopy(
-									folders,
-									object : TypeToken<MutableList<Folder?>>() {}.type
-										.apply {
-											folders.sortWith(FOLDERS_COMPARATOR)
-										}
-								)
-				*/
+
 				// FIXME: Is sorting necessary here? So is returning a mutableList?
 				return folders.map { it?.deepCopy() }.toMutableList()
 					.apply { sortWith(FOLDERS_COMPARATOR) }
@@ -358,11 +350,6 @@ class RestApi(
 	fun getDevices(includeLocal: Boolean): MutableList<Device>? {
 		val devices: MutableList<Device> = synchronized(configLock) {
 			val currentDevices: MutableList<Device?> = config?.devices ?: return null
-
-			/*
-						deepCopy(currentDevices, object : TypeToken<MutableList<Device?>>() {}.type)
-							?.filterNotNull()?.toMutableList() ?: return null
-			*/
 
 			currentDevices.mapNotNull { it?.deepCopy() }.toMutableList()
 		}
@@ -425,12 +412,6 @@ class RestApi(
 	val options: Options?
 		get() {
 			synchronized(configLock) {
-/*
-				return deepCopy<Options?>(
-					config?.options,
-					Options::class.java
-				)
-*/
 				return config?.options?.deepCopy()
 			}
 		}
@@ -507,7 +488,6 @@ class RestApi(
 			previousSystemConnections = systemConnections
 
 			listener(
-				//deepCopy(systemConnections, SystemConnections::class.java)
 				systemConnections.deepCopy()
 			)
 		}

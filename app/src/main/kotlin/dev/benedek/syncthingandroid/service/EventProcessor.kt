@@ -133,15 +133,17 @@ class EventProcessor(
 						null
 					)
 				} else { // TODO: handle delete better
-					// Starting with Android 10/Q and targeting API level 29/removing legacy storage flag,
-					// reports of files being spuriously deleted came up.
-					// Best guess is that Syncthing directly interacted with the filesystem before,
-					// and there's a virtualization layer there now. Also, there's reports this API
-					// changed behaviour with scoped storage. In any case it now does not only
-					// update the media db, but actually delete the file on disk. Which is bad,
-					// as it can race with the creation of the same file and thus delete it. See:
-					// https://github.com/syncthing/syncthing-android/issues/1801
-					// https://github.com/syncthing/syncthing/issues/7974
+					/*
+					Starting with Android 10/Q and targeting API level 29/removing legacy storage flag,
+					reports of files being spuriously deleted came up.
+					Best guess is that Syncthing directly interacted with the filesystem before,
+					and there's a virtualization layer there now. Also, there's reports this API
+					changed behaviour with scoped storage. In any case it now does not only
+					update the media db, but actually delete the file on disk. Which is bad,
+					as it can race with the creation of the same file and thus delete it. See:
+					https://github.com/syncthing/syncthing-android/issues/1801
+					https://github.com/syncthing/syncthing/issues/7974
+					*/
 					atLeastSdk(Build.VERSION_CODES.Q) {
 						return
 					}

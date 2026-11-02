@@ -42,14 +42,6 @@ class Languages(context: Context) {
 			val languageTag = language.replace('_', '-')
 			locale = Locale.forLanguageTag(languageTag)
 
-			// Old implementation TODO: Remove after testing
-//            val localeSplit: Array<String?> =
-//                language.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-//            if (localeSplit.size > 1) {
-//                locale = Locale(localeSplit[0], localeSplit[1])
-//            } else {
-//                locale = Locale(language)
-//            }
 		}
 		Locale.setDefault(locale)
 

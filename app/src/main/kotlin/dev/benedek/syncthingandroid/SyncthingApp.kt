@@ -34,10 +34,12 @@ class SyncthingApp : Application() {
 
 		Languages(this).setLanguage(this)
 
-		// The main point here is to use a VM policy without
-		// `detectFileUriExposure`, as that leads to exceptions when e.g.
-		// opening the ignores file. And it's enabled by default.
-		// We might want to disable `detectAll` and `penaltyLog` on release (non-RC) builds too.
+		/**
+		 * The main point here is to use a VM policy without
+		 * `detectFileUriExposure`, as that leads to exceptions when e.g.
+		 * opening the ignores file. And it's enabled by default.
+		 * We might want to disable `detectAll` and `penaltyLog` on release (non-RC) builds too.
+		 */
 		val policy = VmPolicy.Builder()
 			.detectAll()
 			.penaltyLog()

@@ -62,15 +62,13 @@ fun Modifier.topBorderWithCorners(
 	val radiusPx = cornerRadius.toPx()
 
 	val path = Path().apply {
-		// 1. Start at the top-left (which is square/0.dp in your shape)
+		// Start at the top-left
 		moveTo(0f, strokePx / 2)
 
-		// 2. Draw the straight line across the top until the curve starts
-		// We stop short of the right edge by the amount of the radius
+		// Stop short of the right edge by the amount of the radius
 		lineTo(size.width - radiusPx, strokePx / 2)
 
-		// 3. Draw the arc for the top-right rounded corner
-		// This draws 90 degrees of a circle to follow your 16.dp radius
+		// Draw the arc for the top-right rounded corner
 		arcTo(
 			rect = Rect(
 				left = size.width - (radiusPx * 2),

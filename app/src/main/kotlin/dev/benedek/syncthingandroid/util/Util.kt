@@ -87,11 +87,13 @@ object Util {
 	 */
 	@JvmStatic
 	fun fixAppDataPermissions(context: Context): Boolean {
-		// We can safely assume that root magic is somehow available, because readConfig and saveChanges check for
-		// read and write access before calling us.
-		// Be paranoid :) and check if root is available.
-		// Ignore the 'use_root' preference, because we might want to fix ther permission
-		// just after the root option has been disabled.
+		/*
+		We can safely assume that root magic is somehow available, because readConfig and saveChanges check for
+		read and write access before calling us.
+		Be paranoid :) and check if root is available.
+		Ignore the 'use_root' preference, because we might want to fix ther permission
+		just after the root option has been disabled.
+		*/
 		if (!Shell.SU.available()) {
 			Log.e(TAG, "Root is not available. Cannot fix permissions.")
 			return false
@@ -113,10 +115,12 @@ object Util {
 		// Get private app's "files" dir residing in "/data/data/[packageName]".
 		val dir = context.filesDir.absolutePath
 		var cmd = "chown -R " + appInfo.uid + ":" + appInfo.uid + " " + dir + "; "
-		// Running Syncthing as root might change a file's or directories type in terms of SELinux.
-		// Leaving them as they are, the Android service won't be able to access them.
-		// At least for those files residing in an application's data folder.
-		// Simply reverting the type to its default should do the trick.
+		/*
+		Running Syncthing as root might change a file's or directories type in terms of SELinux.
+		Leaving them as they are, the Android service won't be able to access them.
+		At least for those files residing in an application's data folder.
+		Simply reverting the type to its default should do the trick.
+		*/
 		cmd += "restorecon -R $dir\n"
 		Log.d(TAG, "Running: '$cmd")
 		val exitCode = runShellCommand(cmd, true)

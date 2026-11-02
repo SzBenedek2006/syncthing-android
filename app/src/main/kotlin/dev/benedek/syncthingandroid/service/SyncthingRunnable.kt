@@ -203,13 +203,18 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 						context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) ==
 						PackageManager.PERMISSION_GRANTED
 					) {
-						// TODO: Consider calling
-						//    ActivityCompat#requestPermissions
-						// here to request the missing permissions, and then overriding
-						//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-						//                                          int[] grantResults)
-						// to handle the case where the user grants the permission. See the documentation
-						// for ActivityCompat#requestPermissions for more details.
+						/*TODO:
+						   Consider calling
+						   ActivityCompat#requestPermissions
+						   here to request the missing permissions, and then overriding
+						   `public void onRequestPermissionsResult(
+						   		int requestCode,
+						   		String[] permissions,
+						   		int[] grantResults
+						   	)`
+						   	to handle the case where the user grants the permission. See the documentation
+						   	for ActivityCompat#requestPermissions for more details.
+						*/
 						notificationHandler.showCrashedNotification(
 							R.string.notification_crash_title,
 							false
@@ -497,18 +502,22 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 		if (useRoot) {
 			val processBuilder = ProcessBuilder("su")
 			val process = processBuilder.start()
-			// The su binary prohibits the inheritance of environment variables.
-			// Even with --preserve-environment the environment gets messed up.
-			// We therefore start a root shell, and set all the environment variables manually.
+			/*
+			The su binary prohibits the inheritance of environment variables.
+			Even with --preserve-environment the environment gets messed up.
+			We therefore start a root shell, and set all the environment variables manually.
+			*/
 			val suOut = DataOutputStream(process.outputStream)
 			for ((key, value) in env) {
 				suOut.writeBytes(String.format("export %s=\"%s\"\n", key, value))
 			}
 			suOut.flush()
-			// Exec will replace the su process image by Syncthing as execlp in C does.
-			// Without using exec, the process will drop to the root shell as soon as Syncthing terminates like a normal shell does.
-			// If we did not use exec, we would wait infinitely for the process to terminate (ret = process.waitFor(); in run()).
-			// With exec the whole process terminates when Syncthing exits.
+			/*
+			Exec will replace the su process image by Syncthing as `execlp` in C does.
+			Without using exec, the process will drop to the root shell as soon as Syncthing terminates like a normal shell does.
+			If we did not use exec, we would wait infinitely for the process to terminate (ret = process.waitFor(); in run()).
+			With exec the whole process terminates when Syncthing exits.
+			*/
 			suOut.writeBytes("exec " + TextUtils.join(" ", command) + "\n")
 			// suOut.flush has to be called to fix issue - #1005 Endless loader after enabling "Superuser mode"
 			suOut.flush()
