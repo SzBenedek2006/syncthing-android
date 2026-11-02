@@ -1,4 +1,3 @@
-Verzió 2.1.7.2:
-- Fejlesztések a Biztonsági mentés oldalon
-- Használati jelentés kapcsoló javítva a beállításokban
-- Függőségek frissítése
+Verzió 2.1.7.3:
+- 2 lehetséges összeomlás javítva.
+- Váltás a Volley-ról a Ktorra.
