@@ -38,12 +38,12 @@ abstract class ApiRequest internal constructor(
 ) {
 	private val client: HttpClient
 		get() = Companion.client ?: HttpClient(Android) {
-			expectSuccess = true // TODO: Check if necessary
+			expectSuccess = true // TODO: Test
 			engine {
 				connectTimeout = 5_000
 				socketTimeout = 5_000
 				sslManager = { connection ->
-					connection.sslSocketFactory = sslSocketFactory // TODO: Check
+					connection.sslSocketFactory = sslSocketFactory
 					connection.hostnameVerifier = HostnameVerifier { _, _ -> true }
 				}
 			}
