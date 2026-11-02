@@ -13,7 +13,7 @@ class ImageGetRequest(
 	apiKey: String,
 	params: MutableMap<String?, String?>?,
 	onSuccessListener: ((result: Bitmap?) -> Unit)?,
-	onErrorListener: ((error: VolleyError?) -> Unit)?
+	onErrorListener: ((error: Throwable?) -> Unit)?
 ) : ApiRequest(context, url, path, apiKey) {
 	init {
 		val safeParams = Optional.fromNullable(params)

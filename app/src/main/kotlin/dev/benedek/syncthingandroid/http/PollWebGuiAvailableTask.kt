@@ -48,7 +48,7 @@ class PollWebGuiAvailableTask(
 			uri!!,
 			null,
 			{ result: String? -> this.onSuccess(result) },
-			{ error: VolleyError? -> this.onError(error!!) })
+			{ error: Throwable? -> this.onError(error!!) })
 	}
 
 	private fun onSuccess(result: String?) {
@@ -61,7 +61,7 @@ class PollWebGuiAvailableTask(
 		}
 	}
 
-	private fun onError(error: VolleyError) {
+	private fun onError(error: Throwable?) {
 		synchronized(listenerLock) {
 			if (listener == null) {
 				Log.v(TAG, "Cancelled callback and outstanding requests")
@@ -70,7 +70,7 @@ class PollWebGuiAvailableTask(
 		}
 
 		handler.postDelayed({ this.performRequest() }, WEB_GUI_POLL_INTERVAL)
-		val cause = error.cause
+		val cause = error?.cause
 		if (cause == null || cause.javaClass == ConnectException::class.java) {
 			// Reduce lag caused by massively logging the same line while waiting.
 			logIncidence++

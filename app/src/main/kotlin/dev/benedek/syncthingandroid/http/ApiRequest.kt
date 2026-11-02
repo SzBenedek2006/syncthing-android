@@ -97,7 +97,7 @@ abstract class ApiRequest internal constructor(
 		uri: Uri,
 		requestBody: String?,
 		listener: ((result: String?) -> Unit)?,
-		errorListener: ((error: VolleyError?) -> Unit)?
+		errorListener: ((error: Throwable?) -> Unit)?
 	) {
 		Log.v(TAG, "Performing request to $uri")
 
@@ -116,7 +116,8 @@ abstract class ApiRequest internal constructor(
 					}
 					listener?.invoke(response.bodyAsText())
 				} catch (e: Exception) {
-					errorListener?.invoke(VolleyError(e)) ?: Log.w(TAG, "Request to $uri failed with exception ${e.javaClass.name}: ${e.message}")
+					errorListener?.invoke(e)
+					Log.w(TAG, "Request to $uri failed with exception ${e.javaClass.name}: ${e.message}")
 				}
 			}
 		} else {
@@ -178,7 +179,7 @@ abstract class ApiRequest internal constructor(
 	fun makeImageRequest(
 		uri: Uri,
 		onImageSuccessListener: ((result: Bitmap?) -> Unit)?,
-		onErrorListener: ((error: VolleyError?) -> Unit)?
+		onErrorListener: ((error: Throwable?) -> Unit)?
 	) {
 		if (KTOR) {
 			scope.launch {
@@ -189,8 +190,8 @@ abstract class ApiRequest internal constructor(
 					val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 					onImageSuccessListener?.invoke(bitmap)
 				} catch (e: Exception) {
-					onErrorListener?.invoke(VolleyError(e))
-					Log.d(TAG, "onErrorResponse: $e")
+					onErrorListener?.invoke(e)
+					Log.w(TAG, "Request to $uri failed with exception ${e.javaClass.name}: ${e.message}")
 				}
 			}
 		} else {
