@@ -2,12 +2,14 @@ package dev.benedek.syncthingandroid.http
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.net.toUri
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.NetworkResponse
+import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -17,6 +19,19 @@ import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import dev.benedek.syncthingandroid.service.Constants.getHttpsCertFile
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.android.Android
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.request
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpMethod
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
@@ -26,12 +41,14 @@ import java.nio.charset.StandardCharsets
 import java.security.KeyManagementException
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
+import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 
+const val KTOR = true
 
 abstract class ApiRequest internal constructor(
 	private val context: Context,
@@ -48,6 +65,18 @@ abstract class ApiRequest internal constructor(
 			)
 				.also { Companion.volleyQueue = it }
 		}
+	private val client: HttpClient
+		get() = Companion.client ?: HttpClient(Android) {
+			expectSuccess = true // TODO: Check if necessary
+			engine {
+				connectTimeout = 5_000
+				socketTimeout = 5_000
+				sslManager = { connection ->
+					connection.sslSocketFactory = sslSocketFactory // TODO: Check
+					connection.hostnameVerifier = HostnameVerifier { _, _ -> true }
+				}
+			}
+		}.also { Companion.client = it }
 
 	fun buildUri(params: Map<String?, String?>): Uri? {
 		val uriBuilder = url.toString().toUri().buildUpon().path(path)
@@ -57,6 +86,8 @@ abstract class ApiRequest internal constructor(
 		}
 		return uriBuilder.build()
 	}
+
+	private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 	/**
 	 * Opens the connection, then returns success status and response string.
@@ -70,52 +101,75 @@ abstract class ApiRequest internal constructor(
 	) {
 		Log.v(TAG, "Performing request to $uri")
 
-		val request: StringRequest = object : StringRequest(
-			requestMethod,
-			uri.toString(),
-			Response.Listener { reply ->
-				listener?.invoke(reply)
-			},
-			Response.ErrorListener { error ->
-				errorListener?.invoke(error) ?: Log.w(
-					TAG,
-					"Request to " + uri + " failed, " + error!!.message
-				)
-			}
-		) {
-			override fun parseNetworkResponse(response: NetworkResponse): Response<String?> {
+		if (KTOR) {
+			scope.launch {
 				try {
-					val charset = HttpHeaderParser.parseCharset(response.headers, "UTF-8")
-					val parsed = response.data.toString(Charset.forName(charset))
-
-					return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response))
-
-				} catch (e: UnsupportedEncodingException) {
-					Log.e(this.toString(), e.toString())
-					return Response.success(
-						String(response.data, StandardCharsets.UTF_8),
-						HttpHeaderParser.parseCacheHeaders(response)
+					val response = client.request(uri.toString()) {
+						method = when (requestMethod) { // FIXME!
+							Request.Method.POST -> HttpMethod.Post
+							Request.Method.PUT -> HttpMethod.Put
+							Request.Method.DELETE -> HttpMethod.Delete
+							else -> HttpMethod.Get
+						}
+						header(HEADER_API_KEY, apiKey)
+						requestBody?.let { setBody(it) }
+					}
+					listener?.invoke(response.bodyAsText())
+				} catch (e: Exception) {
+					errorListener?.invoke(VolleyError(e)) ?: Log.w(TAG, "Request to $uri failed with exception ${e.javaClass.name}: ${e.message}")
+				}
+			}
+		} else {
+			val request: StringRequest = object : StringRequest(
+				requestMethod,
+				uri.toString(),
+				Response.Listener { reply ->
+					listener?.invoke(reply)
+				},
+				Response.ErrorListener { error ->
+					errorListener?.invoke(error) ?: Log.w(
+						TAG,
+						"Request to " + uri + " failed, " + error!!.message
 					)
+				}
+			) {
+				override fun parseNetworkResponse(response: NetworkResponse): Response<String?> {
+					try {
+						val charset = HttpHeaderParser.parseCharset(response.headers, "UTF-8")
+						val parsed = response.data.toString(Charset.forName(charset))
+
+						return Response.success(
+							parsed,
+							HttpHeaderParser.parseCacheHeaders(response)
+						)
+
+					} catch (e: UnsupportedEncodingException) {
+						Log.e(this.toString(), e.toString())
+						return Response.success(
+							String(response.data, StandardCharsets.UTF_8),
+							HttpHeaderParser.parseCacheHeaders(response)
+						)
+					}
+				}
+
+				override fun getHeaders(): MutableMap<String, String> {
+					return mutableMapOf(HEADER_API_KEY to apiKey)
+				}
+
+				override fun getBody(): ByteArray? {
+					return requestBody?.toByteArray()
+
 				}
 			}
 
-			override fun getHeaders(): MutableMap<String, String> {
-				return mutableMapOf(HEADER_API_KEY to apiKey)
-			}
-
-			override fun getBody(): ByteArray? {
-				return requestBody?.toByteArray()
-
-			}
+			// Some requests seem to be slow or fail, make sure this doesn't break the app
+			// (e.g. if an event request fails, new event requests won't be triggered).
+			request.retryPolicy = DefaultRetryPolicy(
+				5000, 5,
+				DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+			)
+			this.volleyQueue.add(request)
 		}
-
-		// Some requests seem to be slow or fail, make sure this doesn't break the app
-		// (e.g. if an event request fails, new event requests won't be triggered).
-		request.retryPolicy = DefaultRetryPolicy(
-			5000, 5,
-			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-		)
-		this.volleyQueue.add(request)
 	}
 
 	/**
@@ -126,25 +180,40 @@ abstract class ApiRequest internal constructor(
 		onImageSuccessListener: ((result: Bitmap?) -> Unit)?,
 		onErrorListener: ((error: VolleyError?) -> Unit)?
 	) {
-		val imageRequest: ImageRequest = object : ImageRequest(
-			uri.toString(),
-			Response.Listener { bitmap: Bitmap? ->
-				onImageSuccessListener?.invoke(bitmap)
-			},
-			0,
-			0,
-			ImageView.ScaleType.CENTER,
-			Bitmap.Config.RGB_565,
-			Response.ErrorListener { volleyError: VolleyError? ->
-				onErrorListener?.invoke(volleyError)
-				Log.d(TAG, "onErrorResponse: $volleyError")
-			}) {
-			override fun getHeaders(): MutableMap<String, String> {
-				return mutableMapOf(HEADER_API_KEY to apiKey)
+		if (KTOR) {
+			scope.launch {
+				try {
+					val bytes = client.get(uri.toString()) {
+						header(HEADER_API_KEY, apiKey)
+					}.body<ByteArray>()
+					val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+					onImageSuccessListener?.invoke(bitmap)
+				} catch (e: Exception) {
+					onErrorListener?.invoke(VolleyError(e))
+					Log.d(TAG, "onErrorResponse: $e")
+				}
 			}
-		}
+		} else {
+			val imageRequest: ImageRequest = object : ImageRequest(
+				uri.toString(),
+				Response.Listener { bitmap: Bitmap? ->
+					onImageSuccessListener?.invoke(bitmap)
+				},
+				0,
+				0,
+				ImageView.ScaleType.CENTER,
+				Bitmap.Config.RGB_565,
+				Response.ErrorListener { volleyError: VolleyError? ->
+					onErrorListener?.invoke(volleyError)
+					Log.d(TAG, "onErrorResponse: $volleyError")
+				}) {
+				override fun getHeaders(): MutableMap<String, String> {
+					return mutableMapOf(HEADER_API_KEY to apiKey)
+				}
+			}
 
-		this.volleyQueue.add(imageRequest)
+			this.volleyQueue.add(imageRequest)
+		}
 	}
 
 	/**
@@ -197,5 +266,6 @@ abstract class ApiRequest internal constructor(
 		private const val HEADER_API_KEY = "X-API-Key"
 
 		private var volleyQueue: RequestQueue? = null
+		private var client: HttpClient? = null
 	}
 }
