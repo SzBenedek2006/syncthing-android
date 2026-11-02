@@ -473,7 +473,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				Constants.PREF_SOCKS_PROXY_ADDRESS,
 				""
 			)!!
-			if (!socksProxyAddress.isEmpty()) {
+			if (socksProxyAddress.isNotEmpty()) {
 				targetEnv["all_proxy"] = socksProxyAddress
 			}
 
@@ -481,7 +481,7 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 				Constants.PREF_HTTP_PROXY_ADDRESS,
 				""
 			)!!
-			if (!httpProxyAddress.isEmpty()) {
+			if (httpProxyAddress.isNotEmpty()) {
 				targetEnv["http_proxy"] = httpProxyAddress
 				targetEnv["https_proxy"] = httpProxyAddress
 			}
@@ -501,8 +501,8 @@ class SyncthingRunnable(private val context: Context, command: Command) : Runnab
 			// Even with --preserve-environment the environment gets messed up.
 			// We therefore start a root shell, and set all the environment variables manually.
 			val suOut = DataOutputStream(process.outputStream)
-			for (entry in env.entries) {
-				suOut.writeBytes(String.format("export %s=\"%s\"\n", entry.key, entry.value))
+			for ((key, value) in env) {
+				suOut.writeBytes(String.format("export %s=\"%s\"\n", key, value))
 			}
 			suOut.flush()
 			// Exec will replace the su process image by Syncthing as execlp in C does.
