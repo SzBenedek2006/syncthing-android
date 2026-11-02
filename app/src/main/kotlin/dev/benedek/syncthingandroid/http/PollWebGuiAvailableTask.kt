@@ -5,6 +5,8 @@ import android.os.Handler
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.VolleyError
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpMethod.Companion.Get
 import java.net.ConnectException
 import java.net.URL
 
@@ -44,7 +46,7 @@ class PollWebGuiAvailableTask(
 	private fun performRequest() {
 		val uri = buildUri(mutableMapOf())
 		connect(
-			Request.Method.GET,
+			Get,
 			uri!!,
 			null,
 			{ result: String? -> this.onSuccess(result) },

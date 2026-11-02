@@ -3,6 +3,7 @@ package dev.benedek.syncthingandroid.http
 import android.content.Context
 import com.android.volley.Request
 import com.google.common.base.Optional
+import io.ktor.http.HttpMethod.Companion.Post
 import java.net.URL
 
 class PostRequest(
@@ -17,7 +18,7 @@ class PostRequest(
 		val safeParams = Optional.fromNullable(params)
 			.or(mutableMapOf())
 		val uri = buildUri(safeParams)
-		connect(Request.Method.POST, uri!!, null, onSuccessListener, null)
+		connect(Post, uri!!, null, onSuccessListener, null)
 	}
 
 	companion object {

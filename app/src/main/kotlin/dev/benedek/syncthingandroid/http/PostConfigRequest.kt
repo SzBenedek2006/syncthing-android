@@ -2,6 +2,7 @@ package dev.benedek.syncthingandroid.http
 
 import android.content.Context
 import com.android.volley.Request
+import io.ktor.http.HttpMethod.Companion.Post
 import java.net.URL
 
 class PostConfigRequest(
@@ -13,7 +14,7 @@ class PostConfigRequest(
 ) : ApiRequest(context, url, URI_CONFIG, apiKey) {
 	init {
 		val uri = buildUri(mutableMapOf())
-		connect(Request.Method.POST, uri!!, config, onSuccessListener, null)
+		connect(Post, uri!!, config, onSuccessListener, null)
 	}
 
 	companion object {
