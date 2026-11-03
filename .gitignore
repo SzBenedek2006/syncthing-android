@@ -30,7 +30,12 @@ project.properties
 *.iml
 *.ipr
 *.iws
-.idea/
+
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+!.idea/runConfigurations/
+!.icon.svg
 
 # Misc IDE stuff
 eclipse-java-style.xml
