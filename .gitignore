@@ -35,7 +35,7 @@ project.properties
 !.idea/codeStyles/
 !.idea/inspectionProfiles/
 !.idea/runConfigurations/
-!.icon.svg
+!icon.svg
 
 # Misc IDE stuff
 eclipse-java-style.xml
