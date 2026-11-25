@@ -32,6 +32,7 @@ core-splashscreen = "1.2.0"
 constraintlayout = "2.2.2"
 documentfile = "1.1.0"
 activity-compose = "1.13.0"
+#noinspection GradleDependency DUE TO API 24 REQUIREMENT
 compose-bom = "2026.09.00"
 #noinspection GradleDependency DUE TO API 24 REQUIREMENT
 navigation-compose = "2.9.8"
